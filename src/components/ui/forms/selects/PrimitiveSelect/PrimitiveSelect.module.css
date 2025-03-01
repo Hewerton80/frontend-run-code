@@ -1,0 +1,57 @@
+@reference '../../../../../app/globals.css';
+
+.root :global(.select__control) {
+  @apply w-full min-h-9 shadow-sm bg-transparent
+  border border-border hover:border-border ring-primary/40;
+}
+
+.root.error :global(.select__control) {
+  @apply border-danger ring-danger/40 ring-2;
+}
+
+.root:not(.error)
+  :is(
+    :global(.select__control--is-focused),
+    :global(.select__control--menu-is-open)
+  ) {
+  @apply !border-primary ring-2;
+}
+.root :global(.select__value-container) {
+  @apply px-3 py-1.5  gap-1;
+}
+.root :global(.select__input) {
+  @apply h-4;
+}
+.root :global(.select__input-container) {
+  @apply m-0 p-0 items-center;
+}
+.root :global(.select__placeholder) {
+  @apply mx-0 text-sm text-foreground/40;
+}
+.root
+  :is(
+    :global(.select__input),
+    :global(.select__input-container),
+    :global(.select__single-value)
+  ) {
+  @apply text-sm text-foreground;
+}
+
+.root :global(.select__menu) {
+  @apply min-w-[8rem] rounded-md border bg-popover text-popover-foreground px-1
+  shadow-md;
+}
+
+.root :global(.select__menu-list) {
+  @apply max-h-56;
+}
+
+.root :global(.select__option) {
+  @apply flex w-full cursor-default select-none items-center rounded-md py-1.5 px-2 text-sm 
+  outline-none  data-[disabled]:pointer-events-none 
+  data-[disabled]:opacity-50;
+}
+
+.root :global(.select__option--is-focused) {
+  @apply bg-accent text-accent-foreground;
+}

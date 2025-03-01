@@ -1,0 +1,16 @@
+@reference '../../app/globals.css';
+
+@keyframes slideAndFade {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.root {
+  animation-name: slideAndFade;
+  animation-duration: 200ms;
+}
