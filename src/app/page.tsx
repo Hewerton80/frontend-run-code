@@ -11,7 +11,7 @@ export default function Home() {
       <Card.Root className="col-span-8 h-full p-4">
         <IDE />
       </Card.Root>
-      <Card.Root className="col-span-4 h-full p-4 gap-2">
+      <Card.Root className="col-span-4 h-full p-4 gap-4">
         <Textarea
           required
           rows={5}

@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useState } from "react";
+import { forwardRef, useEffect, useMemo, useState, JSX } from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { twMerge } from "tailwind-merge";
 import { FormLabel } from "../../FormLabel";
@@ -8,7 +8,7 @@ import { PickerPrimitive } from "./PickerPrimitive";
 
 export type PickerOption = {
   value: string;
-  label: string;
+  label: string | JSX.Element;
   subOptions?: PickerOption[];
 };
 
