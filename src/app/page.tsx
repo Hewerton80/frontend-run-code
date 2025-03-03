@@ -31,35 +31,38 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-cols-12 p-8 gap-4 min-h-dvh">
-      <Card.Root className="col-span-8 h-full p-4">
-        <IDE value={editorValue} onChange={setEditorValue} />
-      </Card.Root>
-      <Card.Root asChild className="col-span-4 h-full p-4 gap-4">
-        <form onSubmit={(e) => e.preventDefault()}>
-          <EnterMultSelect
-            value={inputs}
-            onChange={setInputs}
-            label="Custom ipunts:"
-            placeholder="Enter inputs"
-          />
-          <div className="flex justify-end">
-            <Button isLoading={isRunningCode} onClick={handleSubmit}>
-              Run Code
-            </Button>
-          </div>
-          <div className="flex flex-col h-full gap-4">
-            <p>Output:</p>
-            {isRunningCode && <ThreeDotsLoading />}
-            {runCodeResponse && (
-              <TerminalCode content={runCodeResponse?.output || ""} />
-            )}
-            {runCodeError && (
-              <TerminalCode content={runCodeError?.description || ""} />
-            )}
-          </div>
-        </form>
-      </Card.Root>
+    <div className="flex flex-col gap-4 min-h-dvh p-8">
+      <h1 className="text-2xl font-bold">Code Playground 🎮</h1>
+      <div className="grid grid-cols-12 gap-4 min-h-[calc(100vh_-_10rem)]">
+        <Card.Root className="col-span-8 h-full p-4">
+          <IDE value={editorValue} onChange={setEditorValue} />
+        </Card.Root>
+        <Card.Root asChild className="col-span-4 h-full p-4 gap-4">
+          <form onSubmit={(e) => e.preventDefault()}>
+            <EnterMultSelect
+              value={inputs}
+              onChange={setInputs}
+              label="Custom ipunts:"
+              placeholder="Enter inputs"
+            />
+            <div className="flex justify-end">
+              <Button isLoading={isRunningCode} onClick={handleSubmit}>
+                Run Code
+              </Button>
+            </div>
+            <div className="flex flex-col h-full gap-4">
+              <p>Output:</p>
+              {isRunningCode && <ThreeDotsLoading />}
+              {runCodeResponse && (
+                <TerminalCode content={runCodeResponse?.output || ""} />
+              )}
+              {runCodeError && (
+                <TerminalCode content={runCodeError?.description || ""} />
+              )}
+            </div>
+          </form>
+        </Card.Root>
+      </div>
     </div>
   );
 }
