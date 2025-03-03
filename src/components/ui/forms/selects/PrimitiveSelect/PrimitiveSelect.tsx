@@ -6,12 +6,7 @@ import React, {
   useState,
   Fragment,
 } from "react";
-import ReactSelect, {
-  MultiValue,
-  PropsValue,
-  SingleValue,
-  components,
-} from "react-select";
+import { MultiValue, PropsValue, SingleValue, components } from "react-select";
 import { twMerge } from "tailwind-merge";
 import { Spinner } from "@/components/ui/feedback/Spinner";
 import styled from "./PrimitiveSelect.module.css";
@@ -21,6 +16,13 @@ import { OnchangeMultValue, OnchangeSigleValue, SelectOption } from "../type";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/feedback/Skeleton";
+
+const ReactSelect = dynamic(() => import("react-select"), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-9" />,
+});
 
 type MapedSelectProps = Pick<
   ComponentPropsWithRef<typeof ReactSelect>,
@@ -30,15 +32,13 @@ type MapedSelectProps = Pick<
   | "hideSelectedOptions"
   | "tabSelectsValue"
   | "backspaceRemovesValue"
-  | "onBlur"
   | "autoFocus"
-  | "inputValue"
   | "id"
   | "required"
   | "isSearchable"
   | "isLoading"
   | "placeholder"
-  | "onFocus"
+  | "onKeyDown"
 >;
 
 export interface PrimitiveSelectProps extends MapedSelectProps {
@@ -53,6 +53,8 @@ export interface PrimitiveSelectProps extends MapedSelectProps {
   disabled?: boolean;
   inputValue?: string;
   subtitle?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
   onChangeSingleOption?: OnchangeSigleValue;
   onChangeMultValue?: OnchangeMultValue;
   onInputChange?: (newValue: string) => void;

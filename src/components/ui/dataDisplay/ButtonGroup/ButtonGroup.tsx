@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithRef, LegacyRef, forwardRef } from "react";
+import React, { ComponentPropsWithRef, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface ButtonGroupProps extends ComponentPropsWithRef<"div"> {

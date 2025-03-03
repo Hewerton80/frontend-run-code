@@ -2,25 +2,63 @@
 
 import { Button } from "@/components/ui/buttons/Button";
 import { Card } from "@/components/ui/cards/Card";
-import { IDE } from "@/components/ui/dataDisplay/IDE";
-import { Textarea } from "@/components/ui/forms/Textarea/Textarea";
+import { IDE } from "@/modules/code/components/IDE";
+import { EnterMultSelect } from "@/components/ui/forms/inputs/EnterMultSelect";
+import { SelectOption } from "@/components/ui/forms/selects";
+import { useRunCode } from "@/modules/code/hooks/useRunCode";
+import { useLanguage } from "@/modules/language/hooks/useLanguage";
+import { RunCodeBody } from "@/modules/schemas/runCodeBodySchema";
+import { useState } from "react";
+import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
+import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 
 export default function Home() {
+  const [editorValue, setEditorValue] = useState("");
+  const [inputs, setInputs] = useState<SelectOption[]>([]);
+  const { languageMode } = useLanguage();
+
+  const { isRunningCode, runCodeError, runCodeResponse, runCode } =
+    useRunCode();
+
+  const handleSubmit = () => {
+    const formaData: RunCodeBody = {
+      sourceCode: editorValue,
+      inputValues: inputs.map((input) => input.label),
+      language: languageMode,
+    };
+    console.log(formaData);
+    runCode(formaData);
+  };
+
   return (
-    <div className="grid grid-cols-12 p-8 gap-8 min-h-dvh">
+    <div className="grid grid-cols-12 p-8 gap-4 min-h-dvh">
       <Card.Root className="col-span-8 h-full p-4">
-        <IDE />
+        <IDE value={editorValue} onChange={setEditorValue} />
       </Card.Root>
-      <Card.Root className="col-span-4 h-full p-4 gap-4">
-        <Textarea
-          required
-          rows={5}
-          label="Ipunts:"
-          placeholder="EX: 10, 45, 45, 1000"
-        />
-        <div className="flex justify-end">
-          <Button type="submit">Run</Button>
-        </div>
+      <Card.Root asChild className="col-span-4 h-full p-4 gap-4">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <EnterMultSelect
+            value={inputs}
+            onChange={setInputs}
+            label="Custom ipunts:"
+            placeholder="Enter inputs"
+          />
+          <div className="flex justify-end">
+            <Button isLoading={isRunningCode} onClick={handleSubmit}>
+              Run Code
+            </Button>
+          </div>
+          <div className="flex flex-col h-full gap-4">
+            <p>Output:</p>
+            {isRunningCode && <ThreeDotsLoading />}
+            {runCodeResponse && (
+              <TerminalCode content={runCodeResponse?.output || ""} />
+            )}
+            {runCodeError && (
+              <TerminalCode content={runCodeError?.description || ""} />
+            )}
+          </div>
+        </form>
       </Card.Root>
     </div>
   );

@@ -7,9 +7,10 @@ import {
   CPPplaceholder,
   PYplaceholder,
 } from "./placeholderScriptLanguages";
+import { CodeEditorMode } from "@/components/ui/forms/inputs/CodeEditor";
 
 interface LanguageOptions {
-  editorName: string;
+  editorName: CodeEditorMode;
   icon: JSX.Element;
   example: string;
 }

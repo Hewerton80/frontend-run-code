@@ -1,27 +1,14 @@
 "use client";
-
-import dynamic from "next/dynamic";
-import { ComponentProps, useId, useState } from "react";
-
-import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-c_cpp";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-github_dark";
-import "ace-builds/src-noconflict/ext-language_tools";
-import { languagesConfig } from "@/utils/languagesConfig";
-import { Picker } from "../../forms/selects/Picker/Picker";
+import { useId, useState } from "react";
+import { languagesConfig } from "@/modules/language/utils/languagesConfig";
+import { Picker } from "../../../../components/ui/forms/selects/Picker/Picker";
 import { LanguageNames } from "@/types/languagesName";
 import { FaRegCircleQuestion } from "react-icons/fa6";
-import { Modal } from "../../overlay/Modal";
-import { IconButton } from "../../buttons/IconButton";
-import { Tooltip } from "../../overlay/Tooltip";
-
-const AceEditor = dynamic(() => import("react-ace"), {
-  ssr: false,
-});
+import { Modal } from "../../../../components/ui/overlay/Modal";
+import { IconButton } from "../../../../components/ui/buttons/IconButton";
+import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
+import { useLanguage } from "@/modules/language/hooks/useLanguage";
+import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
 
 interface IdeProps {
   value?: string;
@@ -29,30 +16,9 @@ interface IdeProps {
 }
 
 export function IDE({ value, onChange }: IdeProps) {
-  const UNIQUE_ID_OF_DIV = useId();
-
-  const [mode, setMode] = useState(languagesConfig["javascript"].editorName);
+  const { languageMode, changeLanguageMode } = useLanguage();
   const [showScriptCodeExample, setShowScriptCodeExample] = useState(false);
-
-  const currentSelectLanguage = languagesConfig[mode as LanguageNames];
-
-  const defautulAceEditorProps: ComponentProps<typeof AceEditor> = {
-    mode: currentSelectLanguage.editorName,
-    fontSize: 18,
-    className: "rounded-2xl",
-    theme: "github_dark",
-    style: { height: "100%", width: "100%" },
-    showPrintMargin: false,
-    highlightActiveLine: false,
-    editorProps: { $blockScrolling: true },
-    setOptions: {
-      enableBasicAutocompletion: true,
-      enableLiveAutocompletion: true,
-      enableSnippets: true,
-      enableMobileMenu: true,
-      showLineNumbers: true,
-    },
-  };
+  const currentSelectLanguage = languagesConfig[languageMode];
 
   const modeOptions = Object.keys(languagesConfig).map((key) => ({
     label: (
@@ -73,8 +39,8 @@ export function IDE({ value, onChange }: IdeProps) {
               showLabelInner
               full
               label="Language"
-              value={mode}
-              onChange={setMode}
+              value={languageMode}
+              onChange={changeLanguageMode}
               options={modeOptions}
             />
           </div>
@@ -88,11 +54,10 @@ export function IDE({ value, onChange }: IdeProps) {
             </Tooltip>
           </div>
         </div>
-        <AceEditor
-          {...defautulAceEditorProps}
+        <CodeEditor
+          mode={currentSelectLanguage.editorName}
           value={value}
           onChange={onChange}
-          name={UNIQUE_ID_OF_DIV}
           placeholder="Type your code here..."
         />
       </div>
@@ -104,11 +69,10 @@ export function IDE({ value, onChange }: IdeProps) {
         <Modal.Title>Script Example</Modal.Title>
         <Modal.Body>
           <div className="h-[524px]">
-            <AceEditor
-              {...defautulAceEditorProps}
+            <CodeEditor
+              mode={currentSelectLanguage.editorName}
               readOnly
               defaultValue={currentSelectLanguage?.example}
-              name={`${UNIQUE_ID_OF_DIV}-example`}
             />
           </div>
         </Modal.Body>

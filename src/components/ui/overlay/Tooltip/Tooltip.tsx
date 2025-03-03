@@ -10,6 +10,8 @@ interface TooltipContentProps {
   sideOffset?: number;
   children?: ReactNode;
   textContent?: ReactNode;
+  open?: boolean;
+  onOpenChange?: ((open: boolean) => void)
   side?: "top" | "right" | "bottom" | "left";
   align?: "start" | "center" | "end";
 }
@@ -21,11 +23,13 @@ export const Tooltip = ({
   align,
   side,
   textContent,
+  open,
   children,
+  onOpenChange,
 }: TooltipContentProps) => {
   return (
-    <TooltipPrimitive.Provider delayDuration={delayDuration}>
-      <TooltipPrimitive.Root>
+    <TooltipPrimitive.Provider  delayDuration={delayDuration}>
+      <TooltipPrimitive.Root open={open} onOpenChange={onOpenChange}>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content

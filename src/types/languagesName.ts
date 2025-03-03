@@ -1,1 +1,1 @@
-export type LanguageNames = 'javascript' | 'python' | 'cpp';
+export type LanguageNames = 'javascript' | 'python' | 'cpp' | (string & {});
