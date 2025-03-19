@@ -12,7 +12,7 @@ import { useState } from "react";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 
-export default function Home() {
+export default function PlayGroundPage() {
   const [editorValue, setEditorValue] = useState("");
   const [inputs, setInputs] = useState<SelectOption[]>([]);
   const { languageMode } = useLanguage();
@@ -31,9 +31,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-4 min-h-dvh p-8">
+    <div className="flex flex-col w-full gap-4">
       <h1 className="text-2xl font-bold">Code Playground 🎮</h1>
-      <div className="grid grid-cols-12 gap-4 min-h-[calc(100vh_-_10rem)]">
+      <div className="grid grid-cols-12 gap-4 h-full">
         <Card.Root className="col-span-8 h-full p-4">
           <IDE value={editorValue} onChange={setEditorValue} />
         </Card.Root>

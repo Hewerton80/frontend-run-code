@@ -21,7 +21,7 @@ export const useRunCode = () => {
   } = useMutation({
     mutationFn: (runCodeBodySchema: RunCodeBody) =>
       apiBase
-        .post<RunCodeBodyResponse>("/code/run", runCodeBodySchema)
+        .post<RunCodeBodyResponse>("/code/sync", runCodeBodySchema)
         .then((res) => res.data),
   });
 

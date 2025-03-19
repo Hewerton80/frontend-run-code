@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { twMerge } from "tailwind-merge";
 import { Providers } from "@/providers";
+import "./globals.css";
+import { ThemeTamplate } from "@/components/templates/ThemeTamplate";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,11 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <html lang="en">
-        <body className={twMerge(inter.className, "antialiased")}>
-          {children}
-        </body>
-      </html>
+      <ThemeTamplate>
+        <html lang="en" suppressHydrationWarning={true}>
+          <body className={twMerge(inter.className, "antialiased")}>
+            {children}
+          </body>
+        </html>
+      </ThemeTamplate>
     </Providers>
   );
 }
