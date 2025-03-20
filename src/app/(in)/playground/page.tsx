@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/buttons/Button";
 import { Card } from "@/components/ui/cards/Card";
-import { IDE } from "@/modules/code/components/IDE";
+import { IDE } from "@/modules/submission/components/IDE";
 import { EnterMultSelect } from "@/components/ui/forms/inputs/EnterMultSelect";
 import { SelectOption } from "@/components/ui/forms/selects";
-import { useRunCode } from "@/modules/code/hooks/useRunCode";
+import { useRunCode } from "@/modules/submission/hooks/useRunCode";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { RunCodeBody } from "@/modules/schemas/runCodeBodySchema";
 import { useState } from "react";

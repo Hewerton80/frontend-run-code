@@ -11,7 +11,7 @@ export function TerminalCode({ className, content = "" }: TerminalCodeProps) {
     <code
       className={twMerge("bg-muted text-sm p-3 rounded-lg min-h-11 overflow-auto", className)}
     >
-      <TypeWriterText text={content} />
+      <TypeWriterText parseTextToHtmlFormat text={content} />
     </code>
   );
 }

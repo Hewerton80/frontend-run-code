@@ -8,7 +8,7 @@ export default function InLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex flex-1 h-full w-full p-8">{children}</div>
+      <div className="flex flex-1 h-full w-full p-4">{children}</div>
     </div>
   );
 }

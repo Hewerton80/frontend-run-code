@@ -23,14 +23,14 @@ function TableContainer({
   ...restProps
 }: TableContainerProps) {
   return (
-    <div className="rounded-md overflow-hidden border w-full">
-      <div
-        className={twMerge(
-          "flex w-full overflow-x-auto custom-scroll ",
-          className
-        )}
-        {...restProps}
-      >
+    <div
+      className={twMerge(
+        "rounded-md overflow-x-hidden border w-full",
+        className
+      )}
+      {...restProps}
+    >
+      <div className={twMerge("flex w-full overflow-x-auto custom-scroll ")}>
         {children}
       </div>
     </div>

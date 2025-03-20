@@ -7,7 +7,7 @@ interface ThemeTamplateProps {
   children: ReactNode;
 }
 
-export function ThemeTamplate({ children }: ThemeTamplateProps) {
+export function ThemeTamplate() {
   const { theme, setTheme } = useTheme();
   useEffect(() => {
     if (localStorage.getItem(CONSTANTS.COOKIES_KEYS.THEME) === "dark") {
@@ -26,5 +26,5 @@ export function ThemeTamplate({ children }: ThemeTamplateProps) {
     }
   }, [theme]);
 
-  return <>{children}</>;
+  return <></>;
 }

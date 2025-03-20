@@ -22,13 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <ThemeTamplate>
-        <html lang="en" suppressHydrationWarning={true}>
-          <body className={twMerge(inter.className, "antialiased")}>
-            {children}
-          </body>
-        </html>
-      </ThemeTamplate>
+      <ThemeTamplate />
+      <html lang="en" suppressHydrationWarning={true}>
+        <body className={twMerge(inter.className, "antialiased")}>
+          {children}
+        </body>
+      </html>
     </Providers>
   );
 }

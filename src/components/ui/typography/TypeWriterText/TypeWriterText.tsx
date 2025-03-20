@@ -5,14 +5,20 @@ import { useEffect, useState } from "react";
 
 interface TypeWriterTextProps {
   text: string;
+  parseTextToHtmlFormat?: boolean;
 }
 
-export function TypeWriterText({ text }: TypeWriterTextProps) {
+export function TypeWriterText({
+  text,
+  parseTextToHtmlFormat,
+}: TypeWriterTextProps) {
   const [typeWriterText, setTypeWriterText] = useState("");
 
   const handledText = text.replace(/\n+$/, "").replace("\r", "");
 
-  const pasedText = parseStringToHtmlFormat(typeWriterText);
+  const pasedText = parseTextToHtmlFormat
+    ? parseStringToHtmlFormat(typeWriterText)
+    : typeWriterText;
 
   useEffect(() => {
     let currentIndex = 0;
