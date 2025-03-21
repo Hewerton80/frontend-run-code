@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/buttons/Button";
+import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { TypeWriterText } from "@/components/ui/typography/TypeWriterText";
-import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -12,7 +12,7 @@ export default function HomePage() {
       </p>
 
       <Button variantStyle="info" asChild>
-        <Link href="/playground">Ir para o Playground</Link>
+        <ProgressLink href="/playground">Ir para o Playground</ProgressLink>
       </Button>
     </div>
   );

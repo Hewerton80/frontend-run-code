@@ -2,7 +2,7 @@
 import { useId, useState } from "react";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { Picker } from "../../../../components/ui/forms/selects/Picker/Picker";
-import { LanguageNames } from "@/types/languagesName";
+import { LanguageNames } from "@/modules/language/utils/languagesName";
 import { FaRegCircleQuestion } from "react-icons/fa6";
 import { Modal } from "../../../../components/ui/overlay/Modal";
 import { IconButton } from "../../../../components/ui/buttons/IconButton";

@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { twMerge } from "tailwind-merge";
 import { Providers } from "@/providers";
 import "./globals.css";
-import { ThemeTamplate } from "@/components/templates/ThemeTamplate";
+import { ThemeTamplate } from "@/components/ui/templates/ThemeTamplate";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,12 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <Providers>
-      <ThemeTamplate />
-      <html lang="en" suppressHydrationWarning={true}>
-        <body className={twMerge(inter.className, "antialiased")}>
-          {children}
-        </body>
-      </html>
+      <ThemeTamplate>
+        <html lang="en" suppressHydrationWarning={true}>
+          <body className={twMerge(inter.className, "antialiased")}>
+            {children}
+          </body>
+        </html>
+      </ThemeTamplate>
     </Providers>
   );
 }

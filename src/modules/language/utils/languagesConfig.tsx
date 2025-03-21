@@ -1,4 +1,4 @@
-import { LanguageNames } from "@/types/languagesName";
+import { LanguageNames } from "@/modules/language/utils/languagesName";
 import { JSX } from "react";
 import { FaJs, FaPython } from "react-icons/fa";
 import { PiFileCppBold } from "react-icons/pi";

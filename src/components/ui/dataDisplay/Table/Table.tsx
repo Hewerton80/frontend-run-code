@@ -30,7 +30,11 @@ function TableContainer({
       )}
       {...restProps}
     >
-      <div className={twMerge("flex w-full overflow-x-auto custom-scroll ")}>
+      <div
+        className={twMerge(
+          "flex flex-col w-full overflow-x-auto custom-scroll "
+        )}
+      >
         {children}
       </div>
     </div>
