@@ -48,7 +48,7 @@ export function CodeEditor({ ...props }: CodeEditorProps) {
       fontSize={18}
       className="rounded-2xl"
       theme="monokai"
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", minHeight: 400, width: "100%" }}
       showPrintMargin={false}
       highlightActiveLine={false}
       editorProps={{ $blockScrolling: true }}

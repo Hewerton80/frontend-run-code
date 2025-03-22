@@ -23,7 +23,7 @@ export const SolveProblemEnvirolment = ({
             skeleton
           ) : (
             <Suspense fallback={skeleton}>
-              <ProblemDescription problem={problem} />
+              <ProblemDescription problem={problem!} />
             </Suspense>
           )}
         </div>
@@ -32,7 +32,7 @@ export const SolveProblemEnvirolment = ({
             skeleton
           ) : (
             <Suspense fallback={skeleton}>
-              <IDEProblem problem={problem} />
+              <IDEProblem problem={problem!} />
             </Suspense>
           )}
         </div>

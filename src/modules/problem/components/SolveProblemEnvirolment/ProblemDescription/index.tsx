@@ -7,23 +7,24 @@ import {
 import { IProblem, IProblemTest } from "@/modules/problem/problemTypes";
 import { twMerge } from "tailwind-merge";
 import { FaCode } from "react-icons/fa";
-import { Badge } from "@/components/ui/dataDisplay/Badge";
+import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
+import { Fragment } from "react";
 
 interface ProblemDescriptionProps {
-  problem?: IProblem;
+  problem: IProblem;
 }
 
 export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
   const exampleColumns: IColmunDataTable<IProblemTest>[] = [
     {
       field: "inputs",
-      label: "Inputs Example",
+      label: "Entrada(s)",
       onParse: (test) => (
-        <div className="flex flex-wrap gap-2">
+        <div className="font-[monospace] whitespace-pre">
           {test?.inputs?.map((input, index) => (
-            <Badge variant="info" key={index}>
-              {input}
-            </Badge>
+            <Fragment key={`inpunt-${index}`}>
+              {parseStringToHtmlFormat(`${input}\n`)}
+            </Fragment>
           ))}
         </div>
       ),
@@ -31,7 +32,11 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
     {
       field: "expectedOutput",
       label: "Output Example",
-      onParse: (test) => <div>{test?.expectedOutput}</div>,
+      onParse: (test) => (
+        <div className="font-[monospace] whitespace-pre">
+          {parseStringToHtmlFormat(test?.expectedOutput)}
+        </div>
+      ),
     },
   ];
 

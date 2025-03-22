@@ -4,5 +4,6 @@ export const CONSTANTS = {
   },
   COOKIES_KEYS: {
     THEME: "THEME",
+    CODE_DRAFTS: "CODE_DRAFTS",
   },
 };

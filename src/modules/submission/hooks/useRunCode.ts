@@ -1,6 +1,6 @@
 import { useAxios } from "@/hooks/useAxios";
-import { RunCodeBody } from "@/modules/schemas/runCodeBodySchema";
 import { useMutation } from "@tanstack/react-query";
+import { RunCodeBody } from "../schemas/runCodeBodySchema";
 
 interface RunCodeBodyResponse {
   output: string;
@@ -19,9 +19,9 @@ export const useRunCode = () => {
     data: runCodeResponse,
     error: runCodeError,
   } = useMutation({
-    mutationFn: (runCodeBodySchema: RunCodeBody) =>
+    mutationFn: (runCodeBody: RunCodeBody) =>
       apiBase
-        .post<RunCodeBodyResponse>("/code/sync", runCodeBodySchema)
+        .post<RunCodeBodyResponse>("/code/sync", runCodeBody)
         .then((res) => res.data),
   });
 

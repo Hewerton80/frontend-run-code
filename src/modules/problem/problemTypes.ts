@@ -1,11 +1,11 @@
 export interface IProblemTest {
-  id: number;
+  id: string;
   inputs: string[];
   expectedOutput: string;
 }
 
 export interface IProblem {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tests: IProblemTest[];

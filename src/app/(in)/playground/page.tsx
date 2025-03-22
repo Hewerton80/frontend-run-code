@@ -7,10 +7,10 @@ import { EnterMultSelect } from "@/components/ui/forms/inputs/EnterMultSelect";
 import { SelectOption } from "@/components/ui/forms/selects";
 import { useRunCode } from "@/modules/submission/hooks/useRunCode";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import { RunCodeBody } from "@/modules/schemas/runCodeBodySchema";
 import { useState } from "react";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
+import { RunCodeBody } from "@/modules/submission/schemas/runCodeBodySchema";
 
 export default function PlayGroundPage() {
   const [editorValue, setEditorValue] = useState("");
