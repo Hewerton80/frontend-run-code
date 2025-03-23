@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export const ProblemService = {
   getById: async (id: string) => {
     const response = await fetch(`${config.BASE_API_URL}/problem/${id}`, {
-      cache: "force-cache",
+      cache: "no-cache",
     });
     console.log(response);
     if (response.status === 404) redirect("/404");

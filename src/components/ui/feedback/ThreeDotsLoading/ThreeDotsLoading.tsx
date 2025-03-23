@@ -11,9 +11,7 @@ export function ThreeDotsLoading({ size = 12 }: ThreeDotsLoadingProps) {
 
   return (
     <div className={style.root}>
-      {dot}
-      {dot}
-      {dot}
+      {dot} {dot} {dot}
     </div>
   );
 }

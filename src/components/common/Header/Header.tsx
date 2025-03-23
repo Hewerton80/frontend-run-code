@@ -23,7 +23,7 @@ export function Header() {
       link: "/playground",
     },
     {
-      text: "problems",
+      text: "problemas",
       emoji: "🧩",
       link: "/problems",
     },

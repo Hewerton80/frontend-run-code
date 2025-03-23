@@ -16,7 +16,7 @@
 }
 
 .root {
-  @apply flex w-full h-full gap-2.5;
+  @apply h-fit flex w-full gap-2.5;
 }
 
 .root .dot {

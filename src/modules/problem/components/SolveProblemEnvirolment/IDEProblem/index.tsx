@@ -13,6 +13,7 @@ import { ResultTestCode } from "@/modules/submission/hooks/useTestCode";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
+import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 
 interface IDEProblemProps {
   problem: IProblem;
@@ -22,9 +23,9 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
   const {
     sourceCode,
     isTestingCode,
-    testCode,
     testCodeError,
     testCodeResponse,
+    testCode,
     changeSourceCode,
   } = useIDEProblem(problem!);
 
@@ -81,6 +82,11 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
           {/* </ButtonGroup> */}
         </div>
       </Card.Root>
+      {isTestingCode && (
+        <div className="py-4">
+          <ThreeDotsLoading />
+        </div>
+      )}
       {testCodeError && (
         <TerminalCode content={testCodeError?.description || ""} />
       )}
