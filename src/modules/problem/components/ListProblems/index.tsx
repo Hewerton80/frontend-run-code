@@ -7,10 +7,12 @@ import {
 import { useListProblems } from "./useListProblems";
 import { IProblem } from "../../problemTypes";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
+import { Breadcrumbs } from "@/components/ui/dataDisplay";
 
 export const ListProblems = () => {
   const { isProblemsLoading, problems, problemsError, refetchProblems } =
     useListProblems();
+
   const columns: IColmunDataTable<IProblem>[] = [
     {
       field: "title",
@@ -33,30 +35,12 @@ export const ListProblems = () => {
     },
   ];
 
-  //   const dataRow = [
-  //     {
-  //       id: 1,
-  //       title: "Two Sum",
-  //       difficulty: "Easy",
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Add Two Numbers",
-  //       difficulty: "Medium",
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "Longest Substring Without Repeating Characters",
-  //       difficulty: "Medium",
-  //     },
-  //     {
-  //       id: 4,
-  //       title: "Median of Two Sorted Arrays",
-  //       difficulty: "Hard",
-  //     },
-  //   ];
   return (
-    <div className="flex w-full px-32">
+    <div className="flex flex-col gap-4 w-full px-32 pt-6 pb-4">
+      <Breadcrumbs
+        isLoading={isProblemsLoading}
+        items={[{ label: "🧩 Problemas" }]}
+      />
       <DataTable
         columns={columns}
         data={problems?.data || []}

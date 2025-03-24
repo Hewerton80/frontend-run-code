@@ -75,6 +75,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
             variantStyle="info"
             isLoading={isTestingCode}
             onClick={testCode}
+            disabled={!sourceCode?.trim()}
           >
             Run Code
           </Button>

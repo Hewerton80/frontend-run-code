@@ -15,17 +15,20 @@ export const SolveProblemEnvirolment = ({
   problem,
 }: SolveProblemEnvirolmentProps) => {
   const skeleton = <Skeleton className="size-full" />;
-
+  if (isLoading) {
+    console.log("SolveProblemEnvirolment-LOADING...");
+  }
   return (
     <>
-      <div className="flex flex-col size-full gap-4 ">
+      <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4">
         <Breadcrumbs
+          isLoading={isLoading}
           items={[
-            { label: "Problemas", href: "/problems" },
+            { label: "🧩 Problemas ", href: "/problems" },
             { label: problem?.title || "" },
           ]}
         />
-        <div className="grid grid-cols-12 gap-4 size-full">
+        <div className="grid grid-cols-12 gap-4 size-full min-h-[468px]">
           <div className="col-span-4 h-full">
             {isLoading ? (
               skeleton

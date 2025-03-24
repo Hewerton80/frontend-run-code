@@ -45,19 +45,24 @@ export function CodeEditor({ ...props }: CodeEditorProps) {
   return (
     <AceEditor
       name={UNIQUE_ID_OF_DIV}
-      fontSize={18}
+      fontSize={16}
       className="rounded-2xl"
       theme="monokai"
       style={{ height: "100%", minHeight: 400, width: "100%" }}
       showPrintMargin={false}
-      highlightActiveLine={false}
+      highlightActiveLine={true}
+      showGutter={true}
       editorProps={{ $blockScrolling: true }}
       setOptions={{
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
         enableSnippets: true,
         enableMobileMenu: true,
         showLineNumbers: true,
+        displayIndentGuides: true,
+        enableEmmet: true,
+        spellcheck: true,
+        tooltipFollowsMouse: true,
+        tabSize: 2,
+        showFoldWidgets: true,
       }}
       {...props}
     />

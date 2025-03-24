@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import ProgressLink from "../navigation/ProgressLink/ProgressLink";
 import { LuChevronRight } from "react-icons/lu";
+import { Skeleton } from "../feedback/Skeleton";
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -99,6 +100,7 @@ const BreadcrumbEllipsis = ({
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis";
 
 interface BreadcrumbsProps {
+  isLoading?: boolean;
   className?: string;
   items: Array<{
     label: string;
@@ -106,17 +108,24 @@ interface BreadcrumbsProps {
   }>;
 }
 
-export const Breadcrumbs = ({ items, className }: BreadcrumbsProps) => {
+export const Breadcrumbs = ({
+  items,
+  isLoading,
+  className,
+}: BreadcrumbsProps) => {
   return (
     <Breadcrumb className={className}>
       <BreadcrumbList>
         {items.map((item, index) => (
           <BreadcrumbItem key={`breadcrumb-item-${index}-${item.label}`}>
-            {item.href ? (
+            {isLoading ? (
+              <Skeleton className="w-20 h-4" />
+            ) : item.href ? (
               <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
             ) : (
               <BreadcrumbPage>{item.label}</BreadcrumbPage>
             )}
+
             {index < items.length - 1 && <BreadcrumbSeparator />}
           </BreadcrumbItem>
         ))}

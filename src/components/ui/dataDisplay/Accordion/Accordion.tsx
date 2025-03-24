@@ -1,81 +1,76 @@
-import * as RadixAccordion from "@radix-ui/react-accordion";
-import { ComponentProps, forwardRef } from "react";
-import { twMerge } from "tailwind-merge";
-import { FaChevronDown } from "react-icons/fa";
+import { ComponentPropsWithoutRef, forwardRef } from "react";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
 
-function AccordionRoot(props: ComponentProps<typeof RadixAccordion.Root>) {
-  return <RadixAccordion.Root {...props} />;
-}
+import { twJoin, twMerge } from "tailwind-merge";
+import { BsChevronDown } from "react-icons/bs";
 
-const AccordionItem = forwardRef(
-  (
-    {
-      children,
-      className,
-      ...props
-    }: ComponentProps<typeof RadixAccordion.Item>,
-    forwardedRef: any
-  ) => (
-    <RadixAccordion.Item
-      className={twMerge("overflow-hidden", className)}
-      {...props}
-      ref={forwardedRef}
-    >
-      {children}
-    </RadixAccordion.Item>
-  )
+const AccordionRoot = AccordionPrimitive.Root;
+
+const AccordionItem = (
+  {
+    className,
+    ...props
+  }: ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>,
+  ref: any
+) => (
+  <AccordionPrimitive.Item
+    ref={ref}
+    className={twJoin("border-b", className)}
+    {...props}
+  />
 );
+AccordionItem.displayName = "AccordionItem";
 
-const AccordionTrigger = forwardRef(
-  (
-    {
-      children,
-      className,
-      ...props
-    }: ComponentProps<typeof RadixAccordion.Trigger>,
-    forwardedRef: any
-  ) => (
-    <RadixAccordion.Trigger
-      className={twMerge("relative group", className)}
-      {...props}
-      ref={forwardedRef}
-    >
-      {children}
-      <FaChevronDown
-        className={twMerge(
-          "absolute right-4 top-1/2 -translate-y1/2 text-xs sm:text-base",
-          "transition-transform duration-200 ease-linear group-data-[state=open]:rotate-180"
-        )}
-      />
-    </RadixAccordion.Trigger>
-  )
-);
-
-const AccordionContent = forwardRef(
-  (
-    {
-      children,
-      className,
-      ...props
-    }: ComponentProps<typeof RadixAccordion.Content>,
-    forwardedRef: any
-  ) => (
-    <RadixAccordion.Content
-      className={twMerge(
-        "data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp",
+const AccordionTrigger = (
+  {
+    className,
+    children,
+    ...props
+  }: ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>,
+  ref: any
+) => (
+  <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Trigger
+      ref={ref}
+      className={twJoin(
+        "cursor-pointer flex flex-1 items-center justify-between py-4 text-sm font-medium",
+        "transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180",
         className
       )}
       {...props}
-      ref={forwardedRef}
     >
-      <div className="py-[15px] px-5">{children}</div>
-    </RadixAccordion.Content>
-  )
+      {children}
+      <BsChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+    </AccordionPrimitive.Trigger>
+  </AccordionPrimitive.Header>
 );
+AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+
+const AccordionContent = (
+  {
+    className,
+    children,
+    ...props
+  }: ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>,
+  ref: any
+) => (
+  <AccordionPrimitive.Content
+    ref={ref}
+    className={twMerge(
+      "overflow-hidden text-sm",
+      // "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+      "data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down"
+    )}
+    {...props}
+  >
+    <div className={twMerge("pb-4 pt-0", className)}>{children}</div>
+  </AccordionPrimitive.Content>
+);
+AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
 export const Accordion = {
   Root: AccordionRoot,
-  Item: AccordionItem,
-  Trigger: AccordionTrigger,
-  Content: AccordionContent,
+  Item: forwardRef(AccordionItem),
+  Trigger: forwardRef(AccordionTrigger),
+  Content: forwardRef(AccordionContent),
 };
