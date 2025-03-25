@@ -47,7 +47,7 @@ export default function PlayGroundPage() {
             />
             <div className="flex justify-end">
               <Button isLoading={isRunningCode} onClick={handleSubmit}>
-                Run Code
+                Run Code 🚀
               </Button>
             </div>
             <div className="flex flex-col h-full gap-4">
