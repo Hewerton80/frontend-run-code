@@ -1,9 +1,14 @@
-import { Card } from "@/components/ui/cards/Card";
+"use client";
 import { Accordion } from "@/components/ui/dataDisplay/Accordion";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { twMerge } from "tailwind-merge";
-import { FaCode } from "react-icons/fa";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
+import { Skeleton } from "@/components/ui/feedback/Skeleton";
+import { ProblemCard } from "@/modules/problem/components/ProblemCard";
+import { IProblem } from "@/modules/problem/problemTypes";
+import { dalay } from "@/utils/dalay";
+import { useState } from "react";
+import { getRange } from "@/utils/getRange";
+import { IListProblem } from "../../listProblemTypes";
+import { format, isBefore, isAfter, startOfDay, endOfDay } from "date-fns";
 
 interface ListProblemAcoordionProps {
   data: IListProblem;
@@ -12,29 +17,71 @@ interface ListProblemAcoordionProps {
 export function ListProblemAcoordion({
   data: listProblem,
 }: ListProblemAcoordionProps) {
-  const problems = [
-    {
-      title: "Soma de a + b",
-      avaliation: "✅",
-    },
-    {
-      title: "Subtração de a - b",
-      avaliation: "❌",
-    },
-    {
-      title: "Multiplicação de a * b",
-      avaliation: "🕒",
-    },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  const [problems, setProblems] = useState<IProblem[] | undefined>(undefined);
+  const [alreadyOpened, setAlreadyOpened] = useState(false);
+
+  const getProblems = async () => {
+    setIsLoading(true);
+    await dalay(2000);
+    const problemsResponse: IProblem[] = [
+      {
+        id: "1",
+        listProblem,
+        classroom: listProblem?.classroom,
+        title: "Soma de dois números inteiros, Soma de a + b",
+        solveStatus: 1,
+      },
+      {
+        id: "2",
+        listProblem,
+        classroom: listProblem?.classroom,
+        title: "Subtração de a - b",
+        solveStatus: 2,
+      },
+      {
+        id: "3",
+        listProblem,
+        classroom: listProblem?.classroom,
+        title: "Multiplicação de a * b",
+        solveStatus: 3,
+      },
+    ];
+    setProblems(problemsResponse);
+    setIsLoading(false);
+  };
 
   const solved = listProblem?.solved || 0;
   const total = listProblem?.total || 0;
 
   const progress = solved ? Math.round((solved / total) * 100) : 0;
 
+  const isDisabled = () => {
+    const now = new Date();
+    if (listProblem?.startDate && listProblem?.endData) {
+      const startDate = new Date(listProblem.startDate);
+      const endDate = new Date(listProblem.endData);
+      const isStartDateValid = startDate.getTime() > 0;
+      const isEndDateValid = endDate.getTime() > 0;
+      if (isStartDateValid && isEndDateValid) {
+        const start = startOfDay(startDate);
+        const end = endOfDay(endDate);
+        return isBefore(now, start) || isAfter(now, end);
+      }
+    }
+    return false;
+  };
+
+  const openAccordion = (value: string) => {
+    if (!value || alreadyOpened) return;
+    setAlreadyOpened(true);
+    getProblems();
+  };
+
   return (
     <Accordion.Root
-      onValueChange={(value) => console.log({ value })}
+      disabled={isDisabled()}
+      onValueChange={openAccordion}
       collapsible
       type="single"
     >
@@ -43,46 +90,35 @@ export function ListProblemAcoordion({
           <Accordion.Trigger className="pb-0">
             {listProblem?.title}
           </Accordion.Trigger>
-          <ProgressBar
-            showValue
-            value={progress}
-            customValueText={`(${solved}/${total})`}
-          />
+          <span className="text-xs text-muted-foreground">
+            {format(
+              listProblem?.startDate ? new Date(listProblem?.startDate) : "",
+              "dd/MM/yyyy"
+            )}{" "}
+            -{" "}
+            {format(
+              listProblem?.endData ? new Date(listProblem?.endData) : "",
+              "dd/MM/yyyy"
+            )}
+          </span>
+          <div className="flex items-center gap-2">
+            <ProgressBar value={progress} />
+            <span className="text-sm">
+              {solved}/{total}
+            </span>
+          </div>
         </div>
         <Accordion.Content>
           <div className="grid grid-cols-3 gap-4">
-            {problems.map((problem, index) => (
-              <Card.Root
-                key={index}
-                asChild
-                className={twMerge(
-                  "p-4 shadow-md border-none",
-                  "bg-linear-to-r from-blue-500 to-blue-700",
-                  "hover:from-blue-400 hover:to-blue-600",
-                  "duration-300 ease-in-out"
-                )}
-              >
-                <ProgressLink href="/classroom">
-                  <div className="flex gap-1 group">
-                    <div className="flex flex-col">
-                      <h4 className="text-xl font-bold text-white mb-4 line-clamp-1">
-                        {problem.title}
-                      </h4>
-                      <p className="text-base text-white line-clamp-1">
-                        Situação: {problem.avaliation}
-                      </p>
-                    </div>
-                    <FaCode
-                      className={twMerge(
-                        "my-auto ml-auto text-7xl text-white opacity-80",
-                        "rotate-x-45 rotate-z-43 transform-3d",
-                        "group-hover:rotate-x-0 group-hover:rotate-z-0",
-                        "duration-500 ease-in-out"
-                      )}
-                    />
-                  </div>
-                </ProgressLink>
-              </Card.Root>
+            {isLoading &&
+              getRange(0, 5).map((index) => (
+                <Skeleton
+                  key={`problem-skeleton-${index}`}
+                  className="w-full h-26 rounded-lg"
+                />
+              ))}
+            {problems?.map((problem, index) => (
+              <ProblemCard key={`${problem?.title}-${index}`} data={problem} />
             ))}
           </div>
         </Accordion.Content>

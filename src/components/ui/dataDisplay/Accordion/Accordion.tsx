@@ -33,8 +33,9 @@ const AccordionTrigger = (
     <AccordionPrimitive.Trigger
       ref={ref}
       className={twJoin(
-        "cursor-pointer flex flex-1 items-center justify-between py-4 text-sm font-medium",
-        "transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180",
+        "not-disabled:cursor-pointer flex flex-1 items-center justify-between py-4 text-sm font-medium",
+        "transition-all not-disabled:hover:underline text-left [&[data-state=open]>svg]:rotate-180",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}

@@ -5,7 +5,7 @@ import {
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
 import { useListProblems } from "./useListProblems";
-import { IProblem } from "../../problemTypes";
+import { IProblem } from "../../../problem/problemTypes";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
 

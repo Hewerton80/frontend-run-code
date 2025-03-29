@@ -10,10 +10,10 @@ import { IconButton } from "@/components/ui/buttons/IconButton";
 import { GoSidebarExpand } from "react-icons/go";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 
+const showOnlyIcons = true;
 export const SideBarItems = forwardRef((_, ref?: any) => {
   const currentPath = usePathname();
   // const { showOnlyIcons } = useSideBar();
-  const showOnlyIcons = false;
   const navItems = [
     // {
     //   title: "Dashboard",
@@ -45,8 +45,8 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
     <ul
       ref={ref}
       className={twMerge(
-        "flex flex-col w-full space-y-1 p-2"
-        // showOnlyIcons && "items-center"
+        "flex flex-col w-full space-y-1 p-2",
+        showOnlyIcons && "items-center"
       )}
     >
       {navItems.map(({ title, emoji, path, basePath }, i) => {
@@ -91,7 +91,7 @@ export function Sidebar() {
   //   setSideBarWidth,
   // } = useSideBar();
 
-  const sideBarWidth = 240;
+  const sideBarWidth = showOnlyIcons ? 56 : 240;
 
   const sideBarElement = useMemo(() => {
     return (
@@ -146,8 +146,16 @@ export function Sidebar() {
               priority
             /> 
         </div>*/}
-        <div className="flex justify-end px-2">
-          <Tooltip textContent="Recolher menu" side="bottom">
+        <div
+          className={twMerge(
+            "flex px-2",
+            showOnlyIcons ? "justify-center rotate-180" : "justify-end rotate-0"
+          )}
+        >
+          <Tooltip
+            textContent={showOnlyIcons ? "Expandir menu" : "Recolher menu"}
+            side="bottom"
+          >
             <IconButton
               variantStyle="dark-ghost"
               icon={<GoSidebarExpand className="text-4xl" />}
@@ -160,7 +168,7 @@ export function Sidebar() {
         {/* </Resizable> */}
       </aside>
     );
-  }, []);
+  }, [sideBarWidth]);
 
   return (
     <>

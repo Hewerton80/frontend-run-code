@@ -1,4 +1,4 @@
-import { useGetProblems } from "../../hooks/useGetProblems";
+import { useGetProblems } from "../../../problem/hooks/useGetProblems";
 
 export const useListProblems = () => {
   const { isProblemsLoading, problems, problemsError, refetchProblems } =

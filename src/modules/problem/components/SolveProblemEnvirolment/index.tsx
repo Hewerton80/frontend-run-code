@@ -1,9 +1,11 @@
+"use client";
 import { IProblem } from "../../problemTypes";
 import { ProblemDescription } from "./ProblemDescription";
 import { IDEProblem } from "./IDEProblem";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
+import { useParams } from "next/navigation";
 
 interface SolveProblemEnvirolmentProps {
   problem?: IProblem;
@@ -14,19 +16,42 @@ export const SolveProblemEnvirolment = ({
   isLoading,
   problem,
 }: SolveProblemEnvirolmentProps) => {
+  const params = useParams<{
+    classroomId?: string;
+    listId?: string;
+    problemId: string;
+  }>();
+
   const skeleton = <Skeleton className="size-full" />;
-  if (isLoading) {
-    console.log("SolveProblemEnvirolment-LOADING...");
-  }
+
+  const isLoadingBredcrumbs = isLoading;
+
+  const getBreadcrumbsItems = () => {
+    const classroomId = params?.classroomId;
+    const listId = params?.listId;
+
+    if (classroomId && listId) {
+      return [
+        { label: "🏠 Home", href: "/" },
+        {
+          label: "Turma de programação 2024.2",
+          href: `/classroom/${classroomId}/lists`,
+        },
+        { label: problem?.title || "" },
+      ];
+    }
+    return [
+      { label: "🧩 Problemas ", href: "/problems" },
+      { label: problem?.title || "" },
+    ];
+  };
+
   return (
     <>
       <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4">
         <Breadcrumbs
-          isLoading={isLoading}
-          items={[
-            { label: "🧩 Problemas ", href: "/problems" },
-            { label: problem?.title || "" },
-          ]}
+          isLoading={isLoadingBredcrumbs}
+          items={getBreadcrumbsItems()}
         />
         <div className="grid grid-cols-12 gap-4 size-full min-h-[468px]">
           <div className="col-span-4 h-full">
