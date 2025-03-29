@@ -1,28 +1,43 @@
 "use client";
-import { Button } from "@/components/ui/buttons/Button";
-import { Card } from "@/components/ui/cards/Card";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
-import { Accordion } from "@/components/ui/dataDisplay/Accordion";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { TypeWriterText } from "@/components/ui/typography/TypeWriterText";
-import { FaCode } from "react-icons/fa";
-import { twMerge } from "tailwind-merge";
+import { ListProblemAcoordion } from "@/modules/listProblem/components/ListProblemAcoordion";
 
 export default function ClassroomPage() {
-  const classrooms = [
+  const listsProblems: IListProblem[] = [
     {
-      title: "Soma de a + b",
-      avaliation: "✅",
+      id: "1",
+      title: "Lista 1 - Operações lógicas básicas",
+      startDate: "2024-01-01",
+      endData: "2024-01-15",
+      solved: 0,
+      total: 3,
     },
     {
-      title: "Subtração de a - b",
-      avaliation: "❌",
+      id: "2",
+      title: "Lista 2 - Estruturas de repetição",
+      startDate: "2024-01-16",
+      endData: "2024-01-30",
+      solved: 3,
+      total: 3,
     },
     {
-      title: "Multiplicação de a * b",
-      avaliation: "🕒",
+      id: "3",
+      title: "Lista 3 - Estruturas condicionais",
+      startDate: "2024-02-01",
+      endData: "2024-02-15",
+      solved: 1,
+      total: 3,
+    },
+    {
+      id: "4",
+      title: "Lista 4 - Funções e Recursão",
+      startDate: "2024-02-16",
+      endData: "2024-03-01",
+      solved: 2,
+      total: 8,
     },
   ];
+
   return (
     <div className="flex flex-col w-full gap-4 p-8">
       <Breadcrumbs
@@ -33,54 +48,12 @@ export default function ClassroomPage() {
         ]}
       />
       <div className="flex flex-col">
-        <Accordion.Root
-          onValueChange={(value) => console.log({ value })}
-          collapsible
-          type="single"
-        >
-          <Accordion.Item value="teste">
-            <Accordion.Trigger>
-              Lista 1 - Operações lógicas básicas
-            </Accordion.Trigger>
-            <Accordion.Content>
-              <div className="grid grid-cols-3 gap-4">
-                {classrooms.map((classInfo, index) => (
-                  <Card.Root
-                    key={index}
-                    asChild
-                    className={twMerge(
-                      "p-4 shadow-md border-none",
-                      "bg-linear-to-r from-blue-500 to-blue-700",
-                      // "bg-linear-to-r from-blue-500 to-blue-700",
-                      "duration-300 ease-in-out"
-                    )}
-                  >
-                    <ProgressLink href="/classroom">
-                      <div className="flex gap-1 group">
-                        <div className="flex flex-col">
-                          <h4 className="text-xl font-bold text-white mb-4 line-clamp-1">
-                            {classInfo.title}
-                          </h4>
-                          <p className="text-base text-white line-clamp-1">
-                            Situação: {classInfo.avaliation}
-                          </p>
-                        </div>
-                        <FaCode
-                          className={twMerge(
-                            "my-auto ml-auto text-7xl text-white opacity-80",
-                            "rotate-x-45 rotate-z-43 transform-3d",
-                            "group-hover:rotate-x-0 group-hover:rotate-z-0",
-                            "duration-500 ease-in-out"
-                          )}
-                        />
-                      </div>
-                    </ProgressLink>
-                  </Card.Root>
-                ))}
-              </div>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion.Root>
+        {listsProblems.map((listProblem) => (
+          <ListProblemAcoordion
+            key={`${listProblem?.id}-list-problem`}
+            data={listProblem}
+          />
+        ))}
       </div>
     </div>
   );

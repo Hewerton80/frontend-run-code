@@ -1,8 +1,8 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-
 import { twJoin, twMerge } from "tailwind-merge";
 import { BsChevronDown } from "react-icons/bs";
+import style from "./Accordion.module.css";
 
 const AccordionRoot = AccordionPrimitive.Root;
 
@@ -40,7 +40,11 @@ const AccordionTrigger = (
       {...props}
     >
       {children}
-      <BsChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+      <BsChevronDown
+        className={twMerge(
+          "size-4 ml-4 shrink-0 text-muted-foreground transition-transform duration-200"
+        )}
+      />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 );
@@ -56,11 +60,7 @@ const AccordionContent = (
 ) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className={twMerge(
-      "overflow-hidden text-sm",
-      // "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-      "data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down"
-    )}
+    className={twMerge("overflow-hidden text-sm", style.animation)}
     {...props}
   >
     <div className={twMerge("pb-4 pt-0", className)}>{children}</div>
