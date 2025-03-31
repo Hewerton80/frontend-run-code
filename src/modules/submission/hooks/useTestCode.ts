@@ -50,9 +50,9 @@ export const useTestCode = (problemId: string) => {
     return { description: "Something went wrong 😭" };
   };
 
-  useEffect(() => {
-    console.log(testCodeResponse);
-  }, [testCodeResponse]);
+  // useEffect(() => {
+  //   console.log(testCodeResponse);
+  // }, [testCodeResponse]);
 
   return {
     testCode,

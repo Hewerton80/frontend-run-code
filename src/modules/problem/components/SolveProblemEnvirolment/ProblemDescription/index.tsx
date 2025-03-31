@@ -15,6 +15,7 @@ interface ProblemDescriptionProps {
 }
 
 export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
+  console.log({ problem, testCases: problem?.testCases });
   const exampleColumns: IColmunDataTable<IProblemTest>[] = [
     {
       field: "inputs",
@@ -55,7 +56,7 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
         className="text-sm"
         dangerouslySetInnerHTML={{ __html: problem?.description || "" }}
       />
-      <DataTable columns={exampleColumns} data={problem?.tests || []} />
+      <DataTable columns={exampleColumns} data={problem?.testCases || []} />
     </Card.Root>
   );
 };

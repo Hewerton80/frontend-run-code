@@ -14,9 +14,11 @@ export const ProblemSolveStatusEnum = {
 
 export interface IProblem {
   id: string;
-  title?: string;
+  title: string;
+  code: string;
+  category: { id: string; name: string };
   description?: string;
-  tests?: IProblemTest[];
+  testCases?: IProblemTest[];
   difficulty?: string;
   solveStatus?: number;
   classroom?: IClassroom;

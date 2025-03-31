@@ -9,11 +9,11 @@ import { IconButton } from "@/components/ui/buttons/IconButton";
 // import { useSideBar } from "@/hooks/useSideBar";
 import { GoSidebarExpand } from "react-icons/go";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { useSideBar } from "@/hooks/useSideBar";
 
-const showOnlyIcons = true;
 export const SideBarItems = forwardRef((_, ref?: any) => {
   const currentPath = usePathname();
-  // const { showOnlyIcons } = useSideBar();
+  const { showOnlyIcons } = useSideBar();
   const navItems = [
     // {
     //   title: "Dashboard",
@@ -90,6 +90,7 @@ export function Sidebar() {
   //   setResizingSideBar,
   //   setSideBarWidth,
   // } = useSideBar();
+  const { showOnlyIcons, toggleOnlyIcons } = useSideBar();
 
   const sideBarWidth = showOnlyIcons ? 56 : 240;
 
@@ -157,6 +158,7 @@ export function Sidebar() {
             side="bottom"
           >
             <IconButton
+              onClick={toggleOnlyIcons}
               variantStyle="dark-ghost"
               icon={<GoSidebarExpand className="text-4xl" />}
             />
@@ -168,7 +170,7 @@ export function Sidebar() {
         {/* </Resizable> */}
       </aside>
     );
-  }, [sideBarWidth]);
+  }, [sideBarWidth, showOnlyIcons, toggleOnlyIcons]);
 
   return (
     <>

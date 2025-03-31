@@ -16,7 +16,22 @@ export const ListProblems = () => {
   const columns: IColmunDataTable<IProblem>[] = [
     {
       field: "title",
-      label: "Title",
+      label: "Título",
+      onParse: (problem) => <p className="line-clamp-1">{problem?.title}</p>,
+    },
+    {
+      field: "code",
+      label: "Código",
+      onParse: (problem) => (
+        <p className="text-muted-foreground">{problem?.code}</p>
+      ),
+    },
+    {
+      field: "category",
+      label: "Categoria",
+      onParse: (problem) => (
+        <p className="line-clamp-1">{problem?.category?.name}</p>
+      ),
     },
     {
       field: "difficulty",
@@ -25,10 +40,10 @@ export const ListProblems = () => {
     {
       field: "actions",
       label: "",
-      onParse: (exercice: any) => (
+      onParse: (problem) => (
         <div className="flex justify-end">
           <Button variantStyle="dark-ghost" asChild>
-            <ProgressLink href={`/problems/${exercice?.id}`}>View</ProgressLink>
+            <ProgressLink href={`/problems/${problem?.id}`}>View</ProgressLink>
           </Button>
         </div>
       ),

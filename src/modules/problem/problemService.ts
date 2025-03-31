@@ -5,9 +5,11 @@ import { redirect } from "next/navigation";
 
 export const ProblemService = {
   getById: async (id: string) => {
+    console.log("getById", id);
     const response = await fetch(`${envConfig.BASE_API_URL}/problem/${id}`, {
-      cache: "force-cache",
+      cache: "no-cache",
     });
+    // console.log(response);
     if (response.status === 404) redirect("/404");
     const problem: IProblem = await response.json();
     if (!problem) redirect("/404");
@@ -59,7 +61,7 @@ export const ProblemService = {
           <p>Para cada caso de teste, a saída deve conter uma linha com um inteiro <strong>S</strong>, a soma do triângulo de pascal de <strong>N</strong> linhas.</p>
          
       `,
-      tests: [
+      testCases: [
         {
           id: "1",
           inputs: ["4", "1", "2", "5", "31"],
