@@ -1,4 +1,4 @@
-import { Header } from "@/components/common/Header";
+"use client";
 import { Sidebar } from "@/components/common/Sidebar";
 import { twMerge } from "tailwind-merge";
 

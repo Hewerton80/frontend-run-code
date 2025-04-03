@@ -52,15 +52,15 @@ export function ListProblemAcoordion({
   };
 
   const solved = listProblem?.solved || 0;
-  const total = listProblem?.total || 0;
+  const totalProblems = listProblem?.totalProblems || 0;
 
-  const progress = solved ? Math.round((solved / total) * 100) : 0;
+  const progress = solved ? Math.round((solved / totalProblems) * 100) : 0;
 
   const isDisabled = () => {
     const now = new Date();
-    if (listProblem?.startDate && listProblem?.endData) {
-      const startDate = new Date(listProblem.startDate);
-      const endDate = new Date(listProblem.endData);
+    if (listProblem?.startDate && listProblem?.endDate) {
+      const startDate = new Date(listProblem.startDate || "");
+      const endDate = new Date(listProblem.endDate || "");
       const isStartDateValid = startDate.getTime() > 0;
       const isEndDateValid = endDate.getTime() > 0;
       if (isStartDateValid && isEndDateValid) {
@@ -91,20 +91,18 @@ export function ListProblemAcoordion({
             {listProblem?.title}
           </Accordion.Trigger>
           <span className="text-xs text-muted-foreground">
-            {format(
-              listProblem?.startDate ? new Date(listProblem?.startDate) : "",
-              "dd/MM/yyyy"
-            )}{" "}
+            {listProblem?.startDate
+              ? format(new Date(listProblem?.startDate), "dd/MM/yyyy")
+              : "-"}{" "}
             -{" "}
-            {format(
-              listProblem?.endData ? new Date(listProblem?.endData) : "",
-              "dd/MM/yyyy"
-            )}
+            {listProblem?.endDate
+              ? format(new Date(listProblem?.endDate), "dd/MM/yyyy")
+              : "-"}{" "}
           </span>
           <div className="flex items-center gap-2">
             <ProgressBar value={progress} />
             <span className="text-sm">
-              {solved}/{total}
+              {solved}/{totalProblems}
             </span>
           </div>
         </div>

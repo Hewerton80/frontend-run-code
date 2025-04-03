@@ -21,3 +21,13 @@ export function SplashScreen() {
     </div>
   );
 }
+// @keyframes my-animation {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(1080deg);
+//   }
+// }
+
+// animation: 0.25s ease-in 0s 1 normal none running fadein, 2.5s ease-in-out 0s infinite normal none running my-animation;

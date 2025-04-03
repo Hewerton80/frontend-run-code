@@ -4,8 +4,8 @@ export interface IListProblem {
   id: string;
   title: string;
   startDate?: string;
-  endData?: string;
+  endDate?: string;
   solved?: number;
-  total?: number;
+  totalProblems?: number;
   classroom?: IClassroom;
 }

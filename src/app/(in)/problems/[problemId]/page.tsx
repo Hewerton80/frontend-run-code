@@ -1,5 +1,6 @@
 import { SolveProblemEnvirolment } from "@/modules/problem/components/SolveProblemEnvirolment";
 import { ProblemService } from "@/modules/problem/problemService";
+import { isNumberable } from "@/utils/isType";
 
 export default async function ProblemPage({
   params,
@@ -7,10 +8,10 @@ export default async function ProblemPage({
   params: Promise<{ problemId: string }>;
 }) {
   const { problemId } = await params;
-  if (isNaN(Number(problemId))) {
-    return null;
-  }
-  console.log({ problemId });
+  // console.log({ problemId });
+  // if (!isNumberable(problemId)) {
+  //   return null;
+  // }
   const problem = await ProblemService.getById(problemId);
   // console.log(problem);
 
