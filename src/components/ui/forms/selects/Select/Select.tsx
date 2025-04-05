@@ -25,7 +25,7 @@ export const Select = forwardRef(
     ref?: any
   ) => {
     const mapedObjectOptions = useMemo(() => {
-      let mapedObjectOptionsTmp: { [key: string]: SelectOption } = {};
+      const mapedObjectOptionsTmp: { [key: string]: SelectOption } = {};
       options.forEach((option) => {
         if (option?.options) {
           option?.options.forEach((subOption) => {

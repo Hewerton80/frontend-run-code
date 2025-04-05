@@ -73,6 +73,7 @@ export function IDE({ value, onChange }: IdeProps) {
               mode={currentSelectLanguage.editorName}
               readOnly
               defaultValue={currentSelectLanguage?.example}
+              focus={false}
             />
           </div>
         </Modal.Body>

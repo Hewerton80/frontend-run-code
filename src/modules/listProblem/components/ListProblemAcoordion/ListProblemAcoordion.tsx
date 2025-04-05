@@ -9,6 +9,8 @@ import { useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { IListProblem } from "../../listProblemTypes";
 import { format, isBefore, isAfter, startOfDay, endOfDay } from "date-fns";
+import { useGetProblemsByClassroomList } from "@/modules/problem/hooks/useGetProblemsByClassroomList";
+import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 
 interface ListProblemAcoordionProps {
   data: IListProblem;
@@ -17,40 +19,13 @@ interface ListProblemAcoordionProps {
 export function ListProblemAcoordion({
   data: listProblem,
 }: ListProblemAcoordionProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [problems, setProblems] = useState<IProblem[] | undefined>(undefined);
   const [alreadyOpened, setAlreadyOpened] = useState(false);
 
-  const getProblems = async () => {
-    setIsLoading(true);
-    await dalay(2000);
-    const problemsResponse: IProblem[] = [
-      {
-        id: "1",
-        listProblem,
-        classroom: listProblem?.classroom,
-        title: "Soma de dois números inteiros, Soma de a + b",
-        solveStatus: 1,
-      },
-      {
-        id: "2",
-        listProblem,
-        classroom: listProblem?.classroom,
-        title: "Subtração de a - b",
-        solveStatus: 2,
-      },
-      {
-        id: "3",
-        listProblem,
-        classroom: listProblem?.classroom,
-        title: "Multiplicação de a * b",
-        solveStatus: 3,
-      },
-    ];
-    setProblems(problemsResponse);
-    setIsLoading(false);
-  };
-
+  const { problems, errorProblems, isLoadingProblems, refetchProblems } =
+    useGetProblemsByClassroomList({
+      classroomId: listProblem?.classroom?.id as string,
+      listId: listProblem?.id,
+    });
   const solved = listProblem?.solved || 0;
   const totalProblems = listProblem?.totalProblems || 0;
 
@@ -75,7 +50,7 @@ export function ListProblemAcoordion({
   const openAccordion = (value: string) => {
     if (!value || alreadyOpened) return;
     setAlreadyOpened(true);
-    getProblems();
+    refetchProblems();
   };
 
   return (
@@ -107,8 +82,9 @@ export function ListProblemAcoordion({
           </div>
         </div>
         <Accordion.Content>
+          {errorProblems && <FeedBackError onTryAgain={refetchProblems} />}
           <div className="grid grid-cols-3 gap-4">
-            {isLoading &&
+            {isLoadingProblems &&
               getRange(0, 5).map((index) => (
                 <Skeleton
                   key={`problem-skeleton-${index}`}
@@ -116,7 +92,14 @@ export function ListProblemAcoordion({
                 />
               ))}
             {problems?.map((problem, index) => (
-              <ProblemCard key={`${problem?.title}-${index}`} data={problem} />
+              <ProblemCard
+                key={`${problem?.title}-${index}`}
+                data={{
+                  ...problem,
+                  listProblem,
+                  classroom: listProblem?.classroom,
+                }}
+              />
             ))}
           </div>
         </Accordion.Content>

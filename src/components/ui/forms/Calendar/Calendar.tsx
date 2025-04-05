@@ -61,10 +61,12 @@ export function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={{
-        IconLeft: ({ ...props }) => <BsChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <BsChevronRight className="h-4 w-4" />,
-      }}
+      components={
+        {
+          // IconLeft: ({ ...props }) => <BsChevronLeft className="h-4 w-4" />,
+          // IconRight: ({ ...props }) => <BsChevronRight className="h-4 w-4" />,
+        }
+      }
       {...restProps}
     />
   );

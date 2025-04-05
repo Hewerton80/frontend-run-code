@@ -1,3 +1,4 @@
+"use client";
 import { Card } from "@/components/ui/cards/Card";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { twMerge } from "tailwind-merge";
@@ -29,16 +30,16 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
     <Card.Root
       asChild
       className={twMerge(
-        "p-4 shadow-md border-none",
+        "p-4 shadow-md border-none group",
         "bg-linear-to-r from-blue-500 to-blue-700",
-        "hover:from-blue-400 hover:to-blue-600",
-        "duration-300 ease-in-out"
+        "hover:from-blue-500/80 hover:to-blue-700/80",
+        "duration-300 ease-in-out transition"
       )}
     >
       <ProgressLink
         href={`/classroom/${problem?.classroom?.id}/lists/${problem?.listProblem?.id}/problem/${problem.id}`}
       >
-        <div className="flex gap-1 group">
+        <div className="flex gap-1 ">
           <div className="flex flex-col">
             <Tooltip align="start" textContent={problem?.title}>
               <h4 className="text-lg font-bold text-white mb-4 line-clamp-1">

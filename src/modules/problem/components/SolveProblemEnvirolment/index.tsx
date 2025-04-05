@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
 import { useParams } from "next/navigation";
+import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 
 interface SolveProblemEnvirolmentProps {
   problem?: IProblem;
@@ -22,9 +23,13 @@ export const SolveProblemEnvirolment = ({
     problemId: string;
   }>();
 
+  const { classroom, isLoadingClassroom } = useGetClassroomById(
+    params?.classroomId as string
+  );
+
   const skeleton = <Skeleton className="size-full" />;
 
-  const isLoadingBredcrumbs = isLoading;
+  const isLoadingBredcrumbs = isLoading || isLoadingClassroom;
 
   const getBreadcrumbsItems = () => {
     const classroomId = params?.classroomId;
@@ -34,7 +39,7 @@ export const SolveProblemEnvirolment = ({
       return [
         { label: "🏠 Home", href: "/" },
         {
-          label: "Turma de programação 2024.2",
+          label: classroom?.name || "-",
           href: `/classroom/${classroomId}/lists`,
         },
         { label: problem?.title || "" },

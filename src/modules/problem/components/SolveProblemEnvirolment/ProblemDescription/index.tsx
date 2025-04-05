@@ -15,7 +15,7 @@ interface ProblemDescriptionProps {
 }
 
 export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
-  console.log({ problem, testCases: problem?.testCases });
+  // console.log({ problem, testCases: problem?.testCases });
   const exampleColumns: IColmunDataTable<IProblemTest>[] = [
     {
       field: "inputs",

@@ -59,9 +59,9 @@ export default function HomePage() {
                     <Tooltip
                       align="center"
                       side="bottom"
-                      textContent={classInfo.name}
+                      textContent={classInfo?.name}
                     >
-                      <h4 className="line-clamp-1 w-fit">{classInfo.name}</h4>
+                      <h4 className="line-clamp-1 w-fit">{classInfo?.name}</h4>
                     </Tooltip>
                   </div>
                   <Tooltip
@@ -80,7 +80,7 @@ export default function HomePage() {
                     rightIcon={<FaArrowRight />}
                     asChild
                     className="mt-4 ml-auto"
-                    variantStyle="info"
+                    variantStyle="dark-ghost"
                   >
                     <ProgressLink href={`/classroom/${classInfo?.id}/lists`}>
                       Acessar

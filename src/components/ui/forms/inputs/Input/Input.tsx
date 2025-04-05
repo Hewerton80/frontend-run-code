@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef, forwardRef, ReactNode } from "react";
+import { ComponentPropsWithRef, forwardRef, JSX } from "react";
 import { twMerge } from "tailwind-merge";
 import { FormLabel } from "@/components/ui/forms/FormLabel";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";

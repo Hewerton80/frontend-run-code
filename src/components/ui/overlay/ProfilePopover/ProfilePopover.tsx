@@ -6,21 +6,21 @@ import { FiLogOut, FiUser } from "react-icons/fi";
 import { useTheme } from "@/hooks/useTheme";
 import { FaMoon, FaSun, FaChevronRight } from "react-icons/fa";
 import { LuPaintbrush } from "react-icons/lu";
-import { getContrastColor } from "@/utils/colors";
-import { useGetLoggedUser } from "@/modules/auth/hooks/useGetLoggedUser";
-import { useAuthLogin } from "@/modules/auth/hooks/useAuthLogin";
+// import { getContrastColor } from "@/utils/colors";
+// import { useGetLoggedUser } from "@/modules/auth/hooks/useGetLoggedUser";
+// import { useAuthLogin } from "@/modules/auth/hooks/useAuthLogin";
 import { Dropdown } from "../Dropdown/Dropdown";
 
 export function ProfilePopover() {
   const { theme, setTheme } = useTheme();
-  const { loggedUser } = useGetLoggedUser();
-  const { logout } = useAuthLogin();
+  // const { loggedUser } = useGetLoggedUser();
+  // const { logout } = useAuthLogin();
 
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
         <div className="flex gap-2 sm:gap-4 items-center cursor-pointer max-w-[220px]">
-          {loggedUser && (
+          {/* {loggedUser && (
             <>
               <Avatar
                 username={loggedUser?.name}
@@ -37,7 +37,7 @@ export function ProfilePopover() {
                 </strong>
               </div>
             </>
-          )}
+          )} */}
         </div>
       </Dropdown.Trigger>
       <Dropdown.Content className="w-56">
@@ -61,9 +61,9 @@ export function ProfilePopover() {
           </Dropdown.SubContent>
         </Dropdown.Sub>
         <Dropdown.Separator />
-        <Dropdown.Item onClick={logout}>
+        {/* <Dropdown.Item onClick={logout}>
           <FiLogOut className="mr-2" size={20} /> Sair
-        </Dropdown.Item>
+        </Dropdown.Item> */}
       </Dropdown.Content>
     </Dropdown.Root>
   );

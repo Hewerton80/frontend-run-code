@@ -56,26 +56,35 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
             key={`${title}-${i}`}
             className={twMerge("flex", showOnlyIcons ? "w-fit" : "w-full")}
           >
-            <Link
-              href={path}
-              className={twMerge(
-                "flex items-center w-full gap-4 relative px-2 py-1.5",
-                "whitespace-nowrap font-medium text-sm",
-                "duration-100 ease-linear rounded-md text-card-foreground",
-                "hover:bg-accent hover:text-accent-foreground",
-                isActive &&
-                  twMerge(
-                    "text-dark-foreground hover:text-dark-foreground bg-dark hover:bg-dark/90",
-                    "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
-                  ),
-                showOnlyIcons && "max-w-fit"
-              )}
+            <Tooltip
+              open={showOnlyIcons ? undefined : false}
+              textContent={title}
+              side="right"
+              align="center"
             >
-              <span className={twMerge(showOnlyIcons ? "text-xl" : "text-lg")}>
-                {emoji}
-              </span>
-              {!showOnlyIcons && <span>{title}</span>}
-            </Link>
+              <Link
+                href={path}
+                className={twMerge(
+                  "flex items-center w-full gap-4 relative px-2 py-1.5",
+                  "whitespace-nowrap font-medium text-sm",
+                  "duration-100 ease-linear rounded-md text-card-foreground",
+                  "hover:bg-accent hover:text-accent-foreground",
+                  isActive &&
+                    twMerge(
+                      "text-dark-foreground hover:text-dark-foreground bg-dark hover:bg-dark/90",
+                      "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+                    ),
+                  showOnlyIcons && "max-w-fit"
+                )}
+              >
+                <span
+                  className={twMerge(showOnlyIcons ? "text-xl" : "text-lg")}
+                >
+                  {emoji}
+                </span>
+                {!showOnlyIcons && <span>{title}</span>}
+              </Link>
+            </Tooltip>
           </li>
         );
       })}
@@ -92,7 +101,7 @@ export function Sidebar() {
   // } = useSideBar();
   const { showOnlyIcons, toggleOnlyIcons } = useSideBar();
 
-  const sideBarWidth = showOnlyIcons ? 56 : 240;
+  const sideBarWidth = showOnlyIcons ? 56 : 208;
 
   const sideBarElement = useMemo(() => {
     return (
@@ -155,7 +164,8 @@ export function Sidebar() {
         >
           <Tooltip
             textContent={showOnlyIcons ? "Expandir menu" : "Recolher menu"}
-            side="bottom"
+            // align={showOnlyIcons?'':"center"}
+            side={showOnlyIcons ? "right" : "bottom"}
           >
             <IconButton
               onClick={toggleOnlyIcons}

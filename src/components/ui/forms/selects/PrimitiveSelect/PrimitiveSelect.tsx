@@ -220,7 +220,10 @@ export const PrimitiveSelect = forwardRef(
               </div>
             ),
           }}
-          onChange={handleChange}
+          onChange={(
+            newValue: MultiValue<any> | SingleValue<any>,
+            actionMeta: any
+          ) => handleChange(newValue, actionMeta)}
           // formatOptionLabel={(option) => (
           //   <Badge variant="info">{option.label}</Badge>
           // )}
@@ -233,13 +236,16 @@ export const PrimitiveSelect = forwardRef(
           isMulti={isMulti}
           isSearchable={isSearchable}
           isLoading={isLoading}
-          options={isLoading ? [] : options}
-          formatOptionLabel={(option) => (
-            <>
-              {option?.icon && <span className="mr-1">{option?.icon}</span>}
-              {option.label}
-            </>
-          )}
+          options={isLoading ? ([] as SelectOption[]) : options}
+          formatOptionLabel={(data: unknown) => {
+            const option = data as SelectOption;
+            return (
+              <>
+                {option?.icon && <span className="mr-1">{option?.icon}</span>}
+                {option.label}
+              </>
+            );
+          }}
           loadingMessage={() => (
             <div className="flex w-full justify-center">
               <Spinner size={18} />

@@ -12,7 +12,7 @@ export default async function ProblemPage({
   params: Promise<ProblemPageProps>;
 }) {
   const { problemId, classroomId, listId } = await params;
-  const problem = await ProblemService.getFromlistById({
+  const problem = await ProblemService.getFromClassroomlist({
     problemId,
     classroomId,
     listId,

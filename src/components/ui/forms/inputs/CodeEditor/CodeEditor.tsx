@@ -1,27 +1,29 @@
 "use client";
-import { useLanguage } from "@/modules/language/hooks/useLanguage";
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import dynamic from "next/dynamic";
 import { ComponentProps, useId } from "react";
 
-import "ace-builds/src-noconflict/ace";
-
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-c_cpp";
-import "ace-builds/src-noconflict/mode-scrypt";
-
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-github_dark";
-import "ace-builds/src-noconflict/theme-terminal";
-
-import "ace-builds/src-noconflict/ext-language_tools";
-
-const AceEditor = dynamic(() => import("react-ace"), {
-  ssr: false,
-  loading: () => <Skeleton className="h-full w-full rounded-2xl" />,
-});
+const AceEditor = dynamic(
+  async () => {
+    const ace = await import("react-ace");
+    require("ace-builds/src-noconflict/ace");
+    require("ace-builds/src-noconflict/mode-java");
+    require("ace-builds/src-noconflict/mode-javascript");
+    require("ace-builds/src-noconflict/mode-python");
+    require("ace-builds/src-noconflict/mode-c_cpp");
+    require("ace-builds/src-noconflict/mode-scrypt");
+    require("ace-builds/src-noconflict/theme-github_dark");
+    require("ace-builds/src-noconflict/theme-terminal");
+    require("ace-builds/src-noconflict/theme-monokai");
+    require("ace-builds/src-noconflict/ext-language_tools");
+    return ace;
+  },
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-full w-full rounded-2xl" />,
+  }
+);
 
 export type CodeEditorMode =
   | "java"

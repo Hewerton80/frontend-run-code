@@ -21,12 +21,12 @@ export const useIDEProblem = (problem: IProblem) => {
   };
 
   const { isTestingCode, testCode, testCodeError, testCodeResponse } =
-    useTestCode(problem?.id);
+    useTestCode(problem?.id || "");
 
   const { languageMode } = useLanguage();
 
   const [sourceCode, setSourceCode] = useState(
-    getDraftsCodeFromLocalStorage?.()?.[problem?.id] || ""
+    problem?.id ? getDraftsCodeFromLocalStorage?.()?.[problem.id] || "" : ""
   );
 
   const sourceCodeRef = useRef(sourceCode);
@@ -38,7 +38,9 @@ export const useIDEProblem = (problem: IProblem) => {
   useEffect(() => {
     const isInterval = setInterval(() => {
       const drafts = getDraftsCodeFromLocalStorage() || {};
-      drafts[problem.id] = sourceCodeRef.current;
+      if (problem?.id) {
+        drafts[problem.id] = sourceCodeRef.current;
+      }
 
       setCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
     }, 5000);
