@@ -8,7 +8,7 @@ interface TestCodeBody {
 }
 
 export interface ResultTestCode {
-  inputs: string[];
+  inputs: string;
   expectedOutput: string;
   output: string;
   status: "OK" | "FAIL";

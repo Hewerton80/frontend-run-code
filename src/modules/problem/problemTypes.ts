@@ -3,8 +3,8 @@ import { IListProblem } from "../listProblem/listProblemTypes";
 
 export interface IProblemTest {
   id: string;
-  inputs: string[];
-  expectedOutput: string;
+  input: string;
+  output: string;
 }
 export const ProblemSolveStatusEnum = {
   1: "Resolvido",

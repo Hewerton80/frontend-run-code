@@ -35,11 +35,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
       label: "Entrada(s) para teste",
       onParse: (test) => (
         <div className="font-[monospace] whitespace-pre">
-          {test?.inputs?.map((input, index) => (
-            <Fragment key={`inpunt-${index}`}>
-              {parseStringToHtmlFormat(`${input}\n`)}
-            </Fragment>
-          ))}
+          {parseStringToHtmlFormat(test?.inputs)}
         </div>
       ),
     },
@@ -77,7 +73,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
             onClick={testCode}
             disabled={!sourceCode?.trim()}
           >
-            Run Code 🚀
+            Executar 🚀
           </Button>
           {/* <Button variantStyle="success">Submit</Button> */}
           {/* </ButtonGroup> */}
@@ -104,7 +100,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
                   {status === "FAIL" ? "😞" : "😀"}&nbsp;
                 </p>
               </div>
-
+              {/* 
               <DataTable
                 className={twMerge(
                   "h-full",
@@ -113,7 +109,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
                 key={`response-${index}`}
                 columns={responseColumns}
                 data={[testCodeResponse?.tests[index]]}
-              />
+              /> */}
             </div>
           ))}
         </div>

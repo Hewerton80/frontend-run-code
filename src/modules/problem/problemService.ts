@@ -15,6 +15,7 @@ export const ProblemService = {
     if (response.status === 404) redirect("/404");
     const problem: IProblem = await response.json();
     if (!problem) redirect("/404");
+    console.log("problem", problem);
     return problem;
   },
 

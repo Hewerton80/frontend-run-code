@@ -8,34 +8,28 @@ import { IProblem, IProblemTest } from "@/modules/problem/problemTypes";
 import { twMerge } from "tailwind-merge";
 import { FaCode } from "react-icons/fa";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
-import { Fragment } from "react";
 
 interface ProblemDescriptionProps {
   problem: IProblem;
 }
 
 export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
-  // console.log({ problem, testCases: problem?.testCases });
   const exampleColumns: IColmunDataTable<IProblemTest>[] = [
     {
-      field: "inputs",
+      field: "input",
       label: "Entrada(s)",
       onParse: (test) => (
         <div className="font-[monospace] whitespace-pre">
-          {test?.inputs?.map((input, index) => (
-            <Fragment key={`inpunt-${index}`}>
-              {parseStringToHtmlFormat(`${input}\n`)}
-            </Fragment>
-          ))}
+          {parseStringToHtmlFormat(test?.input)}
         </div>
       ),
     },
     {
-      field: "expectedOutput",
+      field: "output",
       label: "Output Example",
       onParse: (test) => (
         <div className="font-[monospace] whitespace-pre">
-          {parseStringToHtmlFormat(test?.expectedOutput)}
+          {parseStringToHtmlFormat(test?.output)}
         </div>
       ),
     },
