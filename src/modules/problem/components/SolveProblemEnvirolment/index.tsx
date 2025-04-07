@@ -7,6 +7,8 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
 import { useParams } from "next/navigation";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { twMerge } from "tailwind-merge";
+import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 
 interface SolveProblemEnvirolmentProps {
   problem?: IProblem;
@@ -53,13 +55,23 @@ export const SolveProblemEnvirolment = ({
 
   return (
     <>
-      <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4">
+      <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
         <Breadcrumbs
           isLoading={isLoadingBredcrumbs}
           items={getBreadcrumbsItems()}
         />
-        <div className="grid grid-cols-12 gap-4 size-full min-h-[468px]">
-          <div className="col-span-4 h-full">
+        <Resizable.Group
+          direction="horizontal"
+          className={twMerge(
+            "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
+            "border-l-3 border-l-info rounded-l-none"
+          )}
+        >
+          <Resizable.Panel
+            defaultSize={4}
+            minSize={15}
+            className="h-full w-full flex-1/4"
+          >
             {isLoading ? (
               skeleton
             ) : (
@@ -67,8 +79,13 @@ export const SolveProblemEnvirolment = ({
                 <ProblemDescription problem={problem!} />
               </Suspense>
             )}
-          </div>
-          <div className="flex flex-col col-span-8 h-full gap-4">
+          </Resizable.Panel>
+          <Resizable.Handle withHandle />
+          <Resizable.Panel
+            defaultSize={6}
+            minSize={15}
+            className="flex flex-3/4 w-full flex-col col-span-8 h-full gap-4"
+          >
             {isLoading ? (
               skeleton
             ) : (
@@ -76,8 +93,8 @@ export const SolveProblemEnvirolment = ({
                 <IDEProblem problem={problem!} />
               </Suspense>
             )}
-          </div>
-        </div>
+          </Resizable.Panel>
+        </Resizable.Group>
       </div>
     </>
   );

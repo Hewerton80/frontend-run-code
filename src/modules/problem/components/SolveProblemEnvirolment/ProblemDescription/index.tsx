@@ -26,7 +26,7 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
     },
     {
       field: "output",
-      label: "Output Example",
+      label: "Exmplo de saída",
       onParse: (test) => (
         <div className="font-[monospace] whitespace-pre">
           {parseStringToHtmlFormat(test?.output)}
@@ -36,12 +36,7 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
   ];
 
   return (
-    <Card.Root
-      className={twMerge(
-        "flex flex-col h-full p-4 gap-2 ",
-        "border-l-3 border-l-info rounded-l-none"
-      )}
-    >
+    <div className={twMerge("flex flex-col h-full p-4 gap-2 ")}>
       <div className="flex items-center gap-2">
         <FaCode className="text-info" />{" "}
         <h3 className="text-lg">{problem?.title}</h3>
@@ -51,6 +46,6 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
         dangerouslySetInnerHTML={{ __html: problem?.description || "" }}
       />
       <DataTable columns={exampleColumns} data={problem?.testCases || []} />
-    </Card.Root>
+    </div>
   );
 };

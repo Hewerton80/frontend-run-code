@@ -15,8 +15,8 @@ const problemSolveStatusEmojis: Record<
   { emoji: string; name: string }
 > = {
   1: { emoji: "✅", name: "Resolvida" },
-  2: { emoji: "🕒", name: "Não Resolvida" },
-  3: { emoji: "❌", name: "Errada" },
+  2: { emoji: "❌", name: "Errada" },
+  3: { emoji: "🕒", name: "Não Resolvida" },
 };
 
 export function ProblemCard({ data: problem }: ProblemCardProps) {

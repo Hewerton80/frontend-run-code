@@ -17,5 +17,7 @@ export default async function ProblemPage({
     classroomId,
     listId,
   });
-  return <SolveProblemEnvirolment problem={problem} />;
+  return (
+    <SolveProblemEnvirolment problem={{ ...problem, classroomId, listId }} />
+  );
 }

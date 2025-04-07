@@ -1,6 +1,6 @@
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { IProblem } from "@/modules/problem/problemTypes";
-import { useTestCode } from "@/modules/submission/hooks/useTestCode";
+import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
 import { CONSTANTS } from "@/utils/constants";
 import { useEffect, useRef, useState } from "react";
 import { getCookie, setCookie } from "cookies-next/client";
@@ -20,14 +20,12 @@ export const useIDEProblem = (problem: IProblem) => {
     }
   };
 
-  const { isTestingCode, testCode, testCodeError, testCodeResponse } =
-    useTestCode(problem?.id || "");
+  const { submitCode, isSubmitting, submitError, submitResponse } =
+    useSubmissionCode(problem?.id || "");
 
-  const { languageMode } = useLanguage();
+  const { languageMode, changeLanguageMode } = useLanguage();
 
-  const [sourceCode, setSourceCode] = useState(
-    problem?.id ? getDraftsCodeFromLocalStorage?.()?.[problem.id] || "" : ""
-  );
+  const [sourceCode, setSourceCode] = useState("");
 
   const sourceCodeRef = useRef(sourceCode);
 
@@ -36,12 +34,20 @@ export const useIDEProblem = (problem: IProblem) => {
   }, [sourceCode]);
 
   useEffect(() => {
+    if (problem?.submissionStats?.sourceCode) {
+      setSourceCode(problem?.submissionStats?.sourceCode || "");
+    }
+    if (problem?.submissionStats?.language) {
+      changeLanguageMode(problem.submissionStats?.language);
+    }
+  }, [problem, changeLanguageMode]);
+
+  useEffect(() => {
     const isInterval = setInterval(() => {
       const drafts = getDraftsCodeFromLocalStorage() || {};
       if (problem?.id) {
         drafts[problem.id] = sourceCodeRef.current;
       }
-
       setCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
     }, 5000);
 
@@ -54,16 +60,21 @@ export const useIDEProblem = (problem: IProblem) => {
     setSourceCode(value);
   };
 
-  const handleTestCode = () => {
-    testCode({ sourceCode, language: languageMode });
+  const handleSubmitCode = () => {
+    submitCode({
+      sourceCode,
+      language: languageMode,
+      classroomId: problem?.classroomId,
+      listId: problem?.listId,
+    });
   };
 
   return {
     sourceCode,
-    isTestingCode,
-    testCodeError,
-    testCodeResponse,
+    isSubmitting,
+    submitError,
+    submitResponse,
     changeSourceCode,
-    testCode: handleTestCode,
+    submitCode: handleSubmitCode,
   };
 };
