@@ -19,8 +19,6 @@ export const useGetClassroomById = (classroomId: string) => {
       return data;
     },
     enabled: !!classroomId,
-    gcTime: Infinity,
-    staleTime: Infinity,
   });
 
   return {

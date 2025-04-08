@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { IProblem } from "../../problemTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { useMemo } from "react";
 
 interface ProblemCardProps {
   data: IProblem;
@@ -16,15 +17,32 @@ const problemSolveStatusEmojis: Record<
 > = {
   1: { emoji: "✅", name: "Resolvida" },
   2: { emoji: "❌", name: "Errada" },
-  3: { emoji: "🕒", name: "Não Resolvida" },
+  3: { emoji: "🕒", name: "Aguardando submissão" },
 };
 
 export function ProblemCard({ data: problem }: ProblemCardProps) {
-  const solveStatusEmoji =
-    problemSolveStatusEmojis?.[problem?.solveStatus as number]?.emoji;
+  const correctSubmissionsCount =
+    problem?.submissionStats?.correctSubmissionsCount || 0;
 
-  const solveStatusName =
-    problemSolveStatusEmojis?.[problem?.solveStatus as number]?.name;
+  const incorrectSubmissionsCount =
+    problem?.submissionStats?.incorrectSubmissionsCount || 0;
+
+  const totalSubmissionsCount =
+    correctSubmissionsCount + incorrectSubmissionsCount;
+
+  const status = useMemo(() => {
+    if (correctSubmissionsCount > 0) {
+      return 1;
+    }
+    if (incorrectSubmissionsCount > 0) {
+      return 2;
+    }
+    return 3;
+  }, [correctSubmissionsCount, incorrectSubmissionsCount]);
+
+  const solveStatusEmoji = problemSolveStatusEmojis?.[status]?.emoji;
+
+  const solveStatusName = problemSolveStatusEmojis?.[status]?.name;
 
   return (
     <Card.Root
@@ -47,7 +65,21 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
               </h4>
             </Tooltip>
             {solveStatusEmoji && (
-              <Tooltip align="start" textContent={solveStatusName}>
+              <Tooltip
+                align="start"
+                textContent={
+                  <div className="flex flex-col gap-1">
+                    <p className="font-bold">
+                      {solveStatusName} {solveStatusEmoji}
+                    </p>
+                    <p>
+                      {totalSubmissionsCount === 1
+                        ? `${totalSubmissionsCount} Submissão`
+                        : `${totalSubmissionsCount} Submissões`}
+                    </p>
+                  </div>
+                }
+              >
                 <p className="text-base text-white line-clamp-1 w-fit">
                   Status: {solveStatusEmoji}
                 </p>

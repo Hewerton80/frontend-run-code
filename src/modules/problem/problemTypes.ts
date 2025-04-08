@@ -21,7 +21,6 @@ export interface IProblem {
   description?: string;
   testCases?: IProblemTest[];
   difficulty?: string;
-  solveStatus?: number;
   classroom?: IClassroom;
   listProblem?: IListProblem;
   classroomId?: string;
