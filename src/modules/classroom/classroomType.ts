@@ -14,5 +14,6 @@ export interface IClassroom {
 
 export enum ClassroomKeys {
   List = "classroomList",
+  Users = "classroomUsers",
   Details = "classroomDetails",
 }

@@ -1,7 +1,7 @@
 "use client";
 // import { navItems } from "@/utils/navItems";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useMemo, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { Slot } from "@radix-ui/react-slot";
@@ -13,6 +13,7 @@ import { useSideBar } from "@/hooks/useSideBar";
 
 export const SideBarItems = forwardRef((_, ref?: any) => {
   const currentPath = usePathname();
+  const params = useParams<{ classroomId: string }>();
   const { showOnlyIcons } = useSideBar();
   const navItems = [
     // {
@@ -24,7 +25,7 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
     {
       title: "Listas",
       emoji: "📝",
-      path: "/classroom/dsadsad/lists",
+      path: `/classroom/${params?.classroomId}/lists`,
       basePath: "lists",
     },
     {
@@ -34,10 +35,10 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
       basePath: "tests",
     },
     {
-      title: "Alunos",
+      title: "Participantes",
       emoji: "👨‍🎓",
-      path: "/classroom/dsadsad/students",
-      basePath: "students",
+      path: `/classroom/${params?.classroomId}/people`,
+      basePath: "people",
     },
   ];
 
