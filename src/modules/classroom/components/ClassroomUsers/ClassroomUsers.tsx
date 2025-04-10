@@ -1,7 +1,5 @@
 "use client";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
-import { useParams } from "next/navigation";
-import { ReactNode } from "react";
 import { useClassroomUsers } from "./useClassroomUsers";
 import { IUser, RoleUserEnum } from "@/modules/user/userTypets";
 import {
@@ -60,7 +58,7 @@ export function ClassroomUsers() {
       <Breadcrumbs
         isLoading={isLoadingClassroom}
         items={[
-          { label: "🏠 Home", href: "/" },
+          { label: "🏠 Home", href: "/home" },
           { label: classroom?.name || "-" },
           { label: "Participantes" },
         ]}

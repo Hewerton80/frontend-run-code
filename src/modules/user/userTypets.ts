@@ -2,7 +2,7 @@ export const RoleUserEnum: Record<number, string> = {
   1: "Aluno(a)",
   2: "Professor(a)",
 };
-console.log(RoleUserEnum); // 0
+
 export interface IUser {
   id?: string;
   name?: string;

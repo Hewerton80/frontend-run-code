@@ -1,6 +1,6 @@
 export const CONSTANTS = {
   VALIDATION: {
-    REQUIRED_FIELD: "This field is required",
+    REQUIRED_FIELD: "Campo obrigatório",
   },
   COOKIES_KEYS: {
     THEME: "THEME",

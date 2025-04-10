@@ -39,7 +39,7 @@ export const SolveProblemEnvirolment = ({
 
     if (classroomId && listId) {
       return [
-        { label: "🏠 Home", href: "/" },
+        { label: "🏠 Home", href: "/home" },
         {
           label: classroom?.name || "-",
           href: `/classroom/${classroomId}/lists`,

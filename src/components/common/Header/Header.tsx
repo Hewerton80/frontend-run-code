@@ -15,7 +15,7 @@ export function Header() {
     {
       text: "Home",
       emoji: "🏠",
-      link: "/",
+      link: "/home",
     },
     {
       text: "Playground",
@@ -32,7 +32,7 @@ export function Header() {
   return (
     <header className="bg-card h-15 shadow-xs border-b relative">
       <div className="flex items-center w-full h-full px-8 sm:px-16 justify-between">
-        <ProgressLink className="flex items-center gap-2" href="/">
+        <ProgressLink className="flex items-center gap-2" href="/home">
           <FaRegPlayCircle />
           <span className="text-2xl">Play Code</span>
         </ProgressLink>
