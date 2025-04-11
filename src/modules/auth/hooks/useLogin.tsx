@@ -2,6 +2,10 @@ import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 import { LoginCredentials } from "../schemas/loginSchem";
 
+export interface LoginResponse {
+  access_token: string;
+}
+
 export const useLogin = () => {
   const { apiBase } = useAxios();
   const { isPending: isLogging, mutate: login } = useMutation({

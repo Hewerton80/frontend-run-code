@@ -15,9 +15,7 @@ export const useLoginFormSchema = () => {
     control: loginFormControl,
     formState: loginFormState,
     handleSubmit: loginFormHandleSubmit,
-    trigger: loginFormTrigger,
-    getValues: loginFormGetValues,
-    setError: loginFormSetError,
+    register: loginFormRegister,
   } = useForm<LoginCredentials>({
     defaultValues: { email: "", password: "" },
     resolver: zodResolver(loginFormSchema),
@@ -28,8 +26,6 @@ export const useLoginFormSchema = () => {
     loginFormControl,
     loginFormState,
     loginFormHandleSubmit,
-    loginFormTrigger,
-    loginFormGetValues,
-    loginFormSetError,
+    loginFormRegister,
   };
 };
