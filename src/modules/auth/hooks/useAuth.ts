@@ -3,12 +3,13 @@ import { IUser } from "@/modules/user/userTypets";
 import { useQuery } from "@tanstack/react-query";
 
 export const useAuth = () => {
-  const { apiBase, axiosConfig } = useAxios();
-  console.log({ headers: axiosConfig.headers });
+  const { apiBase } = useAxios();
+
   const {
     data: loggedUser,
     isLoading: isLoadingUser,
     error: errorUser,
+    isError: isErrorUser,
     refetch: refetchLoggedUser,
   } = useQuery({
     queryKey: ["auth"],
@@ -17,10 +18,13 @@ export const useAuth = () => {
     enabled: true,
   });
 
+  const hasNotAccess = (errorUser as any)?.response?.status === 401;
+
   return {
     loggedUser,
     isLoadingUser,
-    errorUser,
+    hasNotAccess,
+    isErrorUser,
     refetchLoggedUser,
   };
 };

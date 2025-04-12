@@ -9,6 +9,10 @@ const avatarSize = {
     dimensions: "sm:h-8 sm:w-8 min-w-[2rem] sm:min-w-[2rem]",
     text: "text-sm",
   },
+  md: {
+    dimensions: "h-8 w-8 sm:h-9 sm:w-9 min-w-[2rem] sm:min-w-[2rem]",
+    text: "text-base",
+  },
   lg: {
     dimensions: "h-8 w-8 sm:h-10 sm:w-10 min-w-[2rem] sm:min-w-[2rem]",
     text: "text-base",

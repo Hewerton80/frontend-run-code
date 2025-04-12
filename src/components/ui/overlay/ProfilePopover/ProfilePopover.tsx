@@ -10,34 +10,34 @@ import { LuPaintbrush } from "react-icons/lu";
 // import { useGetLoggedUser } from "@/modules/auth/hooks/useGetLoggedUser";
 // import { useAuthLogin } from "@/modules/auth/hooks/useAuthLogin";
 import { Dropdown } from "../Dropdown/Dropdown";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 export function ProfilePopover() {
   const { theme, setTheme } = useTheme();
-  // const { loggedUser } = useGetLoggedUser();
+  const { loggedUser } = useAuth();
   // const { logout } = useAuthLogin();
 
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <div className="flex gap-2 sm:gap-4 items-center cursor-pointer max-w-[220px]">
-          {/* {loggedUser && (
+        <div className="flex gap-2 sm:gap-3 items-center cursor-pointer max-w-[220px]">
+          {loggedUser && (
             <>
               <Avatar
-                username={loggedUser?.name}
+                src={loggedUser?.avatarUrl}
                 bgColor={loggedUser?.avatarBgColor}
-                color={
-                  loggedUser?.avatarBgColor
-                    ? getContrastColor(loggedUser?.avatarBgColor!)
-                    : undefined
-                }
+                color={loggedUser?.avatarFontColor}
+                nameInities={loggedUser?.avatarInitials}
+                size="md"
               />
               <div className="flex flex-col">
-                <strong className="text-black dark:text-white text-sm sm:text-base line-clamp-1">
-                  {loggedUser?.name}
+                <strong className="text text-sm line-clamp-1">
+                  {/* two words */}
+                  {loggedUser?.name?.split(" ")?.slice(0, 2).join(" ")}
                 </strong>
               </div>
             </>
-          )} */}
+          )}
         </div>
       </Dropdown.Trigger>
       <Dropdown.Content className="w-56">
@@ -61,9 +61,11 @@ export function ProfilePopover() {
           </Dropdown.SubContent>
         </Dropdown.Sub>
         <Dropdown.Separator />
-        {/* <Dropdown.Item onClick={logout}>
+        <Dropdown.Item
+        // onClick={logout}
+        >
           <FiLogOut className="mr-2" size={20} /> Sair
-        </Dropdown.Item> */}
+        </Dropdown.Item>
       </Dropdown.Content>
     </Dropdown.Root>
   );

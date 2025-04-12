@@ -4,12 +4,11 @@ import { twMerge } from "tailwind-merge";
 import { FaRegPlayCircle } from "react-icons/fa";
 import { ToogleThemeButton } from "@/components/ui/buttons/ToogleThemeButton";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { useProgressBar } from "@/hooks/useProgressBar";
 import { ProgressHeaderBar } from "@/components/ui/feedback/ProgressHeaderBar";
+import { ProfilePopover } from "@/components/ui/overlay/ProfilePopover";
 
 export function Header() {
   const pathName = usePathname();
-  const { progressValue } = useProgressBar();
 
   const menuItens = [
     {
@@ -55,7 +54,8 @@ export function Header() {
           ))}
         </nav>
         <span>
-          <ToogleThemeButton />
+          {/* <ToogleThemeButton /> */}
+          <ProfilePopover />
         </span>
       </div>
       <ProgressHeaderBar />

@@ -2,6 +2,7 @@
 import { Header } from "@/components/common/Header";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
+import { useSessionStorage } from "@/hooks/useSessionStorage";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { isNull, isUndefined } from "@/utils/isType";
 import { useRouter } from "next/navigation";
@@ -13,23 +14,33 @@ export default function InLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
+  const [, , clearAccessToken] = useSessionStorage("access_token");
 
-  const { refetchLoggedUser, errorUser, isLoadingUser, loggedUser } = useAuth();
+  const {
+    refetchLoggedUser,
+    isErrorUser,
+    hasNotAccess,
+    isLoadingUser,
+    loggedUser,
+  } = useAuth();
 
   useEffect(() => {
-    const status = (errorUser as any)?.response?.status;
-    if (status === 401) {
-      localStorage.clear();
+    if (hasNotAccess) {
+      clearAccessToken();
       router.replace("/login");
     }
-  }, [errorUser, router]);
+  }, [hasNotAccess, router, clearAccessToken]);
 
-  if (isUndefined(loggedUser) || isLoadingUser) {
+  if (isLoadingUser || isUndefined(loggedUser)) {
     return <SplashScreen />;
   }
 
-  if (isNull(loggedUser)) {
-    return <FeedBackError onTryAgain={refetchLoggedUser} />;
+  if (isErrorUser || isNull(loggedUser)) {
+    return (
+      <div className="flex items-center justify-center flex-col min-h-screen">
+        <FeedBackError onTryAgain={refetchLoggedUser} />
+      </div>
+    );
   }
 
   return (

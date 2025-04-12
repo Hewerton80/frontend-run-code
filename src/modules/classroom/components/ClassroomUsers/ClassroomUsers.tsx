@@ -31,6 +31,7 @@ export function ClassroomUsers() {
           <Avatar
             src={user?.avatarUrl}
             bgColor={user?.avatarBgColor}
+            color={user?.avatarFontColor}
             nameInities={user?.avatarInitials}
             size="sm"
           />

@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import { LoginResponse, useLogin } from "../../hooks/useLogin";
 import { LoginCredentials, useLoginFormSchema } from "../../schemas/loginSchem";
+import { useSessionStorage } from "@/hooks/useSessionStorage";
 
 export const useLoginForm = () => {
   const {
@@ -11,13 +12,13 @@ export const useLoginForm = () => {
   } = useLoginFormSchema();
 
   const router = useRouter();
-
+  const [, setAccessToken] = useSessionStorage("access_token");
   const { isLogging, login } = useLogin();
 
   const handleLogin = (loginCredentials: LoginCredentials) => {
     const onSuccess = ({ access_token }: LoginResponse) => {
       console.log("Success");
-      localStorage.setItem("access_token", access_token);
+      setAccessToken(access_token);
       router.replace("/home");
     };
     const onError = (error: any) => {
