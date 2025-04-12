@@ -11,6 +11,8 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { getRange } from "@/utils/getRange";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { Hello } from "@/components/ui/typography/Hello/Hello";
 
 export default function HomePage() {
   const {
@@ -19,6 +21,8 @@ export default function HomePage() {
     isLoadingClassrooms,
     refetchClassrooms,
   } = useGetMyClassrooms();
+
+  const { loggedUser } = useAuth();
 
   return (
     <div className="flex flex-col w-full gap-4">
@@ -29,9 +33,12 @@ export default function HomePage() {
           "bg-linear-to-r from-blue-500 to-blue-800"
         )}
       >
-        <h1 className="text-4xl font-bold animate-pulse">
-          Bem vindo, Fulano! 🎉
-        </h1>
+        <div className="flex">
+          <h1 className="text-4xl font-bold animate-pulse">
+            Bem vindo, {loggedUser?.username}!{" "}
+          </h1>
+          <Hello className="text-4xl " />
+        </div>
         Acesse{" "}
         <TypeWriterText text="suas turmas e resolva problemas de programação!" />
       </div>

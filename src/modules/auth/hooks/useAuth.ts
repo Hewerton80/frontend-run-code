@@ -13,9 +13,15 @@ export const useAuth = () => {
     refetch: refetchLoggedUser,
   } = useQuery({
     queryKey: ["auth"],
-    queryFn: () =>
-      apiBase.get<IUser | null>("/auth/me").then((res) => res.data || null),
-    enabled: true,
+    queryFn: (): Promise<IUser | null> =>
+      apiBase.get<IUser | null>("/auth/me").then((res) =>
+        res.data
+          ? {
+              ...res.data,
+              username: res.data.name?.split(" ")?.slice(0, 2).join(" "),
+            }
+          : null
+      ),
   });
 
   const hasNotAccess = (errorUser as any)?.response?.status === 401;

@@ -1,0 +1,33 @@
+@keyframes hello {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  4% {
+    transform: rotate(-20deg);
+  }
+  12% {
+    transform: rotate(20deg);
+  }
+  20% {
+    transform: rotate(-20deg);
+  }
+  28% {
+    transform: rotate(20deg);
+  }
+  32% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+.root {
+  animation-name: hello;
+  animation-direction: normal;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-origin: bottom;
+}

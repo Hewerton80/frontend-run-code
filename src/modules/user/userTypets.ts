@@ -6,6 +6,7 @@ export const RoleUserEnum: Record<number, string> = {
 export interface IUser {
   id?: string;
   name?: string;
+  username?: string;
   email?: string;
   avatarUrl?: string;
   avatarBgColor?: string;

@@ -25,15 +25,15 @@ export default function InLayout({
   } = useAuth();
 
   useEffect(() => {
+    refetchLoggedUser();
+  }, [refetchLoggedUser]);
+
+  useEffect(() => {
     if (hasNotAccess) {
       clearAccessToken();
       router.replace("/login");
     }
   }, [hasNotAccess, router, clearAccessToken]);
-
-  if (isLoadingUser || isUndefined(loggedUser)) {
-    return <SplashScreen />;
-  }
 
   if (isErrorUser || isNull(loggedUser)) {
     return (
@@ -41,6 +41,10 @@ export default function InLayout({
         <FeedBackError onTryAgain={refetchLoggedUser} />
       </div>
     );
+  }
+
+  if (isLoadingUser || isUndefined(loggedUser)) {
+    return <SplashScreen />;
   }
 
   return (
