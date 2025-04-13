@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { LoginResponse, useLogin } from "../../hooks/useLogin";
 import { LoginCredentials, useLoginFormSchema } from "../../schemas/loginSchem";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
+import { useEffect } from "react";
 
 export const useLoginForm = () => {
   const {
@@ -12,14 +13,18 @@ export const useLoginForm = () => {
   } = useLoginFormSchema();
 
   const router = useRouter();
-  const [, setAccessToken] = useSessionStorage("access_token");
+  const [storedAccessToken, setAccessToken] = useSessionStorage("access_token");
   const { isLogging, login } = useLogin();
+
+  useEffect(() => {
+    if (storedAccessToken) {
+      router.replace("/home");
+    }
+  }, [storedAccessToken, router]);
 
   const handleLogin = (loginCredentials: LoginCredentials) => {
     const onSuccess = ({ access_token }: LoginResponse) => {
-      console.log("Success");
       setAccessToken(access_token);
-      router.replace("/home");
     };
     const onError = (error: any) => {
       console.log("Error", error);

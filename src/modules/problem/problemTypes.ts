@@ -33,5 +33,6 @@ export interface IProblem {
 
 export enum ProblemQueryKey {
   PROBLEMS = "problems",
+  PROBLEM = "problem",
   PROBLEMS_BY_CLASSROOM = "problemsByClassroom",
 }

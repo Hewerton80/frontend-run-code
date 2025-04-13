@@ -1,5 +1,4 @@
 "use client";
-import { IProblem } from "../../problemTypes";
 import { ProblemDescription } from "./ProblemDescription";
 import { IDEProblem } from "./IDEProblem";
 import { Suspense } from "react";
@@ -9,16 +8,10 @@ import { useParams } from "next/navigation";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
+import { useGetProblem } from "../../hooks/useGetProblem";
+import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 
-interface SolveProblemEnvirolmentProps {
-  problem?: IProblem;
-  isLoading?: boolean;
-}
-
-export const SolveProblemEnvirolment = ({
-  isLoading,
-  problem,
-}: SolveProblemEnvirolmentProps) => {
+export const SolveProblemEnvirolment = () => {
   const params = useParams<{
     classroomId?: string;
     listId?: string;
@@ -29,9 +22,20 @@ export const SolveProblemEnvirolment = ({
     params?.classroomId as string
   );
 
-  const skeleton = <Skeleton className="size-full" />;
+  const { isLoadingProblem, problem, problemError, refetchProblem } =
+    useGetProblem({
+      problemId: params?.problemId || "",
+      classroomId: params?.classroomId,
+      listId: params?.listId,
+    });
 
-  const isLoadingBredcrumbs = isLoading || isLoadingClassroom;
+  const skeleton = (
+    <div className="p-4">
+      <Skeleton className="size-full min-h-[468px]" />
+    </div>
+  );
+
+  const isLoading = isLoadingClassroom || isLoadingProblem;
 
   const getBreadcrumbsItems = () => {
     const classroomId = params?.classroomId;
@@ -53,13 +57,14 @@ export const SolveProblemEnvirolment = ({
     ];
   };
 
+  if (problemError) {
+    return <FeedBackError onTryAgain={refetchProblem} />;
+  }
+
   return (
     <>
       <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
-        <Breadcrumbs
-          isLoading={isLoadingBredcrumbs}
-          items={getBreadcrumbsItems()}
-        />
+        <Breadcrumbs isLoading={isLoading} items={getBreadcrumbsItems()} />
         <Resizable.Group
           direction="horizontal"
           className={twMerge(
@@ -68,7 +73,7 @@ export const SolveProblemEnvirolment = ({
           )}
         >
           <Resizable.Panel
-            defaultSize={4}
+            defaultSize={20}
             minSize={15}
             className="h-full w-full flex-1/4"
           >
@@ -82,7 +87,7 @@ export const SolveProblemEnvirolment = ({
           </Resizable.Panel>
           <Resizable.Handle withHandle />
           <Resizable.Panel
-            defaultSize={6}
+            defaultSize={30}
             minSize={15}
             className="flex flex-3/4 w-full flex-col col-span-8 h-full gap-4"
           >

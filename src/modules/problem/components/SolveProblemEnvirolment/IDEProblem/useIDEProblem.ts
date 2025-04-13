@@ -1,24 +1,22 @@
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
+import { useGetProblem } from "@/modules/problem/hooks/useGetProblem";
 import { IProblem } from "@/modules/problem/problemTypes";
 import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
-import { CONSTANTS } from "@/utils/constants";
+import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getCookie, setCookie } from "cookies-next/client";
-interface CodeDrafts {
-  [key: string]: string;
-}
 
 export const useIDEProblem = (problem: IProblem) => {
-  const getDraftsCodeFromLocalStorage = () => {
-    const drafts = getCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS);
-    if (!drafts) return null;
-    try {
-      const parsedDrafts = JSON.parse(drafts) as CodeDrafts;
-      return parsedDrafts || null;
-    } catch (e) {
-      return null;
-    }
-  };
+  const params = useParams<{
+    listId?: string;
+    classroomId?: string;
+  }>();
+
+  // const { isLoadingProblem, problem, problemError, refetchProblem } =
+  //   useGetProblem({
+  //     problemId: params?.problemId || "",
+  //     classroomId: params?.classroomId,
+  //     listId: params?.listId,
+  //   });
 
   const { submitCode, isSubmitting, submitError, submitResponse } =
     useSubmissionCode(problem?.id || "");
@@ -42,19 +40,19 @@ export const useIDEProblem = (problem: IProblem) => {
     }
   }, [problem, changeLanguageMode]);
 
-  useEffect(() => {
-    const isInterval = setInterval(() => {
-      const drafts = getDraftsCodeFromLocalStorage() || {};
-      if (problem?.id) {
-        drafts[problem.id] = sourceCodeRef.current;
-      }
-      setCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
-    }, 5000);
+  // useEffect(() => {
+  //   const isInterval = setInterval(() => {
+  //     const drafts = getDraftsCodeFromLocalStorage() || {};
+  //     if (problem?.id) {
+  //       drafts[problem.id] = sourceCodeRef.current;
+  //     }
+  //     setCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
+  //   }, 5000);
 
-    return () => {
-      clearInterval(isInterval);
-    };
-  }, [problem?.id]);
+  //   return () => {
+  //     clearInterval(isInterval);
+  //   };
+  // }, [problem?.id]);
 
   const changeSourceCode = (value: string) => {
     setSourceCode(value);
@@ -64,8 +62,8 @@ export const useIDEProblem = (problem: IProblem) => {
     submitCode({
       sourceCode,
       language: languageMode,
-      classroomId: problem?.classroomId,
-      listId: problem?.listId,
+      classroomId: params?.classroomId,
+      listId: params?.listId,
     });
   };
 

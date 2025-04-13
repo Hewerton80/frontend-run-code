@@ -26,7 +26,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
     submitResponse,
     submitCode,
     changeSourceCode,
-  } = useIDEProblem(problem!);
+  } = useIDEProblem(problem);
 
   const responseColumns: IColmunDataTable<ResultSubmissionCode>[] = [
     {

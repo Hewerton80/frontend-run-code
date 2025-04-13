@@ -4,6 +4,7 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { isNull, isUndefined } from "@/utils/isType";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -15,6 +16,7 @@ export default function InLayout({
 }>) {
   const router = useRouter();
   const [, , clearAccessToken] = useSessionStorage("access_token");
+  const { logout } = useLogout();
 
   const {
     refetchLoggedUser,
@@ -30,10 +32,9 @@ export default function InLayout({
 
   useEffect(() => {
     if (hasNotAccess) {
-      clearAccessToken();
-      router.replace("/login");
+      logout();
     }
-  }, [hasNotAccess, router, clearAccessToken]);
+  }, [hasNotAccess, router, logout, clearAccessToken]);
 
   if (isErrorUser || isNull(loggedUser)) {
     return (
