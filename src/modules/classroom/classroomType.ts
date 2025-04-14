@@ -3,7 +3,6 @@ import { IListProblem } from "../listProblem/listProblemTypes";
 export interface IClassroom {
   id?: string;
   name?: string;
-  code?: string;
   description?: string;
   listsProblems?: IListProblem[];
   author?: {

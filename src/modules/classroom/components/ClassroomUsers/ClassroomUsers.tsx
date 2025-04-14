@@ -29,7 +29,11 @@ export function ClassroomUsers() {
       onParse: (user) => (
         <div className="flex items-center gap-3">
           <Avatar
-            src={user?.avatarUrl}
+            src={
+              user?.avatarUrl
+                ? `/avatar/${(user?.avatarUrl).padStart(2, "0")}.jpeg`
+                : ""
+            }
             bgColor={user?.avatarBgColor}
             color={user?.avatarFontColor}
             nameInities={user?.avatarInitials}

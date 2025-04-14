@@ -20,13 +20,6 @@ export const ListProblems = () => {
       onParse: (problem) => <p className="line-clamp-1">{problem?.title}</p>,
     },
     {
-      field: "code",
-      label: "Código",
-      onParse: (problem) => (
-        <p className="text-muted-foreground">{problem?.code}</p>
-      ),
-    },
-    {
       field: "category",
       label: "Categoria",
       onParse: (problem) => (

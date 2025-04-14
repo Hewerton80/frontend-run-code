@@ -16,7 +16,6 @@ export const ProblemSolveStatusEnum = {
 export interface IProblem {
   id?: string;
   title?: string;
-  code?: string;
   category?: { id: string; name: string };
   description?: string;
   testCases?: IProblemTest[];

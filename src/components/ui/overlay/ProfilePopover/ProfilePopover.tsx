@@ -21,7 +21,11 @@ export function ProfilePopover() {
           {loggedUser && (
             <>
               <Avatar
-                src={loggedUser?.avatarUrl}
+                src={
+                  loggedUser?.avatarUrl
+                    ? `/avatar/${(loggedUser?.avatarUrl).padStart(2, "0")}.jpeg`
+                    : ""
+                }
                 bgColor={loggedUser?.avatarBgColor}
                 color={loggedUser?.avatarFontColor}
                 nameInities={loggedUser?.avatarInitials}
@@ -40,7 +44,11 @@ export function ProfilePopover() {
       <Dropdown.Content className="w-56">
         <div className="flex px-2 py-1.5 items-center gap-2 text-sm">
           <Avatar
-            src={loggedUser?.avatarUrl}
+            src={
+              loggedUser?.avatarUrl
+                ? `/avatar/${(loggedUser?.avatarUrl).padStart(2, "0")}.jpeg`
+                : ""
+            }
             bgColor={loggedUser?.avatarBgColor}
             color={loggedUser?.avatarFontColor}
             nameInities={loggedUser?.avatarInitials}
