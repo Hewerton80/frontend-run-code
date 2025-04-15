@@ -1,7 +1,7 @@
 import { IClassroom } from "../classroom/classroomType";
 
 export interface IListProblem {
-  id: string;
+  uuid?: string;
   title: string;
   startDate?: string;
   endDate?: string;

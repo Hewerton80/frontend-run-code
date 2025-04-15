@@ -4,8 +4,9 @@ export const RoleUserEnum: Record<number, string> = {
 };
 
 export interface IUser {
-  id?: string;
+  uuid?: string;
   name?: string;
+  surname?: string;
   username?: string;
   email?: string;
   avatarUrl?: string;

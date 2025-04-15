@@ -23,8 +23,8 @@ export function ListProblemAcoordion({
 
   const { problems, errorProblems, isLoadingProblems, refetchProblems } =
     useGetProblemsByClassroomList({
-      classroomId: listProblem?.classroom?.id as string,
-      listId: listProblem?.id,
+      classroomId: listProblem?.classroom?.uuid as string,
+      listId: listProblem?.uuid as string,
     });
   const solved = listProblem?.solved || 0;
   const totalProblems = listProblem?.totalProblems || 0;
@@ -60,7 +60,10 @@ export function ListProblemAcoordion({
       collapsible
       type="single"
     >
-      <Accordion.Item className="line-clamp-1" value={listProblem?.id}>
+      <Accordion.Item
+        className="line-clamp-1"
+        value={listProblem?.uuid as string}
+      >
         <div className="flex flex-col w-full pb-3 gap-2">
           <Accordion.Trigger className="pb-0">
             {listProblem?.title}

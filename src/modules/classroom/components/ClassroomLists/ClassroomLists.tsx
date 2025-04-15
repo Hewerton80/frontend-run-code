@@ -33,7 +33,7 @@ export function ClassroomLists() {
           ))}
         {classroom?.listsProblems?.map((listProblem) => (
           <ListProblemAcoordion
-            key={`${listProblem?.id}-list-problem`}
+            key={`${listProblem?.uuid}-list-problem`}
             data={{ ...listProblem, classroom }}
           />
         ))}

@@ -19,7 +19,7 @@ export const useIDEProblem = (problem: IProblem) => {
   //   });
 
   const { submitCode, isSubmitting, submitError, submitResponse } =
-    useSubmissionCode(problem?.id || "");
+    useSubmissionCode(problem?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
 

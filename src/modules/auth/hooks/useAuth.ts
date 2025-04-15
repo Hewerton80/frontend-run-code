@@ -18,7 +18,7 @@ export const useAuth = () => {
         res.data
           ? {
               ...res.data,
-              username: res.data.name?.split(" ")?.slice(0, 2).join(" "),
+              username: `${res.data.name} ${res.data.surname}`,
             }
           : null
       ),

@@ -1,5 +1,5 @@
 export interface ISubmission {
-  id?: string;
+  uuid?: string;
   language?: string;
   sourceCode?: string;
   score?: number;

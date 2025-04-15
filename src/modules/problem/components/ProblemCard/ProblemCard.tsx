@@ -55,7 +55,7 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
       )}
     >
       <ProgressLink
-        href={`/classroom/${problem?.classroom?.id}/lists/${problem?.listProblem?.id}/problem/${problem.id}`}
+        href={`/classroom/${problem?.classroom?.uuid}/lists/${problem?.listProblem?.uuid}/problem/${problem?.uuid}`}
       >
         <div className="flex gap-1 ">
           <div className="flex flex-col">

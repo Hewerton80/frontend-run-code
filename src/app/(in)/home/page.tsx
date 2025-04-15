@@ -54,7 +54,7 @@ export default function HomePage() {
             ))}
           {classrooms?.map((classInfo, index) => (
             <Card.Root
-              key={`class-info-${index}-${classInfo?.id}`}
+              key={`class-info-${index}-${classInfo?.uuid}`}
               className="p-4"
             >
               <div className="flex gap-1 group">
@@ -89,7 +89,7 @@ export default function HomePage() {
                     className="mt-4 ml-auto"
                     variantStyle="dark-ghost"
                   >
-                    <ProgressLink href={`/classroom/${classInfo?.id}/lists`}>
+                    <ProgressLink href={`/classroom/${classInfo?.uuid}/lists`}>
                       Acessar
                     </ProgressLink>
                   </Button>

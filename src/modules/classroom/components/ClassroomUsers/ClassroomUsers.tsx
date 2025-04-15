@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/dataDisplay/DataTable";
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
 
-interface ClassroomUsersProps {}
-
 export function ClassroomUsers() {
   const {
     classroom,
@@ -39,7 +37,9 @@ export function ClassroomUsers() {
             nameInities={user?.avatarInitials}
             size="sm"
           />
-          <span className="line-clamp-1">{user?.name}</span>
+          <span className="line-clamp-1">
+            {user?.name} {user?.surname}
+          </span>
         </div>
       ),
     },

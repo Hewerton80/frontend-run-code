@@ -38,7 +38,6 @@ export function Avatar({
   size = "lg",
   ...restProps
 }: AvatarProps) {
-  console.log("Avatar", { src });
   // const nameInities = useMemo(() => {
   //   if (!username) return "";
   //   const names = username.split(" ");

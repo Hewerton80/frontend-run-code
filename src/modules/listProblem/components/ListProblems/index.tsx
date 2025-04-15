@@ -36,7 +36,9 @@ export const ListProblems = () => {
       onParse: (problem) => (
         <div className="flex justify-end">
           <Button variantStyle="dark-ghost" asChild>
-            <ProgressLink href={`/problems/${problem?.id}`}>View</ProgressLink>
+            <ProgressLink href={`/problems/${problem?.uuid}`}>
+              View
+            </ProgressLink>
           </Button>
         </div>
       ),
