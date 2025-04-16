@@ -72,11 +72,11 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
                     <p className="font-bold">
                       {solveStatusName} {solveStatusEmoji}
                     </p>
-                    <p>
+                    {/* <p>
                       {totalSubmissionsCount === 1
                         ? `${totalSubmissionsCount} Submissão`
                         : `${totalSubmissionsCount} Submissões`}
-                    </p>
+                    </p> */}
                   </div>
                 }
               >

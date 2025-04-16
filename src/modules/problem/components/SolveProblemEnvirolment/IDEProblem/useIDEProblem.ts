@@ -25,11 +25,11 @@ export const useIDEProblem = (problem: IProblem) => {
 
   const [sourceCode, setSourceCode] = useState("");
 
-  const sourceCodeRef = useRef(sourceCode);
+  // const sourceCodeRef = useRef(sourceCode);
 
-  useEffect(() => {
-    sourceCodeRef.current = sourceCode;
-  }, [sourceCode]);
+  // useEffect(() => {
+  //   sourceCodeRef.current = sourceCode;
+  // }, [sourceCode]);
 
   useEffect(() => {
     if (problem?.submissionStats?.sourceCode) {

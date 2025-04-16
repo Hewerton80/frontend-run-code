@@ -3,14 +3,20 @@ import { Accordion } from "@/components/ui/dataDisplay/Accordion";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { ProblemCard } from "@/modules/problem/components/ProblemCard";
-import { IProblem } from "@/modules/problem/problemTypes";
-import { dalay } from "@/utils/dalay";
 import { useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { IListProblem } from "../../listProblemTypes";
-import { format, isBefore, isAfter, startOfDay, endOfDay } from "date-fns";
+import {
+  format,
+  isBefore,
+  isAfter,
+  startOfDay,
+  endOfDay,
+  isValid,
+} from "date-fns";
 import { useGetProblemsByClassroomList } from "@/modules/problem/hooks/useGetProblemsByClassroomList";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
+import { Badge } from "@/components/ui/dataDisplay/Badge";
 
 interface ListProblemAcoordionProps {
   data: IListProblem;
@@ -31,21 +37,25 @@ export function ListProblemAcoordion({
 
   const progress = solved ? Math.round((solved / totalProblems) * 100) : 0;
 
-  const isDisabled = () => {
+  const didNotStart = () => {
     const now = new Date();
-    if (listProblem?.startDate && listProblem?.endDate) {
-      const startDate = new Date(listProblem.startDate || "");
-      const endDate = new Date(listProblem.endDate || "");
-      const isStartDateValid = startDate.getTime() > 0;
-      const isEndDateValid = endDate.getTime() > 0;
-      if (isStartDateValid && isEndDateValid) {
-        const start = startOfDay(startDate);
-        const end = endOfDay(endDate);
-        return isBefore(now, start) || isAfter(now, end);
-      }
+    const startDate = listProblem.startDate;
+    if (startDate && isValid(startDate)) {
+      return isBefore(now, startOfDay(new Date(startDate)));
     }
     return false;
   };
+
+  const alreadyFinished = () => {
+    const now = new Date();
+    const endDate = new Date(listProblem.endDate || "");
+    if (endDate && isValid(endDate)) {
+      return isAfter(now, endOfDay(endDate));
+    }
+    return false;
+  };
+
+  const isDisabled = didNotStart() || alreadyFinished();
 
   const openAccordion = (value: string) => {
     if (!value || alreadyOpened) return;
@@ -55,10 +65,11 @@ export function ListProblemAcoordion({
 
   return (
     <Accordion.Root
-      disabled={isDisabled()}
+      disabled={isDisabled}
       onValueChange={openAccordion}
       collapsible
       type="single"
+      className="mt-4"
     >
       <Accordion.Item
         className="line-clamp-1"
@@ -76,6 +87,16 @@ export function ListProblemAcoordion({
             {listProblem?.endDate
               ? format(new Date(listProblem?.endDate), "dd/MM/yyyy")
               : "-"}{" "}
+            {didNotStart() && (
+              <Badge variant="warning" className="ml-2">
+                Não iniciado
+              </Badge>
+            )}
+            {alreadyFinished() && (
+              <Badge variant="warning" className="ml-2">
+                Finalizado
+              </Badge>
+            )}
           </span>
           <div className="flex items-center gap-2">
             <ProgressBar value={progress} />
