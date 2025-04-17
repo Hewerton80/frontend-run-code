@@ -21,24 +21,26 @@ const problemSolveStatusEmojis: Record<
 };
 
 export function ProblemCard({ data: problem }: ProblemCardProps) {
-  const correctSubmissionsCount =
-    problem?.submissionStats?.correctSubmissionsCount || 0;
+  // const correctSubmissionsCount =
+  //   problem?.submissionStats?.correctSubmissionsCount || 0;
 
-  const incorrectSubmissionsCount =
-    problem?.submissionStats?.incorrectSubmissionsCount || 0;
+  // const incorrectSubmissionsCount =
+  //   problem?.submissionStats?.incorrectSubmissionsCount || 0;
 
-  const totalSubmissionsCount =
-    correctSubmissionsCount + incorrectSubmissionsCount;
+  // const totalSubmissionsCount =
+  //   correctSubmissionsCount + incorrectSubmissionsCount;
 
-  const status = useMemo(() => {
-    if (correctSubmissionsCount > 0) {
-      return 1;
-    }
-    if (incorrectSubmissionsCount > 0) {
-      return 2;
-    }
-    return 3;
-  }, [correctSubmissionsCount, incorrectSubmissionsCount]);
+  // const status = useMemo(() => {
+  //   if (correctSubmissionsCount > 0) {
+  //     return 1;
+  //   }
+  //   if (incorrectSubmissionsCount > 0) {
+  //     return 2;
+  //   }
+  //   return 3;
+  // }, [correctSubmissionsCount, incorrectSubmissionsCount]);
+
+  const status = problem?.status as number;
 
   const solveStatusEmoji = problemSolveStatusEmojis?.[status]?.emoji;
 

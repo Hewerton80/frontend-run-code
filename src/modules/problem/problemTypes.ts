@@ -24,6 +24,7 @@ export interface IProblem {
   listProblem?: IListProblem;
   classroomId?: string;
   listId?: string;
+  status?: number;
   submissionStats?: ISubmission & {
     correctSubmissionsCount?: number;
     incorrectSubmissionsCount?: number;
