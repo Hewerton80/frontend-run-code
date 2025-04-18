@@ -1,48 +1,25 @@
-"use client";
 import { Card } from "@/components/ui/cards/Card";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { twMerge } from "tailwind-merge";
 import { IProblem } from "../../problemTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { useMemo } from "react";
 
 interface ProblemCardProps {
   data: IProblem;
 }
 
-const problemSolveStatusEmojis: Record<
-  number,
-  { emoji: string; name: string }
-> = {
-  1: { emoji: "✅", name: "Resolvida" },
-  2: { emoji: "❌", name: "Errada" },
-  3: { emoji: "🕒", name: "Aguardando submissão" },
-};
+const problemSolveStatusEmojis: Record<number, { icon: string; name: string }> =
+  {
+    1: { icon: "✅", name: "Resolvida" },
+    2: { icon: "❌", name: "Errada" },
+    3: { icon: "🕒", name: "Aguardando submissão" },
+  };
 
 export function ProblemCard({ data: problem }: ProblemCardProps) {
-  // const correctSubmissionsCount =
-  //   problem?.submissionStats?.correctSubmissionsCount || 0;
-
-  // const incorrectSubmissionsCount =
-  //   problem?.submissionStats?.incorrectSubmissionsCount || 0;
-
-  // const totalSubmissionsCount =
-  //   correctSubmissionsCount + incorrectSubmissionsCount;
-
-  // const status = useMemo(() => {
-  //   if (correctSubmissionsCount > 0) {
-  //     return 1;
-  //   }
-  //   if (incorrectSubmissionsCount > 0) {
-  //     return 2;
-  //   }
-  //   return 3;
-  // }, [correctSubmissionsCount, incorrectSubmissionsCount]);
-
   const status = problem?.status as number;
 
-  const solveStatusEmoji = problemSolveStatusEmojis?.[status]?.emoji;
+  const solveStatusEmoji = problemSolveStatusEmojis?.[status]?.icon;
 
   const solveStatusName = problemSolveStatusEmojis?.[status]?.name;
 

@@ -1,6 +1,7 @@
 export const RoleUserEnum: Record<number, string> = {
   1: "Aluno(a)",
   2: "Professor(a)",
+  3: "Super Admin",
 };
 
 export interface IUser {
@@ -14,4 +15,8 @@ export interface IUser {
   avatarInitials?: string;
   avatarFontColor?: string;
   role: number;
+}
+
+export enum UserKey {
+  List = "List",
 }

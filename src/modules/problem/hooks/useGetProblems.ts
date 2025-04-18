@@ -1,9 +1,12 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { IProblem, ProblemQueryKey } from "../problemTypes";
-import { IPagined } from "@/types/paginad";
+import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
+import { removeEmptyKeys } from "@/utils/queryParams";
 
-export const useGetProblems = () => {
+export interface IGetProblemsParams extends IPaginationParams {}
+
+export const useGetProblems = (problemsParams?: IGetProblemsParams) => {
   const { apiBase } = useAxios();
   const {
     data: problems,
@@ -13,9 +16,14 @@ export const useGetProblems = () => {
   } = useQuery({
     queryFn: () =>
       apiBase
-        .get<IPagined<IProblem>>("/problem")
+        .get<IPaginatedDocs<IProblem>>("/problem", {
+          params: removeEmptyKeys(problemsParams),
+        })
         .then((res) => res.data || { data: [] }),
-    queryKey: [ProblemQueryKey.PROBLEMS],
+    queryKey: [
+      ProblemQueryKey.PROBLEMS,
+      ...Object.values(removeEmptyKeys(problemsParams)),
+    ],
     enabled: true,
   });
 

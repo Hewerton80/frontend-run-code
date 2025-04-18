@@ -8,6 +8,7 @@ import { LuPaintbrush } from "react-icons/lu";
 import { Dropdown } from "../Dropdown/Dropdown";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
+import { RoleUserEnum } from "@/modules/user/userTypets";
 
 export function ProfilePopover() {
   const { setTheme } = useTheme();
@@ -35,6 +36,9 @@ export function ProfilePopover() {
                 <strong className="text text-sm line-clamp-1">
                   {loggedUser?.username}
                 </strong>
+                <span className="line-clamp-1 text-xs text-muted-foreground">
+                  {RoleUserEnum[loggedUser?.role]}
+                </span>
               </div>
               <FaChevronDown />
             </>

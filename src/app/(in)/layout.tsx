@@ -1,5 +1,6 @@
 "use client";
 import { Header } from "@/components/common/Header";
+import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
@@ -48,10 +49,18 @@ export default function InLayout({
     return <SplashScreen />;
   }
 
+  // if (loggedUser?.role === 3) {
+  //   return ;
+  // }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex flex-1 h-full w-full">{children}</div>
+      {loggedUser?.role === 3 ? (
+        <SideBarTamplateWrapper> {children} </SideBarTamplateWrapper>
+      ) : (
+        <div className="flex flex-1 h-full w-full">{children}</div>
+      )}
     </div>
   );
 }

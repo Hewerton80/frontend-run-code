@@ -1,7 +1,7 @@
 "use client";
 // import { navItems } from "@/utils/navItems";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useMemo, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { Slot } from "@radix-ui/react-slot";
@@ -10,37 +10,14 @@ import { IconButton } from "@/components/ui/buttons/IconButton";
 import { GoSidebarExpand } from "react-icons/go";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useSideBar } from "@/hooks/useSideBar";
+import { useGetSidebarMenuItems } from "@/modules/auth/hooks/useGetSidebarMenuItems";
 
 export const SideBarItems = forwardRef((_, ref?: any) => {
   const currentPath = usePathname();
-  const params = useParams<{ classroomId: string }>();
+
+  const { sidebarMenuItems } = useGetSidebarMenuItems();
+
   const { showOnlyIcons } = useSideBar();
-  const navItems = [
-    // {
-    //   title: "Dashboard",
-    //   emoji: "📊",
-    //   path: "/classroom/dsadsad/dashboard",
-    //   basePath: "dashboard",
-    // },
-    {
-      title: "Listas",
-      emoji: "📝",
-      path: `/classroom/${params?.classroomId}/lists`,
-      basePath: "lists",
-    },
-    {
-      title: "Provas",
-      emoji: "📚",
-      path: "/classroom/dsadsad/tests",
-      basePath: "tests",
-    },
-    {
-      title: "Participantes",
-      emoji: "👨‍🎓",
-      path: `/classroom/${params?.classroomId}/people`,
-      basePath: "people",
-    },
-  ];
 
   return (
     <ul
@@ -50,45 +27,40 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
         showOnlyIcons && "items-center"
       )}
     >
-      {navItems.map(({ title, emoji, path, basePath }, i) => {
-        const isActive = currentPath.includes(`/${basePath}`);
-        return (
-          <li
-            key={`${title}-${i}`}
-            className={twMerge("flex", showOnlyIcons ? "w-fit" : "w-full")}
+      {sidebarMenuItems.map(({ title, icon, link, isActive }, i) => (
+        <li
+          key={`${title}-${i}`}
+          className={twMerge("flex", showOnlyIcons ? "w-fit" : "w-full")}
+        >
+          <Tooltip
+            open={showOnlyIcons ? undefined : false}
+            textContent={title}
+            side="right"
+            align="center"
           >
-            <Tooltip
-              open={showOnlyIcons ? undefined : false}
-              textContent={title}
-              side="right"
-              align="center"
+            <Link
+              href={link}
+              className={twMerge(
+                "flex items-center w-full gap-4 relative px-2 py-1.5",
+                "whitespace-nowrap font-medium text-sm",
+                "duration-100 ease-linear rounded-md text-card-foreground",
+                "hover:bg-accent hover:text-accent-foreground",
+                isActive &&
+                  twMerge(
+                    "text-dark-foreground hover:text-dark-foreground bg-dark hover:bg-dark/90",
+                    "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+                  ),
+                showOnlyIcons && "max-w-fit"
+              )}
             >
-              <Link
-                href={path}
-                className={twMerge(
-                  "flex items-center w-full gap-4 relative px-2 py-1.5",
-                  "whitespace-nowrap font-medium text-sm",
-                  "duration-100 ease-linear rounded-md text-card-foreground",
-                  "hover:bg-accent hover:text-accent-foreground",
-                  isActive &&
-                    twMerge(
-                      "text-dark-foreground hover:text-dark-foreground bg-dark hover:bg-dark/90",
-                      "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
-                    ),
-                  showOnlyIcons && "max-w-fit"
-                )}
-              >
-                <span
-                  className={twMerge(showOnlyIcons ? "text-xl" : "text-lg")}
-                >
-                  {emoji}
-                </span>
-                {!showOnlyIcons && <span>{title}</span>}
-              </Link>
-            </Tooltip>
-          </li>
-        );
-      })}
+              <span className={twMerge(showOnlyIcons ? "text-xl" : "text-lg")}>
+                {icon}
+              </span>
+              {!showOnlyIcons && <span>{title}</span>}
+            </Link>
+          </Tooltip>
+        </li>
+      ))}
     </ul>
   );
 });

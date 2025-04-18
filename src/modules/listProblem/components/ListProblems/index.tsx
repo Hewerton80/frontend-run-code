@@ -10,8 +10,13 @@ import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
 
 export const ListProblems = () => {
-  const { isProblemsLoading, problems, problemsError, refetchProblems } =
-    useListProblems();
+  const {
+    isProblemsLoading,
+    goToPage,
+    problems,
+    problemsError,
+    refetchProblems,
+  } = useListProblems();
 
   const columns: IColmunDataTable<IProblem>[] = [
     {
@@ -57,6 +62,13 @@ export const ListProblems = () => {
         isLoading={isProblemsLoading}
         isError={!!problemsError}
         onTryAgainIfError={refetchProblems}
+        paginationConfig={{
+          currentPage: problems?.currentPage || 1,
+          totalPages: problems?.lastPage || 1,
+          perPage: problems?.perPage || 25,
+          totalRecords: problems?.total || 1,
+          onChangePage: goToPage,
+        }}
       />
     </div>
   );
