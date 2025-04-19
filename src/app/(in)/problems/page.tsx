@@ -1,5 +1,5 @@
-import { ListProblems } from "@/modules/listProblem/components/ListProblems";
+import { TableProblems } from "@/modules/problem/components/TableProblems";
 
 export default function ProblemsPage() {
-  return <ListProblems />;
+  return <TableProblems />;
 }

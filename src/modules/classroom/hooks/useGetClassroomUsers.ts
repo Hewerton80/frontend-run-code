@@ -1,7 +1,7 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { ClassroomKeys } from "../classroomType";
-import { IPagined } from "@/types/paginad";
+import { IPaginatedDocs } from "@/types/paginad";
 import { IUser } from "@/modules/user/userTypets";
 
 export const useGetClassroomUsers = (classroomId: string) => {
@@ -14,7 +14,7 @@ export const useGetClassroomUsers = (classroomId: string) => {
   } = useQuery({
     queryFn: () =>
       apiBase
-        .get<IPagined<IUser>>(`/classroom/${classroomId}/users`)
+        .get<IPaginatedDocs<IUser>>(`/classroom/${classroomId}/users`)
         .then((res) => res.data || { data: [] }),
     queryKey: [ClassroomKeys.Users],
     enabled: true,

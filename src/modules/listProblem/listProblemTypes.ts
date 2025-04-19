@@ -1,4 +1,5 @@
 import { IClassroom } from "../classroom/classroomType";
+import { IUser } from "../user/userTypets";
 
 export interface IListProblem {
   uuid?: string;
@@ -8,4 +9,10 @@ export interface IListProblem {
   solved?: number;
   totalProblems?: number;
   classroom?: IClassroom;
+  author?: IUser;
+  createdAt?: string;
+}
+
+export enum ListProblemQueryKey {
+  LIST = "LIST_PROBLEMS",
 }

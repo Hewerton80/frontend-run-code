@@ -9,6 +9,7 @@ import { Dropdown } from "../Dropdown/Dropdown";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUserEnum } from "@/modules/user/userTypets";
+import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 
 export function ProfilePopover() {
   const { setTheme } = useTheme();
@@ -46,25 +47,7 @@ export function ProfilePopover() {
         </div>
       </Dropdown.Trigger>
       <Dropdown.Content className="w-56">
-        <div className="flex px-2 py-1.5 items-center gap-2 text-sm">
-          <Avatar
-            src={
-              loggedUser?.avatarUrl
-                ? `/avatar/${(loggedUser?.avatarUrl).padStart(2, "0")}.jpeg`
-                : ""
-            }
-            bgColor={loggedUser?.avatarBgColor}
-            color={loggedUser?.avatarFontColor}
-            nameInities={loggedUser?.avatarInitials}
-            size="sm"
-          />
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="line-clamp-1 font-medium">{loggedUser?.name}</span>
-            <span className="line-clamp-1 text-xs text-muted-foreground">
-              {loggedUser?.email}
-            </span>
-          </div>
-        </div>
+        <GroupedUserInfo user={loggedUser!} />
         <Dropdown.Separator />
         <Dropdown.Item asChild>
           <Link href="/profile">

@@ -4,19 +4,20 @@ import {
   DataTable,
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
-import { useListProblems } from "./useListProblems";
-import { IProblem } from "../../../problem/problemTypes";
+import { useProblems } from "./useProblems";
+import { IProblem } from "../../problemTypes";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { Breadcrumbs } from "@/components/ui/dataDisplay";
+import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 
-export const ListProblems = () => {
+export const TableProblems = () => {
   const {
     isProblemsLoading,
     goToPage,
     problems,
     problemsError,
     refetchProblems,
-  } = useListProblems();
+  } = useProblems();
 
   const columns: IColmunDataTable<IProblem>[] = [
     {
@@ -36,6 +37,11 @@ export const ListProblems = () => {
       label: "Difficulty",
     },
     {
+      field: "author",
+      label: "Autor",
+      onParse: (problem) => <GroupedUserInfo user={problem?.author!} />,
+    },
+    {
       field: "actions",
       label: "",
       onParse: (problem) => (
@@ -51,7 +57,7 @@ export const ListProblems = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4 w-full px-32 pt-6 pb-4">
+    <div className="flex flex-col gap-4 w-full p-8">
       <Breadcrumbs
         isLoading={isProblemsLoading}
         items={[{ label: "🧩 Problemas" }]}

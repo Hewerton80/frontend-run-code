@@ -2,9 +2,9 @@ import { usePagination } from "@/hooks/usePagination";
 import {
   IGetProblemsParams,
   useGetProblems,
-} from "../../../problem/hooks/useGetProblems";
+} from "@/modules/problem/hooks/useGetProblems";
 
-export const useListProblems = () => {
+export const useProblems = () => {
   const { goToPage, paginationParams } = usePagination();
   const usersParams: IGetProblemsParams = {
     ...paginationParams,

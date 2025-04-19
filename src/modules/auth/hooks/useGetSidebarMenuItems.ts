@@ -31,6 +31,18 @@ export const useGetSidebarMenuItems = () => {
           link: "/users",
           basePath: "users",
         },
+        {
+          title: "Problemas",
+          icon: "🧩",
+          link: "/problems",
+          basePath: "problems",
+        },
+        {
+          title: "Listas",
+          icon: "📝",
+          link: "/listProblems",
+          basePath: "listProblems",
+        },
       ];
     } else {
       result = [

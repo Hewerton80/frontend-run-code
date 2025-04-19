@@ -15,6 +15,7 @@ export interface IUser {
   avatarInitials?: string;
   avatarFontColor?: string;
   role: number;
+  createdAt?: string;
 }
 
 export enum UserKey {

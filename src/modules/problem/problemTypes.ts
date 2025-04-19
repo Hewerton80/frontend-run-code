@@ -1,6 +1,7 @@
 import { IClassroom } from "../classroom/classroomType";
 import { IListProblem } from "../listProblem/listProblemTypes";
 import { ISubmission } from "../submission/submissionType";
+import { IUser } from "../user/userTypets";
 
 export interface IProblemTest {
   id: string;
@@ -29,6 +30,7 @@ export interface IProblem {
     correctSubmissionsCount?: number;
     incorrectSubmissionsCount?: number;
   };
+  author?: IUser;
 }
 
 export enum ProblemQueryKey {

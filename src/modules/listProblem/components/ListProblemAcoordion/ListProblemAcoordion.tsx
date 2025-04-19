@@ -6,17 +6,10 @@ import { ProblemCard } from "@/modules/problem/components/ProblemCard";
 import { useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { IListProblem } from "../../listProblemTypes";
-import {
-  format,
-  isBefore,
-  isAfter,
-  startOfDay,
-  endOfDay,
-  isValid,
-} from "date-fns";
 import { useGetProblemsByClassroomList } from "@/modules/problem/hooks/useGetProblemsByClassroomList";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
+import { DateTime } from "@/utils/dateTime";
 
 interface ListProblemAcoordionProps {
   data: IListProblem;
@@ -40,17 +33,17 @@ export function ListProblemAcoordion({
   const didNotStart = () => {
     const now = new Date();
     const startDate = listProblem.startDate;
-    if (startDate && isValid(startDate)) {
-      return isBefore(now, startOfDay(new Date(startDate)));
+    if (startDate && DateTime.isValid(startDate)) {
+      return DateTime.isBefore(now, DateTime.startOfDay(new Date(startDate)));
     }
     return false;
   };
 
   const alreadyFinished = () => {
     const now = new Date();
-    const endDate = new Date(listProblem.endDate || "");
-    if (endDate && isValid(endDate)) {
-      return isAfter(now, endOfDay(endDate));
+    const endDate = listProblem.endDate;
+    if (endDate && DateTime.isValid(endDate)) {
+      return DateTime.isAfter(now, DateTime.endOfDay(endDate));
     }
     return false;
   };
@@ -81,11 +74,11 @@ export function ListProblemAcoordion({
           </Accordion.Trigger>
           <span className="text-xs text-muted-foreground">
             {listProblem?.startDate
-              ? format(new Date(listProblem?.startDate), "dd/MM/yyyy")
+              ? DateTime.format(listProblem?.startDate, "dd/MM/yyyy")
               : "-"}{" "}
             -{" "}
             {listProblem?.endDate
-              ? format(new Date(listProblem?.endDate), "dd/MM/yyyy")
+              ? DateTime.format(listProblem?.endDate, "dd/MM/yyyy")
               : "-"}{" "}
             {didNotStart() && (
               <Badge variant="warning" className="ml-2">
