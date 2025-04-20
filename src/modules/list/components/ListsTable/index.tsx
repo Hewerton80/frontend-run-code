@@ -5,20 +5,20 @@ import {
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { Breadcrumbs } from "@/components/ui/dataDisplay";
 import { IListProblem } from "../../listProblemTypes";
-import { useListListProblems } from "./useListProblems";
+import { useTableLists } from "./useTableLists";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { DateTime } from "@/utils/dateTime";
+import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 
-export const TableListProblems = () => {
+export const ListsTable = () => {
   const {
     isListProblemsLoading,
     listProblems,
     listProblemsError,
     goToPage,
     refetchListProblems,
-  } = useListListProblems();
+  } = useTableLists();
 
   const columns: IColmunDataTable<IListProblem>[] = [
     {

@@ -1,5 +1,5 @@
 "use client";
-import { Breadcrumbs } from "@/components/ui/dataDisplay";
+import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useClassroomUsers } from "./useClassroomUsers";
 import { IUser, RoleUserEnum } from "@/modules/user/userTypets";
 import {

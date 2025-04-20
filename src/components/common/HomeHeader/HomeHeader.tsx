@@ -8,7 +8,7 @@ export const HomeHeader = () => {
   return (
     <div
       className={twMerge(
-        "flex flex-col w-full gap-4 py-8 px-16",
+        "flex flex-col w-full gap-4 p-8",
         "text-white",
         "bg-linear-to-r from-blue-500 to-blue-800"
       )}

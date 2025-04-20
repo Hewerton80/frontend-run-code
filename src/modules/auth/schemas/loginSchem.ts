@@ -15,6 +15,7 @@ export const useLoginFormSchema = () => {
     control: loginFormControl,
     formState: loginFormState,
     handleSubmit: loginFormHandleSubmit,
+    setError: loginFormSetError,
     register: loginFormRegister,
   } = useForm<LoginCredentials>({
     defaultValues: { email: "", password: "" },
@@ -25,6 +26,7 @@ export const useLoginFormSchema = () => {
   return {
     loginFormControl,
     loginFormState,
+    loginFormSetError,
     loginFormHandleSubmit,
     loginFormRegister,
   };

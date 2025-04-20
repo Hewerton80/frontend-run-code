@@ -9,6 +9,7 @@ export const useLoginForm = () => {
     loginFormControl,
     loginFormState,
     loginFormHandleSubmit,
+    loginFormSetError,
     loginFormRegister,
   } = useLoginFormSchema();
 
@@ -27,6 +28,14 @@ export const useLoginForm = () => {
       setAccessToken(access_token);
     };
     const onError = (error: any) => {
+      const statusCode = error?.response?.status;
+      if (statusCode === 401) {
+        loginFormSetError("email", { message: " " });
+        loginFormSetError("password", { message: "Email ou senha inválidos" });
+      } else {
+        loginFormSetError("email", { message: " " });
+        loginFormSetError("password", { message: "Erro ao fazer login" });
+      }
       console.log("Error", error);
     };
     login(loginCredentials, { onSuccess, onError });

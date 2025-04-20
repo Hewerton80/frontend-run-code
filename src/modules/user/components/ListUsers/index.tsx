@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumbs } from "@/components/ui/dataDisplay";
+import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useListUserts } from "./useListUserts";
 import {
   DataTable,

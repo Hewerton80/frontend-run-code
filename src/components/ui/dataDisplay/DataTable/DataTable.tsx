@@ -105,7 +105,7 @@ export function DataTable({
         {handledMobileData}
       </div> */}
       {paginationConfig && Number(data?.length) > 0 && (
-        <div className="flex w-full justify-end mt-4 sm:mt-8">
+        <div className="flex w-full justify-end">
           <PaginationBar
             currentPage={paginationConfig?.currentPage}
             onChangePage={paginationConfig?.onChangePage}

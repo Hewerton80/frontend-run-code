@@ -9,7 +9,6 @@ import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { getRange } from "@/utils/getRange";
 import { useGetMyClassrooms } from "../../../classroom/hooks/useGetMyClassrooms";
-import { HomeHeader } from "@/components/common/HomeHeader/HomeHeader";
 
 export const StudantHome = () => {
   const {
@@ -20,7 +19,7 @@ export const StudantHome = () => {
   } = useGetMyClassrooms();
 
   return (
-    <div className="flex flex-col w-full gap-4 px-16 py-4">
+    <div className="flex flex-col gap-4 w-full p-8">
       {errorClassrooms && <FeedBackError onTryAgain={refetchClassrooms} />}
       <div className="grid grid-cols-3 gap-4">
         {isLoadingClassrooms &&

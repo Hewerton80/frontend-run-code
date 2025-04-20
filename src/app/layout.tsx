@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { twMerge } from "tailwind-merge";
 import { Providers } from "@/providers";
-import "./globals.css";
 import { ThemeTamplate } from "@/components/ui/templates/ThemeTamplate";
+import { ptBR } from "date-fns/locale";
+import { setDefaultOptions } from "date-fns/setDefaultOptions";
+import "./globals.css";
+
+setDefaultOptions({ locale: ptBR });
 
 const inter = Inter({
   subsets: ["latin"],

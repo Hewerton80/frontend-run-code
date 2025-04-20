@@ -1,5 +1,5 @@
 import { IClassroom } from "../classroom/classroomType";
-import { IListProblem } from "../listProblem/listProblemTypes";
+import { IListProblem } from "../list/listProblemTypes";
 import { ISubmission } from "../submission/submissionType";
 import { IUser } from "../user/userTypets";
 

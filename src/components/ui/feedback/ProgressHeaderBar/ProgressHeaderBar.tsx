@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 export function ProgressHeaderBar() {
   const { progressValue } = useProgressBar();
+  // const progressValue = 80;
   const height = 3;
   return (
     <div

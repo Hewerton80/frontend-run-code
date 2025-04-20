@@ -14,7 +14,7 @@ export const useGetMyClassrooms = () => {
   } = useQuery({
     queryKey: [ClassroomKeys.List],
     queryFn: async () => {
-      const { data } = await apiBase.get<IClassroom[]>("/classroom");
+      const { data } = await apiBase.get<IClassroom[]>("/classroom/me");
       return data;
     },
     enabled: true,

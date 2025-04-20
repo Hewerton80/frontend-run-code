@@ -32,6 +32,12 @@ export const useGetSidebarMenuItems = () => {
           basePath: "users",
         },
         {
+          title: "Turmas",
+          icon: "🏫",
+          link: "/classroom-list",
+          basePath: "classroom-list",
+        },
+        {
           title: "Problemas",
           icon: "🧩",
           link: "/problems",
@@ -40,7 +46,7 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Listas",
           icon: "📝",
-          link: "/listProblems",
+          link: "/lists",
           basePath: "listProblems",
         },
       ];

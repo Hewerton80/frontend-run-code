@@ -1,9 +1,9 @@
 import * as React from "react";
 import { twMerge } from "tailwind-merge";
 import { MdOutlineMoreHoriz } from "react-icons/md";
-import ProgressLink from "../navigation/ProgressLink/ProgressLink";
+import ProgressLink from "../../navigation/ProgressLink/ProgressLink";
 import { LuChevronRight } from "react-icons/lu";
-import { Skeleton } from "../feedback/Skeleton";
+import { Skeleton } from "../../feedback/Skeleton";
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,

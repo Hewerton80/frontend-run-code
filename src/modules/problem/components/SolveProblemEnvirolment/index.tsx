@@ -3,7 +3,7 @@ import { ProblemDescription } from "./ProblemDescription";
 import { IDEProblem } from "./IDEProblem";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
-import { Breadcrumbs } from "@/components/ui/dataDisplay";
+import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "next/navigation";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { twMerge } from "tailwind-merge";

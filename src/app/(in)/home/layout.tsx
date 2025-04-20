@@ -7,9 +7,9 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex flex-col w-full">
       <HomeHeader />
-      <div className="flex flex-col w-full gap-4 px-16 py-4">{children}</div>
+      <div className="flex flex-col gap-4 w-full p-8">{children}</div>
     </div>
   );
 }

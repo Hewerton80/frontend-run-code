@@ -1,11 +1,12 @@
 "use client";
-import { Breadcrumbs } from "@/components/ui/dataDisplay";
-import { ListProblemAcoordion } from "@/modules/listProblem/components/ListProblemAcoordion";
+import { ListProblemAcoordion } from "@/modules/list/components/ListProblemAcoordion";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useParams } from "next/navigation";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
+import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
+import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
@@ -22,7 +23,16 @@ export function ClassroomLists() {
           { label: "Listas" },
         ]}
       />
-      <div className="flex flex-col">
+      <ClassroomListsTable
+        data={classroom?.listsProblems?.map((list) => ({
+          ...list,
+          classroom,
+        }))}
+        isLoading={isLoadingClassroom}
+        error={errorClassroom ? "Erro ao carregar listas" : undefined}
+        onTryAgainIfError={refetchClassroom}
+      />
+      {/* <div className="flex flex-col">
         {errorClassroom && <FeedBackError onTryAgain={refetchClassroom} />}
         {isLoadingClassroom &&
           getRange(0, 5).map((index) => (
@@ -37,7 +47,7 @@ export function ClassroomLists() {
             data={{ ...listProblem, classroom }}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

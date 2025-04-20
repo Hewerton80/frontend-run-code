@@ -1,20 +1,15 @@
 "use client";
-// import { navItems } from "@/utils/navItems";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useMemo, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { Slot } from "@radix-ui/react-slot";
 import { IconButton } from "@/components/ui/buttons/IconButton";
-// import { useSideBar } from "@/hooks/useSideBar";
 import { GoSidebarExpand } from "react-icons/go";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useSideBar } from "@/hooks/useSideBar";
 import { useGetSidebarMenuItems } from "@/modules/auth/hooks/useGetSidebarMenuItems";
+import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
+import { forwardRef, useMemo } from "react";
 
 export const SideBarItems = forwardRef((_, ref?: any) => {
-  const currentPath = usePathname();
-
   const { sidebarMenuItems } = useGetSidebarMenuItems();
 
   const { showOnlyIcons } = useSideBar();
@@ -38,7 +33,7 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
             side="right"
             align="center"
           >
-            <Link
+            <ProgressLink
               href={link}
               className={twMerge(
                 "flex items-center w-full gap-4 relative px-2 py-1.5",
@@ -57,7 +52,7 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
                 {icon}
               </span>
               {!showOnlyIcons && <span>{title}</span>}
-            </Link>
+            </ProgressLink>
           </Tooltip>
         </li>
       ))}

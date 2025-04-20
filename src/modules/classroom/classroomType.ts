@@ -1,17 +1,23 @@
-import { IListProblem } from "../listProblem/listProblemTypes";
+import { IListProblem } from "../list/listProblemTypes";
+import { IUser } from "../user/userTypets";
+
+export const StatusClassroomEnum: Record<number, string> = {
+  1: "Aberto",
+  2: "Fechada",
+};
 
 export interface IClassroom {
   uuid?: string;
   name?: string;
   description?: string;
   listsProblems?: IListProblem[];
-  author?: {
-    name: string;
-    email: string;
-  };
+  author?: IUser;
+  status?: number;
+  createdAt?: string;
 }
 
 export enum ClassroomKeys {
+  PaginedClassrooms = "paginedClassrooms",
   List = "classroomList",
   Users = "classroomUsers",
   Details = "classroomDetails",
