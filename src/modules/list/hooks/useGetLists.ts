@@ -4,7 +4,9 @@ import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { IListProblem, ListProblemQueryKey } from "../listProblemTypes";
 
-export interface IGetListProblemsParams extends IPaginationParams {}
+export interface IGetListProblemsParams extends IPaginationParams {
+  notIn?: string;
+}
 
 export const useGetLists = (listProblemsParams?: IGetListProblemsParams) => {
   const { apiBase } = useAxios();

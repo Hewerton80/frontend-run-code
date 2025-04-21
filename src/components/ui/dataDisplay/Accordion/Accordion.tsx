@@ -1,19 +1,18 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { twJoin, twMerge } from "tailwind-merge";
 import { BsChevronDown } from "react-icons/bs";
-import style from "./Accordion.module.css";
+import { PrimitiveAccordion } from "../PrimitiveAccordion";
 
-const AccordionRoot = AccordionPrimitive.Root;
+// import * as PrimitiveAccordion from "@radix-ui/react-accordion";
 
 const AccordionItem = (
   {
     className,
     ...props
-  }: ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>,
+  }: ComponentPropsWithoutRef<typeof PrimitiveAccordion.Item>,
   ref: any
 ) => (
-  <AccordionPrimitive.Item
+  <PrimitiveAccordion.Item
     ref={ref}
     className={twJoin("border-b", className)}
     {...props}
@@ -26,11 +25,11 @@ const AccordionTrigger = (
     className,
     children,
     ...props
-  }: ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>,
+  }: ComponentPropsWithoutRef<typeof PrimitiveAccordion.Trigger>,
   ref: any
 ) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
+  <PrimitiveAccordion.Header className="flex">
+    <PrimitiveAccordion.Trigger
       ref={ref}
       className={twJoin(
         "not-disabled:cursor-pointer flex flex-1 items-center justify-between py-4 text-sm font-medium",
@@ -46,31 +45,28 @@ const AccordionTrigger = (
           "size-4 ml-4 shrink-0 text-muted-foreground transition-transform duration-200"
         )}
       />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
+    </PrimitiveAccordion.Trigger>
+  </PrimitiveAccordion.Header>
 );
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+AccordionTrigger.displayName = PrimitiveAccordion.Trigger.displayName;
 
 const AccordionContent = (
   {
     className,
     children,
     ...props
-  }: ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>,
+  }: ComponentPropsWithoutRef<typeof PrimitiveAccordion.Content>,
   ref: any
 ) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={twMerge("overflow-hidden text-sm", style.animation)}
-    {...props}
-  >
+  <PrimitiveAccordion.Content ref={ref} className="text-sm" {...props}>
     <div className={twMerge("pb-4 pt-0", className)}>{children}</div>
-  </AccordionPrimitive.Content>
+  </PrimitiveAccordion.Content>
 );
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+AccordionContent.displayName = PrimitiveAccordion.Content.displayName;
 
 export const Accordion = {
-  Root: AccordionRoot,
+  Root: PrimitiveAccordion.Root,
+  Header: PrimitiveAccordion.Header,
   Item: forwardRef(AccordionItem),
   Trigger: forwardRef(AccordionTrigger),
   Content: forwardRef(AccordionContent),

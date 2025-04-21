@@ -1,23 +1,18 @@
 "use client";
-import { Table } from "@/components/ui/dataDisplay/Table";
 import { IListProblem } from "../../listProblemTypes";
-import { useEffect, useMemo, useState } from "react";
-import { TableSkeleton } from "@/components/ui/feedback/TableSkeleton";
+import { useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { DateTime } from "@/utils/dateTime";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
-import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
 import { BsChevronDown } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 import { useGetProblemsByClassroomList } from "@/modules/problem/hooks/useGetProblemsByClassroomList";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { Button } from "@/components/ui/buttons/Button";
 import { ProblemCard } from "@/modules/problem/components/ProblemCard";
+import { DivTable } from "@/components/ui/dataDisplay/DivTable";
+import { PrimitiveAccordion } from "@/components/ui/dataDisplay/PrimitiveAccordion";
 
 interface ClassroomListsTableProps {
   data?: IListProblem[];
@@ -30,13 +25,6 @@ interface ClassroomListsTableRowProps {
   list: IListProblem;
 }
 
-const problemSolveStatusEmojis: Record<number, { icon: string; name: string }> =
-  {
-    1: { icon: "✅", name: "Resolvida" },
-    2: { icon: "❌", name: "Errada" },
-    3: { icon: "🕒", name: "Aguardando submissão" },
-  };
-
 const ClassroomListsTableRow = ({ list }: ClassroomListsTableRowProps) => {
   const { problems, errorProblems, isLoadingProblems, refetchProblems } =
     useGetProblemsByClassroomList({
@@ -45,7 +33,7 @@ const ClassroomListsTableRow = ({ list }: ClassroomListsTableRowProps) => {
     });
 
   const [alreadyOpened, setAlreadyOpened] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState("");
 
   const startDate = list.startDate;
   const endDate = list.endDate;
@@ -90,156 +78,110 @@ const ClassroomListsTableRow = ({ list }: ClassroomListsTableRowProps) => {
 
   const isDisabled = didNotStart() || alreadyFinished();
 
-  useEffect(() => {
-    if (alreadyOpened || isDisabled || !openAccordion) return;
+  const handledOpenAccordion = (value: string) => {
+    if (isDisabled) return;
+    setOpenAccordion(value);
+    if (alreadyOpened) {
+      return;
+    }
     setAlreadyOpened(true);
     refetchProblems();
-  }, [openAccordion, isDisabled, alreadyOpened, refetchProblems]);
+  };
 
   return (
-    <>
-      <Table.Row
-        onClick={() => !isDisabled && setOpenAccordion(!openAccordion)}
-        role="button"
-        className={twMerge(
-          !isDisabled && "hover:bg-muted/50 cursor-pointer",
-          "duration-[.15s] ease-in-out transition-colors"
-        )}
-      >
-        <Table.Data>
-          <div className="flex flex-col gap-1">
-            <p className="line-clamp-1">{list?.title}</p>
-            <div className="flex items-center gap-2">
-              {alreadyStarted() && (
-                <>
-                  <Badge variant="success">Aberta</Badge>
-                  <span className="text-xs text-muted-foreground">
-                    Finaliza em {DateTime.format(startDate!, "dd MMM, yyyy")}
-                  </span>
-                </>
-              )}
-              {didNotStart() && (
-                <>
-                  <Badge variant="warning">Não iniciada</Badge>
-                  <span className="text-xs text-muted-foreground">
-                    Começa em {DateTime.format(startDate!, "dd MMM, yyyy")}
-                  </span>
-                </>
-              )}
-              {alreadyFinished() && (
-                <>
-                  <Badge variant="dark">Finalizada</Badge>
-                  <span className="text-xs text-muted-foreground">
-                    Finalizada em {DateTime.format(endDate!, "dd MMM, yyyy")}
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-        </Table.Data>
-        <Table.Data>
-          <div className="flex items-center gap-2">
-            <ProgressBar value={progress} />
-            <span className="text-xs text-muted-foreground">
-              {solved}/{totalProblems}
-            </span>
-          </div>
-        </Table.Data>
-
-        {/* <Table.Data>
-        <GroupedUserInfo user={list?.author!} />
-      </Table.Data> */}
-        <Table.Data>
-          <div className="flex justify-end pr-4">
-            <BsChevronDown
-              className={twMerge(
-                "size-4 ml-4 shrink-0 text-muted-foreground transition-transform duration-200",
-                openAccordion && "rotate-180"
-              )}
-            />
-          </div>
-        </Table.Data>
-      </Table.Row>
-
-      {openAccordion && (
-        <>
-          {/* <Table.Row className="flex bg-blue-500">
-            <Table.Data></Table.Data>
-          </Table.Row> */}
-          {isLoadingProblems &&
-            getRange(0, 4).map((index) => (
-              <Table.Row
-                className={twMerge(
-                  //   "bg-linear-to-r from-blue-500 to-blue-700",
-                  //   "hover:from-blue-500/80 hover:to-blue-700/80",
-                  "duration-300 ease-in-out transition"
-                )}
-                key={`skeleton-row-${index}-list`}
-              >
-                {getRange(0, 5).map((index) => (
-                  <Table.Data key={`skeleton-data-${index}-list`}>
-                    <Skeleton className="h-4 max-w-[146px] w-full" />
-                  </Table.Data>
-                ))}
-              </Table.Row>
-            ))}
-          <Table.Row
+    <PrimitiveAccordion.Root
+      value={openAccordion}
+      onValueChange={handledOpenAccordion}
+      disabled={isDisabled}
+      type="single"
+      collapsible
+    >
+      <PrimitiveAccordion.Item value={list?.uuid!}>
+        <PrimitiveAccordion.Trigger
+          className="[&[data-state=open]_.arrow]:rotate-180"
+          asChild
+        >
+          <DivTable.Row
             className={twMerge(
-              "grid grid-cols-3 gap-4 w-full border-none p-4",
-              // "bg-linear-to-r from-blue-500 to-blue-700",
-              // "hover:from-blue-500/80 hover:to-blue-700/80",
-              "duration-300 ease-in-out transition"
+              !isDisabled && "hover:bg-muted/50 cursor-pointer",
+              "duration-[.15s] ease-in-out transition-colors"
             )}
           >
-            {problems?.map((problem, index) => (
-              <Table.Data
-                key={`${problem?.uuid}-${index}`}
-                className="flex w-full border-none p-0"
-              >
-                <ProblemCard
-                  data={{
-                    ...problem,
-                    listProblem: list,
-                    classroom: list?.classroom,
-                  }}
+            <DivTable.Data>
+              <div className="flex flex-col gap-1">
+                <p className="line-clamp-1">{list?.title}</p>
+                <div className="flex items-center gap-2">
+                  {alreadyStarted() && (
+                    <>
+                      <Badge variant="success">Aberta</Badge>
+                      <span className="text-xs text-muted-foreground">
+                        Finaliza em{" "}
+                        {DateTime.format(startDate!, "dd MMM, yyyy")}
+                      </span>
+                    </>
+                  )}
+                  {didNotStart() && (
+                    <>
+                      <Badge variant="warning">Não iniciada</Badge>
+                      <span className="text-xs text-muted-foreground">
+                        Começa em {DateTime.format(startDate!, "dd MMM, yyyy")}
+                      </span>
+                    </>
+                  )}
+                  {alreadyFinished() && (
+                    <>
+                      <Badge variant="dark">Finalizada</Badge>
+                      <span className="text-xs text-muted-foreground">
+                        Finalizada em{" "}
+                        {DateTime.format(endDate!, "dd MMM, yyyy")}
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </DivTable.Data>
+            <DivTable.Data className="gap-2">
+              <ProgressBar value={progress} />
+              <span className="text-xs text-muted-foreground">
+                {solved}/{totalProblems}
+              </span>
+            </DivTable.Data>
+            <DivTable.Data className="justify-end pr-4">
+              {!isDisabled && (
+                <BsChevronDown
+                  className={twMerge(
+                    "arrow size-4 ml-4 shrink-0 text-muted-foreground transition-transform duration-200"
+                  )}
                 />
-              </Table.Data>
-              //    <Table.Data>
-              //     <p className="line-clamp-1">{problem?.title}</p>
-              //   </Table.Data>
-              //   <Table.Data>
-              //     <Tooltip
-              //       //   align="start"
-              //       textContent={
-              //         <div className="flex flex-col gap-1">
-              //           <p className="font-bold">
-              //             {problemSolveStatusEmojis?.[problem?.status!]?.name}{" "}
-              //             {problemSolveStatusEmojis?.[problem?.status!]?.icon}
-              //           </p>
-              //         </div>
-              //       }
-              //     >
-              //       <span>
-              //         {problemSolveStatusEmojis?.[problem?.status!]?.icon}
-              //       </span>
-              //     </Tooltip>
-              //   </Table.Data>
-              //   <Table.Data>
-              //     <div className="flex justify-end">
-              //       <Button asChild variantStyle="info">
-              //         <ProgressLink
-              //           href={`/classroom/${problem?.classroom?.uuid}/lists/${problem?.listProblem?.uuid}/problem/${problem?.uuid}`}
-              //         >
-              //           Acessar
-              //         </ProgressLink>
-              //       </Button>
-              //     </div>
-              //   </Table.Data>
+              )}
+            </DivTable.Data>
+          </DivTable.Row>
+        </PrimitiveAccordion.Trigger>
+        <PrimitiveAccordion.Content>
+          {errorProblems && <FeedBackError onTryAgain={refetchProblems} />}
+          <div className="grid grid-cols-3 gap-4 w-full border-none p-2">
+            {isLoadingProblems &&
+              getRange(0, 5).map((index) => (
+                <Skeleton
+                  key={`problem-skeleton-${index}`}
+                  className="w-full h-26 rounded-lg"
+                />
+              ))}
+
+            {problems?.map((problem, index) => (
+              <ProblemCard
+                key={`${problem?.uuid}-${index}`}
+                data={{
+                  ...problem,
+                  listProblem: list,
+                  classroom: list?.classroom,
+                }}
+              />
             ))}
-          </Table.Row>
-        </>
-      )}
-    </>
+          </div>
+        </PrimitiveAccordion.Content>
+      </PrimitiveAccordion.Item>
+    </PrimitiveAccordion.Root>
   );
 };
 
@@ -258,13 +200,13 @@ export const ClassroomListsTable = ({
       return (
         <>
           {getRange(0, 8).map((index) => (
-            <Table.Row key={`skeleton-row-${index}-list`}>
-              {getRange(0, 5).map((index) => (
-                <Table.Data key={`skeleton-data-${index}-list`}>
+            <DivTable.Row key={`skeleton-row-${index}-list`}>
+              {getRange(0, 3).map((index) => (
+                <DivTable.Data key={`skeleton-data-${index}-list`}>
                   <Skeleton className="h-4 max-w-[146px] w-full" />
-                </Table.Data>
+                </DivTable.Data>
               ))}
-            </Table.Row>
+            </DivTable.Row>
           ))}
         </>
       );
@@ -283,23 +225,20 @@ export const ClassroomListsTable = ({
   }, [data, error, isLoading, onTryAgainIfError]);
 
   return (
-    <Table.Container>
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.HeadCell>Nome</Table.HeadCell>
-            <Table.HeadCell>Progresso</Table.HeadCell>
-            {/* <Table.HeadCell>Autor</Table.HeadCell> */}
-            <Table.HeadCell></Table.HeadCell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>{handledDataTable}</Table.Body>
-      </Table>
-      {data?.length === 0 && (
-        <div className="flex justify-center items-center p-8">
-          <h5 className="text-2xl text-gray-70">Tabela vazia</h5>
-        </div>
-      )}
-    </Table.Container>
+    <div className="flex overflow-auto">
+      <DivTable.Container>
+        <DivTable.Row header>
+          <DivTable.Data>Nome</DivTable.Data>
+          <DivTable.Data>Progresso</DivTable.Data>
+          <DivTable.Data></DivTable.Data>
+        </DivTable.Row>
+        {handledDataTable}
+        {data?.length === 0 && (
+          <div className="flex justify-center items-center p-8">
+            <h5 className="text-2xl text-gray-70">Tabela vazia</h5>
+          </div>
+        )}
+      </DivTable.Container>
+    </div>
   );
 };

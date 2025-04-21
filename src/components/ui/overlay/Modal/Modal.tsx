@@ -52,7 +52,7 @@ const Root = ({
           className={twMerge(
             "fixed z-10001 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]",
             "w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] overflow-visible",
-            "focus:outline-hidden",
+            "focus:outline-hidden overflow-y-auto",
             sizes[size],
             className
           )}
@@ -103,7 +103,7 @@ function Footer({ children, className, ...restProps }: ModalFooterProps) {
   return (
     <Card.Footer
       orientation="end"
-      className={twMerge("pt-5", className)}
+      className={twMerge("pt-0", className)}
       {...restProps}
     >
       {children}

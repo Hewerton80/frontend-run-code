@@ -50,20 +50,22 @@ export const ListsTable = () => {
         isLoading={isListProblemsLoading}
         items={[{ label: "📝 Listas" }]}
       />
-      <DataTable
-        columns={columns}
-        data={listProblems?.data || []}
-        isLoading={isListProblemsLoading}
-        isError={!!listProblemsError}
-        onTryAgainIfError={refetchListProblems}
-        paginationConfig={{
-          currentPage: listProblems?.currentPage || 1,
-          totalPages: listProblems?.lastPage || 1,
-          perPage: listProblems?.perPage || 25,
-          totalRecords: listProblems?.total || 1,
-          onChangePage: goToPage,
-        }}
-      />
+      <div>
+        <DataTable
+          columns={columns}
+          data={listProblems?.data || []}
+          isLoading={isListProblemsLoading}
+          isError={!!listProblemsError}
+          onTryAgainIfError={refetchListProblems}
+          paginationConfig={{
+            currentPage: listProblems?.currentPage || 1,
+            totalPages: listProblems?.lastPage || 1,
+            perPage: listProblems?.perPage || 25,
+            totalRecords: listProblems?.total || 1,
+            onChangePage: goToPage,
+          }}
+        />
+      </div>
     </div>
   );
 };

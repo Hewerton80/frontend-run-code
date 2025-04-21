@@ -49,20 +49,22 @@ export const ClassroomsTable = () => {
         isLoading={isClassroomsLoading}
         items={[{ label: "Turmas" }]}
       />
-      <DataTable
-        columns={columns}
-        data={classrooms?.data || []}
-        isLoading={isClassroomsLoading}
-        isError={!!classroomsError}
-        onTryAgainIfError={refetchClassrooms}
-        paginationConfig={{
-          currentPage: classrooms?.currentPage || 1,
-          totalPages: classrooms?.lastPage || 1,
-          perPage: classrooms?.perPage || 25,
-          totalRecords: classrooms?.total || 1,
-          onChangePage: goToPage,
-        }}
-      />
+      <div>
+        <DataTable
+          columns={columns}
+          data={classrooms?.data || []}
+          isLoading={isClassroomsLoading}
+          isError={!!classroomsError}
+          onTryAgainIfError={refetchClassrooms}
+          paginationConfig={{
+            currentPage: classrooms?.currentPage || 1,
+            totalPages: classrooms?.lastPage || 1,
+            perPage: classrooms?.perPage || 25,
+            totalRecords: classrooms?.total || 1,
+            onChangePage: goToPage,
+          }}
+        />
+      </div>
     </div>
   );
 };

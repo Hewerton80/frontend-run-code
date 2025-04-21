@@ -19,7 +19,7 @@ export const StudantHome = () => {
   } = useGetMyClassrooms();
 
   return (
-    <div className="flex flex-col gap-4 w-full p-8">
+    <>
       {errorClassrooms && <FeedBackError onTryAgain={refetchClassrooms} />}
       <div className="grid grid-cols-3 gap-4">
         {isLoadingClassrooms &&
@@ -72,6 +72,6 @@ export const StudantHome = () => {
           </Card.Root>
         ))}
       </div>
-    </div>
+    </>
   );
 };

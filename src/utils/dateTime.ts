@@ -10,7 +10,11 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-type DateFormatsType = "dd/MM/yyyy" | "HH:mm:ss" | "dd MMM, yyyy";
+type DateFormatsType =
+  | "dd/MM/yyyy"
+  | "dd/MM/yyyy - HH:mm"
+  | "HH:mm:ss"
+  | "dd MMM, yyyy";
 
 type DateType = string | number | Date;
 
