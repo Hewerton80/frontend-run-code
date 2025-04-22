@@ -14,7 +14,10 @@ import { BsThreeDots } from "react-icons/bs";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { FaFileCirclePlus } from "react-icons/fa6";
 import useQueryParams from "@/hooks/useQueryParams";
-import { ListsModal } from "@/modules/list/components/ListsModal/ListsModal";
+// import { ListsModal } from "@/modules/list/components/AddClassroomLists/AddClassroomLists";
+import { useState } from "react";
+import { Dialog } from "@/components/ui/overlay/Dialog";
+import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
@@ -28,43 +31,59 @@ export function ClassroomLists() {
 
   const { loggedUser } = useAuth();
 
+  const [showModal, setShowModal] = useState(queryParams?.showModal === "true");
+
   return (
-    <div className="flex flex-col w-full gap-4 p-8">
-      <Breadcrumbs
-        isLoading={isLoadingClassroom}
-        items={[
-          { label: "🏠 Home", href: "/home" },
-          { label: classroom?.name || "-" },
-          { label: "📝 Listas" },
-        ]}
-      />
-      <div className="flex justify-end gap-4">
-        {loggedUser?.uuid === classroom?.author?.uuid && (
-          <Dropdown.Root>
-            <Dropdown.Trigger disabled={!!errorClassroom || !classroom} asChild>
-              <IconButton variantStyle="secondary" icon={<BsThreeDots />} />
-            </Dropdown.Trigger>
-            <Dropdown.Content>
-              <Dropdown.Item
-                onClick={() => setQueryParams({ showModal: "true" })}
+    <>
+      <div className="flex flex-col w-full gap-4 p-8">
+        <Breadcrumbs
+          isLoading={isLoadingClassroom}
+          items={[
+            { label: "🏠 Home", href: "/home" },
+            { label: classroom?.name || "-" },
+            { label: "📝 Listas" },
+          ]}
+        />
+        <div className="flex justify-end gap-4">
+          {loggedUser?.uuid === classroom?.author?.uuid && (
+            <Dropdown.Root>
+              <Dropdown.Trigger
+                disabled={!!errorClassroom || !classroom}
+                asChild
               >
-                <FaFileCirclePlus className="mr-2" />
-                Adicionar listas
-              </Dropdown.Item>
-            </Dropdown.Content>
-          </Dropdown.Root>
-        )}
-      </div>
-      <ClassroomListsTable
-        data={classroom?.listsProblems?.map((list) => ({
-          ...list,
-          classroom,
-        }))}
-        isLoading={isLoadingClassroom}
-        error={errorClassroom ? "Erro ao carregar listas" : undefined}
-        onTryAgainIfError={refetchClassroom}
-      />
-      {/* <div className="flex flex-col">
+                <IconButton variantStyle="secondary" icon={<BsThreeDots />} />
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                {/* <ListsModal classroom={classroom}> */}
+                <Dropdown.Item
+                  // onClick={() => {
+                  //   // setQueryParams({ showModal: "true" });
+                  //   setShowModal(true);
+                  // }}
+                  asChild
+                >
+                  <ProgressLink
+                    href={`/classroom/${classroom?.uuid}/lists/add`}
+                  >
+                    <FaFileCirclePlus className="mr-2" />
+                    Adicionar listas
+                  </ProgressLink>
+                </Dropdown.Item>
+                {/* </ListsModal> */}
+              </Dropdown.Content>
+            </Dropdown.Root>
+          )}
+        </div>
+        <ClassroomListsTable
+          data={classroom?.listsProblems?.map((list) => ({
+            ...list,
+            classroom,
+          }))}
+          isLoading={isLoadingClassroom}
+          error={errorClassroom ? "Erro ao carregar listas" : undefined}
+          onTryAgainIfError={refetchClassroom}
+        />
+        {/* <div className="flex flex-col">
         {errorClassroom && <FeedBackError onTryAgain={refetchClassroom} />}
         {isLoadingClassroom &&
           getRange(0, 5).map((index) => (
@@ -80,9 +99,18 @@ export function ClassroomLists() {
           />
         ))}
       </div> */}
-      {queryParams?.showModal === "true" && classroom && (
-        <ListsModal classroom={classroom} />
-      )}
-    </div>
+      </div>
+      {/* <ListsModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        classroom={classroom}
+      /> */}
+
+      {/* <ListsModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        classroom={classroom}
+      /> */}
+    </>
   );
 }
