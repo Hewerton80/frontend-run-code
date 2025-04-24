@@ -1,13 +1,15 @@
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
 import { IUser } from "../../userTypets";
+import { twMerge } from "tailwind-merge";
 
 interface IGroupedUserInfoProps {
   user: IUser;
+  className?: string;
 }
 
-export const GroupedUserInfo = ({ user }: IGroupedUserInfoProps) => {
+export const GroupedUserInfo = ({ user, className }: IGroupedUserInfoProps) => {
   return (
-    <div className="flex items-center gap-2 text-sm">
+    <div className={twMerge("flex items-center gap-2 text-sm", className)}>
       <Avatar
         src={
           user?.avatarUrl

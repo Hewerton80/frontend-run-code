@@ -1,23 +1,14 @@
 "use client";
-import { ListProblemAcoordion } from "@/modules/list/components/ListProblemAcoordion";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useParams } from "next/navigation";
-import { getRange } from "@/utils/getRange";
-import { Skeleton } from "@/components/ui/feedback/Skeleton";
-import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
-import { Button } from "@/components/ui/buttons/Button";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { BsThreeDots } from "react-icons/bs";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
-import { FaFileCirclePlus } from "react-icons/fa6";
-import useQueryParams from "@/hooks/useQueryParams";
-// import { ListsModal } from "@/modules/list/components/AddClassroomLists/AddClassroomLists";
-import { useState } from "react";
-import { Dialog } from "@/components/ui/overlay/Dialog";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
+import { FaRegListAlt } from "react-icons/fa";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
@@ -25,13 +16,7 @@ export function ClassroomLists() {
   const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
     useGetClassroomById(params?.classroomId);
 
-  const { setQueryParams, queryParams } = useQueryParams<{
-    showModal: string;
-  }>();
-
   const { loggedUser } = useAuth();
-
-  const [showModal, setShowModal] = useState(queryParams?.showModal === "true");
 
   return (
     <>
@@ -54,22 +39,14 @@ export function ClassroomLists() {
                 <IconButton variantStyle="secondary" icon={<BsThreeDots />} />
               </Dropdown.Trigger>
               <Dropdown.Content>
-                {/* <ListsModal classroom={classroom}> */}
-                <Dropdown.Item
-                  // onClick={() => {
-                  //   // setQueryParams({ showModal: "true" });
-                  //   setShowModal(true);
-                  // }}
-                  asChild
-                >
+                <Dropdown.Item asChild>
                   <ProgressLink
-                    href={`/classroom/${classroom?.uuid}/lists/add`}
+                    href={`/classroom/${classroom?.uuid}/lists/update`}
                   >
-                    <FaFileCirclePlus className="mr-2" />
-                    Adicionar listas
+                    <FaRegListAlt className="mr-2" />
+                    Atualizar listas
                   </ProgressLink>
                 </Dropdown.Item>
-                {/* </ListsModal> */}
               </Dropdown.Content>
             </Dropdown.Root>
           )}
@@ -83,34 +60,7 @@ export function ClassroomLists() {
           error={errorClassroom ? "Erro ao carregar listas" : undefined}
           onTryAgainIfError={refetchClassroom}
         />
-        {/* <div className="flex flex-col">
-        {errorClassroom && <FeedBackError onTryAgain={refetchClassroom} />}
-        {isLoadingClassroom &&
-          getRange(0, 5).map((index) => (
-            <Skeleton
-              key={`loading-class-${index}`}
-              className="rounded-lg w-full h-20 mb-3"
-            />
-          ))}
-        {classroom?.listsProblems?.map((listProblem) => (
-          <ListProblemAcoordion
-            key={`${listProblem?.uuid}-list-problem`}
-            data={{ ...listProblem, classroom }}
-          />
-        ))}
-      </div> */}
       </div>
-      {/* <ListsModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        classroom={classroom}
-      /> */}
-
-      {/* <ListsModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        classroom={classroom}
-      /> */}
     </>
   );
 }

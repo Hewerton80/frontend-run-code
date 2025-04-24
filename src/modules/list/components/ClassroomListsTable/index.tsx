@@ -1,6 +1,6 @@
 "use client";
 import { IListProblem } from "../../listProblemTypes";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
@@ -43,7 +43,7 @@ const ClassroomListsTableRow = ({ list }: ClassroomListsTableRowProps) => {
 
   const progress = solved ? Math.round((solved / totalProblems) * 100) : 0;
 
-  const alreadyStarted = () => {
+  const alreadyStarted = useMemo(() => {
     const now = new Date();
     if (
       startDate &&
@@ -58,35 +58,88 @@ const ClassroomListsTableRow = ({ list }: ClassroomListsTableRowProps) => {
       );
     }
     return false;
-  };
+  }, [startDate, endDate]);
 
-  const didNotStart = () => {
+  const didNotStart = useMemo(() => {
     const now = new Date();
     if (startDate && DateTime.isValid(startDate)) {
       return DateTime.isBefore(now, DateTime.startOfDay(new Date(startDate)));
     }
     return false;
-  };
+  }, [startDate]);
 
-  const alreadyFinished = () => {
+  const alreadyFinished = useMemo(() => {
     const now = new Date();
     if (endDate && DateTime.isValid(endDate)) {
       return DateTime.isAfter(now, DateTime.endOfDay(endDate));
     }
     return false;
-  };
+  }, [endDate]);
 
-  const isDisabled = didNotStart() || alreadyFinished();
+  const isDisabled = useMemo(
+    () => didNotStart || alreadyFinished || list?.status === 1,
+    [didNotStart, alreadyFinished, list]
+  );
 
-  const handledOpenAccordion = (value: string) => {
-    if (isDisabled) return;
-    setOpenAccordion(value);
-    if (alreadyOpened) {
-      return;
+  const handledOpenAccordion = useCallback(
+    (value: string) => {
+      if (isDisabled) return;
+      setOpenAccordion(value);
+      if (alreadyOpened) {
+        return;
+      }
+      setAlreadyOpened(true);
+      refetchProblems();
+    },
+    [alreadyOpened, isDisabled, refetchProblems]
+  );
+
+  const badgeStatusInfoElement = useMemo(() => {
+    if (list?.status === 1) {
+      return (
+        <>
+          <Badge variant="warning">Não visível</Badge>
+        </>
+      );
     }
-    setAlreadyOpened(true);
-    refetchProblems();
-  };
+    if (!startDate && !startDate) {
+      return (
+        <>
+          <Badge variant="success">Aberta</Badge>
+        </>
+      );
+    }
+    if (alreadyStarted) {
+      return (
+        <>
+          <Badge variant="success">Aberta</Badge>
+          <span className="text-xs text-muted-foreground">
+            Finaliza em {DateTime.format(startDate!, "dd MMM, yyyy")}
+          </span>
+        </>
+      );
+    }
+    if (didNotStart) {
+      return (
+        <>
+          <Badge variant="warning">Não iniciada</Badge>
+          <span className="text-xs text-muted-foreground">
+            Começa em {DateTime.format(startDate!, "dd MMM, yyyy")}
+          </span>
+        </>
+      );
+    }
+    if (alreadyFinished) {
+      return (
+        <>
+          <Badge variant="dark">Finalizada</Badge>
+          <span className="text-xs text-muted-foreground">
+            Finalizada em {DateTime.format(endDate!, "dd MMM, yyyy")}
+          </span>
+        </>
+      );
+    }
+  }, [alreadyStarted, startDate, didNotStart, endDate, alreadyFinished]);
 
   return (
     <PrimitiveAccordion.Root
@@ -111,32 +164,7 @@ const ClassroomListsTableRow = ({ list }: ClassroomListsTableRowProps) => {
               <div className="flex flex-col gap-1">
                 <p className="line-clamp-1">{list?.title}</p>
                 <div className="flex items-center gap-2">
-                  {alreadyStarted() && (
-                    <>
-                      <Badge variant="success">Aberta</Badge>
-                      <span className="text-xs text-muted-foreground">
-                        Finaliza em{" "}
-                        {DateTime.format(startDate!, "dd MMM, yyyy")}
-                      </span>
-                    </>
-                  )}
-                  {didNotStart() && (
-                    <>
-                      <Badge variant="warning">Não iniciada</Badge>
-                      <span className="text-xs text-muted-foreground">
-                        Começa em {DateTime.format(startDate!, "dd MMM, yyyy")}
-                      </span>
-                    </>
-                  )}
-                  {alreadyFinished() && (
-                    <>
-                      <Badge variant="dark">Finalizada</Badge>
-                      <span className="text-xs text-muted-foreground">
-                        Finalizada em{" "}
-                        {DateTime.format(endDate!, "dd MMM, yyyy")}
-                      </span>
-                    </>
-                  )}
+                  {badgeStatusInfoElement}
                 </div>
               </div>
             </DivTable.Data>

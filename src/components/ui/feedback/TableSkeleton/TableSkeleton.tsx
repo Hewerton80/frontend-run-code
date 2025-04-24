@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/dataDisplay/DataTable";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { useMemo } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface TableSkeletonProps {
   numRows: number;
@@ -18,7 +19,10 @@ export function TableSkeleton({ numRows, columns }: TableSkeletonProps) {
       onParse: () => (
         <Skeleton
           key={`skeleton-cell-${i}`}
-          className="h-4 max-w-[146px] w-full"
+          className={twMerge(
+            "  w-full",
+            i === columns?.length - 1 ? "w-8 h-8 ml-auto" : "h-4 max-w-[146px]"
+          )}
         />
       ),
     }));

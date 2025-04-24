@@ -2,6 +2,7 @@ import { IClassroom } from "../classroom/classroomType";
 import { IUser } from "../user/userTypets";
 
 export interface IListProblem {
+  id?: number;
   uuid?: string;
   title: string;
   startDate?: string;
@@ -11,6 +12,7 @@ export interface IListProblem {
   classroom?: IClassroom;
   author?: IUser;
   createdAt?: string;
+  status?: number;
 }
 
 export enum ListProblemQueryKey {
