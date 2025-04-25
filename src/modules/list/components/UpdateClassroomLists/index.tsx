@@ -158,7 +158,7 @@ export const UpdateClassroomLists = () => {
           ]}
         />
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="overflow-y-auto max-h-[calc(100vh-282px)]">
             <DataTable
               columns={allListscolumns}
               data={listProblems?.data || []}
@@ -174,7 +174,7 @@ export const UpdateClassroomLists = () => {
               }}
             />
           </div>
-          <div>
+          <div className="overflow-y-auto max-h-[calc(100vh-282px)]">
             <DataTable
               columns={currentClassroomListsColumns}
               data={classroomListsToAdd || []}

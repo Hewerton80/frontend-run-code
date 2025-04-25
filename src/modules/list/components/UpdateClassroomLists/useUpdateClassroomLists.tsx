@@ -114,30 +114,25 @@ export const useUpdateClassroomLists = () => {
   };
 
   const handleUpdateClassroomLists = () => {
-    // const on
     updateClassroomLists(
       {
         classroomId: classroom?.uuid!,
-        lists: Object.values(classroomListsToAddRecords).map((list) => ({
-          id: list?.id!,
-          status: list?.isVisible ? 2 : 1,
-          startDate: list?.startDate || null,
-          endDate: list?.endDate || null,
-        })),
+        lists: Object.values(classroomListsToAddRecords)
+          .filter((list) => !list?.removed)
+          .map((list) => ({
+            id: list?.id!,
+            status: list?.isVisible ? 2 : 1,
+            startDate: list?.startDate || null,
+            endDate: list?.endDate || null,
+          })),
       },
       {
         onSuccess: () => {
-          // queryClient.invalidateQueries([
-          //   ListProblemQueryKey.LIST,
-          //   { classroomId: classroom?.uuid },
-          // ]);
-          // queryClient.invalidateQueries([ListProblemQueryKey.LIST]);
+          router.push(`/classroom/${classroom?.uuid}/lists`);
           queryClient.resetQueries({
             queryKey: [ClassroomKeys.Details, classroom?.uuid],
           });
           toast.success("Listas atualizadas com sucesso!");
-          router.push(`/classroom/${classroom?.uuid}/lists`);
-          // refetchListProblems();
         },
         // onError: () => {
       }

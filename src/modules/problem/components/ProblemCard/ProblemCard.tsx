@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { IProblem } from "../../problemTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 interface ProblemCardProps {
   data: IProblem;
@@ -17,6 +18,7 @@ const problemSolveStatusEmojis: Record<number, { icon: string; name: string }> =
   };
 
 export function ProblemCard({ data: problem }: ProblemCardProps) {
+  const { loggedUser } = useAuth();
   const status = problem?.status as number;
 
   const solveStatusEmoji = problemSolveStatusEmojis?.[status]?.icon;
@@ -43,7 +45,7 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
                 {problem?.title}
               </h4>
             </Tooltip>
-            {solveStatusEmoji && (
+            {loggedUser?.role === 1 && solveStatusEmoji && (
               <Tooltip
                 align="start"
                 textContent={
@@ -51,11 +53,6 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
                     <p className="font-bold">
                       {solveStatusName} {solveStatusEmoji}
                     </p>
-                    {/* <p>
-                      {totalSubmissionsCount === 1
-                        ? `${totalSubmissionsCount} Submissão`
-                        : `${totalSubmissionsCount} Submissões`}
-                    </p> */}
                   </div>
                 }
               >

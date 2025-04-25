@@ -117,6 +117,7 @@ DialogFooter.displayName = "DialogFooter";
 const DialogTitle = (
   {
     className,
+    children,
     ...props
   }: ComponentPropsWithoutRef<typeof DialogPrimitive.Title>,
   ref?: any
@@ -128,7 +129,9 @@ const DialogTitle = (
       className
     )}
     {...props}
-  />
+  >
+    {children}
+  </DialogPrimitive.Title>
 );
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 

@@ -6,6 +6,7 @@ import { ThemeTamplate } from "@/components/ui/templates/ThemeTamplate";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns/setDefaultOptions";
 import "./globals.css";
+import { Toast } from "@/components/ui/feedback/Toast";
 
 setDefaultOptions({ locale: ptBR });
 
@@ -30,6 +31,8 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning={true}>
           <body className={twMerge(inter.className, "antialiased")}>
             {children}
+            {/* <AlertModal /> */}
+            <Toast />
           </body>
         </html>
       </ThemeTamplate>
