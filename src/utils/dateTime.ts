@@ -7,11 +7,20 @@ import {
   isBefore,
   startOfDay,
   subDays,
+  isSameDay,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+console.log({
+  now: new Date(),
+  startOfDay: startOfDay(new Date()),
+  endOfDay: endOfDay(new Date()),
+});
+
 type DateFormatsType =
   | "dd/MM/yyyy"
+  | "yyyy-MM-dd"
+  | "yyyy-MM-dd HH:mm:ss"
   | "dd/MM/yyyy - HH:mm"
   | "HH:mm:ss"
   | "dd MMM, yyyy";
@@ -41,4 +50,5 @@ export const DateTime = {
   startOfDay,
   endOfDay,
   isBefore,
+  isSameDay,
 };

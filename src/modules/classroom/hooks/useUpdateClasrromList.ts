@@ -1,7 +1,7 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 
-interface IUpdateClassroomListBody {
+export interface IUpdateClassroomListBody {
   classroomId: string;
   listId: number;
   startDate: string | null;
@@ -9,7 +9,7 @@ interface IUpdateClassroomListBody {
   status: number;
 }
 
-export const useUpdateClasrromLists = () => {
+export const useUpdateClasrromList = () => {
   const { apiBase } = useAxios();
 
   const { mutate: updateClassroomList, isPending: isUpdatingClassroomList } =

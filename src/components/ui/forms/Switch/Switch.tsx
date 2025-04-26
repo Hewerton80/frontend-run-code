@@ -40,6 +40,7 @@ export const Switch = forwardRef(
           className={twMerge(
             "w-9 h-3.5 bg-gray-600 disabled:bg-gray-400 rounded-full relative ",
             "data-[state=checked]:bg-primary/40 data-[state=checked]:disabled:bg-primary/10",
+            "not-disabled:cursor-pointer",
             switchClassName
           )}
           {...restProps}

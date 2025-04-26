@@ -57,6 +57,8 @@ const DialogContent = (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
+      aria-describedby="dialog-desiption"
+      aria-description="dialog-description"
       ref={ref}
       className={twMerge(
         "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg translate-x-[-50%] sm:rounded-lg",
