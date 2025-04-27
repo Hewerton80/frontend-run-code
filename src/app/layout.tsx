@@ -5,10 +5,8 @@ import { Providers } from "@/providers";
 import { ThemeTamplate } from "@/components/ui/templates/ThemeTamplate";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns/setDefaultOptions";
-// import {  } from "date-fns/";
-import "./globals.css";
-import { Toast } from "@/components/ui/feedback/Toast";
 import { Toaster } from "@/components/ui/feedback/Toaster";
+import "./globals.css";
 
 setDefaultOptions({ locale: ptBR });
 
@@ -34,7 +32,6 @@ export default function RootLayout({
           <body className={twMerge(inter.className, "antialiased")}>
             {children}
             {/* <AlertModal /> */}
-            <Toast />
             <Toaster />
           </body>
         </html>

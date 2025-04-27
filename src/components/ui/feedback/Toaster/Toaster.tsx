@@ -16,17 +16,34 @@ const durationToClose = 5000;
 
 const ToastProvider = ToastPrimitives.Provider;
 
+const toastDireationVariant = {
+  "top-right": twMerge(
+    "top-0 right-0",
+    "[&_.root]:data-[state=open]:slide-in-from-top-full"
+  ),
+  "bottom-right": twMerge(
+    "bottom-0 right-0",
+    "[&_.root]:data-[state=open]:slide-in-from-bottom-full"
+  ),
+};
+export type ToastDirection = keyof typeof toastDireationVariant;
+
 const ToastViewport = (
   {
     className,
+    direction = "top-right",
     ...props
-  }: ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>,
+  }: ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport> & {
+    direction?: ToastDirection;
+  },
   ref?: any
 ) => (
   <ToastPrimitives.Viewport
     ref={ref}
     className={twMerge(
-      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      "viewport fixed z-[100] flex max-h-screen w-full flex-col-reverse p-4",
+      "sm:flex-col md:max-w-[420px]",
+      toastDireationVariant[direction],
       className
     )}
     {...props}
@@ -58,9 +75,11 @@ const ToastRoot = (
   {
     className,
     variant = "default",
+    // direction = "top-right",
     ...props
   }: ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & {
     variant?: ToastVariants;
+    // direction?: ToastDirection;
   },
   ref?: any
 ) => {
@@ -68,7 +87,7 @@ const ToastRoot = (
     <ToastPrimitives.Root
       ref={ref}
       className={twMerge(
-        "group pointer-events-auto relative flex w-full items-center justify-between",
+        "root group pointer-events-auto relative flex w-full items-center justify-between",
         "space-x-2 overflow-hidden rounded-md p-4 pr-6 shadow-lg transition-all",
         "data-[swipe=cancel]:translate-x-0",
         "data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)]",
@@ -76,7 +95,6 @@ const ToastRoot = (
         "data-[swipe=move]:transition-none data-[state=open]:animate-in",
         "data-[state=closed]:animate-out data-[swipe=end]:animate-out",
         "data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full",
-        "data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
         toastVariants[variant],
         className
       )}
@@ -119,7 +137,7 @@ const ToastClose = (
     className={twMerge(
       "absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 cursor-pointer",
       "transition-opacity hover:text-foreground focus:opacity-100",
-      "focus:outline-none focus:ring-1 group-hover:opacity-100",
+      "focus:outline-none focus:ring-1 group-hover:opacity-100 mr-0",
       className
     )}
     toast-close=""
@@ -198,47 +216,44 @@ export { ToastProvider };
 
 export const Toaster = () => {
   //   const { state, } = useToast();
-  const { show, variant = "default", closeToast } = useToastStore();
-  const [progress, setProgress] = useState(0);
-
-  const handleCloseToast = useCallback(() => {
-    // setProgress(0);
-    closeToast();
-  }, [closeToast]);
+  const {
+    show,
+    variant = "default",
+    title,
+    description,
+    direction,
+    closeToast,
+  } = useToastStore();
 
   useEffect(() => {
     let timerToClose: NodeJS.Timeout;
-    let animationProgressTime: NodeJS.Timeout;
 
     if (show) {
       timerToClose = setTimeout(() => {
-        handleCloseToast();
+        closeToast();
       }, durationToClose);
-      animationProgressTime = setTimeout(() => setProgress(100), 100);
     }
     return () => {
-      setProgress(0);
       clearTimeout(timerToClose);
-      clearTimeout(animationProgressTime);
     };
-  }, [show, handleCloseToast]);
+  }, [show, closeToast]);
 
   return (
     <>
       <ToastRoot
         variant={variant}
         open={show}
-        onOpenChange={(value) => !value && handleCloseToast()}
+        onOpenChange={(value) => !value && closeToast()}
       >
         <div className="flex flex-col gap-1">
-          <ToastTitle>Title</ToastTitle>
-          <ToastDescription>Description</ToastDescription>
+          <ToastTitle>{title}</ToastTitle>
+          <ToastDescription>{description}</ToastDescription>
         </div>
         <ToastAction altText="Close">Ok</ToastAction>
         <ToastClose />
         <ToastProgress />
       </ToastRoot>
-      <ToastViewport />
+      <ToastViewport direction={direction} />
     </>
   );
 };

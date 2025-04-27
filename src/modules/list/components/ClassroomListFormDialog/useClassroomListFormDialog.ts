@@ -11,6 +11,7 @@ import { useCallback, useEffect } from "react";
 import { DateTime } from "@/utils/dateTime";
 import { useQueryClient } from "@tanstack/react-query";
 import { ClassroomKeys } from "@/modules/classroom/classroomType";
+import { useToast } from "@/hooks/useToast";
 
 export const useClassroomListFormDialog = (
   currentListToEdit: IListProblem | null
@@ -26,7 +27,7 @@ export const useClassroomListFormDialog = (
     clearClassroomListFormStates,
     watchClassroomListForm,
   } = useUpdateclassroomListFormSchema();
-
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const { isUpdatingClassroomList, updateClassroomList } =
@@ -80,12 +81,20 @@ export const useClassroomListFormDialog = (
     (updateClassroomListForm: UpdateClassroomListForm) => {
       const onSuccess = () => {
         clearClassroomListFormStates();
+        toast({
+          title: "Lista atualizada com sucesso!",
+          variant: "success",
+        });
         queryClient.resetQueries({
           queryKey: [ClassroomKeys.Details, currentListToEdit?.classroom?.uuid],
         });
       };
       const onError = () => {
-        console.log("Error updating classroom list");
+        toast({
+          title: "Erro",
+          description: "Erro ao atualizar lista",
+          variant: "danger",
+        });
       };
       const handleClassroomListFormBody = getHandleClassroomListFormBody(
         updateClassroomListForm
@@ -96,6 +105,7 @@ export const useClassroomListFormDialog = (
     [
       currentListToEdit,
       queryClient,
+      toast,
       clearClassroomListFormStates,
       getHandleClassroomListFormBody,
       updateClassroomList,

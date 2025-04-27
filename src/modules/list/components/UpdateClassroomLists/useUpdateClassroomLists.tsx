@@ -8,6 +8,7 @@ import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomBy
 import { useParams, useRouter } from "next/navigation";
 import { useUpdateClasrromLists } from "@/modules/classroom/hooks/useUpdateClasrromLists";
 import { toast } from "react-toastify";
+import { useToast } from "@/hooks/useToast";
 
 export interface IUpdateClassroomList extends IListProblem {
   removed?: boolean;
@@ -17,9 +18,8 @@ export interface IUpdateClassroomList extends IListProblem {
 type ListRecord = Record<string, IUpdateClassroomList>;
 
 export const useUpdateClassroomLists = () => {
-  // const { queryParams, delQueryParams } = useQueryParams<{
-  //   classroomId: string;
-  // }>();
+  const { toast } = useToast();
+
   const params = useParams<{ classroomId: string }>();
   const router = useRouter();
   const { classroom, isLoadingClassroom } = useGetClassroomById(
@@ -128,13 +128,22 @@ export const useUpdateClassroomLists = () => {
       },
       {
         onSuccess: () => {
-          router.push(`/classroom/${classroom?.uuid}/lists`);
+          router.push(`/classroom/${classroom?.uuid}/lists?updated=true`);
           queryClient.resetQueries({
             queryKey: [ClassroomKeys.Details, classroom?.uuid],
           });
-          toast.success("Listas atualizadas com sucesso!");
+          toast({
+            title: "Listas atualizadas com sucesso!",
+            variant: "success",
+          });
         },
-        // onError: () => {
+        onError: () => {
+          toast({
+            title: "Erro",
+            description: "Erro ao atualizar listas",
+            variant: "danger",
+          });
+        },
       }
     );
   };

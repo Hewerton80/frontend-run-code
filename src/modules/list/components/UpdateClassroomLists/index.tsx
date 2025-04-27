@@ -178,16 +178,6 @@ export const UpdateClassroomLists = () => {
             <DataTable
               columns={currentClassroomListsColumns}
               data={classroomListsToAdd || []}
-              // isLoading={isListProblemsLoading}
-              // isError={!!listProblemsError}
-              // onTryAgainIfError={refetchListProblems}
-              // paginationConfig={{
-              //   currentPage: listProblems?.currentPage || 1,
-              //   totalPages: listProblems?.lastPage || 1,
-              //   perPage: listProblems?.perPage || 25,
-              //   totalRecords: listProblems?.total || 1,
-              //   onChangePage: goToPage,
-              // }}
             />
           </div>
         </div>
@@ -195,7 +185,6 @@ export const UpdateClassroomLists = () => {
           {/* <p>Selecionado(s): {quantitySelected}</p> */}
           <Button
             fullWidth
-            // disabled={!quantitySelected}
             onClick={() => updateClassroomLists()}
             isLoading={isUpdatingClassroomLists}
           >

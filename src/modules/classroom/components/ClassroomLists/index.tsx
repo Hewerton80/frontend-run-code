@@ -4,23 +4,23 @@ import { useParams } from "next/navigation";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { IconButton } from "@/components/ui/buttons/IconButton";
-import { BsThreeDots } from "react-icons/bs";
-import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { FaRegListAlt } from "react-icons/fa";
 import { Button } from "@/components/ui/buttons/Button";
-import { useToast } from "@/hooks/useToast";
+import { useEffect } from "react";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
-
   const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
     useGetClassroomById(params?.classroomId);
 
   const { loggedUser } = useAuth();
 
-  const { toast } = useToast();
+  // useEffect(() => {
+
+  //     refetchClassroom();
+
+  // }, [refetchClassroom]);
 
   return (
     <>
@@ -45,20 +45,7 @@ export function ClassroomLists() {
                   href={`/classroom/${classroom?.uuid}/lists/update`}
                 >
                   Atualizar listas
-                </ProgressLink>{" "}
-              </Button>
-              <Button onClick={() => toast()}>show Toast</Button>
-              <Button
-                variantStyle="success"
-                onClick={() => toast({ variant: "success" })}
-              >
-                show Toast
-              </Button>
-              <Button
-                variantStyle="danger"
-                onClick={() => toast({ variant: "danger" })}
-              >
-                show Toast
+                </ProgressLink>
               </Button>
             </>
           )}
