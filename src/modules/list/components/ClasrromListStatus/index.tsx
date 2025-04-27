@@ -15,8 +15,42 @@ export const ClasrromListStatus = ({ list }: ClasrromListStatusProps) => {
   const startDate = list.startDate;
   const endDate = list.endDate;
 
-  const datesInfo = useMemo(() => {
-    return (
+  const hasNotRangeDates = !startDate && !endDate;
+
+  const badgeStatusInfoElement = useMemo(() => {
+    if (list?.status === 1) {
+      return (
+        <>
+          <Badge variant="info">Não visível para os alunos</Badge>
+        </>
+      );
+    }
+    if (hasNotRangeDates || alreadyStarted) {
+      return (
+        <>
+          <Badge variant="success">Aberta</Badge>
+        </>
+      );
+    }
+    if (didNotStart) {
+      return (
+        <>
+          <Badge variant="warning">Não iniciada</Badge>
+        </>
+      );
+    }
+    if (alreadyFinished) {
+      return (
+        <>
+          <Badge variant="dark">Finalizada</Badge>
+        </>
+      );
+    }
+  }, [alreadyStarted, didNotStart, alreadyFinished, hasNotRangeDates, list]);
+
+  return (
+    <div className="flex items-center gap-2">
+      {badgeStatusInfoElement}
       <span className="text-xs text-muted-foreground line-clamp-1">
         {[
           startDate
@@ -28,51 +62,6 @@ export const ClasrromListStatus = ({ list }: ClasrromListStatusProps) => {
           .filter((value) => !!value)
           .join(" - ")}
       </span>
-    );
-  }, [startDate, endDate]);
-
-  const badgeStatusInfoElement = useMemo(() => {
-    if (list?.status === 1) {
-      return (
-        <>
-          <Badge variant="info">Não visível para os alunos</Badge>
-          {datesInfo}
-        </>
-      );
-    }
-    if ((!startDate && !endDate) || alreadyStarted) {
-      return (
-        <>
-          <Badge variant="success">Aberta</Badge>
-          {datesInfo}
-        </>
-      );
-    }
-    if (didNotStart) {
-      return (
-        <>
-          <Badge variant="warning">Não iniciada</Badge>
-          {datesInfo}
-        </>
-      );
-    }
-    if (alreadyFinished) {
-      return (
-        <>
-          <Badge variant="dark">Finalizada</Badge>
-          {datesInfo}
-        </>
-      );
-    }
-  }, [
-    alreadyStarted,
-    startDate,
-    endDate,
-    didNotStart,
-    alreadyFinished,
-    datesInfo,
-    list,
-  ]);
-
-  return <>{badgeStatusInfoElement}</>;
+    </div>
+  );
 };

@@ -1,12 +1,6 @@
 import { ComponentPropsWithoutRef } from "react";
-// import * as Dialog from "@radix-ui/react-dialog";
 import { twMerge } from "tailwind-merge";
 import { FaTimes } from "react-icons/fa";
-import {
-  Card,
-  CardBodyProps,
-  CardFooterProps,
-} from "@/components/ui/cards/Card";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 const sizes = {

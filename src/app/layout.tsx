@@ -8,6 +8,7 @@ import { setDefaultOptions } from "date-fns/setDefaultOptions";
 // import {  } from "date-fns/";
 import "./globals.css";
 import { Toast } from "@/components/ui/feedback/Toast";
+import { Toaster } from "@/components/ui/feedback/Toaster";
 
 setDefaultOptions({ locale: ptBR });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
             {children}
             {/* <AlertModal /> */}
             <Toast />
+            <Toaster />
           </body>
         </html>
       </ThemeTamplate>

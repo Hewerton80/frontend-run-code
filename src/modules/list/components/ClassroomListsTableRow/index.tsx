@@ -76,9 +76,7 @@ export const ClassroomListsTableRow = ({
           <DivTable.Data>
             <div className="flex flex-col gap-1">
               <p className="line-clamp-1">{list?.title}</p>
-              <div className="flex items-center gap-2">
-                <ClasrromListStatus list={list} />
-              </div>
+              <ClasrromListStatus list={list} />
             </div>
           </DivTable.Data>
           {loggedUser?.role === 1 && (

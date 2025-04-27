@@ -32,9 +32,9 @@ export const DateTime = {
     return format(new Date(date), formatStr, { locale: ptBR });
   },
   isBetween: (start: DateType, end: DateType, data: DateType) => {
-    const startDate = startOfDay(new Date(start));
-    const endDate = endOfDay(new Date(end));
-    const dateToCheck = startOfDay(new Date(data));
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const dateToCheck = new Date(data);
 
     return isAfter(dateToCheck, startDate) && isBefore(dateToCheck, endDate);
   },

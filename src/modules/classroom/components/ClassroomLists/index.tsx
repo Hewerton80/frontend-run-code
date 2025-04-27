@@ -10,6 +10,7 @@ import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { FaRegListAlt } from "react-icons/fa";
 import { Button } from "@/components/ui/buttons/Button";
+import { useToast } from "@/hooks/useToast";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
@@ -18,6 +19,8 @@ export function ClassroomLists() {
     useGetClassroomById(params?.classroomId);
 
   const { loggedUser } = useAuth();
+
+  const { toast } = useToast();
 
   return (
     <>
@@ -44,24 +47,19 @@ export function ClassroomLists() {
                   Atualizar listas
                 </ProgressLink>{" "}
               </Button>
-              {/* <Dropdown.Root>
-                <Dropdown.Trigger
-                  disabled={!!errorClassroom || !classroom}
-                  asChild
-                >
-                  <IconButton variantStyle="secondary" icon={<BsThreeDots />} />
-                </Dropdown.Trigger>
-                <Dropdown.Content>
-                  <Dropdown.Item asChild>
-                    <ProgressLink
-                      href={`/classroom/${classroom?.uuid}/lists/update`}
-                    >
-                      <FaRegListAlt className="mr-2" />
-                      Atualizar listas
-                    </ProgressLink>
-                  </Dropdown.Item>
-                </Dropdown.Content>
-              </Dropdown.Root> */}
+              <Button onClick={() => toast()}>show Toast</Button>
+              <Button
+                variantStyle="success"
+                onClick={() => toast({ variant: "success" })}
+              >
+                show Toast
+              </Button>
+              <Button
+                variantStyle="danger"
+                onClick={() => toast({ variant: "danger" })}
+              >
+                show Toast
+              </Button>
             </>
           )}
         </div>

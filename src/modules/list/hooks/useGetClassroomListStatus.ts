@@ -17,11 +17,7 @@ export const useGetClassroomListStatus = (list: IListProblem) => {
       endDate &&
       DateTime.isValid(endDate)
     ) {
-      return DateTime.isBetween(
-        DateTime.startOfDay(new Date(startDate)),
-        DateTime.endOfDay(new Date(endDate)),
-        now
-      );
+      return DateTime.isBetween(startDate, endDate, now);
     }
     return false;
   }, [startDate, endDate]);
@@ -29,7 +25,7 @@ export const useGetClassroomListStatus = (list: IListProblem) => {
   const didNotStart = useMemo(() => {
     const now = new Date();
     if (startDate && DateTime.isValid(startDate)) {
-      return DateTime.isBefore(now, DateTime.startOfDay(new Date(startDate)));
+      return DateTime.isBefore(now, startDate);
     }
     return false;
   }, [startDate]);
@@ -37,7 +33,7 @@ export const useGetClassroomListStatus = (list: IListProblem) => {
   const alreadyFinished = useMemo(() => {
     const now = new Date();
     if (endDate && DateTime.isValid(endDate)) {
-      return DateTime.isAfter(now, DateTime.endOfDay(endDate));
+      return DateTime.isAfter(now, endDate);
     }
     return false;
   }, [endDate]);
