@@ -12,7 +12,6 @@ export interface IUser {
   email?: string;
   avatarUrl?: string;
   avatarBgColor?: string;
-  avatarInitials?: string;
   avatarFontColor?: string;
   role: number;
   createdAt?: string;

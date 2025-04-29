@@ -18,7 +18,7 @@ export const GroupedUserInfo = ({ user, className }: IGroupedUserInfoProps) => {
         }
         bgColor={user?.avatarBgColor}
         color={user?.avatarFontColor}
-        nameInities={user?.avatarInitials}
+        name={user?.name}
         size="sm"
       />
       <div className="grid flex-1 text-left text-sm leading-tight">

@@ -7,23 +7,18 @@ import { useAuth } from "@/modules/auth/hooks/useAuth";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { FaRegListAlt } from "react-icons/fa";
 import { Button } from "@/components/ui/buttons/Button";
-import { useEffect } from "react";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
+
   const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
     useGetClassroomById(params?.classroomId);
 
   const { loggedUser } = useAuth();
 
-  // useEffect(() => {
-
-  //     refetchClassroom();
-
-  // }, [refetchClassroom]);
-
   return (
     <>
+    
       <div className="flex flex-col w-full gap-4 p-8">
         <Breadcrumbs
           isLoading={isLoadingClassroom}
@@ -51,7 +46,7 @@ export function ClassroomLists() {
           )}
         </div>
         <ClassroomListsTable
-          data={classroom?.listsProblems?.map((list) => ({
+          data={classroom?.lists?.map((list) => ({
             ...list,
             classroom,
           }))}

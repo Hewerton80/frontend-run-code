@@ -5,14 +5,14 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { ProblemCard } from "@/modules/problem/components/ProblemCard";
 import { useState } from "react";
 import { getRange } from "@/utils/getRange";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useGetProblemsByClassroomList } from "@/modules/problem/hooks/useGetProblemsByClassroomList";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { DateTime } from "@/utils/dateTime";
 
 interface ListProblemAcoordionProps {
-  data: IListProblem;
+  data: IList;
 }
 
 export function ListProblemAcoordion({

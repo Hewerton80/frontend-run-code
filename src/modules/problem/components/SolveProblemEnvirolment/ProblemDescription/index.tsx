@@ -25,11 +25,11 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
       ),
     },
     {
-      field: "output",
+      field: "expectedOutput",
       label: "Exmplo de saída",
       onParse: (test) => (
         <div className="font-[monospace] whitespace-pre">
-          {parseStringToHtmlFormat(test?.output)}
+          {parseStringToHtmlFormat(test?.expectedOutput)}
         </div>
       ),
     },

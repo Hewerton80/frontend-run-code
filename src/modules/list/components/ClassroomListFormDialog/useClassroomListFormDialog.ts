@@ -6,16 +6,14 @@ import {
   UpdateClassroomListForm,
   useUpdateclassroomListFormSchema,
 } from "../../schemas/updateclassroomListFormSchema";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useCallback, useEffect } from "react";
 import { DateTime } from "@/utils/dateTime";
 import { useQueryClient } from "@tanstack/react-query";
 import { ClassroomKeys } from "@/modules/classroom/classroomType";
 import { useToast } from "@/hooks/useToast";
 
-export const useClassroomListFormDialog = (
-  currentListToEdit: IListProblem | null
-) => {
+export const useClassroomListFormDialog = (currentListToEdit: IList | null) => {
   const {
     classroomListFormState,
     classroomListFormControl,

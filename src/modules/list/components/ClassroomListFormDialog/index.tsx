@@ -1,5 +1,5 @@
 import { Dialog } from "@/components/ui/overlay/Dialog";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { Switch } from "@/components/ui/forms/Switch";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { Checkbox } from "@/components/ui/forms/Checkbox";
@@ -9,7 +9,7 @@ import { Controller } from "react-hook-form";
 
 interface ClassroomListFormDialogProps {
   onClose: () => void;
-  data: IListProblem | null;
+  data: IList | null;
 }
 
 export const ClassroomListFormDialog = ({

@@ -1,9 +1,9 @@
 import { DateTime } from "@/utils/dateTime";
-import { IListProblem } from "../listProblemTypes";
+import { IList } from "../listProblemTypes";
 import { useMemo } from "react";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 
-export const useGetClassroomListStatus = (list: IListProblem) => {
+export const useGetClassroomListStatus = (list: IList) => {
   const startDate = list.startDate;
   const endDate = list.endDate;
 

@@ -1,12 +1,12 @@
 import { IClassroom } from "../classroom/classroomType";
-import { IListProblem } from "../list/listProblemTypes";
+import { IList } from "../list/listProblemTypes";
 import { ISubmission } from "../submission/submissionType";
 import { IUser } from "../user/userTypets";
 
 export interface IProblemTest {
   id: string;
   input: string;
-  output: string;
+  expectedOutput: string;
 }
 export const ProblemSolveStatusEnum = {
   1: "Resolvido",
@@ -22,7 +22,7 @@ export interface IProblem {
   testCases?: IProblemTest[];
   difficulty?: string;
   classroom?: IClassroom;
-  listProblem?: IListProblem;
+  listProblem?: IList;
   classroomId?: string;
   listId?: string;
   status?: number;

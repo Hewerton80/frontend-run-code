@@ -1,5 +1,5 @@
 "use client";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useCallback, useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
@@ -19,7 +19,7 @@ import { useGetClassroomListStatus } from "../../hooks/useGetClassroomListStatus
 import { ClasrromListStatus } from "../ClasrromListStatus";
 
 interface ClassroomListsTableRowProps {
-  list: IListProblem;
+  list: IList;
   onOpenEditModal?: () => void;
 }
 

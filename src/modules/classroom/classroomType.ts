@@ -1,4 +1,4 @@
-import { IListProblem } from "../list/listProblemTypes";
+import { IList } from "../list/listProblemTypes";
 import { IUser } from "../user/userTypets";
 
 export const StatusClassroomEnum: Record<number, string> = {
@@ -10,7 +10,7 @@ export interface IClassroom {
   uuid?: string;
   name?: string;
   description?: string;
-  listsProblems?: IListProblem[];
+  lists?: IList[];
   author?: IUser;
   status?: number;
   createdAt?: string;

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 
 export const parseStringToHtmlFormat = (text: string) => {
-  return text
+  return (text || "")
     .toString()
     .split("")
     .map((char, index) => {

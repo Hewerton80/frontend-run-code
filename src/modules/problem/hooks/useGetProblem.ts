@@ -23,7 +23,7 @@ export const useGetProblem = ({
   } = useQuery({
     queryKey: [ProblemQueryKey.PROBLEM, problemId, classroomId, listId],
     queryFn: async () => {
-      let url = `/problem/${problemId}`;
+      let url = `/exercise/${problemId}`;
       if (classroomId && listId) {
         url += `/classroom/${classroomId}/list/${listId}`;
       }

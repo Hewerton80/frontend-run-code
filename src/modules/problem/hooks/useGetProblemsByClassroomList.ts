@@ -20,7 +20,7 @@ export const useGetProblemsByClassroomList = ({
     queryKey: [ProblemQueryKey.PROBLEMS_BY_CLASSROOM, classroomId, listId],
     queryFn: async () => {
       const { data } = await apiBase.get<IProblem[]>(
-        `/problem/classroom/${classroomId}/list/${listId}`
+        `/exercise/classroom/${classroomId}/list/${listId}`
       );
       return data || ([] as IProblem[]);
     },

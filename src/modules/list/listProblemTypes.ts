@@ -1,7 +1,7 @@
 import { IClassroom } from "../classroom/classroomType";
 import { IUser } from "../user/userTypets";
 
-export interface IListProblem {
+export interface IList {
   id?: number;
   uuid?: string;
   title: string;

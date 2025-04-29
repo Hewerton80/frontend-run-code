@@ -1,11 +1,11 @@
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { useGetClassroomListStatus } from "../../hooks/useGetClassroomListStatus";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { DateTime } from "@/utils/dateTime";
 import { useMemo } from "react";
 
 interface ClasrromListStatusProps {
-  list: IListProblem;
+  list: IList;
 }
 
 export const ClasrromListStatus = ({ list }: ClasrromListStatusProps) => {

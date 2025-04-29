@@ -2,7 +2,7 @@ import { ClassroomKeys } from "@/modules/classroom/classroomType";
 import { IGetListProblemsParams, useGetLists } from "../../hooks/useGetLists";
 import { usePagination } from "@/hooks/usePagination";
 import { useQueryClient } from "@tanstack/react-query";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useMemo, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { useParams, useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ import { useUpdateClasrromLists } from "@/modules/classroom/hooks/useUpdateClasr
 import { toast } from "react-toastify";
 import { useToast } from "@/hooks/useToast";
 
-export interface IUpdateClassroomList extends IListProblem {
+export interface IUpdateClassroomList extends IList {
   removed?: boolean;
   isVisible?: boolean;
 }
@@ -32,7 +32,7 @@ export const useUpdateClassroomLists = () => {
 
   const listsParams: IGetListProblemsParams = {
     ...paginationParams,
-    // notIn: classroom?.listsProblems?.map((list) => list.uuid).join(","),
+    // notIn: classroom?.lists?.map((list) => list.uuid).join(","),
   };
 
   const {
@@ -48,7 +48,7 @@ export const useUpdateClassroomLists = () => {
   const [classroomListsToAddRecords, setClassroomListsToAddRecords] =
     useState<ListRecord>(() => {
       const result = {} as ListRecord;
-      classroom?.listsProblems?.forEach((list) => {
+      classroom?.lists?.forEach((list) => {
         result[list?.uuid!] = {
           ...list,
           removed: false,
@@ -64,7 +64,7 @@ export const useUpdateClassroomLists = () => {
 
   const currentClassroomListsToAddRecords = useMemo<ListRecord>(() => {
     const result = {} as ListRecord;
-    classroom?.listsProblems?.forEach((list) => {
+    classroom?.lists?.forEach((list) => {
       result[list?.uuid!] = list;
     });
     return result;
@@ -128,7 +128,7 @@ export const useUpdateClassroomLists = () => {
       },
       {
         onSuccess: () => {
-          router.push(`/classroom/${classroom?.uuid}/lists?updated=true`);
+          router.push(`/classroom/${classroom?.uuid}/lists`);
           queryClient.resetQueries({
             queryKey: [ClassroomKeys.Details, classroom?.uuid],
           });

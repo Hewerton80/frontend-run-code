@@ -1,4 +1,5 @@
 "use client";
+import { getNameInitial } from "@/utils/getNameInitials";
 import * as RadixAvatar from "@radix-ui/react-avatar";
 import { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
@@ -22,35 +23,23 @@ const avatarSize = {
 export interface AvatarProps extends ComponentProps<typeof RadixAvatar.Root> {
   src?: string;
   alt?: string;
-  nameInities?: string;
+  // nameInities?: string;
   bgColor?: string;
   color?: string;
   size?: keyof typeof avatarSize;
+  name?: string;
 }
 
 export function Avatar({
   src,
   alt,
-  nameInities = "",
+  name = "",
   bgColor = colors.white,
   color = colors.white,
   className,
   size = "lg",
   ...restProps
 }: AvatarProps) {
-  // const nameInities = useMemo(() => {
-  //   if (!username) return "";
-  //   const names = username.split(" ");
-
-  //   if (names.length >= 2) {
-  //     const firstLetterFirstName = names[0][0];
-  //     const firstLetterSecondName = names[1][0];
-  //     return `${firstLetterFirstName}${firstLetterSecondName}`;
-  //   } else if (names.length === 1) {
-  //     const firstLetterSingleName = names[0][0];
-  //     return `${firstLetterSingleName}`;
-  //   }
-  // }, [username]);
   return (
     <RadixAvatar.Root
       className={twMerge(
@@ -75,7 +64,7 @@ export function Avatar({
         )}
         style={{ backgroundColor: bgColor, color }}
       >
-        {nameInities}
+        {getNameInitial(name)}
       </RadixAvatar.Fallback>
     </RadixAvatar.Root>
   );

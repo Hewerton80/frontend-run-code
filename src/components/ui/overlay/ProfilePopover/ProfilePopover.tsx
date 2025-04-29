@@ -30,7 +30,7 @@ export function ProfilePopover() {
                 }
                 bgColor={loggedUser?.avatarBgColor}
                 color={loggedUser?.avatarFontColor}
-                nameInities={loggedUser?.avatarInitials}
+                name={loggedUser?.name}
                 size="md"
               />
               <div className="flex flex-col">

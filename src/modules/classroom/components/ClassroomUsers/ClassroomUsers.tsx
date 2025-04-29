@@ -34,7 +34,7 @@ export function ClassroomUsers() {
             }
             bgColor={user?.avatarBgColor}
             color={user?.avatarFontColor}
-            nameInities={user?.avatarInitials}
+            name={user?.name}
             size="sm"
           />
           <span className="line-clamp-1">

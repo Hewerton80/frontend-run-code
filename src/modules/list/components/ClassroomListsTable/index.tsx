@@ -1,5 +1,5 @@
 "use client";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
@@ -17,7 +17,7 @@ import { useClassroomListsTable } from "./useClassroomListsTable";
 import { ClassroomListFormDialog } from "../ClassroomListFormDialog";
 
 interface ClassroomListsTableProps {
-  data?: IListProblem[];
+  data?: IList[];
   isLoading?: boolean;
   error?: string;
   onTryAgainIfError?: () => void;

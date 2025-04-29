@@ -5,7 +5,7 @@ import {
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useTableLists } from "./useTableLists";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { DateTime } from "@/utils/dateTime";
@@ -20,7 +20,7 @@ export const ListsTable = () => {
     refetchListProblems,
   } = useTableLists();
 
-  const columns: IColmunDataTable<IListProblem>[] = [
+  const columns: IColmunDataTable<IList>[] = [
     {
       field: "title",
       label: "Título",

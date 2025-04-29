@@ -1,13 +1,13 @@
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { IListProblem } from "../../listProblemTypes";
+import { IList } from "../../listProblemTypes";
 import { useCallback, useState } from "react";
 
 export const useClassroomListsTable = () => {
   const { loggedUser } = useAuth();
 
-  const [listToEdit, setListToEdit] = useState<IListProblem | null>(null);
+  const [listToEdit, setListToEdit] = useState<IList | null>(null);
 
-  const openDialog = (list: IListProblem) => {
+  const openDialog = (list: IList) => {
     setListToEdit(list);
   };
 
