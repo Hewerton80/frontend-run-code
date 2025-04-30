@@ -4,8 +4,8 @@ import {
   DataTable,
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
-import { useProblems } from "./useProblems";
-import { IProblem } from "../../problemTypes";
+import { useExercissesTable } from "./useExercissesTable";
+import { IExercise } from "../../exerciseTypes";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { useMemo } from "react";
@@ -14,29 +14,31 @@ import { IconButton } from "@/components/ui/buttons/IconButton";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 
-export const ProblemsTable = () => {
+export const ExercisesTable = () => {
   const { loggedUser } = useAuth();
 
   const {
-    isProblemsLoading,
-    problems,
-    problemsError,
+    isExercisesLoading,
+    exercises,
+    exercisesError,
     goToPage,
-    refetchProblems,
-  } = useProblems();
+    refetchExercises,
+  } = useExercissesTable();
 
-  const columns = useMemo<IColmunDataTable<IProblem>[]>(() => {
-    const resultColumns: IColmunDataTable<IProblem>[] = [
+  const columns = useMemo<IColmunDataTable<IExercise>[]>(() => {
+    const resultColumns: IColmunDataTable<IExercise>[] = [
       {
         field: "title",
         label: "Título",
-        onParse: (problem) => <p className="line-clamp-1">{problem?.title}</p>,
+        onParse: (exercise) => (
+          <p className="line-clamp-1">{exercise?.title}</p>
+        ),
       },
       {
         field: "category",
         label: "Categoria",
-        onParse: (problem) => (
-          <p className="line-clamp-1">{problem?.category?.name}</p>
+        onParse: (exercise) => (
+          <p className="line-clamp-1">{exercise?.category?.name}</p>
         ),
       },
       {
@@ -46,7 +48,7 @@ export const ProblemsTable = () => {
       {
         field: "author",
         label: "Autor",
-        onParse: (problem) => <GroupedUserInfo user={problem?.author!} />,
+        onParse: (exercise) => <GroupedUserInfo user={exercise?.author!} />,
       },
     ];
 
@@ -67,10 +69,10 @@ export const ProblemsTable = () => {
       resultColumns.push({
         field: "actions",
         label: "",
-        onParse: (problem) => (
+        onParse: (exercise) => (
           <div className="flex justify-end">
             <Button variantStyle="dark-ghost" asChild>
-              <ProgressLink href={`/problems/${problem?.uuid}`}>
+              <ProgressLink href={`/exercises/${exercise?.uuid}`}>
                 View
               </ProgressLink>
             </Button>
@@ -84,20 +86,20 @@ export const ProblemsTable = () => {
   return (
     <div className="flex flex-col gap-4 w-full p-8">
       <Breadcrumbs
-        isLoading={isProblemsLoading}
-        items={[{ label: "🧩 Problemas" }]}
+        isLoading={isExercisesLoading}
+        items={[{ label: "🧩 Exerciseas" }]}
       />
       <DataTable
         columns={columns}
-        data={problems?.data || []}
-        isLoading={isProblemsLoading}
-        isError={!!problemsError}
-        onTryAgainIfError={refetchProblems}
+        data={exercises?.data || []}
+        isLoading={isExercisesLoading}
+        isError={!!exercisesError}
+        onTryAgainIfError={refetchExercises}
         paginationConfig={{
-          currentPage: problems?.currentPage || 1,
-          totalPages: problems?.lastPage || 1,
-          perPage: problems?.perPage || 25,
-          totalRecords: problems?.total || 1,
+          currentPage: exercises?.currentPage || 1,
+          totalPages: exercises?.lastPage || 1,
+          perPage: exercises?.perPage || 25,
+          totalRecords: exercises?.total || 1,
           onChangePage: goToPage,
         }}
       />

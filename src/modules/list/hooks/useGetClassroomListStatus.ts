@@ -1,5 +1,5 @@
 import { DateTime } from "@/utils/dateTime";
-import { IList } from "../listProblemTypes";
+import { IList } from "../listTypes";
 import { useMemo } from "react";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 

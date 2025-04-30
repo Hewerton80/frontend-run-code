@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/buttons/Button";
-import { IProblem } from "@/modules/problem/problemTypes";
+import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IDE } from "@/modules/submission/components/IDE";
-import { useIDEProblem } from "./useIDEProblem";
+import { useIDEExercise } from "./useIDEExercises";
 import {
   DataTable,
   IColmunDataTable,
@@ -13,12 +13,12 @@ import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 
-interface IDEProblemProps {
-  problem: IProblem;
+interface IDEExerciseProps {
+  exercise: IExercise;
 }
 
-export const IDEProblem = ({ problem }: IDEProblemProps) => {
-  // console.log(problem);
+export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
+  // console.log(exercise);
   const {
     sourceCode,
     isSubmitting,
@@ -26,7 +26,7 @@ export const IDEProblem = ({ problem }: IDEProblemProps) => {
     submitResponse,
     submitCode,
     changeSourceCode,
-  } = useIDEProblem(problem);
+  } = useIDEExercise(exercise);
 
   const responseColumns: IColmunDataTable<ResultSubmissionCode>[] = [
     {

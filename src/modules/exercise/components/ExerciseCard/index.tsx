@@ -1,29 +1,31 @@
 import { Card } from "@/components/ui/cards/Card";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { twMerge } from "tailwind-merge";
-import { IProblem } from "../../problemTypes";
+import { IExercise } from "../../exerciseTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 
-interface ProblemCardProps {
-  data: IProblem;
+interface ExerciseCardProps {
+  data: IExercise;
 }
 
-const problemSolveStatusEmojis: Record<number, { icon: string; name: string }> =
-  {
-    1: { icon: "✅", name: "Resolvida" },
-    2: { icon: "❌", name: "Errada" },
-    3: { icon: "🕒", name: "Aguardando submissão" },
-  };
+const exerciseSolveStatusEmojis: Record<
+  number,
+  { icon: string; name: string }
+> = {
+  1: { icon: "✅", name: "Resolvida" },
+  2: { icon: "❌", name: "Errada" },
+  3: { icon: "🕒", name: "Aguardando submissão" },
+};
 
-export function ProblemCard({ data: problem }: ProblemCardProps) {
+export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
   const { loggedUser } = useAuth();
-  const status = problem?.status as number;
+  const status = exercise?.status as number;
 
-  const solveStatusEmoji = problemSolveStatusEmojis?.[status]?.icon;
+  const solveStatusEmoji = exerciseSolveStatusEmojis?.[status]?.icon;
 
-  const solveStatusName = problemSolveStatusEmojis?.[status]?.name;
+  const solveStatusName = exerciseSolveStatusEmojis?.[status]?.name;
 
   return (
     <Card.Root
@@ -36,13 +38,13 @@ export function ProblemCard({ data: problem }: ProblemCardProps) {
       )}
     >
       <ProgressLink
-        href={`/classroom/${problem?.classroom?.uuid}/lists/${problem?.listProblem?.uuid}/problem/${problem?.uuid}`}
+        href={`/classroom/${exercise?.classroom?.uuid}/lists/${exercise?.listExercise?.uuid}/exercise/${exercise?.uuid}`}
       >
         <div className="flex gap-1 ">
           <div className="flex flex-col">
-            <Tooltip align="start" textContent={problem?.title}>
+            <Tooltip align="start" textContent={exercise?.title}>
               <h4 className="text-lg font-bold text-white mb-4 line-clamp-1">
-                {problem?.title}
+                {exercise?.title}
               </h4>
             </Tooltip>
             {loggedUser?.role === 1 && solveStatusEmoji && (

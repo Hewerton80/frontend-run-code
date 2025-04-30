@@ -5,7 +5,7 @@ import {
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { useTableLists } from "./useTableLists";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { DateTime } from "@/utils/dateTime";
@@ -13,33 +13,33 @@ import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 
 export const ListsTable = () => {
   const {
-    isListProblemsLoading,
-    listProblems,
-    listProblemsError,
+    isListExercisesLoading,
+    listExercises,
+    listExercisesError,
     goToPage,
-    refetchListProblems,
+    refetchListExercises,
   } = useTableLists();
 
   const columns: IColmunDataTable<IList>[] = [
     {
       field: "title",
       label: "Título",
-      onParse: (listProblems) => (
-        <p className="line-clamp-1">{listProblems?.title}</p>
+      onParse: (listExercises) => (
+        <p className="line-clamp-1">{listExercises?.title}</p>
       ),
     },
     {
       field: "author",
       label: "Autor",
-      onParse: (listProblems) => (
-        <GroupedUserInfo user={listProblems?.author!} />
+      onParse: (listExercises) => (
+        <GroupedUserInfo user={listExercises?.author!} />
       ),
     },
     {
       field: "createdAt",
       label: "Criado em",
-      onParse: (listProblems) => (
-        <>{DateTime.format(listProblems?.createdAt!, "dd/MM/yyyy - HH:mm")}</>
+      onParse: (listExercises) => (
+        <>{DateTime.format(listExercises?.createdAt!, "dd/MM/yyyy - HH:mm")}</>
       ),
     },
   ];
@@ -47,21 +47,21 @@ export const ListsTable = () => {
   return (
     <div className="flex flex-col gap-4 w-full p-8">
       <Breadcrumbs
-        isLoading={isListProblemsLoading}
+        isLoading={isListExercisesLoading}
         items={[{ label: "📝 Listas" }]}
       />
       <div>
         <DataTable
           columns={columns}
-          data={listProblems?.data || []}
-          isLoading={isListProblemsLoading}
-          isError={!!listProblemsError}
-          onTryAgainIfError={refetchListProblems}
+          data={listExercises?.data || []}
+          isLoading={isListExercisesLoading}
+          isError={!!listExercisesError}
+          onTryAgainIfError={refetchListExercises}
           paginationConfig={{
-            currentPage: listProblems?.currentPage || 1,
-            totalPages: listProblems?.lastPage || 1,
-            perPage: listProblems?.perPage || 25,
-            totalRecords: listProblems?.total || 1,
+            currentPage: listExercises?.currentPage || 1,
+            totalPages: listExercises?.lastPage || 1,
+            perPage: listExercises?.perPage || 25,
+            totalRecords: listExercises?.total || 1,
             onChangePage: goToPage,
           }}
         />

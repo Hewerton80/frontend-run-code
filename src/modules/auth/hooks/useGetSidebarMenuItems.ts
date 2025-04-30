@@ -38,16 +38,16 @@ export const useGetSidebarMenuItems = () => {
           basePath: "classroom-list",
         },
         {
-          title: "Problemas",
+          title: "Exerciseas",
           icon: "🧩",
-          link: "/problems",
-          basePath: "problems",
+          link: "/exercises",
+          basePath: "exercises",
         },
         {
           title: "Listas",
           icon: "📝",
           link: "/lists",
-          basePath: "listProblems",
+          basePath: "listExercises",
         },
       ];
     } else {

@@ -19,8 +19,7 @@ export const HomeHeader = () => {
         </h1>
         <Hello className="text-4xl " />
       </div>
-      Acesse{" "}
-      <TypeWriterText text="suas turmas e resolva problemas de programação!" />
+      Acesse <TypeWriterText text="suas turmas e resolva exercícios!" />
     </div>
   );
 };

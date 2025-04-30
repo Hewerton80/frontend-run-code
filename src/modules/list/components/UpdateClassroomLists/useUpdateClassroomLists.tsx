@@ -1,8 +1,8 @@
 import { ClassroomKeys } from "@/modules/classroom/classroomType";
-import { IGetListProblemsParams, useGetLists } from "../../hooks/useGetLists";
+import { IGetListExercisesParams, useGetLists } from "../../hooks/useGetLists";
 import { usePagination } from "@/hooks/usePagination";
 import { useQueryClient } from "@tanstack/react-query";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { useMemo, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { useParams, useRouter } from "next/navigation";
@@ -30,16 +30,16 @@ export const useUpdateClassroomLists = () => {
 
   const { goToPage, paginationParams } = usePagination();
 
-  const listsParams: IGetListProblemsParams = {
+  const listsParams: IGetListExercisesParams = {
     ...paginationParams,
     // notIn: classroom?.lists?.map((list) => list.uuid).join(","),
   };
 
   const {
-    refetchListProblems,
-    listProblems,
-    isListProblemsLoading,
-    listProblemsError,
+    refetchListExercises,
+    listExercises,
+    isListExercisesLoading,
+    listExercisesError,
   } = useGetLists(listsParams);
 
   const { updateClassroomLists, isUpdatingClassroomLists } =
@@ -72,11 +72,11 @@ export const useUpdateClassroomLists = () => {
 
   const ListsRecords = useMemo<ListRecord>(() => {
     const result = {} as ListRecord;
-    listProblems?.data?.forEach((list) => {
+    listExercises?.data?.forEach((list) => {
       result[list?.uuid!] = list;
     });
     return result;
-  }, [listProblems]);
+  }, [listExercises]);
 
   const addListToClassroom = (uuid: string) => {
     const list = { ...ListsRecords?.[uuid] };
@@ -159,9 +159,9 @@ export const useUpdateClassroomLists = () => {
   };
 
   return {
-    isListProblemsLoading,
-    listProblems,
-    listProblemsError,
+    isListExercisesLoading,
+    listExercises,
+    listExercisesError,
     classroom,
     classroomListsToAddRecords,
     isLoadingClassroom,
@@ -173,6 +173,6 @@ export const useUpdateClassroomLists = () => {
     addListToClassroom,
     removeListToClassroom,
     goToPage,
-    refetchListProblems,
+    refetchListExercises,
   };
 };

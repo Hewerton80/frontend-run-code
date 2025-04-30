@@ -1,5 +1,5 @@
 "use client";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { useCallback, useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
@@ -7,8 +7,8 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
 import { BsChevronDown, BsThreeDots } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
-import { useGetProblemsByClassroomList } from "@/modules/problem/hooks/useGetProblemsByClassroomList";
-import { ProblemCard } from "@/modules/problem/components/ProblemCard";
+import { useGetExercisesByClassroomList } from "@/modules/exercise/hooks/useGetExercisesByClassroomList";
+import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { PrimitiveAccordion } from "@/components/ui/dataDisplay/PrimitiveAccordion";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
@@ -29,42 +29,35 @@ export const ClassroomListsTableRow = ({
 }: ClassroomListsTableRowProps) => {
   const { loggedUser } = useAuth();
 
-  const { problems, errorProblems, isLoadingProblems, refetchProblems } =
-    useGetProblemsByClassroomList({
+  const { exercises, errorExercises, isLoadingExercises, refetchExercises } =
+    useGetExercisesByClassroomList({
       classroomId: list?.classroom?.uuid as string,
       listId: list?.uuid as string,
     });
 
   const [alreadyAccordionOpened, setAlreadyAccordionOpened] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState("");
 
   const { closed } = useGetClassroomListStatus(list);
 
   const solved = list?.solved || 0;
-  const totalProblems = list?.totalProblems || 0;
+  const totalExercises = list?.totalExercises || 0;
 
-  const progress = solved ? Math.round((solved / totalProblems) * 100) : 0;
+  const progress = solved ? Math.round((solved / totalExercises) * 100) : 0;
 
-  const handledOpenAccordion = useCallback(
-    (value: string) => {
-      if (closed) return;
-      setOpenAccordion(value);
-      if (alreadyAccordionOpened) {
-        return;
-      }
-      setAlreadyAccordionOpened(true);
-      refetchProblems();
-    },
-    [alreadyAccordionOpened, closed, refetchProblems]
-  );
+  const handledOpenAccordion = useCallback(() => {
+    if (closed || alreadyAccordionOpened) return;
+    setAlreadyAccordionOpened(true);
+    refetchExercises();
+  }, [alreadyAccordionOpened, closed, refetchExercises]);
 
   return (
     <PrimitiveAccordion.Root
-      value={openAccordion}
+      // value={openAccordion}
       onValueChange={handledOpenAccordion}
       disabled={closed}
       type="single"
       collapsible
+      asChild
     >
       <PrimitiveAccordion.Item value={list?.uuid!}>
         <DivTable.Row
@@ -83,9 +76,12 @@ export const ClassroomListsTableRow = ({
             <DivTable.Data className="gap-2">
               <ProgressBar value={progress} />
               <span className="text-xs text-muted-foreground">
-                {solved}/{totalProblems}
+                {solved}/{totalExercises}
               </span>
             </DivTable.Data>
+          )}
+          {loggedUser?.role === 2 && (
+            <DivTable.Data className="gap-2">{totalExercises}</DivTable.Data>
           )}
           <DivTable.Data className="justify-end pr-4 gap-2">
             {!closed && (
@@ -128,22 +124,22 @@ export const ClassroomListsTableRow = ({
         </DivTable.Row>
         {/* </PrimitiveAccordion.Trigger> */}
         <PrimitiveAccordion.Content>
-          {errorProblems && <FeedBackError onTryAgain={refetchProblems} />}
+          {errorExercises && <FeedBackError onTryAgain={refetchExercises} />}
           <div className="grid grid-cols-3 gap-4 w-full border-none p-2">
-            {isLoadingProblems &&
+            {isLoadingExercises &&
               getRange(0, 5).map((index) => (
                 <Skeleton
-                  key={`problem-skeleton-${index}`}
+                  key={`exercise-skeleton-${index}`}
                   className="w-full h-26 rounded-lg"
                 />
               ))}
 
-            {problems?.map((problem, index) => (
-              <ProblemCard
-                key={`${problem?.uuid}-${index}`}
+            {exercises?.map((exercise, index) => (
+              <ExerciseCard
+                key={`${exercise?.uuid}-${index}`}
                 data={{
-                  ...problem,
-                  listProblem: list,
+                  ...exercise,
+                  listExercise: list,
                   classroom: list?.classroom,
                 }}
               />

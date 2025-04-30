@@ -1,5 +1,5 @@
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { useCallback, useState } from "react";
 
 export const useClassroomListsTable = () => {

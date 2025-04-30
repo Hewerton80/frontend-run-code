@@ -1,6 +1,6 @@
 "use client";
-import { ProblemDescription } from "./ProblemDescription";
-import { IDEProblem } from "./IDEProblem";
+import { ExerciseDescription } from "./ExerciseDescription";
+import { IDEExercise } from "./IDEExercise";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
@@ -8,23 +8,23 @@ import { useParams } from "next/navigation";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
-import { useGetProblem } from "../../hooks/useGetProblem";
+import { useGetExercise } from "../../hooks/useGetExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 
-export const SolveProblemEnvirolment = () => {
+export const SolveExerciseEnvirolment = () => {
   const params = useParams<{
     classroomId?: string;
     listId?: string;
-    problemId: string;
+    exerciseId: string;
   }>();
 
   const { classroom, isLoadingClassroom } = useGetClassroomById(
     params?.classroomId as string
   );
 
-  const { isLoadingProblem, problem, problemError, refetchProblem } =
-    useGetProblem({
-      problemId: params?.problemId || "",
+  const { isLoadingExercise, exercise, exerciseError, refetchExercise } =
+    useGetExercise({
+      exerciseId: params?.exerciseId || "",
       classroomId: params?.classroomId,
       listId: params?.listId,
     });
@@ -35,7 +35,7 @@ export const SolveProblemEnvirolment = () => {
     </div>
   );
 
-  const isLoading = isLoadingClassroom || isLoadingProblem;
+  const isLoading = isLoadingClassroom || isLoadingExercise;
 
   const getBreadcrumbsItems = () => {
     const classroomId = params?.classroomId;
@@ -48,17 +48,17 @@ export const SolveProblemEnvirolment = () => {
           label: classroom?.name || "-",
           href: `/classroom/${classroomId}/lists`,
         },
-        { label: problem?.title || "" },
+        { label: exercise?.title || "" },
       ];
     }
     return [
-      { label: "🧩 Problemas ", href: "/problems" },
-      { label: problem?.title || "" },
+      { label: "🧩 Exerciseas ", href: "/exercises" },
+      { label: exercise?.title || "" },
     ];
   };
 
-  if (problemError) {
-    return <FeedBackError onTryAgain={refetchProblem} />;
+  if (exerciseError) {
+    return <FeedBackError onTryAgain={refetchExercise} />;
   }
 
   return (
@@ -81,7 +81,7 @@ export const SolveProblemEnvirolment = () => {
               skeleton
             ) : (
               <Suspense fallback={skeleton}>
-                <ProblemDescription problem={problem!} />
+                <ExerciseDescription exercise={exercise!} />
               </Suspense>
             )}
           </Resizable.Panel>
@@ -95,7 +95,7 @@ export const SolveProblemEnvirolment = () => {
               skeleton
             ) : (
               <Suspense fallback={skeleton}>
-                <IDEProblem problem={problem!} />
+                <IDEExercise exercise={exercise!} />
               </Suspense>
             )}
           </Resizable.Panel>

@@ -2,38 +2,38 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
 import { removeEmptyKeys } from "@/utils/queryParams";
-import { IList, ListProblemQueryKey } from "../listProblemTypes";
+import { IList, ListQueryKey } from "../listTypes";
 import { isBoolean } from "@/utils/isType";
 
-export interface IGetListProblemsParams extends IPaginationParams {
+export interface IGetListExercisesParams extends IPaginationParams {
   notIn?: string;
 }
 
-export const useGetLists = (listProblemsParams?: IGetListProblemsParams) => {
+export const useGetLists = (listExercisesParams?: IGetListExercisesParams) => {
   const { apiBase } = useAxios();
   const {
-    data: listProblems,
-    isFetching: isListProblemsLoading,
-    error: listProblemsError,
-    refetch: refetchListProblems,
+    data: listExercises,
+    isFetching: isListExercisesLoading,
+    error: listExercisesError,
+    refetch: refetchListExercises,
   } = useQuery({
     queryFn: () =>
       apiBase
-        .get<IPaginatedDocs<IList>>("/list-problems", {
-          params: removeEmptyKeys(listProblemsParams),
+        .get<IPaginatedDocs<IList>>("/list-exercises", {
+          params: removeEmptyKeys(listExercisesParams),
         })
         .then((res) => res.data || { data: [] }),
     queryKey: [
-      ListProblemQueryKey.LIST,
-      ...Object.values(removeEmptyKeys(listProblemsParams)),
+      ListQueryKey.LIST,
+      ...Object.values(removeEmptyKeys(listExercisesParams)),
     ],
     enabled: true,
   });
 
   return {
-    refetchListProblems,
-    listProblems,
-    isListProblemsLoading,
-    listProblemsError,
+    refetchListExercises,
+    listExercises,
+    isListExercisesLoading,
+    listExercisesError,
   };
 };

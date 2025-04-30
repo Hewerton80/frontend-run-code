@@ -8,13 +8,13 @@ export interface IList {
   startDate?: string;
   endDate?: string;
   solved?: number;
-  totalProblems?: number;
+  totalExercises?: number;
   classroom?: IClassroom;
   author?: IUser;
   createdAt?: string;
   status?: number;
 }
 
-export enum ListProblemQueryKey {
+export enum ListQueryKey {
   LIST = "LIST_PROBLEMS",
 }

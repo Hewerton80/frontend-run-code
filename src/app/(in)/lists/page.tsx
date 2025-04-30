@@ -1,5 +1,5 @@
 import { ListsTable } from "@/modules/list/components/ListsTable";
 
-export default function ListProblemsPage() {
+export default function ListExercisesPage() {
   return <ListsTable />;
 }

@@ -1,25 +1,25 @@
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import { useGetProblem } from "@/modules/problem/hooks/useGetProblem";
-import { IProblem } from "@/modules/problem/problemTypes";
+import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
+import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export const useIDEProblem = (problem: IProblem) => {
+export const useIDEExercise = (exercise: IExercise) => {
   const params = useParams<{
     listId?: string;
     classroomId?: string;
   }>();
 
-  // const { isLoadingProblem, problem, problemError, refetchProblem } =
-  //   useGetProblem({
-  //     problemId: params?.problemId || "",
+  // const { isLoadingExercise, exercise, exerciseError, refetchExercise } =
+  //   useGetExercise({
+  //     exerciseId: params?.exerciseId || "",
   //     classroomId: params?.classroomId,
   //     listId: params?.listId,
   //   });
 
   const { submitCode, isSubmitting, submitError, submitResponse } =
-    useSubmissionCode(problem?.uuid || "");
+    useSubmissionCode(exercise?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
 
@@ -32,19 +32,19 @@ export const useIDEProblem = (problem: IProblem) => {
   // }, [sourceCode]);
 
   useEffect(() => {
-    if (problem?.submissionStats?.sourceCode) {
-      setSourceCode(problem?.submissionStats?.sourceCode || "");
+    if (exercise?.submissionStats?.sourceCode) {
+      setSourceCode(exercise?.submissionStats?.sourceCode || "");
     }
-    if (problem?.submissionStats?.language) {
-      changeLanguageMode(problem.submissionStats?.language);
+    if (exercise?.submissionStats?.language) {
+      changeLanguageMode(exercise.submissionStats?.language);
     }
-  }, [problem, changeLanguageMode]);
+  }, [exercise, changeLanguageMode]);
 
   // useEffect(() => {
   //   const isInterval = setInterval(() => {
   //     const drafts = getDraftsCodeFromLocalStorage() || {};
-  //     if (problem?.id) {
-  //       drafts[problem.id] = sourceCodeRef.current;
+  //     if (exercise?.id) {
+  //       drafts[exercise.id] = sourceCodeRef.current;
   //     }
   //     setCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
   //   }, 5000);
@@ -52,7 +52,7 @@ export const useIDEProblem = (problem: IProblem) => {
   //   return () => {
   //     clearInterval(isInterval);
   //   };
-  // }, [problem?.id]);
+  // }, [exercise?.id]);
 
   const changeSourceCode = (value: string) => {
     setSourceCode(value);

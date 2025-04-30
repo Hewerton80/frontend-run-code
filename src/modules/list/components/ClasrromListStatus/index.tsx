@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { useGetClassroomListStatus } from "../../hooks/useGetClassroomListStatus";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { DateTime } from "@/utils/dateTime";
 import { useMemo } from "react";
 

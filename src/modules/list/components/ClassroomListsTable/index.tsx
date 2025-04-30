@@ -1,17 +1,10 @@
 "use client";
-import { IList } from "../../listProblemTypes";
-import { useMemo, useState } from "react";
+import { IList } from "../../listTypes";
+import { useMemo } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
-import { Dialog } from "@/components/ui/overlay/Dialog";
-import { Input } from "@/components/ui/forms/inputs/Input";
-import { Switch } from "@/components/ui/forms/Switch";
-import { Checkbox } from "@/components/ui/forms/Checkbox";
-import { Button } from "@/components/ui/buttons/Button";
 import { ClassroomListsTableRow } from "../ClassroomListsTableRow";
 import { useClassroomListsTable } from "./useClassroomListsTable";
 import { ClassroomListFormDialog } from "../ClassroomListFormDialog";
@@ -57,7 +50,7 @@ export const ClassroomListsTable = ({
       <>
         {data?.map((list) => (
           <ClassroomListsTableRow
-            key={`data-${list?.uuid}-list-problem`}
+            key={`data-${list?.uuid}-list-exercise`}
             list={list}
             onOpenEditModal={() => openDialog(list)}
           />
@@ -73,6 +66,9 @@ export const ClassroomListsTable = ({
           <DivTable.Row header>
             <DivTable.Data>Nome</DivTable.Data>
             {loggedUser?.role === 1 && <DivTable.Data>Progresso</DivTable.Data>}
+            {loggedUser?.role === 2 && (
+              <DivTable.Data>N° de exercícios</DivTable.Data>
+            )}
             <DivTable.Data></DivTable.Data>
           </DivTable.Row>
           {handledDataTable}

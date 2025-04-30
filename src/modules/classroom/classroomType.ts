@@ -1,4 +1,4 @@
-import { IList } from "../list/listProblemTypes";
+import { IList } from "../list/listTypes";
 import { IUser } from "../user/userTypets";
 
 export const StatusClassroomEnum: Record<number, string> = {

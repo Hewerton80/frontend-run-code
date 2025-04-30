@@ -1,5 +1,5 @@
 import { Dialog } from "@/components/ui/overlay/Dialog";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { Switch } from "@/components/ui/forms/Switch";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { Checkbox } from "@/components/ui/forms/Checkbox";

@@ -6,7 +6,7 @@ import {
   UpdateClassroomListForm,
   useUpdateclassroomListFormSchema,
 } from "../../schemas/updateclassroomListFormSchema";
-import { IList } from "../../listProblemTypes";
+import { IList } from "../../listTypes";
 import { useCallback, useEffect } from "react";
 import { DateTime } from "@/utils/dateTime";
 import { useQueryClient } from "@tanstack/react-query";
@@ -25,7 +25,9 @@ export const useClassroomListFormDialog = (currentListToEdit: IList | null) => {
     clearClassroomListFormStates,
     watchClassroomListForm,
   } = useUpdateclassroomListFormSchema();
+
   const { toast } = useToast();
+
   const queryClient = useQueryClient();
 
   const { isUpdatingClassroomList, updateClassroomList } =
@@ -75,6 +77,7 @@ export const useClassroomListFormDialog = (currentListToEdit: IList | null) => {
     },
     [currentListToEdit]
   );
+
   const handleSubmit = useCallback(
     (updateClassroomListForm: UpdateClassroomListForm) => {
       const onSuccess = () => {
@@ -92,6 +95,7 @@ export const useClassroomListFormDialog = (currentListToEdit: IList | null) => {
           title: "Erro",
           description: "Erro ao atualizar lista",
           variant: "danger",
+          direction: "bottom-right",
         });
       };
       const handleClassroomListFormBody = getHandleClassroomListFormBody(

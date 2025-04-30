@@ -4,17 +4,17 @@ import {
   DataTable,
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
-import { IProblem, IProblemTest } from "@/modules/problem/problemTypes";
+import { IExercise, IExerciseTest } from "@/modules/exercise/exerciseTypes";
 import { twMerge } from "tailwind-merge";
 import { FaCode } from "react-icons/fa";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 
-interface ProblemDescriptionProps {
-  problem: IProblem;
+interface ExerciseDescriptionProps {
+  exercise: IExercise;
 }
 
-export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
-  const exampleColumns: IColmunDataTable<IProblemTest>[] = [
+export const ExerciseDescription = ({ exercise }: ExerciseDescriptionProps) => {
+  const exampleColumns: IColmunDataTable<IExerciseTest>[] = [
     {
       field: "input",
       label: "Entrada(s)",
@@ -39,13 +39,13 @@ export const ProblemDescription = ({ problem }: ProblemDescriptionProps) => {
     <div className={twMerge("flex flex-col h-full p-4 gap-2 ")}>
       <div className="flex items-center gap-2">
         <FaCode className="text-info" />{" "}
-        <h3 className="text-lg">{problem?.title}</h3>
+        <h3 className="text-lg">{exercise?.title}</h3>
       </div>
       <div
         className="text-sm"
-        dangerouslySetInnerHTML={{ __html: problem?.description || "" }}
+        dangerouslySetInnerHTML={{ __html: exercise?.description || "" }}
       />
-      <DataTable columns={exampleColumns} data={problem?.testCases || []} />
+      <DataTable columns={exampleColumns} data={exercise?.testCases || []} />
     </div>
   );
 };

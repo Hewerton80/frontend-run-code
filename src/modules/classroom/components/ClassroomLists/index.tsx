@@ -18,7 +18,6 @@ export function ClassroomLists() {
 
   return (
     <>
-    
       <div className="flex flex-col w-full gap-4 p-8">
         <Breadcrumbs
           isLoading={isLoadingClassroom}
@@ -29,7 +28,7 @@ export function ClassroomLists() {
           ]}
         />
         <div className="flex justify-end gap-4">
-          {loggedUser?.uuid === classroom?.author?.uuid && (
+          {/* {loggedUser?.uuid === classroom?.author?.uuid && (
             <>
               <Button
                 variantStyle="secondary"
@@ -43,7 +42,7 @@ export function ClassroomLists() {
                 </ProgressLink>
               </Button>
             </>
-          )}
+          )} */}
         </div>
         <ClassroomListsTable
           data={classroom?.lists?.map((list) => ({

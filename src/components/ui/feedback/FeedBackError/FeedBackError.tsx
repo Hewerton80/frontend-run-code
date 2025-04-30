@@ -28,7 +28,7 @@ export function FeedBackError({ onTryAgain }: FeedBackErrorProps) {
         rightIcon={<IoReload />}
         onClick={onTryAgain}
       >
-        Try again
+        Tentar novamente
       </Button>
     </div>
   );

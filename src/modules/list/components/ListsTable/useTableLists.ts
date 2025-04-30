@@ -1,23 +1,23 @@
 import { usePagination } from "@/hooks/usePagination";
-import { IGetListProblemsParams, useGetLists } from "../../hooks/useGetLists";
+import { IGetListExercisesParams, useGetLists } from "../../hooks/useGetLists";
 
 export const useTableLists = () => {
   const { goToPage, paginationParams } = usePagination();
-  const listsParams: IGetListProblemsParams = {
+  const listsParams: IGetListExercisesParams = {
     ...paginationParams,
   };
   const {
-    refetchListProblems,
-    listProblems,
-    isListProblemsLoading,
-    listProblemsError,
+    refetchListExercises,
+    listExercises,
+    isListExercisesLoading,
+    listExercisesError,
   } = useGetLists(listsParams);
 
   return {
-    isListProblemsLoading,
-    listProblems,
-    listProblemsError,
+    isListExercisesLoading,
+    listExercises,
+    listExercisesError,
     goToPage,
-    refetchListProblems,
+    refetchListExercises,
   };
 };

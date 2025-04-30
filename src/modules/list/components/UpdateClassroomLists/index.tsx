@@ -21,9 +21,9 @@ import Link from "next/link";
 
 export const UpdateClassroomLists = () => {
   const {
-    isListProblemsLoading,
-    listProblems,
-    listProblemsError,
+    isListExercisesLoading,
+    listExercises,
+    listExercisesError,
     classroom,
     isLoadingClassroom,
     classroomListsToAddRecords,
@@ -34,7 +34,7 @@ export const UpdateClassroomLists = () => {
     unDoRemoveListToClassroom,
     addListToClassroom,
     goToPage,
-    refetchListProblems,
+    refetchListExercises,
     removeListToClassroom,
   } = useUpdateClassroomLists();
 
@@ -161,15 +161,15 @@ export const UpdateClassroomLists = () => {
           <div className="overflow-y-auto max-h-[calc(100vh-282px)]">
             <DataTable
               columns={allListscolumns}
-              data={listProblems?.data || []}
-              isLoading={isListProblemsLoading}
-              isError={!!listProblemsError}
-              onTryAgainIfError={refetchListProblems}
+              data={listExercises?.data || []}
+              isLoading={isListExercisesLoading}
+              isError={!!listExercisesError}
+              onTryAgainIfError={refetchListExercises}
               paginationConfig={{
-                currentPage: listProblems?.currentPage || 1,
-                totalPages: listProblems?.lastPage || 1,
-                perPage: listProblems?.perPage || 25,
-                totalRecords: listProblems?.total || 1,
+                currentPage: listExercises?.currentPage || 1,
+                totalPages: listExercises?.lastPage || 1,
+                perPage: listExercises?.perPage || 25,
+                totalRecords: listExercises?.total || 1,
                 onChangePage: goToPage,
               }}
             />

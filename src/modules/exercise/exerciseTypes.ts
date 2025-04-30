@@ -1,28 +1,28 @@
 import { IClassroom } from "../classroom/classroomType";
-import { IList } from "../list/listProblemTypes";
+import { IList } from "../list/listTypes";
 import { ISubmission } from "../submission/submissionType";
 import { IUser } from "../user/userTypets";
 
-export interface IProblemTest {
+export interface IExerciseTest {
   id: string;
   input: string;
   expectedOutput: string;
 }
-export const ProblemSolveStatusEnum = {
+export const ExerciseSolveStatusEnum = {
   1: "Resolvido",
   2: "Não resolvido",
   3: "Errado",
 };
 
-export interface IProblem {
+export interface IExercise {
   uuid?: string;
   title?: string;
   category?: { id: string; name: string };
   description?: string;
-  testCases?: IProblemTest[];
+  testCases?: IExerciseTest[];
   difficulty?: string;
   classroom?: IClassroom;
-  listProblem?: IList;
+  listExercise?: IList;
   classroomId?: string;
   listId?: string;
   status?: number;
@@ -33,8 +33,8 @@ export interface IProblem {
   author?: IUser;
 }
 
-export enum ProblemQueryKey {
-  PROBLEMS = "problems",
-  PROBLEM = "problem",
-  PROBLEMS_BY_CLASSROOM = "problemsByClassroom",
+export enum ExerciseQueryKey {
+  PROBLEMS = "exercises",
+  PROBLEM = "exercise",
+  PROBLEMS_BY_CLASSROOM = "exercisesByClassroom",
 }

@@ -26,9 +26,9 @@ export const useGetHeaderMenuItems = () => {
         link: "/playground",
       },
       {
-        text: "problemas",
+        text: "exercícios",
         icon: "🧩",
-        link: "/problems",
+        link: "/exercises",
       },
     ].map((item) => ({
       ...item,

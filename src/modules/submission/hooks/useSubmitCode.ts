@@ -24,7 +24,7 @@ interface SubmissionCodeBodyErrorResponse {
   description?: string;
 }
 
-export const useSubmissionCode = (problemId: string) => {
+export const useSubmissionCode = (exerciseId: string) => {
   const { apiBase } = useAxios();
 
   const {
@@ -35,7 +35,7 @@ export const useSubmissionCode = (problemId: string) => {
   } = useMutation({
     mutationFn: async (submitBody: SubmissionCodeBody) => {
       const { classroomId, listId, ...data } = submitBody;
-      let url = `/submission/${problemId}`;
+      let url = `/submission/${exerciseId}`;
       if (classroomId && listId) {
         url += `/classroom/${classroomId}/list/${listId}`;
       }
