@@ -8,34 +8,51 @@ import { useClassroomListFormDialog } from "./useClassroomListFormDialog";
 import { Controller } from "react-hook-form";
 
 interface ClassroomListFormDialogProps {
+  data?: IList | null;
+  isOpen: boolean;
   onClose: () => void;
-  data: IList | null;
 }
 
 export const ClassroomListFormDialog = ({
   data: listToEdit,
+  isOpen,
   onClose,
 }: ClassroomListFormDialogProps) => {
-  const isOpen = !!listToEdit;
-
   const {
     classroomListFormControl,
     classroomListFormState,
     hasRangeDate,
-    isUpdatingClassroomList,
+    isSubmitting,
     classroomListFormRegister,
+    clearClassroomListFormStates,
     updateClassroomList,
   } = useClassroomListFormDialog(listToEdit);
 
+  const isEditing = !!listToEdit?.uuid;
+
+  const handleClose = () => {
+    onClose();
+    clearClassroomListFormStates();
+  };
+
   return (
     <>
-      <Dialog.Root open={isOpen} onOpenChange={(value) => !value && onClose()}>
+      <Dialog.Root
+        open={isOpen}
+        onOpenChange={(value) => !value && handleClose()}
+      >
         <Dialog.Content>
           <Dialog.Header>
-            <Dialog.Title>Configurar</Dialog.Title>
+            <Dialog.Title>{isEditing ? "Editar" : "Criar"}</Dialog.Title>
           </Dialog.Header>
-          <form className="flex flex-col h-72" onSubmit={updateClassroomList}>
+          <form className="flex flex-col h-96" onSubmit={updateClassroomList}>
             <div className="flex flex-col gap-8">
+              <Input
+                {...classroomListFormRegister("title")}
+                id={classroomListFormRegister("title").name}
+                label="Título"
+                error={classroomListFormState.errors.title?.message}
+              />
               <div className="flex flex-col gap-2">
                 <Controller
                   name="hasRangeDate"
@@ -87,13 +104,17 @@ export const ClassroomListFormDialog = ({
             </div>
             <Dialog.Footer className="mt-auto">
               <Button
-                disabled={isUpdatingClassroomList}
+                disabled={isSubmitting}
                 variantStyle="secondary"
-                onClick={onClose}
+                onClick={handleClose}
               >
                 Cancelar
               </Button>
-              <Button isLoading={isUpdatingClassroomList} type="submit">
+              <Button
+                disabled={!classroomListFormState.isDirty}
+                isLoading={isSubmitting}
+                type="submit"
+              >
                 Salvar
               </Button>
             </Dialog.Footer>

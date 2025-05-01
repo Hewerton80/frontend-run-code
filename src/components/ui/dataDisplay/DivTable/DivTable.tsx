@@ -1,12 +1,24 @@
 "use client";
-import { ComponentPropsWithRef, ReactNode, useId } from "react";
+import {
+  ComponentPropsWithRef,
+  JSX,
+  ReactElement,
+  ReactNode,
+  useId,
+} from "react";
 import { twMerge } from "tailwind-merge";
 import { PrimitiveAccordion } from "../PrimitiveAccordion";
+import { IconButton } from "../../buttons/IconButton";
+import { BsChevronDown } from "react-icons/bs";
 
 interface TableContainerProps extends ComponentPropsWithRef<"div"> {}
-interface RowProps extends ComponentPropsWithRef<"div"> {
+interface RowProps {
+  className?: string;
+  children?: ReactNode;
   header?: boolean;
-  disabled?: boolean;
+  // disabled?: boolean;
+  disableAccordion?: boolean;
+  accordionContent?: ReactNode;
   onAccordionChange?: (value: string) => void;
 }
 interface TdProps extends ComponentPropsWithRef<"div"> {}
@@ -31,19 +43,21 @@ function Row({
   children,
   header,
   className,
-  disabled,
+  disableAccordion,
+  accordionContent,
   onAccordionChange,
-  ...restProps
 }: RowProps) {
   const id = useId();
   return (
     <PrimitiveAccordion.Root
-      // value={openAccordion}
       onValueChange={onAccordionChange}
-      disabled={disabled}
+      disabled={disableAccordion}
       type="single"
       collapsible
       asChild
+      // className={twMerge(
+      //   "[&:not([data-disabled])_[role=row]]:hover:bg-muted/50",
+      // )}
     >
       <PrimitiveAccordion.Item value={id}>
         <div
@@ -52,38 +66,19 @@ function Row({
             "flex flex-col md:flex-row gap-0 md:gap-2",
             header &&
               "hidden md:flex text-xs font-medium h-10 text-muted-foreground border-t-transparent",
-            !disabled && "hover:bg-muted/50",
             "duration-[.15s] ease-in-out transition-colors",
+            disableAccordion ? "[&_.trigger]:hidden" : "hover:bg-muted/50",
             className
           )}
-          {...restProps}
         >
           {children}
         </div>
+        {accordionContent && (
+          <PrimitiveAccordion.Content>
+            {accordionContent}
+          </PrimitiveAccordion.Content>
+        )}
       </PrimitiveAccordion.Item>
-      {/* <PrimitiveAccordion.Content>
-                {errorExercises && <FeedBackError onTryAgain={refetchExercises} />}
-                <div className="grid grid-cols-3 gap-4 w-full border-none p-2">
-                  {isLoadingExercises &&
-                    getRange(0, 5).map((index) => (
-                      <Skeleton
-                        key={`exercise-skeleton-${index}`}
-                        className="w-full h-26 rounded-lg"
-                      />
-                    ))}
-      
-                  {exercises?.map((exercise, index) => (
-                    <ExerciseCard
-                      key={`${exercise?.uuid}-${index}`}
-                      data={{
-                        ...exercise,
-                        listExercise: list,
-                        classroom: list?.classroom,
-                      }}
-                    />
-                  ))}
-                </div>
-              </PrimitiveAccordion.Content> */}
     </PrimitiveAccordion.Root>
   );
 }
@@ -99,12 +94,33 @@ function Data({ children, className, ...restProps }: TdProps) {
   );
 }
 
+function AccordionTrigger() {
+  return (
+    <PrimitiveAccordion.Trigger
+      className="trigger [&[data-state=open]_.arrow]:rotate-180"
+      asChild
+    >
+      <IconButton
+        variantStyle="dark-ghost"
+        icon={
+          <BsChevronDown
+            className={twMerge(
+              "arrow size-4 transition-transform duration-200"
+            )}
+          />
+        }
+      />
+    </PrimitiveAccordion.Trigger>
+  );
+}
+
 const DivTable = {
   Container,
   Row,
   Data,
   // Body,
   AccordionContent: PrimitiveAccordion.Content,
+  AccordionTrigger: AccordionTrigger,
 };
 
 export { DivTable };

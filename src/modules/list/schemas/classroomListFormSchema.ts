@@ -10,9 +10,10 @@ const {
   VALIDATION: { INVALID_DATE, REQUIRED_FIELD },
 } = CONSTANTS;
 
-export const updateclassroomListFormSchemaSchema = z
+export const classroomListFormSchemaSchema = z
   .object({
     //   id: z.string().min(1, REQUIRED_FIELD),
+    title: z.string().min(1, REQUIRED_FIELD),
     hasRangeDate: z.boolean(),
     startDate: z
       .string()
@@ -67,17 +68,16 @@ export const updateclassroomListFormSchemaSchema = z
     }
   );
 
-export type UpdateClassroomListForm = z.infer<
-  typeof updateclassroomListFormSchemaSchema
->;
+export type ClassroomListForm = z.infer<typeof classroomListFormSchemaSchema>;
 
-export const useUpdateclassroomListFormSchema = () => {
-  const defaultValues = useMemo<UpdateClassroomListForm>(
+export const useClassroomListFormSchema = () => {
+  const defaultValues = useMemo<ClassroomListForm>(
     () => ({
+      title: "",
       hasRangeDate: true,
       startDate: "",
       endDate: "",
-      isVisible: true,
+      isVisible: false,
     }),
     []
   );
@@ -91,10 +91,10 @@ export const useUpdateclassroomListFormSchema = () => {
     clearErrors: clearClassroomListFormErrors,
     register: classroomListFormRegister,
     watch: watchClassroomListForm,
-  } = useForm<UpdateClassroomListForm>({
+  } = useForm<ClassroomListForm>({
     defaultValues: defaultValues,
     mode: "onTouched",
-    resolver: zodResolver(updateclassroomListFormSchemaSchema),
+    resolver: zodResolver(classroomListFormSchemaSchema),
   });
 
   const clearClassroomListFormStates = useCallback(() => {

@@ -11,12 +11,6 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-console.log({
-  now: new Date(),
-  startOfDay: startOfDay(new Date()),
-  endOfDay: endOfDay(new Date()),
-});
-
 type DateFormatsType =
   | "dd/MM/yyyy"
   | "yyyy-MM-dd"

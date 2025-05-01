@@ -14,8 +14,6 @@ export function ClassroomLists() {
   const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
     useGetClassroomById(params?.classroomId);
 
-  const { loggedUser } = useAuth();
-
   return (
     <>
       <div className="flex flex-col w-full gap-4 p-8">
@@ -27,23 +25,7 @@ export function ClassroomLists() {
             { label: "📝 Listas" },
           ]}
         />
-        <div className="flex justify-end gap-4">
-          {/* {loggedUser?.uuid === classroom?.author?.uuid && (
-            <>
-              <Button
-                variantStyle="secondary"
-                leftIcon={<FaRegListAlt />}
-                asChild
-              >
-                <ProgressLink
-                  href={`/classroom/${classroom?.uuid}/lists/update`}
-                >
-                  Atualizar listas
-                </ProgressLink>
-              </Button>
-            </>
-          )} */}
-        </div>
+
         <ClassroomListsTable
           data={classroom?.lists?.map((list) => ({
             ...list,

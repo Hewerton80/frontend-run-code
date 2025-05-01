@@ -1,12 +1,10 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
+import { ICreateClassroomListBody } from "./useCreateClasrromList";
 
-export interface IUpdateClassroomListBody {
-  classroomId: string;
-  listId: number;
-  startDate: string | null;
-  endDate: string | null;
-  status: number;
+export interface IUpdateClassroomListBody
+  extends Partial<ICreateClassroomListBody> {
+  listId?: number;
 }
 
 export const useUpdateClasrromList = () => {
