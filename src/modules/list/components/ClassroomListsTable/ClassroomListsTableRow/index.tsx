@@ -16,9 +16,10 @@ import { FaGear } from "react-icons/fa6";
 import { useGetClassroomListStatus } from "../../../hooks/useGetClassroomListStatus";
 import { ClasrromListStatus } from "../../ClasrromListStatus";
 import { Alert } from "@/components/ui/feedback/Alert";
-import { Ping, PingWrapper } from "@/components/ui/feedback/PingWrapper";
+import { Ping, PingWrapper } from "@/components/ui/feedback/Ping";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { RiArrowUpDownFill } from "react-icons/ri";
+import { Highlight } from "@/components/ui/feedback/Highlight";
 
 interface ClassroomListsTableRowProps {
   list: IList;

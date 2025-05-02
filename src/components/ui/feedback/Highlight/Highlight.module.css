@@ -1,0 +1,10 @@
+@keyframes highlight {
+  75%,
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+.root {
+  animation: highlight 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}

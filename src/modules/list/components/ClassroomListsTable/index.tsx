@@ -11,6 +11,7 @@ import { ClassroomListFormDialog } from "../ClassroomListFormDialog";
 import { Button } from "@/components/ui/buttons/Button";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { useParams } from "next/navigation";
+import { Highlight } from "@/components/ui/feedback/Highlight";
 
 interface ClassroomListsTableProps {
   data?: IList[];
