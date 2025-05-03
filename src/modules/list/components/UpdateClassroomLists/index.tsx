@@ -9,9 +9,9 @@ import { Checkbox } from "@/components/ui/forms/Checkbox";
 import { Button } from "@/components/ui/buttons/Button";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { MdOutlineDoubleArrow } from "react-icons/md";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { twMerge } from "tailwind-merge";
+import { MdOutlineDoubleArrow } from "react-icons/md";
 import { CiUndo } from "react-icons/ci";
 import {
   IUpdateClassroomList,
@@ -49,7 +49,7 @@ export const UpdateClassroomLists = () => {
                 Criada em: {DateTime.format(list?.createdAt!, "dd MMM, yyyy")}
               </span>
               <div className="flex flex-col mt-2 ">
-                <p>Autor:</p>
+                <p>Autor(a):</p>
                 <GroupedUserInfo user={list?.author!} />
               </div>
             </div>

@@ -15,6 +15,7 @@ export const ExerciseSolveStatusEnum = {
 };
 
 export interface IExercise {
+  id?: number;
   uuid?: string;
   title?: string;
   category?: { id: string; name: string };
@@ -26,11 +27,12 @@ export interface IExercise {
   classroomId?: string;
   listId?: string;
   status?: number;
+  author?: IUser;
+  createdAt?: string;
   submissionStats?: ISubmission & {
     correctSubmissionsCount?: number;
     incorrectSubmissionsCount?: number;
   };
-  author?: IUser;
 }
 
 export enum ExerciseQueryKey {

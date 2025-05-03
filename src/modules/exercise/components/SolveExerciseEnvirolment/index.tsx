@@ -1,7 +1,7 @@
 "use client";
 import { ExerciseDescription } from "./ExerciseDescription";
 import { IDEExercise } from "./IDEExercise";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "next/navigation";
@@ -28,6 +28,10 @@ export const SolveExerciseEnvirolment = () => {
       classroomId: params?.classroomId,
       listId: params?.listId,
     });
+
+  useEffect(() => {
+    refetchExercise();
+  }, [refetchExercise]);
 
   const skeleton = (
     <div className="p-4">
@@ -81,7 +85,9 @@ export const SolveExerciseEnvirolment = () => {
               skeleton
             ) : (
               <Suspense fallback={skeleton}>
-                <ExerciseDescription exercise={exercise!} />
+                <div className="p-4">
+                  <ExerciseDescription exercise={exercise!} />
+                </div>
               </Suspense>
             )}
           </Resizable.Panel>

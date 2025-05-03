@@ -137,12 +137,14 @@ export const ClassroomListsTableRow = ({
               <Dropdown.Content>
                 <Dropdown.Item onClick={onOpenEditModal} className="gap-2">
                   <FaGear />
-                  Editar
+                  Editar Lista
                 </Dropdown.Item>
                 <Dropdown.Item asChild className="gap-2">
-                  <ProgressLink href={""}>
+                  <ProgressLink
+                    href={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
+                  >
                     <RiArrowUpDownFill />
-                    Adicionar e remover exercícios
+                    Gerenciar exercícios
                     {(totalExercises === 0 || exercises?.length === 0) && (
                       <Ping />
                     )}

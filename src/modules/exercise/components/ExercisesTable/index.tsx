@@ -47,7 +47,7 @@ export const ExercisesTable = () => {
       },
       {
         field: "author",
-        label: "Autor",
+        label: "Autor(a)",
         onParse: (exercise) => <GroupedUserInfo user={exercise?.author!} />,
       },
     ];
@@ -73,7 +73,7 @@ export const ExercisesTable = () => {
           <div className="flex justify-end">
             <Button variantStyle="dark-ghost" asChild>
               <ProgressLink href={`/exercises/${exercise?.uuid}`}>
-                View
+                Ver
               </ProgressLink>
             </Button>
           </div>

@@ -29,7 +29,6 @@ export const useGetExercise = ({
       }
       return apiBase.get<IExercise>(url).then((res) => res.data);
     },
-    enabled: true,
     gcTime: Infinity,
     staleTime: Infinity,
   });

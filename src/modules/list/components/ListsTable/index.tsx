@@ -30,7 +30,7 @@ export const ListsTable = () => {
     },
     {
       field: "author",
-      label: "Autor",
+      label: "Autor(a)",
       onParse: (listExercises) => (
         <GroupedUserInfo user={listExercises?.author!} />
       ),

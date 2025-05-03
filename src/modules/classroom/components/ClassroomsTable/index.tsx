@@ -26,7 +26,7 @@ export const ClassroomsTable = () => {
     },
     {
       field: "author",
-      label: "Autor",
+      label: "Autor(a)",
       onParse: (classroom) => <GroupedUserInfo user={classroom?.author!} />,
     },
     {
