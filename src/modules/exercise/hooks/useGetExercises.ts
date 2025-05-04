@@ -26,7 +26,6 @@ export const useGetExercises = (exercisesParams?: IGetExercisesParams) => {
     ],
     enabled: true,
   });
-
   return {
     refetchExercises,
     exercises,

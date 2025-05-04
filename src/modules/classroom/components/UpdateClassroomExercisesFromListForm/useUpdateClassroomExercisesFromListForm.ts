@@ -1,4 +1,4 @@
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useGetExercisesByClassroomList } from "@/modules/exercise/hooks/useGetExercisesByClassroomList";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -9,15 +9,23 @@ import {
   useGetExercises,
 } from "@/modules/exercise/hooks/useGetExercises";
 import {
-  IUpdateClassroomExercisesFromLists,
+  IUpdateClassroomExercisesFromListFrom,
   useUdateClassroomExercisesFromListsSchema,
 } from "../../schemas/updateClassroomExercisesFromLists";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
+import { useUpdateClasrromExercisesFromList } from "../../hooks/useUpdateClasrromExercisesFromList";
+import { useToast } from "@/hooks/useToast";
+import { ClassroomKeys, IClassroom } from "../../classroomType";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
 
-export const useUpdateClassroomExercisesFromLists = () => {
+export const useUpdateClassroomExercisesFromListForm = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const params = useParams<{ classroomId: string; listId: string }>();
   const { classroom } = useGetClassroomById(params?.classroomId);
 
@@ -33,12 +41,18 @@ export const useUpdateClassroomExercisesFromLists = () => {
   });
 
   const {
+    updateClasrromExercisesFromList,
+    isUpdatingClasrromExercisesFromList,
+  } = useUpdateClasrromExercisesFromList(params?.classroomId, list?.id!);
+
+  const {
     exercisesToAdd,
+    formStateExercisesForm,
     updateExerciseState,
     appendExercise,
     removeExercise,
     resetExercisesForm,
-    isDirtyExercisesForm,
+    getValuesExercisesForm,
   } = useUdateClassroomExercisesFromListsSchema();
 
   const { goToPage, paginationParams } = usePagination();
@@ -182,6 +196,62 @@ export const useUpdateClassroomExercisesFromLists = () => {
     setExerciseIdToSeeInDialog(null);
   }, []);
 
+  const handleUpdateClasrromExercisesFromList = useCallback(() => {
+    if (!formStateExercisesForm.isDirty) return;
+
+    const data = getValuesExercisesForm();
+
+    const handledData =
+      data?.exercises
+        ?.filter((exercise) => !exercise?.removed)
+        .map((exercise) => ({
+          id: exercise?.id!,
+        })) || [];
+
+    const onSuccess = () => {
+      router.push(`/classroom/${classroom?.uuid}/lists`);
+      queryClient.setQueryData(
+        [ClassroomKeys.Details, classroom?.uuid],
+        (classroom: IClassroom) => {
+          const lists = classroom?.lists?.map((classroomList) => ({
+            ...classroomList,
+            totalExercises:
+              list?.id === classroomList?.id
+                ? handledData?.length
+                : classroomList?.totalExercises,
+          }));
+          classroom.lists = lists;
+          return classroom;
+        }
+      );
+      // queryKey: [ClassroomKeys.Details, classroom?.uuid],
+      toast({
+        title: "Exercícios atualizados com sucesso!",
+        variant: "success",
+      });
+    };
+    const onError = () => {
+      toast({
+        title: "Erro",
+        description: "Erro ao atualizar exercícios",
+        variant: "danger",
+        direction: "bottom-right",
+      });
+    };
+    updateClasrromExercisesFromList(handledData, {
+      onSuccess,
+      onError,
+    });
+  }, [
+    getValuesExercisesForm,
+    updateClasrromExercisesFromList,
+    toast,
+    formStateExercisesForm.isDirty,
+    router,
+    queryClient,
+    classroom,
+  ]);
+
   return {
     classroom,
     list,
@@ -195,7 +265,9 @@ export const useUpdateClassroomExercisesFromLists = () => {
     exercisesError,
     exercises,
     exercisesToAdd,
-    isDirtyExercisesForm,
+    isDirtyExercisesForm: formStateExercisesForm.isDirty,
+    handleUpdateClasrromExercisesFromList,
+    isUpdatingClasrromExercisesFromList,
     unDoRemoveExerciseToList,
     removeExerciseToList,
     verifyIfExerciseAlreadyExistsInCurrentList,

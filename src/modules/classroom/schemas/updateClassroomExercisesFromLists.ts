@@ -33,16 +33,17 @@ export const updateClassroomExercisesFromListsSchema = z.object({
   ),
 });
 
-export type IUpdateClassroomExercisesFromLists = z.infer<
+export type IUpdateClassroomExercisesFromListFrom = z.infer<
   typeof updateClassroomExercisesFromListsSchema
 >;
 
 export const useUdateClassroomExercisesFromListsSchema = () => {
   const {
     control,
-    formState,
+    formState: formStateExercisesForm,
     reset: resetExercisesForm,
-  } = useForm<IUpdateClassroomExercisesFromLists>({
+    getValues: getValuesExercisesForm,
+  } = useForm<IUpdateClassroomExercisesFromListFrom>({
     defaultValues: { exercises: [] },
     resolver: zodResolver(updateClassroomExercisesFromListsSchema),
     mode: "onSubmit",
@@ -64,6 +65,7 @@ export const useUdateClassroomExercisesFromListsSchema = () => {
     appendExercise,
     removeExercise,
     resetExercisesForm,
-    isDirtyExercisesForm: formState.isDirty,
+    getValuesExercisesForm,
+    formStateExercisesForm,
   };
 };

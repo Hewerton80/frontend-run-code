@@ -3,8 +3,8 @@
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import {
   UpdateExercises,
-  useUpdateClassroomExercisesFromLists,
-} from "./useUpdateClassroomExercisesFromLists";
+  useUpdateClassroomExercisesFromListForm,
+} from "./useUpdateClassroomExercisesFromListForm";
 import {
   DataTable,
   IColmunDataTable,
@@ -28,7 +28,7 @@ import { MdOutlineDoubleArrow } from "react-icons/md";
 import { CiUndo } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
 
-export const UpdateClassroomExercisesFromLists = () => {
+export const UpdateClassroomExercisesFromListFrom = () => {
   const {
     classroom,
     list,
@@ -43,6 +43,8 @@ export const UpdateClassroomExercisesFromLists = () => {
     exercises,
     exercisesToAdd,
     isDirtyExercisesForm,
+    isUpdatingClasrromExercisesFromList,
+    handleUpdateClasrromExercisesFromList,
     removeExerciseToList,
     unDoRemoveExerciseToList,
     verifyIfExerciseAlreadyExistsInCurrentList,
@@ -53,7 +55,7 @@ export const UpdateClassroomExercisesFromLists = () => {
     openExerciseDetailsDialog,
     closeExerciseDetailsDialog,
     refetchExerciseDetails,
-  } = useUpdateClassroomExercisesFromLists();
+  } = useUpdateClassroomExercisesFromListForm();
 
   const getAuthorInfo = useCallback((author?: IUser) => {
     return (
@@ -214,7 +216,7 @@ export const UpdateClassroomExercisesFromLists = () => {
             { label: classroom?.name || "-" },
             { label: "📝 Listas", href: `/classroom/${classroom?.uuid}/lists` },
             { label: list?.title || "-" },
-            { label: "Gerenciar exercícios" },
+            { label: "Atualizar exercícios" },
           ]}
         />
         <div className="grid grid-cols-2 gap-4">
@@ -245,12 +247,11 @@ export const UpdateClassroomExercisesFromLists = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4 w-full">
-          {/* <p>Selecionado(s): {quantitySelected}</p> */}
           <Button
             fullWidth
             disabled={!isDirtyExercisesForm}
-            // onClick={() => updateClassroomLists()}
-            // isLoading={isUpdatingClassroomLists}
+            onClick={handleUpdateClasrromExercisesFromList}
+            isLoading={isUpdatingClasrromExercisesFromList}
           >
             Salvar
           </Button>
@@ -258,7 +259,7 @@ export const UpdateClassroomExercisesFromLists = () => {
             <Button
               fullWidth
               variantStyle="secondary"
-              // disabled={!quantitySelected}
+              disabled={isUpdatingClasrromExercisesFromList}
             >
               Voltar
             </Button>

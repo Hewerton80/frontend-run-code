@@ -1,5 +1,5 @@
-import { UpdateClassroomExercisesFromLists } from "@/modules/classroom/components/UpdateClassroomExercisesFromLists";
+import { UpdateClassroomExercisesFromListFrom } from "@/modules/classroom/components/UpdateClassroomExercisesFromListForm";
 
-export default function UpdateClassroomExercisesFromListsPage() {
-  return <UpdateClassroomExercisesFromLists />;
+export default function UpdateClassroomExercisesFromListFromPage() {
+  return <UpdateClassroomExercisesFromListFrom />;
 }

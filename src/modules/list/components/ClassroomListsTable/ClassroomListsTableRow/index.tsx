@@ -60,7 +60,7 @@ export const ClassroomListsTableRow = ({
         onAccordionChange={() => handledOpenAccordion()}
         accordionContent={
           <div className=" p-2">
-            {totalExercises === 0 || exercises?.length === 0 ? (
+            {totalExercises === 0 ? (
               <Alert.Root>
                 <Alert.Title>
                   Não há exercícios cadastrados nesta lista
@@ -123,9 +123,7 @@ export const ClassroomListsTableRow = ({
           <DivTable.AccordionTrigger />
           {loggedUser?.role === 2 && (
             <Dropdown.Root>
-              <PingWrapper
-                active={totalExercises === 0 || exercises?.length === 0}
-              >
+              <PingWrapper active={totalExercises === 0}>
                 <Dropdown.Trigger asChild>
                   <IconButton
                     variantStyle="dark-ghost"
@@ -144,10 +142,8 @@ export const ClassroomListsTableRow = ({
                     href={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
                   >
                     <RiArrowUpDownFill />
-                    Gerenciar exercícios
-                    {(totalExercises === 0 || exercises?.length === 0) && (
-                      <Ping />
-                    )}
+                    Atualizar exercícios
+                    {totalExercises === 0 && <Ping />}
                   </ProgressLink>
                 </Dropdown.Item>
               </Dropdown.Content>
