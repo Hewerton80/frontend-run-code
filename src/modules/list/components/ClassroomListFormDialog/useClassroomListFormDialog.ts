@@ -134,9 +134,9 @@ export const useClassroomListFormDialog = (
       }
     },
     [
-      currentListToEdit,
       isEdit,
       queryClient,
+      classroom,
       createClassroomList,
       toast,
       clearClassroomListFormStates,

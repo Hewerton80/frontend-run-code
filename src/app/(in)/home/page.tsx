@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { StudantHome } from "@/modules/user/components/StudantHome";
+import { ClassroomsHome } from "@/modules/classroom/components/ClassroomsHome";
 import { SuperAdminHome } from "@/modules/user/components/SuperAdminHome";
 
 export default function HomePage() {
@@ -10,5 +10,5 @@ export default function HomePage() {
     return <SuperAdminHome />;
   }
 
-  return <StudantHome />;
+  return <ClassroomsHome />;
 }

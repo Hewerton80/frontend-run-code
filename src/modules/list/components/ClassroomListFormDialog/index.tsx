@@ -50,7 +50,9 @@ export const ClassroomListFormDialog = ({
               <Input
                 {...classroomListFormRegister("title")}
                 id={classroomListFormRegister("title").name}
+                required
                 label="Título"
+                placeholder="Título da lista"
                 error={classroomListFormState.errors.title?.message}
               />
               <div className="flex flex-col gap-2">
@@ -73,6 +75,7 @@ export const ClassroomListFormDialog = ({
                       <Input
                         {...classroomListFormRegister("startDate")}
                         id={classroomListFormRegister("startDate").name}
+                        required
                         label="Início"
                         type="date"
                         error={classroomListFormState.errors.startDate?.message}
@@ -80,6 +83,7 @@ export const ClassroomListFormDialog = ({
                       <Input
                         {...classroomListFormRegister("endDate")}
                         id={classroomListFormRegister("endDate").name}
+                        required
                         label="Fim"
                         type="date"
                         error={classroomListFormState.errors.endDate?.message}
