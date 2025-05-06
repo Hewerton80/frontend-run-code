@@ -3,10 +3,6 @@ import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useParams } from "next/navigation";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
-import { FaRegListAlt } from "react-icons/fa";
-import { Button } from "@/components/ui/buttons/Button";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
@@ -27,10 +23,6 @@ export function ClassroomLists() {
         />
 
         <ClassroomListsTable
-          data={classroom?.lists?.map((list) => ({
-            ...list,
-            classroom,
-          }))}
           isLoading={isLoadingClassroom}
           error={errorClassroom ? "Erro ao carregar listas" : undefined}
           onTryAgainIfError={refetchClassroom}

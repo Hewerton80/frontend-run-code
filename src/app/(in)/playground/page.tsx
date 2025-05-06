@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/buttons/Button";
 import { Card } from "@/components/ui/cards/Card";
 import { IDE } from "@/modules/submission/components/IDE";
-import { EnterMultSelect } from "@/components/ui/forms/inputs/EnterMultSelect";
+import { EnterMultSelect } from "@/components/ui/forms/selects/EnterMultSelect";
 import { SelectOption } from "@/components/ui/forms/selects";
 import { useRunCode } from "@/modules/submission/hooks/useRunCode";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";

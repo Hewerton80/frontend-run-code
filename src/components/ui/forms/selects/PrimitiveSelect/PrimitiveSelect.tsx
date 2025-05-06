@@ -246,6 +246,7 @@ export const PrimitiveSelect = forwardRef(
               </>
             );
           }}
+          noOptionsMessage={() => <span>Nenhuma Opção disponível</span>}
           loadingMessage={() => (
             <div className="flex w-full justify-center">
               <Spinner size={18} />

@@ -1,7 +1,7 @@
 @reference '../../../../../app/globals.css';
 
 .root :global(.select__control) {
-  @apply w-full min-h-9 shadow-sm bg-transparent
+  @apply w-full min-h-10 shadow-sm bg-transparent
   border border-border hover:border-border ring-primary/40;
 }
 

@@ -21,20 +21,12 @@ export const Highlight = ({
   variant = "info",
 }: HighlightsProps) => {
   return (
-    <div
-      className={twMerge(
-        "relative w-fit h-fit"
-        // active && "animate-ping border-2 ",
-        // highlightsVariant[variant],
-        // className
-      )}
-    >
+    <div className={twMerge("relative w-fit h-fit")}>
       {children}
       {active && (
         <div
           className={twMerge(
             "absolute inset-0 border-8 rounded-lg",
-            // "animate-ping",
             style.root,
             highlightsVariant[variant],
             className

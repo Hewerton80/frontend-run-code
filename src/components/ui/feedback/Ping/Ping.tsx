@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 const pingVariant = {
   info: "bg-info",
+  light: "bg-white",
 };
 
 type PingVariant = keyof typeof pingVariant;

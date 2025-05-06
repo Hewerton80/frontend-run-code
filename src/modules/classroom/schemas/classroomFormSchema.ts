@@ -11,10 +11,16 @@ const {
 export const classroomFormSchema = z.object({
   name: z.string().min(1, REQUIRED_FIELD),
   isVisible: z.boolean(),
-  languages: z.array(z.string()),
+  isAddTeachers: z.boolean(),
+  languages: z.array(
+    z.object({
+      label: z.string().min(1, REQUIRED_FIELD),
+      value: z.string().min(1, REQUIRED_FIELD),
+    })
+  ),
   teachers: z.array(
     z.object({
-      id: z.string({ required_error: REQUIRED_FIELD }),
+      id: z.string().min(1, REQUIRED_FIELD),
       canEditClassroom: z.boolean(),
       canManageTeachers: z.boolean(),
       canCreateList: z.boolean(),
@@ -34,6 +40,7 @@ export const useClassroomFormSchema = () => {
       name: "",
       isVisible: false,
       languages: [],
+      isAddTeachers: false,
       teachers: [],
     }),
     []
@@ -43,7 +50,9 @@ export const useClassroomFormSchema = () => {
     formState: classroomFormState,
     control: classroomFormControl,
     register: registerClassroomForm,
-
+    watch: watchClassroomForm,
+    setValue: setClassroomFormValue,
+    handleSubmit: handleClassroomFormSubmit,
     // clearErrors: clearClassroomFormErrors,
   } = useForm<ClassroomFormSchema>({
     defaultValues,
@@ -51,7 +60,11 @@ export const useClassroomFormSchema = () => {
     mode: "onTouched",
   });
 
-  const { fields: teachers, append: addTeacher } = useFieldArray({
+  const {
+    fields: teachers,
+    append: addTeacher,
+    remove: removeTeacher,
+  } = useFieldArray({
     name: "teachers",
     control: classroomFormControl,
   });
@@ -60,7 +73,11 @@ export const useClassroomFormSchema = () => {
     teachers,
     classroomFormState,
     classroomFormControl,
+    handleClassroomFormSubmit,
+    watchClassroomForm,
+    setClassroomFormValue,
     addTeacher,
+    removeTeacher,
     registerClassroomForm,
   };
 };

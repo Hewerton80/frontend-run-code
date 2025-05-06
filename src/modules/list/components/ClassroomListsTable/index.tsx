@@ -12,9 +12,11 @@ import { Button } from "@/components/ui/buttons/Button";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { useParams } from "next/navigation";
 import { Highlight } from "@/components/ui/feedback/Highlight";
+import { Alert } from "@/components/ui/feedback/Alert";
+import { PingWrapper } from "@/components/ui/feedback/Ping";
 
 interface ClassroomListsTableProps {
-  data?: IList[];
+  // data?: IList[];
   isLoading?: boolean;
   error?: string;
   onTryAgainIfError?: () => void;
@@ -22,7 +24,7 @@ interface ClassroomListsTableProps {
 
 export const ClassroomListsTable = ({
   isLoading,
-  data: lists,
+  // data: lists,
   error,
   onTryAgainIfError,
 }: ClassroomListsTableProps) => {
@@ -38,6 +40,13 @@ export const ClassroomListsTable = ({
   const params = useParams<{ classroomId: string }>();
 
   const { classroom } = useGetClassroomById(params?.classroomId);
+
+  const lists = useMemo(() => {
+    return classroom?.lists?.map((list) => ({
+      ...list,
+      classroom,
+    }));
+  }, [classroom]);
 
   const handledDataTable = useMemo(() => {
     if (error) {
@@ -77,26 +86,34 @@ export const ClassroomListsTable = ({
     <>
       <div className="flex justify-end gap-4">
         {loggedUser?.uuid === classroom?.author?.uuid && (
-          <Button onClick={openDialog}>Criar Lista</Button>
+          <PingWrapper variant="light" active={lists?.length === 0}>
+            <Button onClick={openDialog}>Criar Lista</Button>
+          </PingWrapper>
         )}
       </div>
       <div className="flex overflow-auto">
-        <DivTable.Container>
-          <DivTable.Row header>
-            <DivTable.Data>Nome</DivTable.Data>
-            {loggedUser?.role === 1 && <DivTable.Data>Progresso</DivTable.Data>}
-            {loggedUser?.role === 2 && (
-              <DivTable.Data>N° de exercícios</DivTable.Data>
-            )}
-            <DivTable.Data></DivTable.Data>
-          </DivTable.Row>
-          {handledDataTable}
-          {lists?.length === 0 && (
-            <div className="flex justify-center items-center p-8">
-              <h5 className="text-2xl text-gray-70">Tabela vazia</h5>
-            </div>
-          )}
-        </DivTable.Container>
+        {lists?.length === 0 ? (
+          <Alert.Root>
+            <Alert.Title>Turma não há listas</Alert.Title>
+            <Alert.Description>
+              Crie uma lista para começar a adicionar exercícios.
+            </Alert.Description>
+          </Alert.Root>
+        ) : (
+          <DivTable.Container>
+            <DivTable.Row header>
+              <DivTable.Data>Nome</DivTable.Data>
+              {loggedUser?.role === 1 && (
+                <DivTable.Data>Progresso</DivTable.Data>
+              )}
+              {loggedUser?.role === 2 && (
+                <DivTable.Data>N° de exercícios</DivTable.Data>
+              )}
+              <DivTable.Data></DivTable.Data>
+            </DivTable.Row>
+            {handledDataTable}
+          </DivTable.Container>
+        )}
       </div>
       <ClassroomListFormDialog
         isOpen={isOpen}

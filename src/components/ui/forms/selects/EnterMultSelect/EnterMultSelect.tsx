@@ -1,8 +1,9 @@
 "use client";
 import { KeyboardEvent, useState } from "react";
-import { MultSelect, MultSelectSelectProps } from "../../selects";
+import { MultSelect, MultSelectSelectProps } from "..";
 import style from "./EnterMultSelect.module.css";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { useDebouncedCallback } from "use-debounce";
 
 interface EnterMultSelectProps extends MultSelectSelectProps {}
 
