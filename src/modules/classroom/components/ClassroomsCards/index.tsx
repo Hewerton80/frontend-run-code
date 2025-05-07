@@ -3,7 +3,7 @@ import { useGetMyClassrooms } from "../../hooks/useGetMyClassrooms";
 import { Card } from "@/components/ui/cards/Card";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { Button } from "@/components/ui/buttons/Button";
-import { FaUsers } from "react-icons/fa6";
+import { FaGear, FaUsers } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
@@ -11,8 +11,18 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { getRange } from "@/utils/getRange";
 import { IClassroom } from "../../classroomType";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { IconButton } from "@/components/ui/buttons/IconButton";
+import { BsThreeDots } from "react-icons/bs";
+import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
+import { IUser } from "@/modules/user/userTypets";
 
-const ClassRoomsCard = ({ classroom }: { classroom: IClassroom }) => {
+const ClassRoomsCard = ({
+  classroom,
+  user,
+}: {
+  classroom: IClassroom;
+  user: IUser;
+}) => {
   return (
     <Card.Root className="p-4">
       <div className="flex gap-1 group">
@@ -24,6 +34,39 @@ const ClassRoomsCard = ({ classroom }: { classroom: IClassroom }) => {
             <Tooltip align="center" side="bottom" textContent={classroom?.name}>
               <h4 className="line-clamp-1 w-fit">{classroom?.name}</h4>
             </Tooltip>
+            {user?.role === 2 && (
+              <Dropdown.Root>
+                <Dropdown.Trigger asChild>
+                  <IconButton
+                    className="ml-auto"
+                    variantStyle="dark-ghost"
+                    icon={<BsThreeDots />}
+                  />
+                </Dropdown.Trigger>
+
+                <Dropdown.Content>
+                  <Dropdown.Item
+                    asChild
+                    // onClick={onOpenEditModal}
+                    className="gap-2"
+                  >
+                    <ProgressLink href={`/update-classroom/${classroom?.uuid}`}>
+                      <FaGear />
+                      Editar
+                    </ProgressLink>
+                  </Dropdown.Item>
+                  {/* <Dropdown.Item asChild className="gap-2">
+                  <ProgressLink
+                    href={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
+                  >
+                    <RiArrowUpDownFill />
+                    Atualizar exercícios
+                    {totalExercises === 0 && <Ping />}
+                  </ProgressLink>
+                </Dropdown.Item> */}
+                </Dropdown.Content>
+              </Dropdown.Root>
+            )}
           </div>
           <Tooltip
             align="center"
@@ -79,7 +122,11 @@ export const ClassRoomsCards = () => {
             />
           ))}
         {classrooms?.map((classroom, index) => (
-          <ClassRoomsCard key={`classroom-${index}`} classroom={classroom} />
+          <ClassRoomsCard
+            user={loggedUser!}
+            key={`classroom-${index}`}
+            classroom={classroom}
+          />
         ))}
       </div>
     </>

@@ -20,7 +20,8 @@ export const classroomFormSchema = z.object({
   ),
   teachers: z.array(
     z.object({
-      id: z.string().min(1, REQUIRED_FIELD),
+      numberId: z.string().min(1, REQUIRED_FIELD),
+      label: z.string().optional(),
       canEditClassroom: z.boolean(),
       canManageTeachers: z.boolean(),
       canCreateList: z.boolean(),
@@ -53,6 +54,7 @@ export const useClassroomFormSchema = () => {
     watch: watchClassroomForm,
     setValue: setClassroomFormValue,
     handleSubmit: handleClassroomFormSubmit,
+    reset: resetClassroomForm,
     // clearErrors: clearClassroomFormErrors,
   } = useForm<ClassroomFormSchema>({
     defaultValues,
@@ -73,6 +75,7 @@ export const useClassroomFormSchema = () => {
     teachers,
     classroomFormState,
     classroomFormControl,
+    resetClassroomForm,
     handleClassroomFormSubmit,
     watchClassroomForm,
     setClassroomFormValue,

@@ -1,20 +1,15 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
+import { TeacherPermissions } from "../classroomType";
 
+type CreateTeacher = TeacherPermissions & {
+  id: number;
+};
 export interface CreateClassroomBody {
   name: string;
   languages: string[];
   status: number;
-  teachers: {
-    id: number;
-    canEditClassroom: boolean;
-    canManageTeachers: boolean;
-    canCreateList: boolean;
-    canEditList: boolean;
-    canDeleteList: boolean;
-    canManageExercises: boolean;
-    canRemoveMember: boolean;
-  }[];
+  teachers: CreateTeacher[];
 }
 export const useCreateClassroom = () => {
   const { apiBase } = useAxios();

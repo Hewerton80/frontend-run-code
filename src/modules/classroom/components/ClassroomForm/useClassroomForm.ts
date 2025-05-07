@@ -8,16 +8,27 @@ import {
   CreateClassroomBody,
   useCreateClassroom,
 } from "../../hooks/useCreateClassroom";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 
 export const useClassroomForm = () => {
   const router = useRouter();
+  const params = useParams<{ classroomId?: string }>();
+
+  const {
+    classroom: currentClassroom,
+    errorClassroom,
+    isLoadingClassroom,
+    refetchClassroom,
+  } = useGetClassroomById(params?.classroomId);
+
   const { toast } = useToast();
   const {
     teachers,
     classroomFormState,
     classroomFormControl,
+    resetClassroomForm,
     addTeacher,
     registerClassroomForm,
     watchClassroomForm,
@@ -43,10 +54,38 @@ export const useClassroomForm = () => {
   }, []);
 
   useEffect(() => {
+    if (currentClassroom) {
+      // console.log("currentClassroom.teachers", currentClassroom?.teachers);
+      resetClassroomForm({
+        name: currentClassroom?.name,
+        languages:
+          currentClassroom?.languages?.split(",")?.map((language) => ({
+            label: language,
+            value: language,
+          })) || [],
+        isVisible: currentClassroom?.status === 1,
+        isAddTeachers: Number(currentClassroom?.teachers?.length) > 0,
+        teachers:
+          currentClassroom?.teachers?.map((teacher) => ({
+            numberId: teacher?.id,
+            label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
+            canEditClassroom: teacher?.canEditClassroom,
+            canManageTeachers: teacher?.canManageTeachers,
+            canCreateList: teacher?.canCreateList,
+            canEditList: teacher?.canEditList,
+            canDeleteList: teacher?.canDeleteList,
+            canManageExercises: teacher?.canManageExercises,
+            canRemoveMember: teacher?.canRemoveMember,
+          })) || [],
+      });
+    }
+  }, [resetClassroomForm, currentClassroom]);
+
+  useEffect(() => {
     if (isAddTeachers) {
       setClassroomFormValue("teachers", [
         {
-          id: "",
+          numberId: "",
           canEditClassroom: false,
           canManageTeachers: false,
           canCreateList: false,
@@ -63,7 +102,7 @@ export const useClassroomForm = () => {
 
   const handleAddTeacher = useCallback(() => {
     addTeacher({
-      id: "",
+      numberId: "",
       canEditClassroom: false,
       canManageTeachers: false,
       canCreateList: false,
@@ -87,9 +126,9 @@ export const useClassroomForm = () => {
         name: data.name,
         languages: data.languages.map((language) => language.value),
         status: data.isVisible ? 1 : 2,
-        teachers: data.isAddTeachers
+        teachers: data?.isAddTeachers
           ? data.teachers.map((teacher) => ({
-              id: +teacher.id,
+              id: +teacher.numberId,
               canEditClassroom: teacher.canEditClassroom,
               canManageTeachers: teacher.canManageTeachers,
               canCreateList: teacher.canCreateList,
@@ -134,6 +173,7 @@ export const useClassroomForm = () => {
     isAddTeachers,
     languagesOptions,
     isSubmittingClassroom,
+    currentClassroom,
     createClassroom: handleClassroomFormSubmit(handleCreateClassroom),
     removeTeacher: handleRemoveTeacher,
     addTeacher: handleAddTeacher,

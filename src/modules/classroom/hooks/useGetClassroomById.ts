@@ -2,7 +2,7 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { ClassroomKeys, IClassroom } from "../classroomType";
 
-export const useGetClassroomById = (classroomId: string) => {
+export const useGetClassroomById = (classroomId?: string) => {
   const { apiBase } = useAxios();
 
   const {

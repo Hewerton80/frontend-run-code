@@ -26,6 +26,7 @@ export const ClassroomForm = () => {
     isAddTeachers,
     languagesOptions,
     isSubmittingClassroom,
+    currentClassroom,
     removeTeacher,
     addTeacher,
     registerClassroomForm,
@@ -115,14 +116,14 @@ export const ClassroomForm = () => {
                     👩‍🏫 Gerenciamento de professores
                   </h6>
                   <div className="flex flex-col col-span-12 gap-3">
-                    {teachers.map((_, index) => (
+                    {teachers.map((teacher, index) => (
                       <Fragment key={`${index}-teachers`}>
                         {/* <div className="grid"> */}
                         <div className="flex items-center gap-4">
                           <Card.Root className="flex flex-col gap-4 px-3 py-4 overflow-visible">
                             <Controller
                               control={classroomFormControl}
-                              name={`teachers.${index}.id`}
+                              name={`teachers.${index}.numberId`}
                               render={({
                                 field: { onChange, ...restField },
                                 fieldState,
@@ -130,6 +131,16 @@ export const ClassroomForm = () => {
                                 <AsyncTeacherSelect
                                   {...restField}
                                   id={restField.name}
+                                  defaultOptions={
+                                    currentClassroom
+                                      ? [
+                                          {
+                                            label: teacher?.label!,
+                                            value: teacher?.numberId,
+                                          },
+                                        ]
+                                      : []
+                                  }
                                   label="Nome do professor"
                                   onChange={(option) => onChange(option?.value)}
                                   placeholder="Nome do professor"
