@@ -1,6 +1,9 @@
 "use client";
-import { useId, useState } from "react";
-import { languagesConfig } from "@/modules/language/utils/languagesConfig";
+import { useId, useMemo, useState } from "react";
+import {
+  LanguageConfig,
+  languagesConfig,
+} from "@/modules/language/utils/languagesConfig";
 import { Picker } from "../../../../components/ui/forms/selects/Picker/Picker";
 import { LanguageNames } from "@/modules/language/utils/languagesName";
 import { FaRegCircleQuestion } from "react-icons/fa6";
@@ -9,26 +12,56 @@ import { IconButton } from "../../../../components/ui/buttons/IconButton";
 import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
+import Image from "next/image";
 
 interface IdeProps {
   value?: string;
   onChange?: (value: string) => void;
+  avaliableLanguages?: LanguageNames[];
 }
 
-export function IDE({ value, onChange }: IdeProps) {
-  const { languageMode, changeLanguageMode } = useLanguage();
+export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
+  const { languageMode, changeLanguageMode } = useLanguage(
+    Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0
+      ? avaliableLanguages[0]
+      : "javascript"
+  );
   const [showScriptCodeExample, setShowScriptCodeExample] = useState(false);
-  const currentSelectLanguage = languagesConfig[languageMode];
 
-  const modeOptions = Object.keys(languagesConfig).map((key) => ({
-    label: (
-      <span className="flex items-center gap-2">
-        {languagesConfig[key as LanguageNames].icon}
-        {key}
-      </span>
-    ),
-    value: key,
-  }));
+  const avaliablesLanguagesConfig = useMemo<LanguageConfig>(() => {
+    if (Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0) {
+      return avaliableLanguages.reduce((acc, key) => {
+        if (languagesConfig?.[key]) {
+          acc[key] = languagesConfig[key];
+        }
+        return acc;
+      }, {} as LanguageConfig);
+    }
+
+    return languagesConfig;
+  }, [avaliableLanguages]);
+
+  const currentSelectLanguage = useMemo(
+    () => avaliablesLanguagesConfig[languageMode],
+    [avaliablesLanguagesConfig, languageMode]
+  );
+
+  const modeOptions = useMemo(() => {
+    return Object.keys(avaliablesLanguagesConfig).map((key) => ({
+      label: (
+        <span className="flex items-center gap-2">
+          <Image
+            src={avaliablesLanguagesConfig[key as LanguageNames].url}
+            alt={key}
+            width={14}
+            height={14}
+          />
+          {key}
+        </span>
+      ),
+      value: key,
+    }));
+  }, [avaliablesLanguagesConfig]);
 
   return (
     <>

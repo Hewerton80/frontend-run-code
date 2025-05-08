@@ -123,7 +123,7 @@ export const ClassroomForm = () => {
                           <Card.Root className="flex flex-col gap-4 px-3 py-4 overflow-visible">
                             <Controller
                               control={classroomFormControl}
-                              name={`teachers.${index}.numberId`}
+                              name={`teachers.${index}.value`}
                               render={({
                                 field: { onChange, ...restField },
                                 fieldState,
@@ -136,7 +136,7 @@ export const ClassroomForm = () => {
                                       ? [
                                           {
                                             label: teacher?.label!,
-                                            value: teacher?.numberId,
+                                            value: teacher?.value,
                                           },
                                         ]
                                       : []
@@ -292,7 +292,7 @@ export const ClassroomForm = () => {
               type="submit"
               isLoading={isSubmittingClassroom}
             >
-              Criar
+              {currentClassroom ? "Editar" : "Criar"}
             </Button>
           </Card.Footer>
         </form>

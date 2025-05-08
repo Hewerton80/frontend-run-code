@@ -41,7 +41,6 @@ const Root = ({
   onClose,
   ...restProps
 }: ModalProps) => {
-  console.log("show", show);
   return (
     <DialogPrimitive.Root open={show}>
       <DialogPrimitive.Portal>

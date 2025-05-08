@@ -3,7 +3,8 @@ import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 
 export const useIDEExercise = (exercise: IExercise) => {
   const params = useParams<{
@@ -18,12 +19,18 @@ export const useIDEExercise = (exercise: IExercise) => {
   //     listId: params?.listId,
   //   });
 
+  const { classroom } = useGetClassroomById(params?.classroomId!);
+
   const { submitCode, isSubmitting, submitError, submitResponse } =
     useSubmissionCode(exercise?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
 
   const [sourceCode, setSourceCode] = useState("");
+
+  const avaliableLanguages = useMemo(() => {
+    return classroom?.languages?.split(",");
+  }, [classroom]);
 
   // const sourceCodeRef = useRef(sourceCode);
 
@@ -72,6 +79,7 @@ export const useIDEExercise = (exercise: IExercise) => {
     isSubmitting,
     submitError,
     submitResponse,
+    avaliableLanguages,
     changeSourceCode,
     submitCode: handleSubmitCode,
   };

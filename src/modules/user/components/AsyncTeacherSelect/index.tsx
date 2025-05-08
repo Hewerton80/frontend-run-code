@@ -19,7 +19,6 @@ export const AsyncTeacherSelect = ({
   defaultOptions = [],
   ...restProps
 }: IAsyncTeacherSelectProps) => {
-  console.log(defaultOptions);
   const { apiBase } = useAxios();
   const [responseTeachers, setResponseTeachers] = useState<IUser[]>([]);
   const [isLoadingTeachers, setIsLoadingTeachers] = useState(false);
@@ -85,6 +84,7 @@ export const AsyncTeacherSelect = ({
 
   return (
     <Select
+      // inputValue={restProps?.value ? undefined : restProps?.inputValue}
       isLoading={isLoadingTeachers}
       options={autocompliteOptions}
       isSearchable

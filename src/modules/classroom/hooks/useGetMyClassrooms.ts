@@ -18,8 +18,6 @@ export const useGetMyClassrooms = () => {
       return data;
     },
     enabled: true,
-    gcTime: Infinity,
-    staleTime: Infinity,
   });
 
   return {

@@ -29,7 +29,6 @@ export const useRunCode = () => {
     if (!runCodeError) return null;
     const handleError = (runCodeError as any)?.response
       ?.data as RunCodeBodyErrorResponse;
-    console.log(handleError);
     if (handleError?.description) return handleError;
     return { description: "Something went wrong 😭" };
   };

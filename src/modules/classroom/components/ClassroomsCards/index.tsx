@@ -15,6 +15,8 @@ import { IconButton } from "@/components/ui/buttons/IconButton";
 import { BsThreeDots } from "react-icons/bs";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { IUser } from "@/modules/user/userTypets";
+import Image from "next/image";
+import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 
 const ClassRoomsCard = ({
   classroom,
@@ -31,7 +33,7 @@ const ClassRoomsCard = ({
             <span className="flex justify-center items-center size-8 bg-blue-500 rounded-full">
               <FaUsers className="text-white" />
             </span>
-            <Tooltip align="center" side="bottom" textContent={classroom?.name}>
+            <Tooltip align="center" side="top" textContent={classroom?.name}>
               <h4 className="line-clamp-1 w-fit">{classroom?.name}</h4>
             </Tooltip>
             {user?.role === 2 && (
@@ -68,15 +70,38 @@ const ClassRoomsCard = ({
               </Dropdown.Root>
             )}
           </div>
-          <Tooltip
-            align="center"
-            side="bottom"
-            textContent={classroom?.author?.email}
-          >
-            <p className="text-sm w-fit line-clamp-1 text-muted-foreground">
-              Professor: {classroom?.author?.email}
+          <div className="flex flex-col gap-2">
+            <Tooltip
+              align="center"
+              side="top"
+              textContent={classroom?.author?.email}
+            >
+              <p className="text-sm w-fit line-clamp-1 text-muted-foreground">
+                Professor: {classroom?.author?.email}
+              </p>
+            </Tooltip>
+
+            <p className="inline-flex items-center text-sm w-fit line-clamp-1 text-muted-foreground">
+              Linguagens:{" "}
+              <span className="inline-flex gap-2 ml-2">
+                {classroom?.languages?.split(",")?.map((lang, i) => (
+                  <Tooltip
+                    key={`${classroom?.uuid}-${i}-${lang}`}
+                    textContent={lang}
+                    side="top"
+                    align="center"
+                  >
+                    <Image
+                      src={languagesConfig[lang].url}
+                      alt={lang}
+                      width={16}
+                      height={16}
+                    />
+                  </Tooltip>
+                ))}
+              </span>
             </p>
-          </Tooltip>
+          </div>
           <Button
             rightIcon={<FaArrowRight />}
             asChild

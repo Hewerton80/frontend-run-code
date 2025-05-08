@@ -49,7 +49,6 @@ export const useSubmissionCode = (exerciseId: string) => {
     if (!submitError) return null;
     const handleError = (submitError as any)?.response
       ?.data as SubmissionCodeBodyErrorResponse;
-    console.log(handleError);
     if (handleError?.description) return handleError;
     return { description: "Something went wrong 😭" };
   };

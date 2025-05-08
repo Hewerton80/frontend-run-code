@@ -19,11 +19,13 @@ interface IDEExerciseProps {
 
 export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
   // console.log(exercise);
+
   const {
     sourceCode,
     isSubmitting,
     submitError,
     submitResponse,
+    avaliableLanguages,
     submitCode,
     changeSourceCode,
   } = useIDEExercise(exercise);
@@ -63,7 +65,11 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
   return (
     <>
       <div className="flex flex-col w-full col-span-8 h-full p-4">
-        <IDE value={sourceCode} onChange={changeSourceCode} />
+        <IDE
+          value={sourceCode}
+          avaliableLanguages={avaliableLanguages}
+          onChange={changeSourceCode}
+        />
         <div className="flex justify-end mt-4">
           {/* <ButtonGroup> */}
           <Button

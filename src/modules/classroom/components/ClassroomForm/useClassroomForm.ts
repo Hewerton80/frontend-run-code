@@ -11,10 +11,15 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
+import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
+import { ClassroomKeys } from "../../classroomType";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useClassroomForm = () => {
   const router = useRouter();
   const params = useParams<{ classroomId?: string }>();
+
+  const queryClient = useQueryClient();
 
   const {
     classroom: currentClassroom,
@@ -37,13 +42,17 @@ export const useClassroomForm = () => {
     handleClassroomFormSubmit,
   } = useClassroomFormSchema();
 
+  const { updateClassroom, isUpdatingClassroom } = useUpdateClassroom(
+    currentClassroom?.uuid!
+  );
+
   const { createClassroom, isCreatingClassroom } = useCreateClassroom();
 
   const { isAddTeachers } = watchClassroomForm();
 
   const isSubmittingClassroom = useMemo(
-    () => isCreatingClassroom,
-    [isCreatingClassroom]
+    () => isCreatingClassroom || isUpdatingClassroom,
+    [isCreatingClassroom, isUpdatingClassroom]
   );
 
   const languagesOptions = useMemo(() => {
@@ -55,7 +64,6 @@ export const useClassroomForm = () => {
 
   useEffect(() => {
     if (currentClassroom) {
-      // console.log("currentClassroom.teachers", currentClassroom?.teachers);
       resetClassroomForm({
         name: currentClassroom?.name,
         languages:
@@ -67,7 +75,7 @@ export const useClassroomForm = () => {
         isAddTeachers: Number(currentClassroom?.teachers?.length) > 0,
         teachers:
           currentClassroom?.teachers?.map((teacher) => ({
-            numberId: teacher?.id,
+            value: String(teacher?.id),
             label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
             canEditClassroom: teacher?.canEditClassroom,
             canManageTeachers: teacher?.canManageTeachers,
@@ -81,28 +89,28 @@ export const useClassroomForm = () => {
     }
   }, [resetClassroomForm, currentClassroom]);
 
-  useEffect(() => {
-    if (isAddTeachers) {
-      setClassroomFormValue("teachers", [
-        {
-          numberId: "",
-          canEditClassroom: false,
-          canManageTeachers: false,
-          canCreateList: false,
-          canEditList: false,
-          canDeleteList: false,
-          canManageExercises: false,
-          canRemoveMember: false,
-        },
-      ]);
-    } else {
-      setClassroomFormValue("teachers", []);
-    }
-  }, [isAddTeachers, setClassroomFormValue]);
+  // useEffect(() => {
+  //   if (isAddTeachers) {
+  //     setClassroomFormValue("teachers", [
+  //       {
+  //         value: "",
+  //         canEditClassroom: false,
+  //         canManageTeachers: false,
+  //         canCreateList: false,
+  //         canEditList: false,
+  //         canDeleteList: false,
+  //         canManageExercises: false,
+  //         canRemoveMember: false,
+  //       },
+  //     ]);
+  //   } else {
+  //     setClassroomFormValue("teachers", []);
+  //   }
+  // }, [isAddTeachers, setClassroomFormValue]);
 
   const handleAddTeacher = useCallback(() => {
     addTeacher({
-      numberId: "",
+      value: "",
       canEditClassroom: false,
       canManageTeachers: false,
       canCreateList: false,
@@ -128,7 +136,7 @@ export const useClassroomForm = () => {
         status: data.isVisible ? 1 : 2,
         teachers: data?.isAddTeachers
           ? data.teachers.map((teacher) => ({
-              id: +teacher.numberId,
+              id: +teacher.value,
               canEditClassroom: teacher.canEditClassroom,
               canManageTeachers: teacher.canManageTeachers,
               canCreateList: teacher.canCreateList,
@@ -149,21 +157,39 @@ export const useClassroomForm = () => {
       const onSuccess = () => {
         router.push("/home");
         toast({
-          title: "Turma criada com sucesso!",
+          title: `Turma ${
+            currentClassroom ? "editada" : "criada"
+          } com sucesso!`,
           variant: "success",
         });
+        if (currentClassroom) {
+          queryClient.resetQueries({
+            queryKey: [ClassroomKeys.Details, currentClassroom?.uuid],
+          });
+        }
       };
       const onError = () => {
         toast({
-          title: "Erro ao criar turma",
+          title: `Erro ao ${currentClassroom ? "editar" : "criar"} turma`,
           variant: "danger",
           direction: "bottom-right",
         });
       };
       const handleClassroomFormBody = getHandleClassroomFormBody(data);
-      createClassroom(handleClassroomFormBody, { onSuccess, onError });
+      if (currentClassroom) {
+        updateClassroom(handleClassroomFormBody, { onSuccess, onError });
+      } else {
+        createClassroom(handleClassroomFormBody, { onSuccess, onError });
+      }
     },
-    [router, toast, getHandleClassroomFormBody, createClassroom]
+    [
+      router,
+      currentClassroom,
+      updateClassroom,
+      toast,
+      getHandleClassroomFormBody,
+      createClassroom,
+    ]
   );
 
   return {

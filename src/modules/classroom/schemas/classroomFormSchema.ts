@@ -1,6 +1,7 @@
 import { CONSTANTS } from "@/utils/constants";
+import { isNumber } from "@/utils/isType";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -8,30 +9,60 @@ const {
   VALIDATION: { REQUIRED_FIELD },
 } = CONSTANTS;
 
-export const classroomFormSchema = z.object({
-  name: z.string().min(1, REQUIRED_FIELD),
-  isVisible: z.boolean(),
-  isAddTeachers: z.boolean(),
-  languages: z.array(
-    z.object({
-      label: z.string().min(1, REQUIRED_FIELD),
-      value: z.string().min(1, REQUIRED_FIELD),
-    })
-  ),
-  teachers: z.array(
-    z.object({
-      numberId: z.string().min(1, REQUIRED_FIELD),
-      label: z.string().optional(),
-      canEditClassroom: z.boolean(),
-      canManageTeachers: z.boolean(),
-      canCreateList: z.boolean(),
-      canEditList: z.boolean(),
-      canDeleteList: z.boolean(),
-      canManageExercises: z.boolean(),
-      canRemoveMember: z.boolean(),
-    })
-  ),
-});
+const verifyIfHasDublicateIdTeacherAndReturnIndex = (ids: string[]) => {
+  if (ids.length <= 1) return -1;
+  const uniqueIds = new Set<string>();
+  for (let i = 0; i < ids.length; i++) {
+    const currentId = ids[i];
+    if (uniqueIds.has(currentId)) {
+      return i; // Return the index of the duplicate id
+    }
+    uniqueIds.add(currentId);
+  }
+  return -1; // No duplicates found
+};
+
+export const classroomFormSchema = z
+  .object({
+    name: z.string().min(1, REQUIRED_FIELD),
+    isVisible: z.boolean(),
+    isAddTeachers: z.boolean(),
+    languages: z.array(
+      z.object({
+        label: z.string().min(1, REQUIRED_FIELD),
+        value: z.string().min(1, REQUIRED_FIELD),
+      })
+    ),
+    teachers: z.array(
+      z.object({
+        value: z.string().min(1, REQUIRED_FIELD),
+        label: z.string().optional(),
+        canEditClassroom: z.boolean(),
+        canManageTeachers: z.boolean(),
+        canCreateList: z.boolean(),
+        canEditList: z.boolean(),
+        canDeleteList: z.boolean(),
+        canManageExercises: z.boolean(),
+        canRemoveMember: z.boolean(),
+      })
+    ),
+  })
+  .refine(
+    ({ teachers }) => {
+      const ids = teachers.map((teacher) => teacher.value);
+      const index = verifyIfHasDublicateIdTeacherAndReturnIndex(ids);
+      return index === -1;
+    },
+    ({ teachers }) => {
+      const ids = teachers.map((teacher) => teacher.value);
+      const index = verifyIfHasDublicateIdTeacherAndReturnIndex(ids);
+      if (index === -1) return { path: [], message: "" };
+      return {
+        path: [`teachers.${index}.value`],
+        message: "Esse professor já foi adicionado",
+      };
+    }
+  );
 
 export type ClassroomFormSchema = z.infer<typeof classroomFormSchema>;
 
@@ -55,7 +86,6 @@ export const useClassroomFormSchema = () => {
     setValue: setClassroomFormValue,
     handleSubmit: handleClassroomFormSubmit,
     reset: resetClassroomForm,
-    // clearErrors: clearClassroomFormErrors,
   } = useForm<ClassroomFormSchema>({
     defaultValues,
     resolver: zodResolver(classroomFormSchema),

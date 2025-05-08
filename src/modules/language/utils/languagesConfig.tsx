@@ -13,21 +13,26 @@ interface LanguageOptions {
   editorName: CodeEditorMode;
   icon: JSX.Element;
   example: string;
+  url: string;
 }
 
-export const languagesConfig: Record<LanguageNames, LanguageOptions> = {
+export type LanguageConfig = Record<LanguageNames, LanguageOptions>;
+export const languagesConfig: LanguageConfig = {
   javascript: {
     editorName: "javascript",
+    url: "/images/js.webp",
     icon: <FaJs />,
     example: JSplaceholder,
   },
   python: {
     editorName: "python",
+    url: "/images/py.webp",
     icon: <FaPython />,
     example: PYplaceholder,
   },
   cpp: {
     editorName: "c_cpp",
+    url: "/images/cpp.webp",
     icon: <PiFileCppBold />,
     example: CPPplaceholder,
   },
