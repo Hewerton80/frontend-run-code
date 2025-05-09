@@ -9,7 +9,7 @@ export interface CreateClassroomBody {
   name: string;
   languages: string[];
   status: number;
-  teachers: CreateTeacher[];
+  teachers?: CreateTeacher[];
 }
 export const useCreateClassroom = () => {
   const { apiBase } = useAxios();

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from "react";
 import {
-  ClassroomFormSchema,
-  useClassroomFormSchema,
-} from "../../schemas/classroomFormSchema";
+  ManageTeachersFormSchema,
+  useManageTeachersFormSchema,
+} from "../../schemas/manageTeachersFormSchema";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import {
   CreateClassroomBody,
@@ -14,12 +14,15 @@ import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
 import { ClassroomKeys } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
-export const useClassroomForm = () => {
+export const useManageClasroomTeachersForm = () => {
   const router = useRouter();
   const params = useParams<{ classroomId?: string }>();
-
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const { loggedUser } = useAuth();
 
   const {
     classroom: currentClassroom,
@@ -28,7 +31,10 @@ export const useClassroomForm = () => {
     refetchClassroom,
   } = useGetClassroomById(params?.classroomId);
 
-  const { toast } = useToast();
+  const isEditClassroom = useMemo(() => {
+    return Boolean(params?.classroomId);
+  }, [params]);
+
   const {
     teachers,
     classroomFormState,
@@ -37,10 +43,9 @@ export const useClassroomForm = () => {
     addTeacher,
     registerClassroomForm,
     watchClassroomForm,
-    setClassroomFormValue,
     removeTeacher,
     handleClassroomFormSubmit,
-  } = useClassroomFormSchema();
+  } = useManageTeachersFormSchema();
 
   const { updateClassroom, isUpdatingClassroom } = useUpdateClassroom(
     currentClassroom?.uuid!
@@ -49,6 +54,11 @@ export const useClassroomForm = () => {
   const { createClassroom, isCreatingClassroom } = useCreateClassroom();
 
   const { isAddTeachers } = watchClassroomForm();
+
+  const canEditClassroom = useMemo(() => {
+    if (!isEditClassroom) return true;
+    return currentClassroom?.myClassroomPermissions?.canEditClassroom;
+  }, [currentClassroom, isEditClassroom]);
 
   const isSubmittingClassroom = useMemo(
     () => isCreatingClassroom || isUpdatingClassroom,
@@ -77,6 +87,7 @@ export const useClassroomForm = () => {
           currentClassroom?.teachers?.map((teacher) => ({
             value: String(teacher?.id),
             label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
+            uuid: teacher?.uuid,
             canEditClassroom: teacher?.canEditClassroom,
             canManageTeachers: teacher?.canManageTeachers,
             canCreateList: teacher?.canCreateList,
@@ -129,7 +140,7 @@ export const useClassroomForm = () => {
   );
 
   const getHandleClassroomFormBody = useCallback(
-    (data: ClassroomFormSchema) => {
+    (data: ManageTeachersFormSchema) => {
       const handleClassroomFormBody: CreateClassroomBody = {
         name: data.name,
         languages: data.languages.map((language) => language.value),
@@ -153,7 +164,7 @@ export const useClassroomForm = () => {
   );
 
   const handleCreateClassroom = useCallback(
-    (data: ClassroomFormSchema) => {
+    (data: ManageTeachersFormSchema) => {
       const onSuccess = () => {
         router.push("/home");
         toast({
@@ -184,6 +195,7 @@ export const useClassroomForm = () => {
     },
     [
       router,
+      queryClient,
       currentClassroom,
       updateClassroom,
       toast,
@@ -200,6 +212,12 @@ export const useClassroomForm = () => {
     languagesOptions,
     isSubmittingClassroom,
     currentClassroom,
+    loggedUser,
+    errorClassroom,
+    isLoadingClassroom,
+    isEditClassroom,
+    canEditClassroom,
+    refetchClassroom,
     createClassroom: handleClassroomFormSubmit(handleCreateClassroom),
     removeTeacher: handleRemoveTeacher,
     addTeacher: handleAddTeacher,

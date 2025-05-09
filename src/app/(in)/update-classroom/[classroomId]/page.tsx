@@ -1,5 +1,5 @@
-import { ClassroomForm } from "@/modules/classroom/components/ClassroomForm";
+import { ManageTeachersForm } from "@/modules/classroom/components/ManageClasroomTeachersForm";
 
 export default function CreateClassroomPage() {
-  return <ClassroomForm />;
+  return <ManageTeachersForm />;
 }

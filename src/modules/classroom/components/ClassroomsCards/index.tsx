@@ -17,6 +17,8 @@ import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { IUser } from "@/modules/user/userTypets";
 import Image from "next/image";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
+import { ClassroomFormDialog } from "../ClassroomFormDialog";
+import { useState } from "react";
 
 const ClassRoomsCard = ({
   classroom,
@@ -127,6 +129,7 @@ export const ClassRoomsCards = () => {
   } = useGetMyClassrooms();
 
   const { loggedUser } = useAuth();
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <>
@@ -134,9 +137,7 @@ export const ClassRoomsCards = () => {
       <div className="grid grid-cols-3 gap-4">
         {loggedUser?.role !== 1 && (
           <div className="flex col-span-3">
-            <Button asChild>
-              <ProgressLink href="/create-classroom">Criar turma</ProgressLink>
-            </Button>
+            <Button onClick={() => setOpenDialog(true)}>Criar turma</Button>
           </div>
         )}
         {isLoadingClassrooms &&
@@ -154,6 +155,10 @@ export const ClassRoomsCards = () => {
           />
         ))}
       </div>
+      <ClassroomFormDialog
+        isOpen={openDialog}
+        onClose={() => setOpenDialog(false)}
+      />
     </>
   );
 };

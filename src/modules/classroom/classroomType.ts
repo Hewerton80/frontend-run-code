@@ -15,6 +15,7 @@ export type TeacherPermissions = {
   canManageExercises: boolean;
   canRemoveMember: boolean;
 };
+
 export type ITeacher = IUser & TeacherPermissions;
 export interface IClassroom {
   uuid?: string;
@@ -26,6 +27,7 @@ export interface IClassroom {
   teachers?: ITeacher[];
   status?: number;
   createdAt?: string;
+  myClassroomPermissions?: TeacherPermissions;
 }
 
 export enum ClassroomKeys {

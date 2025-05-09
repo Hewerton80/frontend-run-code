@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useState,
   Fragment,
+  JSX,
 } from "react";
 import { MultiValue, PropsValue, SingleValue, components } from "react-select";
 import { twMerge } from "tailwind-merge";
@@ -18,6 +19,7 @@ import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
+import { isString } from "@/utils/isType";
 
 const ReactSelect = dynamic(() => import("react-select"), {
   ssr: false,
@@ -52,7 +54,7 @@ export interface PrimitiveSelectProps extends MapedSelectProps {
   // onChange: (newValue: MultiValue<SelectOption>, actionMeta: any) => void;
   disabled?: boolean;
   inputValue?: string;
-  subtitle?: string;
+  subtitle?: string | JSX.Element;
   onFocus?: () => void;
   onBlur?: () => void;
   onChangeSingleOption?: OnchangeSigleValue;
@@ -256,7 +258,13 @@ export const PrimitiveSelect = forwardRef(
         />
         {error && <FormHelperText>{error}</FormHelperText>}
         {subtitle && (
-          <p className="mt-2 text-xs text-muted-foreground">{subtitle}</p>
+          <div className="mt-2 ">
+            {isString(subtitle) ? (
+              <p className="text-xs text-muted-foreground">{subtitle}</p>
+            ) : (
+              subtitle
+            )}
+          </div>
         )}
       </div>
     );
