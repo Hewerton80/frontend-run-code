@@ -224,7 +224,6 @@ export const useUpdateClassroomExercisesFromListForm = () => {
           return classroom;
         }
       );
-      // queryKey: [ClassroomKeys.Details, classroom?.uuid],
       toast({
         title: "Exercícios atualizados com sucesso!",
         variant: "success",

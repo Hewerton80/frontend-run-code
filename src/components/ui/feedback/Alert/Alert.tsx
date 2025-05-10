@@ -14,8 +14,8 @@ const alertVariants = {
     className: "bg-background text-foreground border",
   },
   info: {
-    icon: <LuInfo className="stroke-info-foreground" />,
-    className: "bg-info text-info-foreground",
+    icon: <LuInfo className="stroke-info" />,
+    className: "bg-info/10 text-info",
   },
   success: {
     icon: <LuBadgeCheck className="stroke-success-foreground" />,
@@ -68,7 +68,7 @@ const Title = ({ className, children }: AlertTitleProps) => {
   return (
     <h5
       className={twMerge(
-        "mb-1 pl-7 font-medium leading-none tracking-tight",
+        "mb-1 pl-7 font-bold leading-none tracking-tight",
         className
       )}
     >

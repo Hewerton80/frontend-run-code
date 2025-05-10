@@ -1,5 +1,5 @@
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   ClassroomFormSchema,
   useClassroomFormSchema,
@@ -10,19 +10,17 @@ import {
 } from "../../hooks/useCreateClassroom";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
-import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/useToast";
-import { ClassroomKeys } from "../../classroomType";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { ClassroomKeys, IClassroom } from "../../classroomType";
 
-export const useClassroomFormDialog = (classroomId?: string) => {
+export const useClassroomFormDialog = (
+  classroomId?: string | null,
+  onSuccessSubmitted?: () => void
+) => {
   const isEditClassroom = useMemo(() => !!classroomId, [classroomId]);
-  const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
-
-  const { loggedUser } = useAuth();
 
   const { createClassroom, isCreatingClassroom } = useCreateClassroom();
   const { updateClassroom, isUpdatingClassroom } = useUpdateClassroom(
@@ -42,7 +40,6 @@ export const useClassroomFormDialog = (classroomId?: string) => {
     registerClassroomForm,
     clearClassroomFormStates,
     resetClassroomForm,
-    watchClassroomForm,
   } = useClassroomFormSchema();
 
   const languagesOptions = useMemo(() => {
@@ -61,6 +58,21 @@ export const useClassroomFormDialog = (classroomId?: string) => {
     () => isCreatingClassroom || isUpdatingClassroom,
     [isCreatingClassroom, isUpdatingClassroom]
   );
+
+  useEffect(() => {
+    if (currentClassroom) {
+      resetClassroomForm({
+        name: currentClassroom?.name,
+        languages:
+          currentClassroom?.languages?.split(",")?.map((language) => ({
+            label: language,
+            value: language,
+          })) || [],
+        isVisible: currentClassroom?.status === 1,
+        isAddTeachers: Number(currentClassroom?.teachers?.length) > 0,
+      });
+    }
+  }, [resetClassroomForm, currentClassroom]);
 
   const getHandleClassroomFormBody = useCallback(
     (data: ClassroomFormSchema) => {
@@ -88,38 +100,73 @@ export const useClassroomFormDialog = (classroomId?: string) => {
 
   const handleSubmitClassroom = useCallback(
     (data: ClassroomFormSchema) => {
+      const handleClassroomFormBody = getHandleClassroomFormBody(data);
+
       const onSuccess = () => {
-        router.push("/home");
+        onSuccessSubmitted?.();
+        clearClassroomFormStates();
         toast({
-          title: `Turma ${
-            currentClassroom ? "editada" : "criada"
-          } com sucesso!`,
+          title: `Turma ${isEditClassroom ? "editada" : "criada"} com sucesso!`,
           variant: "success",
         });
-        if (currentClassroom) {
-          queryClient.resetQueries({
-            queryKey: [ClassroomKeys.List],
-          });
+        if (isEditClassroom) {
+          const newClassroomValues = {
+            name: handleClassroomFormBody.name,
+            languages: handleClassroomFormBody.languages.join(","),
+            status: handleClassroomFormBody.status,
+          };
+          queryClient.setQueryData(
+            [ClassroomKeys.Details, currentClassroom?.uuid],
+            (oldData: IClassroom) => ({
+              ...oldData,
+              ...newClassroomValues,
+            })
+          );
+          queryClient.setQueryData(
+            [ClassroomKeys.List],
+            ([...oldData]: IClassroom[]) => {
+              const foundIndex = oldData?.findIndex(
+                (oldClassroom) => oldClassroom.uuid === classroomId
+              );
+              if (foundIndex !== -1) {
+                oldData[foundIndex] = {
+                  ...oldData[foundIndex],
+                  ...newClassroomValues,
+                };
+              }
+              return oldData;
+            }
+          );
+        } else {
+          queryClient.resetQueries({ queryKey: [ClassroomKeys.List] });
         }
       };
       const onError = () => {
         toast({
-          title: `Erro ao ${currentClassroom ? "editar" : "criar"} turma`,
+          title: `Erro ao ${isEditClassroom ? "editar" : "criar"} turma`,
           variant: "danger",
           direction: "bottom-right",
         });
       };
-      const handleClassroomFormBody = getHandleClassroomFormBody(data);
-      if (currentClassroom) {
-        updateClassroom(handleClassroomFormBody, { onSuccess, onError });
+      if (isEditClassroom) {
+        updateClassroom(handleClassroomFormBody, {
+          onSuccess,
+          onError,
+        });
       } else {
-        createClassroom(handleClassroomFormBody, { onSuccess, onError });
+        createClassroom(handleClassroomFormBody, {
+          onSuccess,
+          onError,
+        });
       }
     },
     [
-      router,
       queryClient,
+      isEditClassroom,
+      classroomId,
       currentClassroom,
+      clearClassroomFormStates,
+      onSuccessSubmitted,
       updateClassroom,
       toast,
       getHandleClassroomFormBody,
@@ -132,14 +179,11 @@ export const useClassroomFormDialog = (classroomId?: string) => {
     classroomFormControl,
     languagesOptions,
     isSubmittingClassroom,
-    currentClassroom,
-    loggedUser,
     errorClassroom,
     isLoadingClassroom,
     isEditClassroom,
     canEditClassroom,
     refetchClassroom,
-    clearClassroomFormStates,
     submitClassroom: handleClassroomFormSubmit(handleSubmitClassroom),
     registerClassroomForm,
   };

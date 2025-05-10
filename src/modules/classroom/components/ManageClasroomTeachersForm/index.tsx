@@ -348,10 +348,7 @@ export const ManageTeachersForm = () => {
                     })}
                     {canEditClassroom && (
                       <Tooltip textContent="Adicionar professor">
-                        <PingWrapper
-                          variant="light"
-                          active={teachers.length === 0}
-                        >
+                        <PingWrapper active={teachers.length === 0}>
                           <IconButton onClick={addTeacher} icon={<FaPlus />} />
                         </PingWrapper>
                       </Tooltip>

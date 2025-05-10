@@ -19,14 +19,19 @@ import Image from "next/image";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { ClassroomFormDialog } from "../ClassroomFormDialog";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+interface IClassRoomCardProps {
+  classroom: IClassroom;
+  loggedUser: IUser;
+  onClickToEdit?: (classroomId: string) => void;
+}
 
 const ClassRoomsCard = ({
   classroom,
-  user,
-}: {
-  classroom: IClassroom;
-  user: IUser;
-}) => {
+  loggedUser,
+  onClickToEdit,
+}: IClassRoomCardProps) => {
   return (
     <Card.Root className="p-4">
       <div className="flex gap-1 group">
@@ -38,7 +43,7 @@ const ClassRoomsCard = ({
             <Tooltip align="center" side="top" textContent={classroom?.name}>
               <h4 className="line-clamp-1 w-fit">{classroom?.name}</h4>
             </Tooltip>
-            {user?.role === 2 && (
+            {loggedUser?.role === 2 && (
               <Dropdown.Root>
                 <Dropdown.Trigger asChild>
                   <IconButton
@@ -50,14 +55,13 @@ const ClassRoomsCard = ({
 
                 <Dropdown.Content>
                   <Dropdown.Item
-                    asChild
-                    // onClick={onOpenEditModal}
+                    onClick={() => onClickToEdit?.(classroom?.uuid!)}
                     className="gap-2"
                   >
-                    <ProgressLink href={`/update-classroom/${classroom?.uuid}`}>
-                      <FaGear />
-                      Editar
-                    </ProgressLink>
+                    {/* <ProgressLink href={`/update-classroom/${classroom?.uuid}`}> */}
+                    <FaGear />
+                    Editar
+                    {/* </ProgressLink> */}
                   </Dropdown.Item>
                   {/* <Dropdown.Item asChild className="gap-2">
                   <ProgressLink
@@ -103,6 +107,26 @@ const ClassRoomsCard = ({
                 ))}
               </span>
             </p>
+            {loggedUser?.role === 2 && (
+              <p className="inline-flex gap-2 items-center text-sm w-fit line-clamp-1 text-muted-foreground">
+                Visibilidate:{" "}
+                <Tooltip
+                  textContent={
+                    classroom?.status === 1
+                      ? "Visível para os alunos"
+                      : "Não visível para os alunos"
+                  }
+                  side="top"
+                  align="center"
+                >
+                  {classroom?.status === 1 ? (
+                    <FaEye className="text-foreground" />
+                  ) : (
+                    <FaEyeSlash className="text-foreground" />
+                  )}
+                </Tooltip>
+              </p>
+            )}
           </div>
           <Button
             rightIcon={<FaArrowRight />}
@@ -130,13 +154,16 @@ export const ClassRoomsCards = () => {
 
   const { loggedUser } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
+  const [classroomIdToEdit, setClassroomIdToEdit] = useState<string | null>(
+    null
+  );
 
   return (
     <>
       {errorClassrooms && <FeedBackError onTryAgain={refetchClassrooms} />}
       <div className="grid grid-cols-3 gap-4">
         {loggedUser?.role !== 1 && (
-          <div className="flex col-span-3">
+          <div className="flex justify-end col-span-3">
             <Button onClick={() => setOpenDialog(true)}>Criar turma</Button>
           </div>
         )}
@@ -149,15 +176,23 @@ export const ClassRoomsCards = () => {
           ))}
         {classrooms?.map((classroom, index) => (
           <ClassRoomsCard
-            user={loggedUser!}
+            loggedUser={loggedUser!}
             key={`classroom-${index}`}
             classroom={classroom}
+            onClickToEdit={(classroomId) => {
+              setOpenDialog(true);
+              setClassroomIdToEdit(classroomId);
+            }}
           />
         ))}
       </div>
       <ClassroomFormDialog
         isOpen={openDialog}
-        onClose={() => setOpenDialog(false)}
+        classroomId={classroomIdToEdit}
+        onClose={() => {
+          setOpenDialog(false);
+          setClassroomIdToEdit(null);
+        }}
       />
     </>
   );

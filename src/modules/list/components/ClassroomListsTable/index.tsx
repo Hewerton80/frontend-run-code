@@ -14,6 +14,7 @@ import { useParams } from "next/navigation";
 import { Highlight } from "@/components/ui/feedback/Highlight";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { PingWrapper } from "@/components/ui/feedback/Ping";
+import { BackLink } from "@/components/ui/navigation/BackLink";
 
 interface ClassroomListsTableProps {
   // data?: IList[];
@@ -84,12 +85,16 @@ export const ClassroomListsTable = ({
 
   return (
     <>
-      <div className="flex justify-end gap-4">
-        {loggedUser?.uuid === classroom?.author?.uuid && (
-          <PingWrapper variant="light" active={lists?.length === 0}>
-            <Button onClick={openDialog}>Criar Lista</Button>
-          </PingWrapper>
-        )}
+      <div className="flex justify-between items-end gap-4">
+        <BackLink href="/home">Voltar para Home</BackLink>
+
+        <div className="flex justify-end gap-4">
+          {loggedUser?.uuid === classroom?.author?.uuid && (
+            <PingWrapper active={lists?.length === 0}>
+              <Button onClick={openDialog}>Criar Lista</Button>
+            </PingWrapper>
+          )}
+        </div>
       </div>
       <div className="flex overflow-auto">
         {lists?.length === 0 ? (

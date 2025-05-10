@@ -26,7 +26,7 @@
   @apply m-0 p-0 items-center;
 }
 .root :global(.select__placeholder) {
-  @apply mx-0 text-sm text-foreground/40;
+  @apply mx-0 text-sm text-muted-foreground;
 }
 .root
   :is(
