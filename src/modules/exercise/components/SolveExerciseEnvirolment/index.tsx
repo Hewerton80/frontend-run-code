@@ -10,6 +10,7 @@ import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { useGetExercise } from "../../hooks/useGetExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
+import { BackLink } from "@/components/ui/navigation/BackLink";
 
 export const SolveExerciseEnvirolment = () => {
   const params = useParams<{
@@ -69,6 +70,9 @@ export const SolveExerciseEnvirolment = () => {
     <>
       <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
         <Breadcrumbs isLoading={isLoading} items={getBreadcrumbsItems()} />
+        <BackLink href={`/classroom/${classroom?.uuid}/lists`}>
+          Voltar para listas da turma
+        </BackLink>
         <Resizable.Group
           direction="horizontal"
           className={twMerge(

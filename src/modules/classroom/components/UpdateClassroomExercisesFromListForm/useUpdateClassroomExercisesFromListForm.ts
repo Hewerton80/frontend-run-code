@@ -167,7 +167,7 @@ export const useUpdateClassroomExercisesFromListForm = () => {
     [exercisesToAdd, updateExerciseState]
   );
 
-  useEffect(() => {
+  const handleResetExercisesForm = useCallback(() => {
     if (currentExercises) {
       resetExercisesForm({
         exercises: currentExercises?.map((exercise) => ({
@@ -175,8 +175,16 @@ export const useUpdateClassroomExercisesFromListForm = () => {
           removed: false,
         })),
       });
+    } else {
+      resetExercisesForm({
+        exercises: [],
+      });
     }
-  }, [currentExercises, resetExercisesForm]);
+  }, [resetExercisesForm, currentExercises]);
+
+  useEffect(() => {
+    handleResetExercisesForm();
+  }, [handleResetExercisesForm]);
 
   useEffect(() => {
     if (exerciseIdToSeeInDialog) {
@@ -249,6 +257,7 @@ export const useUpdateClassroomExercisesFromListForm = () => {
     router,
     queryClient,
     classroom,
+    list,
   ]);
 
   return {
@@ -265,8 +274,10 @@ export const useUpdateClassroomExercisesFromListForm = () => {
     exercises,
     exercisesToAdd,
     isDirtyExercisesForm: formStateExercisesForm.isDirty,
-    handleUpdateClasrromExercisesFromList,
     isUpdatingClasrromExercisesFromList,
+    currentExercises,
+    handleResetExercisesForm,
+    handleUpdateClasrromExercisesFromList,
     unDoRemoveExerciseToList,
     removeExerciseToList,
     verifyIfExerciseAlreadyExistsInCurrentList,

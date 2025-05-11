@@ -11,15 +11,13 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { getRange } from "@/utils/getRange";
 import { IClassroom } from "../../classroomType";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { IconButton } from "@/components/ui/buttons/IconButton";
-import { BsThreeDots } from "react-icons/bs";
-import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { IUser } from "@/modules/user/userTypets";
 import Image from "next/image";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { ClassroomFormDialog } from "../ClassroomFormDialog";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { ClasrromActionsTriggerButton } from "../ClasrromActionsTriggerButton";
 
 interface IClassRoomCardProps {
   classroom: IClassroom;
@@ -43,38 +41,12 @@ const ClassRoomsCard = ({
             <Tooltip align="center" side="top" textContent={classroom?.name}>
               <h4 className="line-clamp-1 w-fit">{classroom?.name}</h4>
             </Tooltip>
-            {loggedUser?.role === 2 && (
-              <Dropdown.Root>
-                <Dropdown.Trigger asChild>
-                  <IconButton
-                    className="ml-auto"
-                    variantStyle="dark-ghost"
-                    icon={<BsThreeDots />}
-                  />
-                </Dropdown.Trigger>
-
-                <Dropdown.Content>
-                  <Dropdown.Item
-                    onClick={() => onClickToEdit?.(classroom?.uuid!)}
-                    className="gap-2"
-                  >
-                    {/* <ProgressLink href={`/update-classroom/${classroom?.uuid}`}> */}
-                    <FaGear />
-                    Editar
-                    {/* </ProgressLink> */}
-                  </Dropdown.Item>
-                  {/* <Dropdown.Item asChild className="gap-2">
-                  <ProgressLink
-                    href={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
-                  >
-                    <RiArrowUpDownFill />
-                    Atualizar exercícios
-                    {totalExercises === 0 && <Ping />}
-                  </ProgressLink>
-                </Dropdown.Item> */}
-                </Dropdown.Content>
-              </Dropdown.Root>
-            )}
+            <span className="ml-auto">
+              <ClasrromActionsTriggerButton
+                classrroomId={classroom?.uuid!}
+                onClickToEditClassroom={() => onClickToEdit?.(classroom?.uuid!)}
+              />
+            </span>
           </div>
           <div className="flex flex-col gap-2">
             <Tooltip

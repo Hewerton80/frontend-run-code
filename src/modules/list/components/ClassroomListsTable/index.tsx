@@ -1,6 +1,6 @@
 "use client";
 import { IList } from "../../listTypes";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
@@ -15,6 +15,9 @@ import { Highlight } from "@/components/ui/feedback/Highlight";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { PingWrapper } from "@/components/ui/feedback/Ping";
 import { BackLink } from "@/components/ui/navigation/BackLink";
+import { ClasrromActionsTriggerButton } from "@/modules/classroom/components/ClasrromActionsTriggerButton";
+import { ClassroomFormDialog } from "@/modules/classroom/components/ClassroomFormDialog";
+import { Card } from "@/components/ui/cards/Card";
 
 interface ClassroomListsTableProps {
   // data?: IList[];
@@ -31,7 +34,7 @@ export const ClassroomListsTable = ({
 }: ClassroomListsTableProps) => {
   const {
     handleSetListToEdit,
-    openDialog,
+    openDialog: openListDialog,
     closeDialog,
     isOpen,
     listToEdit,
@@ -39,6 +42,7 @@ export const ClassroomListsTable = ({
   } = useClassroomListsTable();
 
   const params = useParams<{ classroomId: string }>();
+  const [openClassroomDialog, setOpenClassroomDialog] = useState(false);
 
   const { classroom } = useGetClassroomById(params?.classroomId);
 
@@ -85,17 +89,25 @@ export const ClassroomListsTable = ({
 
   return (
     <>
+      <BackLink href="/home">Voltar para Home</BackLink>
       <div className="flex justify-between items-end gap-4">
-        <BackLink href="/home">Voltar para Home</BackLink>
-
-        <div className="flex justify-end gap-4">
+        <Card.Title>🏫 {classroom?.name}</Card.Title>
+        <div className="flex justify-end gap-2">
           {loggedUser?.uuid === classroom?.author?.uuid && (
-            <PingWrapper active={lists?.length === 0}>
-              <Button onClick={openDialog}>Criar Lista</Button>
-            </PingWrapper>
+            <>
+              <Highlight active={lists?.length === 0}>
+                <Button onClick={openListDialog}>Criar Lista</Button>
+              </Highlight>
+              <ClasrromActionsTriggerButton
+                classrroomId={classroom?.uuid!}
+                variantStyle="info"
+                onClickToEditClassroom={() => setOpenClassroomDialog(true)}
+              />
+            </>
           )}
         </div>
       </div>
+
       <div className="flex overflow-auto">
         {lists?.length === 0 ? (
           <Alert.Root>
@@ -124,6 +136,11 @@ export const ClassroomListsTable = ({
         isOpen={isOpen}
         data={listToEdit}
         onClose={closeDialog}
+      />
+      <ClassroomFormDialog
+        isOpen={openClassroomDialog}
+        classroomId={classroom?.uuid}
+        onClose={() => setOpenClassroomDialog(false)}
       />
     </>
   );

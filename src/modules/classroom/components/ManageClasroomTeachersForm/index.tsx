@@ -19,6 +19,7 @@ import { Spinner } from "@/components/ui/feedback/Spinner";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { twMerge } from "tailwind-merge";
 import { useManageClasroomTeachersForm } from "./useManageClasroomTeachersForm";
+import { Highlight } from "@/components/ui/feedback/Highlight";
 
 export const ManageTeachersForm = () => {
   const {
@@ -348,9 +349,9 @@ export const ManageTeachersForm = () => {
                     })}
                     {canEditClassroom && (
                       <Tooltip textContent="Adicionar professor">
-                        <PingWrapper active={teachers.length === 0}>
+                        <Highlight active={teachers.length === 0}>
                           <IconButton onClick={addTeacher} icon={<FaPlus />} />
-                        </PingWrapper>
+                        </Highlight>
                       </Tooltip>
                     )}
                   </div>

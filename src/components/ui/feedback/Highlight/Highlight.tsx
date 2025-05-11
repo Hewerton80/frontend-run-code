@@ -1,9 +1,11 @@
 import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import style from "./Highlight.module.css";
+import { Slot } from "@radix-ui/react-slot";
 
 const highlightsVariant = {
   info: "border-info",
+  "dark-ghost": "bg-accent",
 };
 
 type HighlightsVariant = keyof typeof highlightsVariant;
@@ -22,15 +24,10 @@ export const Highlight = ({
 }: HighlightsProps) => {
   return (
     <div className={twMerge("relative w-fit h-fit")}>
-      {children}
+      <Slot className="z-[1]">{children}</Slot>
       {active && (
         <div
-          className={twMerge(
-            "absolute inset-0 border-8 rounded-lg",
-            style.root,
-            highlightsVariant[variant],
-            className
-          )}
+          className={twMerge(style.root, highlightsVariant[variant], className)}
         />
       )}
     </div>

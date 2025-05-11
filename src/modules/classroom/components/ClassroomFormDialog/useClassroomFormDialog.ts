@@ -117,18 +117,18 @@ export const useClassroomFormDialog = (
           };
           queryClient.setQueryData(
             [ClassroomKeys.Details, currentClassroom?.uuid],
-            (oldData: IClassroom) => ({
-              ...oldData,
+            (oldData: IClassroom | undefined) => ({
+              ...(oldData || {}),
               ...newClassroomValues,
             })
           );
           queryClient.setQueryData(
             [ClassroomKeys.List],
-            ([...oldData]: IClassroom[]) => {
-              const foundIndex = oldData?.findIndex(
+            (oldData: IClassroom[] | undefined) => {
+              const foundIndex = (oldData || [])?.findIndex(
                 (oldClassroom) => oldClassroom.uuid === classroomId
               );
-              if (foundIndex !== -1) {
+              if (foundIndex !== -1 && oldData) {
                 oldData[foundIndex] = {
                   ...oldData[foundIndex],
                   ...newClassroomValues,

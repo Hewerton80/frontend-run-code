@@ -27,6 +27,7 @@ import { IUser } from "@/modules/user/userTypets";
 import { MdOutlineDoubleArrow } from "react-icons/md";
 import { CiUndo } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
+import { BackLink } from "@/components/ui/navigation/BackLink";
 
 export const UpdateClassroomExercisesFromListFrom = () => {
   const {
@@ -44,6 +45,8 @@ export const UpdateClassroomExercisesFromListFrom = () => {
     exercisesToAdd,
     isDirtyExercisesForm,
     isUpdatingClasrromExercisesFromList,
+    currentExercises,
+    handleResetExercisesForm,
     handleUpdateClasrromExercisesFromList,
     removeExerciseToList,
     unDoRemoveExerciseToList,
@@ -216,9 +219,36 @@ export const UpdateClassroomExercisesFromListFrom = () => {
             { label: classroom?.name || "-" },
             { label: "📝 Listas", href: `/classroom/${classroom?.uuid}/lists` },
             { label: list?.title || "-" },
-            { label: "Atualizar exercícios" },
+            {
+              label: `${
+                currentExercises?.length === 0 ? "Adicionar" : "Editar"
+              } exercícios`,
+            },
           ]}
         />
+        <div className="flex justify-between items-end">
+          <BackLink href={`/classroom/${classroom?.uuid}/lists`}>
+            Voltar para listas da turma
+          </BackLink>
+          <div className="flex gap-4">
+            <Button
+              variantStyle="secondary"
+              disabled={
+                isUpdatingClasrromExercisesFromList || !isDirtyExercisesForm
+              }
+              onClick={handleResetExercisesForm}
+            >
+              Desfazer alterações
+            </Button>
+            <Button
+              disabled={!isDirtyExercisesForm}
+              onClick={handleUpdateClasrromExercisesFromList}
+              isLoading={isUpdatingClasrromExercisesFromList}
+            >
+              Salvar
+            </Button>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="overflow-y-auto max-h-[calc(100vh-282px)]">
             <DataTable
@@ -246,25 +276,9 @@ export const UpdateClassroomExercisesFromListFrom = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-4 w-full">
-          <Button
-            fullWidth
-            disabled={!isDirtyExercisesForm}
-            onClick={handleUpdateClasrromExercisesFromList}
-            isLoading={isUpdatingClasrromExercisesFromList}
-          >
-            Salvar
-          </Button>
-          <Link href={`/classroom/${classroom?.uuid}/lists`}>
-            <Button
-              fullWidth
-              variantStyle="secondary"
-              disabled={isUpdatingClasrromExercisesFromList}
-            >
-              Voltar
-            </Button>
-          </Link>
-        </div>
+        {/* <div className="flex justify-end gap-4 w-full">
+         
+        </div> */}
       </div>
       <Dialog.Root
         open={showExerciseDetailsDialog}

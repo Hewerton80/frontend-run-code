@@ -142,7 +142,7 @@ export const ClassroomListsTableRow = ({
                     href={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
                   >
                     <RiArrowUpDownFill />
-                    Atualizar exercícios
+                    {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios
                     {totalExercises === 0 && <Ping />}
                   </ProgressLink>
                 </Dropdown.Item>

@@ -115,20 +115,24 @@ export const ClassroomFormDialog = ({
               </div>
               <div>
                 <Dialog.Footer className="mt-16">
-                  <Button
-                    disabled={isSubmittingClassroom}
-                    variantStyle="secondary"
-                    onClick={onClose}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    disabled={!classroomFormState.isDirty}
-                    isLoading={isSubmittingClassroom}
-                    type="submit"
-                  >
-                    Salvar
-                  </Button>
+                  {canEditClassroom && (
+                    <>
+                      <Button
+                        disabled={isSubmittingClassroom}
+                        variantStyle="secondary"
+                        onClick={onClose}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        disabled={!classroomFormState.isDirty}
+                        isLoading={isSubmittingClassroom}
+                        type="submit"
+                      >
+                        Salvar
+                      </Button>
+                    </>
+                  )}
                 </Dialog.Footer>
               </div>
             </form>
