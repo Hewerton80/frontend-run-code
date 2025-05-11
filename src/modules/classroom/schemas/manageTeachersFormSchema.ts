@@ -24,15 +24,6 @@ const verifyIfHasDublicateIdTeacherAndReturnIndex = (ids: string[]) => {
 
 export const manageTeachersFormSchema = z
   .object({
-    name: z.string().min(1, REQUIRED_FIELD),
-    isVisible: z.boolean(),
-    isAddTeachers: z.boolean(),
-    languages: z.array(
-      z.object({
-        label: z.string().min(1, REQUIRED_FIELD),
-        value: z.string().min(1, REQUIRED_FIELD),
-      })
-    ),
     teachers: z.array(
       z.object({
         value: z.string().min(1, REQUIRED_FIELD),
@@ -80,12 +71,10 @@ export const useManageTeachersFormSchema = () => {
   );
 
   const {
-    formState: classroomFormState,
-    control: classroomFormControl,
-    register: registerClassroomForm,
-    watch: watchClassroomForm,
-    handleSubmit: handleClassroomFormSubmit,
-    reset: resetClassroomForm,
+    formState: classroomTeachersFormState,
+    control: classroomTeachersFormControl,
+    handleSubmit: handleClassroomTeachersFormSubmit,
+    reset: resetClassroomTeachersForm,
   } = useForm<ManageTeachersFormSchema>({
     defaultValues,
     resolver: zodResolver(manageTeachersFormSchema),
@@ -98,18 +87,16 @@ export const useManageTeachersFormSchema = () => {
     remove: removeTeacher,
   } = useFieldArray({
     name: "teachers",
-    control: classroomFormControl,
+    control: classroomTeachersFormControl,
   });
 
   return {
     teachers,
-    classroomFormState,
-    classroomFormControl,
-    resetClassroomForm,
-    handleClassroomFormSubmit,
-    watchClassroomForm,
+    classroomTeachersFormState,
+    classroomTeachersFormControl,
+    resetClassroomTeachersForm,
+    handleClassroomTeachersFormSubmit,
     addTeacher,
     removeTeacher,
-    registerClassroomForm,
   };
 };

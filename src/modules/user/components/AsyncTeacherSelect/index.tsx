@@ -4,6 +4,7 @@ import {
   ComponentPropsWithoutRef,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useAxios } from "@/hooks/useAxios";
@@ -23,17 +24,27 @@ export const AsyncTeacherSelect = ({
   const [responseTeachers, setResponseTeachers] = useState<IUser[]>([]);
   const [isLoadingTeachers, setIsLoadingTeachers] = useState(false);
 
+  const defaultOptionsRecords = useMemo<Record<string, SelectOption>>(
+    () =>
+      defaultOptions.reduce((acc, option) => {
+        acc[option?.value!] = option;
+        return acc;
+      }, {} as Record<string, SelectOption>),
+    [defaultOptions]
+  );
+
   const [autocompliteOptions, setAutocompliteOptions] =
     useState<SelectOption[]>(defaultOptions);
 
   useEffect(() => {
-    setAutocompliteOptions(
-      responseTeachers?.map((teacher) => ({
+    setAutocompliteOptions([
+      ...defaultOptions,
+      ...(responseTeachers?.map((teacher) => ({
         label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
         value: String(teacher?.id),
-      })) || []
-    );
-  }, [responseTeachers]);
+      })) || []),
+    ]);
+  }, [responseTeachers, defaultOptions]);
 
   // const autocompliteOptions = useMemo<SelectOption[]>(() => {
   //   return (
@@ -50,14 +61,16 @@ export const AsyncTeacherSelect = ({
         const { data } = await apiBase.get<IUser[]>(`/user/teachers`, {
           params: { keyword },
         });
-        setResponseTeachers(data || []);
+        setResponseTeachers(
+          (data || []).filter((teacher) => !defaultOptionsRecords[teacher?.id!])
+        );
       } catch (error) {
         console.error("Error fetching teachers:", error);
       } finally {
         setIsLoadingTeachers(false);
       }
     },
-    [apiBase]
+    [apiBase, defaultOptionsRecords]
   );
 
   const handleChangeInputTextDebounced = useDebouncedCallback(
@@ -81,6 +94,10 @@ export const AsyncTeacherSelect = ({
     },
     [handleChangeInputTextDebounced]
   );
+
+  useEffect(() => {
+    console.log("autocompliteOptions", autocompliteOptions);
+  }, [autocompliteOptions]);
 
   return (
     <Select

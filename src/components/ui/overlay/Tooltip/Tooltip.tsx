@@ -11,6 +11,7 @@ interface TooltipContentProps {
   children?: ReactNode;
   textContent?: ReactNode;
   open?: boolean;
+  disableHoverableContent?: boolean;
   onOpenChange?: (open: boolean) => void;
   side?: "top" | "right" | "bottom" | "left";
   align?: "start" | "center" | "end";
@@ -25,11 +26,19 @@ export const Tooltip = ({
   textContent,
   open,
   children,
+  disableHoverableContent,
   onOpenChange,
 }: TooltipContentProps) => {
   return (
-    <TooltipPrimitive.Provider delayDuration={delayDuration}>
-      <TooltipPrimitive.Root open={open} onOpenChange={onOpenChange}>
+    <TooltipPrimitive.Provider
+      disableHoverableContent={disableHoverableContent}
+      delayDuration={delayDuration}
+    >
+      <TooltipPrimitive.Root
+        disableHoverableContent={disableHoverableContent}
+        open={open}
+        onOpenChange={onOpenChange}
+      >
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
@@ -43,6 +52,7 @@ export const Tooltip = ({
               "data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2",
               "data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2",
               "data-[side=top]:slide-in-from-bottom-2",
+              disableHoverableContent && "hidden",
               className
             )}
           >

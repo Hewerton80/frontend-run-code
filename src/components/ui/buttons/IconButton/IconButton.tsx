@@ -12,7 +12,10 @@ export const IconButton = forwardRef(
     return (
       <Button
         ref={ref}
-        className={twMerge("size-9 px-0! py-0! p-0.5! text-xl!", className)}
+        className={twMerge(
+          "size-9 min-h-9 min-w-9 max-w-9 ,ax-h-9 px-0! py-0! p-0.5! text-xl!",
+          className
+        )}
         {...restProps}
       >
         {icon}

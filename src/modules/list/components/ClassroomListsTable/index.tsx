@@ -18,9 +18,9 @@ import { BackLink } from "@/components/ui/navigation/BackLink";
 import { ClasrromActionsTriggerButton } from "@/modules/classroom/components/ClasrromActionsTriggerButton";
 import { ClassroomFormDialog } from "@/modules/classroom/components/ClassroomFormDialog";
 import { Card } from "@/components/ui/cards/Card";
+import { Tooltip } from "@/components/ui/overlay/Tooltip";
 
 interface ClassroomListsTableProps {
-  // data?: IList[];
   isLoading?: boolean;
   error?: string;
   onTryAgainIfError?: () => void;
@@ -28,36 +28,28 @@ interface ClassroomListsTableProps {
 
 export const ClassroomListsTable = ({
   isLoading,
-  // data: lists,
   error,
   onTryAgainIfError,
 }: ClassroomListsTableProps) => {
   const {
     handleSetListToEdit,
-    openDialog: openListDialog,
-    closeDialog,
-    isOpen,
+    openListDialog,
+    closeListDialog,
+    openClassroomDialog,
+    closeClassroomDialog,
+    canCreateList,
+    classroom,
+    isOpenClassroomFormDialog,
+    lists,
+    isOpenListDialog,
     listToEdit,
     loggedUser,
   } = useClassroomListsTable();
-
-  const params = useParams<{ classroomId: string }>();
-  const [openClassroomDialog, setOpenClassroomDialog] = useState(false);
-
-  const { classroom } = useGetClassroomById(params?.classroomId);
-
-  const lists = useMemo(() => {
-    return classroom?.lists?.map((list) => ({
-      ...list,
-      classroom,
-    }));
-  }, [classroom]);
 
   const handledDataTable = useMemo(() => {
     if (error) {
       return <FeedBackError onTryAgain={onTryAgainIfError} />;
     }
-
     if (isLoading) {
       return (
         <>
@@ -73,7 +65,6 @@ export const ClassroomListsTable = ({
         </>
       );
     }
-
     return (
       <>
         {lists?.map((list) => (
@@ -93,15 +84,27 @@ export const ClassroomListsTable = ({
       <div className="flex justify-between items-end gap-4">
         <Card.Title>🏫 {classroom?.name}</Card.Title>
         <div className="flex justify-end gap-2">
-          {loggedUser?.uuid === classroom?.author?.uuid && (
+          {loggedUser?.role === 2 && (
             <>
-              <Highlight active={lists?.length === 0}>
-                <Button onClick={openListDialog}>Criar Lista</Button>
-              </Highlight>
+              <Tooltip
+                align="start"
+                textContent="Você não permissão para criar listas nessa turma"
+                disableHoverableContent={canCreateList}
+              >
+                <span
+                  className={!canCreateList ? "cursor-not-allowed" : undefined}
+                >
+                  <Highlight active={lists?.length === 0 && canCreateList}>
+                    <Button disabled={!canCreateList} onClick={openListDialog}>
+                      Criar Lista
+                    </Button>
+                  </Highlight>
+                </span>
+              </Tooltip>
               <ClasrromActionsTriggerButton
                 classrroomId={classroom?.uuid!}
                 variantStyle="info"
-                onClickToEditClassroom={() => setOpenClassroomDialog(true)}
+                onClickToEditClassroom={openClassroomDialog}
               />
             </>
           )}
@@ -111,7 +114,7 @@ export const ClassroomListsTable = ({
       <div className="flex overflow-auto">
         {lists?.length === 0 ? (
           <Alert.Root>
-            <Alert.Title>Turma não há listas</Alert.Title>
+            <Alert.Title>Ainda não há listas</Alert.Title>
             <Alert.Description>
               Crie uma lista para começar a adicionar exercícios.
             </Alert.Description>
@@ -133,14 +136,14 @@ export const ClassroomListsTable = ({
         )}
       </div>
       <ClassroomListFormDialog
-        isOpen={isOpen}
+        isOpen={isOpenListDialog}
         data={listToEdit}
-        onClose={closeDialog}
+        onClose={closeListDialog}
       />
       <ClassroomFormDialog
-        isOpen={openClassroomDialog}
+        isOpen={isOpenClassroomFormDialog}
         classroomId={classroom?.uuid}
-        onClose={() => setOpenClassroomDialog(false)}
+        onClose={closeClassroomDialog}
       />
     </>
   );

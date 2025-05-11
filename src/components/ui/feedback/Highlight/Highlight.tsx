@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { forwardRef, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import style from "./Highlight.module.css";
 import { Slot } from "@radix-ui/react-slot";
@@ -16,20 +16,24 @@ interface HighlightsProps {
   active?: boolean;
 }
 
-export const Highlight = ({
-  className,
-  active,
-  children,
-  variant = "info",
-}: HighlightsProps) => {
-  return (
-    <div className={twMerge("relative w-fit h-fit")}>
-      <Slot className="z-[1]">{children}</Slot>
-      {active && (
-        <div
-          className={twMerge(style.root, highlightsVariant[variant], className)}
-        />
-      )}
-    </div>
-  );
-};
+export const Highlight = forwardRef(
+  (
+    { className, active, children, variant = "info" }: HighlightsProps,
+    ref?: any
+  ) => {
+    return (
+      <div ref={ref} className={twMerge("relative w-fit h-fit")}>
+        <Slot className="z-[1]">{children}</Slot>
+        {active && (
+          <div
+            className={twMerge(
+              style.root,
+              highlightsVariant[variant],
+              className
+            )}
+          />
+        )}
+      </div>
+    );
+  }
+);
