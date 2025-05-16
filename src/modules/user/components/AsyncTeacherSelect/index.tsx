@@ -10,6 +10,7 @@ import {
 import { useAxios } from "@/hooks/useAxios";
 import { IUser } from "../../userTypets";
 import { useDebouncedCallback } from "use-debounce";
+import { GroupedUserInfo } from "../GroupedUserInfo";
 
 interface IAsyncTeacherSelectProps
   extends ComponentPropsWithoutRef<typeof Select> {
@@ -21,30 +22,36 @@ export const AsyncTeacherSelect = ({
   ...restProps
 }: IAsyncTeacherSelectProps) => {
   const { apiBase } = useAxios();
-  const [responseTeachers, setResponseTeachers] = useState<IUser[]>([]);
   const [isLoadingTeachers, setIsLoadingTeachers] = useState(false);
+  const [responseTeachers, setResponseTeachers] = useState<IUser[]>([]);
 
-  const defaultOptionsRecords = useMemo<Record<string, SelectOption>>(
-    () =>
-      defaultOptions.reduce((acc, option) => {
-        acc[option?.value!] = option;
-        return acc;
-      }, {} as Record<string, SelectOption>),
-    [defaultOptions]
-  );
+  // const defaultOptionsRecords = useMemo<Record<string, SelectOption>>(
+  //   () =>
+  //     [...defaultOptions].reduce((acc, option) => {
+  //       acc[option?.value!] = option;
+  //       return acc;
+  //     }, {} as Record<string, SelectOption>),
+  //   [defaultOptions]
+  // );
 
   const [autocompliteOptions, setAutocompliteOptions] =
     useState<SelectOption[]>(defaultOptions);
 
   useEffect(() => {
-    setAutocompliteOptions([
-      ...defaultOptions,
-      ...(responseTeachers?.map((teacher) => ({
-        label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
-        value: String(teacher?.id),
-      })) || []),
-    ]);
-  }, [responseTeachers, defaultOptions]);
+    console.log("autocompliteOptions", autocompliteOptions);
+  }, [autocompliteOptions]);
+
+  // useEffect(() => {
+  //   console.log("useEffect");
+  //   setAutocompliteOptions([
+  //     // ...defaultOptions,
+  //     ...(responseTeachers?.map((teacher) => ({
+  //       // label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
+  //       label: <GroupedUserInfo user={teacher} />,
+  //       value: String(teacher?.id),
+  //     })) || []),
+  //   ]);
+  // }, [responseTeachers]);
 
   // const autocompliteOptions = useMemo<SelectOption[]>(() => {
   //   return (
@@ -61,16 +68,25 @@ export const AsyncTeacherSelect = ({
         const { data } = await apiBase.get<IUser[]>(`/user/teachers`, {
           params: { keyword },
         });
-        setResponseTeachers(
-          (data || []).filter((teacher) => !defaultOptionsRecords[teacher?.id!])
-        );
+
+        // const filteredTeachers = (data || []).filter(
+        //   (teacher) => !defaultOptionsRecords[teacher?.id!]
+        // );
+        // setResponseTeachers(filteredTeachers);
+        const teachersResponseOptions = data?.map((teacher) => ({
+          label: `${teacher?.email} - ${teacher?.name} ${teacher?.surname}`,
+          // label: <GroupedUserInfo user={teacher} />,
+          value: teacher?.uuid,
+        }));
+
+        setAutocompliteOptions([...defaultOptions, ...teachersResponseOptions]);
       } catch (error) {
         console.error("Error fetching teachers:", error);
       } finally {
         setIsLoadingTeachers(false);
       }
     },
-    [apiBase, defaultOptionsRecords]
+    [apiBase, defaultOptions]
   );
 
   const handleChangeInputTextDebounced = useDebouncedCallback(
@@ -95,9 +111,12 @@ export const AsyncTeacherSelect = ({
     [handleChangeInputTextDebounced]
   );
 
-  useEffect(() => {
-    console.log("autocompliteOptions", autocompliteOptions);
-  }, [autocompliteOptions]);
+  // useEffect(() => {
+  //   console.log("defaultOptions", defaultOptions);
+  // }, [defaultOptions]);
+  // useEffect(() => {
+  //   console.log("autocompliteOptions", autocompliteOptions);
+  // }, [autocompliteOptions]);
 
   return (
     <Select

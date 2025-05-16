@@ -16,7 +16,7 @@ export const useGetClassroomUsers = (classroomId: string) => {
       apiBase
         .get<IPaginatedDocs<IUser>>(`/classroom/${classroomId}/users`)
         .then((res) => res.data || { data: [] }),
-    queryKey: [ClassroomKeys.Users],
+    queryKey: [ClassroomKeys.Users, classroomId],
     enabled: true,
   });
 

@@ -214,13 +214,13 @@ export const PrimitiveSelect = forwardRef(
                 )}
               </span>
             ),
-            NoOptionsMessage: () => (
-              <div className="flex w-full justify-center ">
-                <span className="text-sm text-muted dark:text-border">
-                  No options available
-                </span>
-              </div>
-            ),
+            // NoOptionsMessage: () => (
+            //   <div className="flex w-full justify-center ">
+            //     <span className="text-sm text-muted dark:text-border">
+            //       No options available
+            //     </span>
+            //   </div>
+            // ),
           }}
           onChange={(
             newValue: MultiValue<any> | SingleValue<any>,
@@ -229,26 +229,28 @@ export const PrimitiveSelect = forwardRef(
           // formatOptionLabel={(option) => (
           //   <Badge variant="info">{option.label}</Badge>
           // )}
-          formatGroupLabel={(options) => (
-            <>
-              <span>{options.label}</span>
-              <span> ({options?.options?.length})</span>
-            </>
-          )}
+          // formatGroupLabel={(options) => (
+          //   <>
+          //     <span>{options.label}</span>
+          //     <span> ({options?.options?.length})</span>
+          //   </>
+          // )}
           isMulti={isMulti}
           isSearchable={isSearchable}
           isLoading={isLoading}
           options={isLoading ? ([] as SelectOption[]) : options}
-          formatOptionLabel={(data: unknown) => {
-            const option = data as SelectOption;
-            return (
-              <>
-                {option?.icon && <span className="mr-1">{option?.icon}</span>}
-                {option.label}
-              </>
-            );
-          }}
-          noOptionsMessage={() => <span>Nenhuma Opção disponível</span>}
+          // options={[
+          //   {
+          //     label: (
+          //       <div className="flex">
+          //         <span className="size-2 bg-red-500 rounded-full"></span>
+          //         <h1 className="text-blue-500">dsadsd</h1>
+          //       </div>
+          //     ),
+          //     value: "dsad",
+          //   },
+          // ]}
+          noOptionsMessage={() => <span>Nenhuma opção disponível</span>}
           loadingMessage={() => (
             <div className="flex w-full justify-center">
               <Spinner size={18} />

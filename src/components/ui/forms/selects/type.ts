@@ -1,10 +1,9 @@
-import { ReactNode } from "react";
+import { JSX, ReactNode } from "react";
 import { ActionMeta, SingleValue } from "react-select";
 
 export interface SelectOption {
   value?: string;
-  label: string;
-  icon?: ReactNode;
+  label: string | JSX.Element;
   options?: SelectOption[];
 }
 
