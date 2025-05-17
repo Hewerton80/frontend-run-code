@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   TeacherFormSchema,
   useTeacherFormSchema,
@@ -12,8 +12,14 @@ import {
 import { useToast } from "@/hooks/useToast";
 import { ClassroomKeys } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
+import { useGetClassroomUserById } from "../../hooks/useGetClassroomUserById";
+import { useGetClassroomById } from "../../hooks/useGetClassroomById";
+import {
+  UpdateTeacherInClassroomBody,
+  useUpdateTeacherInClassroom,
+} from "../../hooks/updateTeacherInClassroom";
 
-export const useClassromTeacherForm = (
+export const useClassromTeacherFormDialog = (
   teacherId?: string | null,
   onSuccessSubmitted?: () => void
 ) => {
@@ -21,6 +27,31 @@ export const useClassromTeacherForm = (
   const params = useParams<{ classroomId: string }>();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { loggedUser } = useAuth();
+
+  const { classroom } = useGetClassroomById(params?.classroomId);
+
+  const {
+    classroomUser,
+    classroomUserError,
+    isLoadingClassroomUser,
+    refetchClassroomUser,
+  } = useGetClassroomUserById(params?.classroomId, teacherId);
+
+  const isClassroomAuthor = useMemo(() => {
+    return classroomUser?.uuid === classroom?.author?.uuid;
+  }, [classroomUser, classroom]);
+
+  const isMe = useMemo(() => {
+    return loggedUser?.uuid === teacherId;
+  }, [loggedUser, teacherId]);
+
+  const canEditClassroomUser = useMemo(() => {
+    if (!isEdit) return true;
+    if (isMe) return false;
+    if (isClassroomAuthor) return false;
+    return classroom?.myClassroomPermissions?.canManageTeachers;
+  }, [isEdit, isMe, classroom, isClassroomAuthor]);
 
   const {
     classroomTeacherFormControl,
@@ -29,13 +60,29 @@ export const useClassromTeacherForm = (
     clearClassroomTeacherStates,
     resetClassroomTeacherForm,
     setClassroomTeacherFormError,
-    triggerClassroomTeacherForm,
   } = useTeacherFormSchema();
 
-  const { addTeacherToClassroom, isAddingTeacherToClass } =
+  const { addTeacherToClassroom, isAddingTeacherToClassroom } =
     useAddTeacherToClassroom(params?.classroomId);
 
-  const { loggedUser } = useAuth();
+  const { updateTeacherInClassroom, isUpdatingTeacherInClassroom } =
+    useUpdateTeacherInClassroom(params?.classroomId, teacherId as string);
+
+  useEffect(() => {
+    if (classroomUser) {
+      resetClassroomTeacherForm({
+        value: classroomUser?.uuid,
+        label: `${classroomUser?.email} - ${classroomUser?.name} ${classroomUser?.surname}`,
+        canEditClassroom: classroomUser?.canEditClassroom,
+        canManageTeachers: classroomUser?.canManageTeachers,
+        canCreateList: classroomUser?.canCreateList,
+        canEditList: classroomUser?.canEditList,
+        canDeleteList: classroomUser?.canDeleteList,
+        canManageExercises: classroomUser?.canManageExercises,
+        canRemoveMember: classroomUser?.canRemoveMember,
+      });
+    }
+  }, [resetClassroomTeacherForm, classroomUser]);
 
   const getHandledTeacherBody = useCallback((data: TeacherFormSchema) => {
     return {
@@ -47,7 +94,7 @@ export const useClassromTeacherForm = (
       canDeleteList: data?.canDeleteList,
       canManageExercises: data?.canManageExercises,
       canRemoveMember: data?.canRemoveMember,
-    } as AddTeacherToClassroomBody;
+    } as AddTeacherToClassroomBody & UpdateTeacherInClassroomBody;
   }, []);
 
   const handleSubmitClassroomTeacherForm = useCallback(
@@ -58,19 +105,19 @@ export const useClassromTeacherForm = (
         onSuccessSubmitted?.();
         toast({
           title: `Professor(a) ${
-            isEdit ? "editado" : "adicionado"
+            isEdit ? "editado(a)" : "adicionado(a)"
           } com sucesso`,
           variant: "success",
         });
         if (!isEdit) {
           queryClient.resetQueries({
-            queryKey: [ClassroomKeys.Details, params?.classroomId],
+            queryKey: [ClassroomKeys.Users, params?.classroomId],
           });
         }
       };
       const onError = (erro?: any) => {
         const errorResponse = erro?.response;
-        if (erro?.response?.status === 409) {
+        if (errorResponse?.status === 409) {
           setClassroomTeacherFormError("value", {
             message:
               errorResponse?.data?.description ||
@@ -83,6 +130,12 @@ export const useClassromTeacherForm = (
           direction: "bottom-right",
         });
       };
+      if (isEdit) {
+        return updateTeacherInClassroom(handledTeacherBody, {
+          onSuccess,
+          onError,
+        });
+      }
       addTeacherToClassroom(handledTeacherBody, { onSuccess, onError });
     },
     [
@@ -90,6 +143,7 @@ export const useClassromTeacherForm = (
       params,
       queryClient,
       setClassroomTeacherFormError,
+      updateTeacherInClassroom,
       toast,
       onSuccessSubmitted,
       clearClassroomTeacherStates,
@@ -99,17 +153,23 @@ export const useClassromTeacherForm = (
   );
 
   const isSubmitting = useMemo(
-    () => isAddingTeacherToClass,
-    [isAddingTeacherToClass]
+    () => isAddingTeacherToClassroom || isUpdatingTeacherInClassroom,
+    [isAddingTeacherToClassroom, isUpdatingTeacherInClassroom]
   );
 
   return {
     classroomTeacherFormControl,
     classroomTeacherFormState,
+    isSubmitting,
+    classroomUser,
+    classroomUserError,
+    isLoadingClassroomUser,
+    isEdit,
+    classroom,
+    canEditClassroomUser,
     submitClassroomTeacherForm: handleClassroomTeacherFormSubmit(
       handleSubmitClassroomTeacherForm
     ),
-    loggedUser,
-    isSubmitting,
+    refetchClassroomUser,
   };
 };

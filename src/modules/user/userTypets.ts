@@ -4,6 +4,16 @@ export const RoleUserEnum: Record<number, string> = {
   3: "Super Admin",
 };
 
+export type TeacherPermissions = {
+  canEditClassroom: boolean;
+  canManageTeachers: boolean;
+  canCreateList: boolean;
+  canEditList: boolean;
+  canDeleteList: boolean;
+  canManageExercises: boolean;
+  canRemoveMember: boolean;
+};
+
 export interface IUser {
   id?: string;
   uuid?: string;
@@ -17,6 +27,8 @@ export interface IUser {
   role: number;
   createdAt?: string;
 }
+
+export type ITeacher = IUser & TeacherPermissions;
 
 export enum UserKey {
   List = "List",

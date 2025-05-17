@@ -5,15 +5,16 @@ import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { BsThreeDots } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
 
-interface ClassroomActionTriggerButtonProps {
-  onClickToEditClassroom?: () => void;
+interface ClasrromUsersActionsTriggerButtonProps {
+  // classrroomId: string;
+  onClickToEditUser?: () => void;
   variantStyle?: ButtonVariantStyle;
 }
 
-export const ClasrromActionsTriggerButton = ({
-  onClickToEditClassroom,
-  variantStyle = "dark-ghost",
-}: ClassroomActionTriggerButtonProps) => {
+export const ClasrromUsersActionsTriggerButton = ({
+  // classrroomId,
+  onClickToEditUser,
+}: ClasrromUsersActionsTriggerButtonProps) => {
   const { loggedUser } = useAuth();
 
   if (loggedUser?.role === 1) {
@@ -23,14 +24,14 @@ export const ClasrromActionsTriggerButton = ({
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <IconButton variantStyle={variantStyle} icon={<BsThreeDots />} />
+        <IconButton variantStyle="dark-ghost" icon={<BsThreeDots />} />
       </Dropdown.Trigger>
 
       <Dropdown.Content>
-        <Dropdown.Item onClick={onClickToEditClassroom} className="gap-2">
+        <Dropdown.Item onClick={onClickToEditUser} className="gap-2">
           {/* <ProgressLink href={`/update-classroom/${classroom?.uuid}`}> */}
           <FaPen />
-          Visualizar Turma
+          Visualizar
         </Dropdown.Item>
       </Dropdown.Content>
     </Dropdown.Root>

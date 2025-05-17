@@ -8,7 +8,7 @@ export const useGetClassroomUsers = (classroomId: string) => {
   const { apiBase } = useAxios();
   const {
     data: classroomUsers,
-    isFetching: isClassroomUsersLoading,
+    isFetching: isLoadingClassroomUsers,
     error: classroomUsersError,
     refetch: refetchClassroomUsers,
   } = useQuery({
@@ -23,7 +23,7 @@ export const useGetClassroomUsers = (classroomId: string) => {
   return {
     refetchClassroomUsers,
     classroomUsers,
-    isClassroomUsersLoading,
+    isLoadingClassroomUsers,
     classroomUsersError,
   };
 };

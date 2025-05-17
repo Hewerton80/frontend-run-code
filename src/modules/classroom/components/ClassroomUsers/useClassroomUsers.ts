@@ -1,14 +1,16 @@
 import { useParams } from "next/navigation";
 import { useGetClassroomUsers } from "../../hooks/useGetClassroomUsers";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 export const useClassroomUsers = () => {
   const params = useParams<{ classroomId: string }>();
+  const { loggedUser } = useAuth();
   const {
     refetchClassroomUsers,
     classroomUsers,
-    isClassroomUsersLoading,
+    isLoadingClassroomUsers,
     classroomUsersError,
   } = useGetClassroomUsers(params?.classroomId);
 
@@ -16,6 +18,11 @@ export const useClassroomUsers = () => {
     useGetClassroomById(params?.classroomId);
 
   const [isOpenTeacherFormDialog, setIsOpenTeacherFormDialog] = useState(false);
+  const [teacherIdToEdit, setTeacherIdToEdit] = useState<string | null>(null);
+
+  const canAddTeacher = useMemo(() => {
+    return classroom?.myClassroomPermissions?.canManageTeachers;
+  }, [classroom]);
 
   const openTeacherFormDialog = useCallback(() => {
     setIsOpenTeacherFormDialog(true);
@@ -23,16 +30,29 @@ export const useClassroomUsers = () => {
 
   const closeTeacherFormDialog = useCallback(() => {
     setIsOpenTeacherFormDialog(false);
+    setTeacherIdToEdit(null);
   }, []);
+
+  const handleSetTeacherIdToEdit = useCallback(
+    (teacherId: string) => {
+      setTeacherIdToEdit(teacherId);
+      openTeacherFormDialog();
+    },
+    [openTeacherFormDialog]
+  );
 
   return {
     classroom,
     errorClassroom,
     isLoadingClassroom,
     classroomUsers,
-    isClassroomUsersLoading,
+    isLoadingClassroomUsers,
     classroomUsersError,
     isOpenTeacherFormDialog,
+    teacherIdToEdit,
+    loggedUser,
+    canAddTeacher,
+    handleSetTeacherIdToEdit,
     openTeacherFormDialog,
     closeTeacherFormDialog,
     refetchClassroom,

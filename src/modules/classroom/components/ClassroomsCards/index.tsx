@@ -43,7 +43,6 @@ const ClassRoomsCard = ({
             </Tooltip>
             <span className="ml-auto">
               <ClasrromActionsTriggerButton
-                classrroomId={classroom?.uuid!}
                 onClickToEditClassroom={() => onClickToEdit?.(classroom?.uuid!)}
               />
             </span>

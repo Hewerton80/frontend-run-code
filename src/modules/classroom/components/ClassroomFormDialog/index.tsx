@@ -63,8 +63,9 @@ export const ClassroomFormDialog = ({
                     Você não tem permissão para editar essa turma
                   </Alert.Title>
                   <Alert.Description>
-                    Entre em contato com o professor responsável pela turma caso
-                    precise fazer alguma alteração.
+                    Entre em contato com o(async function name(params:type) {})
+                    professor(a) responsável pela turma caso precise fazer
+                    alguma alteração.
                   </Alert.Description>
                 </Alert.Root>
               )}

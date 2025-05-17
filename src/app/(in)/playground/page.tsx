@@ -23,7 +23,7 @@ export default function PlayGroundPage() {
   const handleSubmit = () => {
     const formaData: RunCodeBody = {
       sourceCode: editorValue,
-      inputValues: inputs.map((input) => input.label),
+      inputValues: inputs.map((input) => input.label as string),
       language: languageMode,
     };
     console.log(formaData);

@@ -102,7 +102,6 @@ export const ClassroomListsTable = ({
                 </span>
               </Tooltip>
               <ClasrromActionsTriggerButton
-                classrroomId={classroom?.uuid!}
                 variantStyle="info"
                 onClickToEditClassroom={openClassroomDialog}
               />

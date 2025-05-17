@@ -1,5 +1,5 @@
 "use client";
-import React, {
+import {
   forwardRef,
   ComponentPropsWithRef,
   useCallback,
@@ -98,6 +98,7 @@ export const PrimitiveSelect = forwardRef(
       },
       [isMulti, onChangeSingleOption, onChangeMultValue]
     );
+
     return (
       <div className={twMerge("flex flex-col w-full", formControlClassName)}>
         {label && (

@@ -48,7 +48,6 @@ export const useTeacherFormSchema = () => {
     reset: resetClassroomTeacherForm,
     clearErrors: clearClassroomTeacherFormErrors,
     setError: setClassroomTeacherFormError,
-    trigger: triggerClassroomTeacherForm,
   } = useForm<TeacherFormSchema>({
     defaultValues,
     resolver: zodResolver(teacherFormSchema),
@@ -64,6 +63,13 @@ export const useTeacherFormSchema = () => {
     clearClassroomTeacherFormErrors,
   ]);
 
+  useEffect(() => {
+    console.log(
+      "classroomTeacherFormState.errors",
+      classroomTeacherFormState.errors
+    );
+  }, [classroomTeacherFormState.errors]);
+
   return {
     classroomTeacherFormState,
     classroomTeacherFormControl,
@@ -72,6 +78,5 @@ export const useTeacherFormSchema = () => {
     resetClassroomTeacherForm,
     clearClassroomTeacherFormErrors,
     setClassroomTeacherFormError,
-    triggerClassroomTeacherForm,
   };
 };
