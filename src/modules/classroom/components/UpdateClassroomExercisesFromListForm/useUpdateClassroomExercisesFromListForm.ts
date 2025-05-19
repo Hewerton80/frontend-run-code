@@ -1,6 +1,6 @@
 import { useParams, useRouter } from "next/navigation";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
-import { useGetExercisesByClassroomList } from "@/modules/exercise/hooks/useGetExercisesByClassroomList";
+import { useGetList } from "@/modules/list/hooks/useGetList";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
 import { usePagination } from "@/hooks/usePagination";
@@ -31,11 +31,10 @@ export const useUpdateClassroomExercisesFromListForm = () => {
 
   const {
     list,
-    exercises: currentExercises,
     isLoadingExercises,
     errorExercises: errorCuerrentExercises,
     refetchExercises: refetchCurrentExercises,
-  } = useGetExercisesByClassroomList({
+  } = useGetList({
     classroomId: params?.classroomId,
     listId: params?.listId,
   });
@@ -65,6 +64,8 @@ export const useUpdateClassroomExercisesFromListForm = () => {
   const [exerciseIdToSeeInDialog, setExerciseIdToSeeInDialog] = useState<
     string | null
   >(null);
+
+  const currentExercises = useMemo(() => list?.exercises, [list]);
 
   const showExerciseDetailsDialog = useMemo(
     () => !!exerciseIdToSeeInDialog,

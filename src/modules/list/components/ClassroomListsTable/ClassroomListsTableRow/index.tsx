@@ -1,25 +1,24 @@
 "use client";
 import { IList } from "../../../listTypes";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
 import { BsThreeDots } from "react-icons/bs";
-import { useGetExercisesByClassroomList } from "@/modules/exercise/hooks/useGetExercisesByClassroomList";
+import { useGetList } from "@/modules/list/hooks/useGetList";
 import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
-import { FaGear } from "react-icons/fa6";
+import { FaPen } from "react-icons/fa";
 import { useGetClassroomListStatus } from "../../../hooks/useGetClassroomListStatus";
 import { ClasrromListStatus } from "../../ClasrromListStatus";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { Ping, PingWrapper } from "@/components/ui/feedback/Ping";
 import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { RiArrowUpDownFill } from "react-icons/ri";
-import { Highlight } from "@/components/ui/feedback/Highlight";
 
 interface ClassroomListsTableRowProps {
   list: IList;
@@ -32,20 +31,29 @@ export const ClassroomListsTableRow = ({
 }: ClassroomListsTableRowProps) => {
   const { loggedUser } = useAuth();
 
-  const { exercises, errorExercises, isLoadingExercises, refetchExercises } =
-    useGetExercisesByClassroomList({
-      classroomId: list?.classroom?.uuid as string,
-      listId: list?.uuid as string,
-    });
+  const {
+    list: { exercises } = {},
+    errorExercises,
+    isLoadingExercises,
+    refetchExercises,
+  } = useGetList({
+    classroomId: list?.classroom?.uuid as string,
+    listId: list?.uuid as string,
+  });
 
   const [alreadyAccordionOpened, setAlreadyAccordionOpened] = useState(false);
 
   const { closed } = useGetClassroomListStatus(list);
 
-  const solved = list?.solved || 0;
-  const totalExercises = list?.totalExercises || 0;
-
-  const progress = solved ? Math.round((solved / totalExercises) * 100) : 0;
+  const solved = useMemo(() => list?.solved || 0, [list]);
+  const totalExercises = useMemo(() => list?.totalExercises || 0, [list]);
+  const progress = useMemo(
+    () =>
+      solved && totalExercises
+        ? Math.round((solved / totalExercises) * 100)
+        : 0,
+    [solved, totalExercises]
+  );
 
   const handledOpenAccordion = useCallback(() => {
     if (closed || alreadyAccordionOpened || totalExercises === 0) return;
@@ -134,8 +142,8 @@ export const ClassroomListsTableRow = ({
 
               <Dropdown.Content>
                 <Dropdown.Item onClick={onOpenEditModal} className="gap-2">
-                  <FaGear />
-                  Editar Lista
+                  <FaPen />
+                  Visualizar Liata
                 </Dropdown.Item>
                 <Dropdown.Item asChild className="gap-2">
                   <ProgressLink
