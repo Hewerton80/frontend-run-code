@@ -1,6 +1,5 @@
+"use client";
 import { twMerge } from "tailwind-merge";
-import { TypeWriterText } from "../../typography/TypeWriterText";
-import { useMemo, Children } from "react";
 import { useTypeWriterText } from "@/hooks/useTypeWriterText";
 
 interface TerminalCodeProps {
