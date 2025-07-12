@@ -1,0 +1,9 @@
+@reference '../../../../../app/globals.css';
+
+.root :global(.select__menu) {
+    @apply hidden
+}
+
+.root :global(.select__indicators) {
+    @apply hidden
+}

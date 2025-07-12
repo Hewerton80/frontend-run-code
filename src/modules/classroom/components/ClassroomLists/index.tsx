@@ -1,0 +1,33 @@
+"use client";
+import { useGetClassroomById } from "../../hooks/useGetClassroomById";
+import { useParams } from "next/navigation";
+import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
+import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
+
+export function ClassroomLists() {
+  const params = useParams<{ classroomId: string }>();
+
+  const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
+    useGetClassroomById(params?.classroomId);
+
+  return (
+    <>
+      <div className="flex flex-col w-full gap-4 p-8">
+        <Breadcrumbs
+          isLoading={isLoadingClassroom}
+          items={[
+            { label: "🏠 Home", href: "/home" },
+            { label: classroom?.name || "-" },
+            { label: "📝 Listas" },
+          ]}
+        />
+
+        <ClassroomListsTable
+          isLoading={isLoadingClassroom}
+          error={errorClassroom ? "Erro ao carregar listas" : undefined}
+          onTryAgainIfError={refetchClassroom}
+        />
+      </div>
+    </>
+  );
+}
