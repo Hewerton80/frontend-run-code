@@ -23,7 +23,7 @@ export const ExerciseDescription = ({
       field: "input",
       label: "Entrada(s)",
       onParse: (test) => (
-        <div
+        <code
           className="font-[monospace] whitespace-pre"
           dangerouslySetInnerHTML={{
             __html: parseStringToHtmlFormat(test?.input || ""),
@@ -35,7 +35,7 @@ export const ExerciseDescription = ({
       field: "expectedOutput",
       label: "Exemplo de saída",
       onParse: (test) => (
-        <div
+        <code
           className="font-[monospace] whitespace-pre"
           dangerouslySetInnerHTML={{
             __html: parseStringToHtmlFormat(test?.expectedOutput || ""),

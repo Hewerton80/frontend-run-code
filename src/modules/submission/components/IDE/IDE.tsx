@@ -68,6 +68,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
       <div className="flex flex-col h-full w-full gap-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex max-w-[13.625rem] w-full">
+            {/* TODO nao esta funcionando */}
             <Picker
               showLabelInner
               full
