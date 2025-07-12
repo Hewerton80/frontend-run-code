@@ -1,9 +1,9 @@
-@reference '../../../../../app/globals.css';
+@reference '../../../../../index.css';
 
 .root :global(.select__menu) {
-    @apply hidden
+  @apply hidden;
 }
 
 .root :global(.select__indicators) {
-    @apply hidden
+  @apply hidden;
 }

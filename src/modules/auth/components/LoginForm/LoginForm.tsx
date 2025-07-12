@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/buttons/Button";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { useLoginForm } from "./useLoginForm";
@@ -54,5 +53,6 @@ export function LoginForm() {
         </div>
       </div>
     </div>
+    // <h1>olá, mundo</h1>
   );
 }

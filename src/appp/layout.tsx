@@ -6,7 +6,7 @@ import { ThemeTamplate } from "@/components/ui/templates/ThemeTamplate";
 import { ptBR } from "date-fns/locale";
 import { setDefaultOptions } from "date-fns/setDefaultOptions";
 import { Toaster } from "@/components/ui/feedback/Toaster";
-import "./globals.css";
+import "./index.css";
 
 setDefaultOptions({ locale: ptBR });
 

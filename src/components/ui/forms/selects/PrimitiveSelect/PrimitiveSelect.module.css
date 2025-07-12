@@ -1,4 +1,4 @@
-@reference '../../../../../app/globals.css';
+@reference '../../../../../index.css';
 
 .root :global(.select__control) {
   @apply w-full min-h-10 shadow-sm bg-transparent

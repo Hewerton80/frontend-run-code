@@ -1,4 +1,3 @@
-"use client";
 import { useTheme } from "@/hooks/useTheme";
 import { CONSTANTS } from "@/utils/constants";
 import { ReactNode, useEffect } from "react";
