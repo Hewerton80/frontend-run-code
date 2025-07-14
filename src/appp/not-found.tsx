@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/buttons/Button";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
+import { Link } from "react-router-dom";
 
 export default function Custom404() {
   return (
@@ -8,7 +8,7 @@ export default function Custom404() {
         <h1 className="text-6xl font-bold mb-4">404</h1>
         <p className="text-xl mb-6">Oops! Página não encontrada.</p>
         <Button variantStyle="primary" asChild>
-          <ProgressLink href="/home">Voltar para o início</ProgressLink>
+          <Link to="in/home">Voltar para o início</Link>
         </Button>
       </div>
     </div>

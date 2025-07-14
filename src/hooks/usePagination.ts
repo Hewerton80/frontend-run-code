@@ -1,14 +1,13 @@
-"use client";
 import { useCallback } from "react";
 import useQueryParams from "./useQueryParams";
 import { IPaginationParams } from "@/types/paginad";
 import { isNumberable } from "@/utils/isType";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "react-router-dom";
 
 //default values for pagination
 export const usePagination = (defaultValues?: IPaginationParams) => {
   const { setQueryParams } = useQueryParams<IPaginationParams>();
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const paginationParams: IPaginationParams = {
     currentPage: isNumberable(searchParams.get("currentPage"))

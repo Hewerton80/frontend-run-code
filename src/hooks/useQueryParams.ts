@@ -1,6 +1,5 @@
-"use client";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const isNUE = (input: any) => {
   if (input === null) return true;
@@ -31,9 +30,9 @@ const getQueryString = (queryParams: any) => {
 };
 
 export default function useQueryParams<T extends object>() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const queryParams = Object.fromEntries(searchParams.entries()) as T;
 
@@ -42,9 +41,9 @@ export default function useQueryParams<T extends object>() {
       const mergedQueryParams = { ...queryParams, ...newQueyParams };
       const query = getQueryString(mergedQueryParams);
       const url = `${pathname}${query ? `?${query}` : ""}`;
-      router.replace(url);
+      navigate(url, { replace: true });
     },
-    [queryParams, pathname, router]
+    [queryParams, pathname, navigate]
   );
 
   const delQueryParams = useCallback(
@@ -60,9 +59,9 @@ export default function useQueryParams<T extends object>() {
         );
       const query = getQueryString(newQueyParams);
       const url = `${pathname}${query ? `?${query}` : ""}`;
-      router.replace(url);
+      navigate(url, { replace: true });
     },
-    [queryParams, pathname, router]
+    [queryParams, pathname, navigate]
   );
 
   return { queryParams, setQueryParams, delQueryParams };

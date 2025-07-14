@@ -1,6 +1,4 @@
-"use client";
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
-import Link from "next/link";
 import { FiLogOut, FiUser } from "react-icons/fi";
 import { useTheme } from "@/hooks/useTheme";
 import { FaMoon, FaSun, FaChevronRight, FaChevronDown } from "react-icons/fa";
@@ -10,6 +8,7 @@ import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUserEnum } from "@/modules/user/userTypets";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
+import { Link } from "react-router-dom";
 
 export function ProfilePopover() {
   const { setTheme } = useTheme();
@@ -50,7 +49,7 @@ export function ProfilePopover() {
         <GroupedUserInfo user={loggedUser!} />
         <Dropdown.Separator />
         <Dropdown.Item asChild>
-          <Link href="/profile">
+          <Link to="/in/profile">
             <FiUser className="mr-2" size={20} /> Perfil
           </Link>
         </Dropdown.Item>

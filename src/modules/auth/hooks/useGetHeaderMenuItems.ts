@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from "react";
 import { useAuth } from "./useAuth";
-import { usePathname } from "next/navigation";
+import { useLocation, matchPath } from "react-router-dom";
 interface IHeaderMenu {
   text: string;
   icon: ReactNode;
@@ -9,7 +9,7 @@ interface IHeaderMenu {
 }
 export const useGetHeaderMenuItems = () => {
   const { loggedUser } = useAuth();
-  const pathName = usePathname();
+  const location = useLocation();
 
   const headerMenuItems = useMemo<IHeaderMenu[]>(() => {
     if (loggedUser?.role === 3) return [];
@@ -18,23 +18,23 @@ export const useGetHeaderMenuItems = () => {
       {
         text: "Home",
         icon: "🏠",
-        link: "/home",
+        link: "/in/home",
       },
       {
         text: "Playground",
         icon: "🎮",
-        link: "/playground",
+        link: "/in/playground",
       },
       {
         text: "exercícios",
         icon: "🧩",
-        link: "/exercises",
+        link: "/in/exercises",
       },
     ].map((item) => ({
       ...item,
-      isActive: item.link === pathName,
+      isActive: !!matchPath(item.link, location.pathname),
     }));
-  }, [loggedUser, pathName]);
+  }, [loggedUser, location.pathname]);
 
   return { headerMenuItems };
 };

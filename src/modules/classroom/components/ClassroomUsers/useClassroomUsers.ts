@@ -1,4 +1,4 @@
-import { useParams } from "next/navigation";
+import { useParams } from "react-router-dom";
 import { useGetClassroomUsers } from "../../hooks/useGetClassroomUsers";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useCallback, useMemo, useState } from "react";

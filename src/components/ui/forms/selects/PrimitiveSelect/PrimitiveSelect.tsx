@@ -17,14 +17,9 @@ import { OnchangeMultValue, OnchangeSigleValue, SelectOption } from "../type";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
-import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { isString } from "@/utils/isType";
-
-const ReactSelect = dynamic(() => import("react-select"), {
-  ssr: false,
-  loading: () => <Skeleton className="w-full h-9" />,
-});
+import ReactSelect from "react-select";
 
 type MapedSelectProps = Pick<
   ComponentPropsWithRef<typeof ReactSelect>,

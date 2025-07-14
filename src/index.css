@@ -11,7 +11,8 @@
     @apply scroll-smooth;
   }
   body {
-    @apply font-sans bg-background text-foreground;
+    @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
   }

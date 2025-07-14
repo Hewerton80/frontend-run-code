@@ -17,7 +17,7 @@ import {
   useCreateClasrromList,
 } from "@/modules/classroom/hooks/useCreateClasrromList";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
-import { useParams } from "next/navigation";
+import { useParams } from "react-router-dom";
 
 export const useClassroomListFormDialog = (
   currentListToEdit?: IList | null

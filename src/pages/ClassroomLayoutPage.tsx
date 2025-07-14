@@ -1,4 +1,4 @@
-"use client";
+import { Outlet } from "react-router-dom";
 import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";
@@ -6,14 +6,11 @@ import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomBy
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
-export default function InLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function ClassroomLayoutPage() {
   const params = useParams<{ classroomId: string }>();
   const { errorClassroom, isLoadingClassroom, refetchClassroom } =
     useGetClassroomById(params?.classroomId);
+  console.log({ classroomId: params?.classroomId });
 
   const handledChildren = useMemo(() => {
     if (errorClassroom) {
@@ -26,8 +23,8 @@ export default function InLayout({
         </div>
       );
     }
-    return <>{children}</>;
-  }, [errorClassroom, refetchClassroom, isLoadingClassroom, children]);
+    return <Outlet />;
+  }, [errorClassroom, refetchClassroom, isLoadingClassroom]);
 
   return <SideBarTamplateWrapper>{handledChildren}</SideBarTamplateWrapper>;
 }

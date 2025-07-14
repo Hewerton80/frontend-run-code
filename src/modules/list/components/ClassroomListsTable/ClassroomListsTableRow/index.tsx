@@ -1,4 +1,3 @@
-"use client";
 import { IList } from "../../../listTypes";
 import { useCallback, useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
@@ -17,8 +16,8 @@ import { useGetClassroomListStatus } from "../../../hooks/useGetClassroomListSta
 import { ClasrromListStatus } from "../../ClasrromListStatus";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { Ping, PingWrapper } from "@/components/ui/feedback/Ping";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { RiArrowUpDownFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 interface ClassroomListsTableRowProps {
   list: IList;
@@ -146,13 +145,13 @@ export const ClassroomListsTableRow = ({
                   Visualizar Liata
                 </Dropdown.Item>
                 <Dropdown.Item asChild className="gap-2">
-                  <ProgressLink
-                    href={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
+                  <Link
+                    to={`/in/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
                   >
                     <RiArrowUpDownFill />
                     {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios
                     {totalExercises === 0 && <Ping />}
-                  </ProgressLink>
+                  </Link>
                 </Dropdown.Item>
               </Dropdown.Content>
             </Dropdown.Root>

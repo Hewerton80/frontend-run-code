@@ -1,4 +1,3 @@
-"use client";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import {
   DataTable,
@@ -17,7 +16,7 @@ import {
   IUpdateClassroomList,
   useUpdateClassroomLists,
 } from "./useUpdateClassroomLists";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export const UpdateClassroomLists = () => {
   const {
@@ -151,9 +150,12 @@ export const UpdateClassroomLists = () => {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "/home" },
+            { label: "🏠 Home", href: "/in/home" },
             { label: classroom?.name || "-" },
-            { label: "📝 Listas", href: `/classroom/${classroom?.uuid}/lists` },
+            {
+              label: "📝 Listas",
+              href: `/in/classroom/${classroom?.uuid}/lists`,
+            },
             { label: "Atualizar" },
           ]}
         />
@@ -190,7 +192,7 @@ export const UpdateClassroomLists = () => {
           >
             Salvar
           </Button>
-          <Link href={`/classroom/${classroom?.uuid}/lists`}>
+          <Link to={`/in/classroom/${classroom?.uuid}/lists`}>
             <Button
               fullWidth
               variantStyle="secondary"

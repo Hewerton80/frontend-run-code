@@ -1,8 +1,8 @@
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { IList } from "../../listTypes";
 import { useCallback, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useParams } from "react-router-dom";
 
 export const useClassroomListsTable = () => {
   const { loggedUser } = useAuth();

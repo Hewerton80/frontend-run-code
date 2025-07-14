@@ -12,7 +12,6 @@ import { IconButton } from "../../../../components/ui/buttons/IconButton";
 import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
-import Image from "next/image";
 
 interface IdeProps {
   value?: string;
@@ -50,7 +49,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
     return Object.keys(avaliablesLanguagesConfig).map((key) => ({
       label: (
         <span className="flex items-center gap-2">
-          <Image
+          <img
             src={avaliablesLanguagesConfig[key as LanguageNames].url}
             alt={key}
             width={14}

@@ -1,10 +1,7 @@
-"use client";
-import { Button } from "@/components/ui/buttons/Button";
 import {
   DataTable,
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { IList } from "../../listTypes";
 import { useTableLists } from "./useTableLists";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";

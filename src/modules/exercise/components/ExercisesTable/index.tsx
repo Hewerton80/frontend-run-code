@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/buttons/Button";
 import {
   DataTable,
@@ -6,13 +5,13 @@ import {
 } from "@/components/ui/dataDisplay/DataTable";
 import { useExercissesTable } from "./useExercissesTable";
 import { IExercise } from "../../exerciseTypes";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { useMemo } from "react";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
+import { Link } from "react-router-dom";
 
 export const ExercisesTable = () => {
   const { loggedUser } = useAuth();
@@ -72,9 +71,7 @@ export const ExercisesTable = () => {
         onParse: (exercise) => (
           <div className="flex justify-end">
             <Button variantStyle="dark-ghost" asChild>
-              <ProgressLink href={`/exercises/${exercise?.uuid}`}>
-                Ver
-              </ProgressLink>
+              <Link to={`/in/exercises/${exercise?.uuid}`}>Ver</Link>
             </Button>
           </div>
         ),

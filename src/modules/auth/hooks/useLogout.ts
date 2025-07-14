@@ -1,17 +1,17 @@
 import { useClearGlobalStates } from "@/hooks/useClearGlobalStates";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 
 export const useLogout = () => {
   const [, , clearAccessToken] = useSessionStorage("access_token");
 
-  const router = useRouter();
+  const navigate = useNavigate();
   const { clearGlobalStates } = useClearGlobalStates();
 
   const logout = () => {
     clearAccessToken();
     clearGlobalStates();
-    router.replace("/login");
+    navigate("/login", { replace: true });
   };
 
   return { logout };

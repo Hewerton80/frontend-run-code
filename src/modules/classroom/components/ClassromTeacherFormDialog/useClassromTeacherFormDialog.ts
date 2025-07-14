@@ -4,7 +4,7 @@ import {
   useTeacherFormSchema,
 } from "../../schemas/teacherFormSchema";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { useParams } from "next/navigation";
+import { useParams } from "react-router-dom";
 import {
   AddTeacherToClassroomBody,
   useAddTeacherToClassroom,

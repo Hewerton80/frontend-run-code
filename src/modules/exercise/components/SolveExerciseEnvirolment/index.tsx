@@ -4,7 +4,7 @@ import { IDEExercise } from "./IDEExercise";
 import { Suspense, useEffect } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
-import { useParams } from "next/navigation";
+import { useParams } from "react-router-dom";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
@@ -48,10 +48,10 @@ export const SolveExerciseEnvirolment = () => {
 
     if (classroomId && listId) {
       return [
-        { label: "🏠 Home", href: "/home" },
+        { label: "🏠 Home", href: "/in/home" },
         {
           label: classroom?.name || "-",
-          href: `/classroom/${classroomId}/lists`,
+          href: `/in/classroom/${classroomId}/lists`,
         },
         { label: exercise?.title || "" },
       ];
@@ -70,7 +70,7 @@ export const SolveExerciseEnvirolment = () => {
     <>
       <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
         <Breadcrumbs isLoading={isLoading} items={getBreadcrumbsItems()} />
-        <BackLink href={`/classroom/${classroom?.uuid}/lists`}>
+        <BackLink to={`/in/classroom/${classroom?.uuid}/lists`}>
           Voltar para listas da turma
         </BackLink>
         <Resizable.Group

@@ -78,12 +78,12 @@ export function ClassroomUsers() {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "/home" },
+            { label: "🏠 Home", href: "/in/home" },
             { label: classroom?.name || "-" },
             { label: "Participantes" },
           ]}
         />
-        <BackLink href="/home">Voltar para Home</BackLink>
+        <BackLink to="/in/home">Voltar para Home</BackLink>
 
         <div className="flex justify-between items-end gap-4">
           <Card.Title>🏫 {classroom?.name}</Card.Title>

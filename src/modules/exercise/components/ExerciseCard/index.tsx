@@ -1,10 +1,10 @@
 import { Card } from "@/components/ui/cards/Card";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { twMerge } from "tailwind-merge";
 import { IExercise } from "../../exerciseTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 interface ExerciseCardProps {
   data: IExercise;
@@ -37,8 +37,8 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
         "duration-300 ease-in-out transition"
       )}
     >
-      <ProgressLink
-        href={`/classroom/${exercise?.classroom?.uuid}/lists/${exercise?.listExercise?.uuid}/exercise/${exercise?.uuid}`}
+      <Link
+        to={`/in/classroom/${exercise?.classroom?.uuid}/lists/${exercise?.listExercise?.uuid}/exercise/${exercise?.uuid}`}
       >
         <div className="flex gap-1 ">
           <div className="flex flex-col">
@@ -73,7 +73,7 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
             )}
           />
         </div>
-      </ProgressLink>
+      </Link>
     </Card.Root>
   );
 }

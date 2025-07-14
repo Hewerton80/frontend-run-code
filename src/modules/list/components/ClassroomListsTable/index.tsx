@@ -1,6 +1,4 @@
-"use client";
-import { IList } from "../../listTypes";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
@@ -9,11 +7,8 @@ import { ClassroomListsTableRow } from "./ClassroomListsTableRow";
 import { useClassroomListsTable } from "./useClassroomListsTable";
 import { ClassroomListFormDialog } from "../ClassroomListFormDialog";
 import { Button } from "@/components/ui/buttons/Button";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
-import { useParams } from "next/navigation";
 import { Highlight } from "@/components/ui/feedback/Highlight";
 import { Alert } from "@/components/ui/feedback/Alert";
-import { PingWrapper } from "@/components/ui/feedback/Ping";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { ClasrromActionsTriggerButton } from "@/modules/classroom/components/ClasrromActionsTriggerButton";
 import { ClassroomFormDialog } from "@/modules/classroom/components/ClassroomFormDialog";
@@ -80,7 +75,7 @@ export const ClassroomListsTable = ({
 
   return (
     <>
-      <BackLink href="/home">Voltar para Home</BackLink>
+      <BackLink to="/in/home">Voltar para Home</BackLink>
       <div className="flex justify-between items-end gap-4">
         <Card.Title>🏫 {classroom?.name}</Card.Title>
         <div className="flex justify-end gap-2">

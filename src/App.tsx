@@ -6,10 +6,9 @@ import { Toaster } from "@/components/ui/feedback/Toaster";
 export function App() {
   return (
     <Providers>
-      <ThemeTamplate>
-        <Routers />
-        <Toaster />
-      </ThemeTamplate>
+      <ThemeTamplate />
+      <Routers />
+      <Toaster />
     </Providers>
   );
 }

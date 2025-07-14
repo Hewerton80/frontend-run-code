@@ -10,7 +10,6 @@ import {
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
 import { Button } from "@/components/ui/buttons/Button";
-import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
@@ -215,9 +214,12 @@ export const UpdateClassroomExercisesFromListFrom = () => {
         <Breadcrumbs
           isLoading={isLoadingExercises}
           items={[
-            { label: "🏠 Home", href: "/home" },
+            { label: "🏠 Home", href: "/in/home" },
             { label: classroom?.name || "-" },
-            { label: "📝 Listas", href: `/classroom/${classroom?.uuid}/lists` },
+            {
+              label: "📝 Listas",
+              href: `/in/classroom/${classroom?.uuid}/lists`,
+            },
             { label: list?.title || "-" },
             {
               label: `${
@@ -227,7 +229,7 @@ export const UpdateClassroomExercisesFromListFrom = () => {
           ]}
         />
         <div className="flex justify-between items-end">
-          <BackLink href={`/classroom/${classroom?.uuid}/lists`}>
+          <BackLink to={`/in/classroom/${classroom?.uuid}/lists`}>
             Voltar para listas da turma
           </BackLink>
           <div className="flex gap-4">

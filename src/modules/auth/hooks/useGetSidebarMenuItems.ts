@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useAuth } from "./useAuth";
-import { useParams, usePathname } from "next/navigation";
+import { useLocation, useParams } from "react-router-dom";
 
 interface ISidebarMenuItem {
   title: string;
@@ -13,7 +13,7 @@ interface ISidebarMenuItem {
 export const useGetSidebarMenuItems = () => {
   const { loggedUser } = useAuth();
   const params = useParams<{ classroomId: string }>();
-  const path = usePathname();
+  const location = useLocation();
 
   const sidebarMenuItems = useMemo<ISidebarMenuItem[]>(() => {
     let result: ISidebarMenuItem[] = [];
@@ -22,31 +22,31 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Home",
           icon: "🏠",
-          link: "/home",
+          link: "/in/home",
           basePath: "home",
         },
         {
           title: "Usuários",
           icon: "👤",
-          link: "/users",
+          link: "/in/users",
           basePath: "users",
         },
         {
           title: "Turmas",
           icon: "🏫",
-          link: "/classroom-list",
+          link: "/in/classroom-list",
           basePath: "classroom-list",
         },
         {
           title: "Exerciseas",
           icon: "🧩",
-          link: "/exercises",
+          link: "/in/exercises",
           basePath: "exercises",
         },
         {
           title: "Listas",
           icon: "📝",
-          link: "/lists",
+          link: "/in/lists",
           basePath: "listExercises",
         },
       ];
@@ -61,28 +61,28 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Listas",
           icon: "📝",
-          link: `/classroom/${params?.classroomId}/lists`,
+          link: `/in/classroom/${params?.classroomId}/lists`,
           basePath: "lists",
         },
         {
           title: "Provas",
           icon: "📚",
-          link: "/classroom/dsadsad/tests",
+          link: "/in/classroom/dsadsad/tests",
           basePath: "tests",
         },
         {
           title: "Participantes",
           icon: "👨‍🎓",
-          link: `/classroom/${params?.classroomId}/people`,
+          link: `/in/classroom/${params?.classroomId}/people`,
           basePath: "people",
         },
       ];
     }
     return result.map((item) => ({
       ...item,
-      isActive: path.includes(item.basePath),
+      isActive: location.pathname.includes(item.basePath),
     }));
-  }, [loggedUser, path, params]);
+  }, [loggedUser, location.pathname, params]);
 
   return { sidebarMenuItems: sidebarMenuItems };
 };

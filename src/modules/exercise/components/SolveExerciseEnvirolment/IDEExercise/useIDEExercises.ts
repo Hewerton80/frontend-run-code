@@ -2,7 +2,7 @@ import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
-import { useParams } from "next/navigation";
+import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 
@@ -53,7 +53,7 @@ export const useIDEExercise = (exercise: IExercise) => {
   //     if (exercise?.id) {
   //       drafts[exercise.id] = sourceCodeRef.current;
   //     }
-  //     setCookie(CONSTANTS.COOKIES_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
+  //     setCookie(CONSTANTS.LOCAL_STORAGE_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
   //   }, 5000);
 
   //   return () => {

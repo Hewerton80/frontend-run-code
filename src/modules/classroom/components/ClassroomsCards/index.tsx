@@ -1,9 +1,7 @@
-"use client";
 import { useGetMyClassrooms } from "../../hooks/useGetMyClassrooms";
 import { Card } from "@/components/ui/cards/Card";
-import ProgressLink from "@/components/ui/navigation/ProgressLink/ProgressLink";
 import { Button } from "@/components/ui/buttons/Button";
-import { FaGear, FaUsers } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
@@ -12,12 +10,12 @@ import { getRange } from "@/utils/getRange";
 import { IClassroom } from "../../classroomType";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { IUser } from "@/modules/user/userTypets";
-import Image from "next/image";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { ClassroomFormDialog } from "../ClassroomFormDialog";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ClasrromActionsTriggerButton } from "../ClasrromActionsTriggerButton";
+import { Link } from "react-router-dom";
 
 interface IClassRoomCardProps {
   classroom: IClassroom;
@@ -68,7 +66,7 @@ const ClassRoomsCard = ({
                     side="top"
                     align="center"
                   >
-                    <Image
+                    <img
                       src={languagesConfig[lang].url}
                       alt={lang}
                       width={16}
@@ -105,9 +103,7 @@ const ClassRoomsCard = ({
             className="mt-4 ml-auto"
             variantStyle="dark-ghost"
           >
-            <ProgressLink href={`/classroom/${classroom?.uuid}/lists`}>
-              Acessar
-            </ProgressLink>
+            <Link to={`/in/classroom/${classroom?.uuid}/lists`}>Acessar</Link>
           </Button>
         </div>
       </div>

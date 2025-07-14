@@ -1,19 +1,14 @@
-"use client";
 import { Header } from "@/components/common/Header";
 import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
-import { useSessionStorage } from "@/hooks/useSessionStorage";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { isNull, isUndefined } from "@/utils/isType";
 import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
-export default function InLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function InLayoutPage() {
   const { logout } = useLogout();
 
   const {
@@ -54,10 +49,16 @@ export default function InLayout({
     <div className="flex flex-col min-h-screen">
       <Header />
       {loggedUser?.role === 3 ? (
-        <SideBarTamplateWrapper> {children} </SideBarTamplateWrapper>
+        <SideBarTamplateWrapper>
+          <Outlet />
+        </SideBarTamplateWrapper>
       ) : (
-        <div className="flex flex-1 h-full w-full">{children}</div>
+        <div className="flex flex-1 h-full w-full">
+          <Outlet />
+        </div>
       )}
     </div>
   );
 }
+
+// return <Outlet />;

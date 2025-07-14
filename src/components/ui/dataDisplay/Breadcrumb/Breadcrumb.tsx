@@ -1,9 +1,9 @@
 import * as React from "react";
 import { twMerge } from "tailwind-merge";
 import { MdOutlineMoreHoriz } from "react-icons/md";
-import ProgressLink from "../../navigation/ProgressLink/ProgressLink";
 import { LuChevronRight } from "react-icons/lu";
 import { Skeleton } from "../../feedback/Skeleton";
+import { Link } from "react-router-dom";
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -41,10 +41,10 @@ BreadcrumbItem.displayName = "BreadcrumbItem";
 
 const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<typeof ProgressLink>
+  React.ComponentPropsWithoutRef<typeof Link>
 >(({ className, ...props }, ref) => {
   return (
-    <ProgressLink
+    <Link
       className={twMerge("transition-colors hover:text-foreground", className)}
       {...props}
     />
@@ -121,7 +121,7 @@ export const Breadcrumbs = ({
             {isLoading ? (
               <Skeleton className="w-20 h-4" />
             ) : item.href ? (
-              <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+              <BreadcrumbLink to={item.href}>{item.label}</BreadcrumbLink>
             ) : (
               <BreadcrumbPage>{item.label}</BreadcrumbPage>
             )}
