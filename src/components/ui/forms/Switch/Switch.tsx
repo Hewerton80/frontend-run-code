@@ -1,4 +1,3 @@
-"use client";
 import * as RadixSwitch from "@radix-ui/react-switch";
 import { twMerge } from "tailwind-merge";
 import { forwardRef, ComponentPropsWithRef } from "react";

@@ -150,11 +150,11 @@ export const UpdateClassroomLists = () => {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "/in/home" },
+            { label: "🏠 Home", href: "/home" },
             { label: classroom?.name || "-" },
             {
               label: "📝 Listas",
-              href: `/in/classroom/${classroom?.uuid}/lists`,
+              href: `/classroom/${classroom?.uuid}/lists`,
             },
             { label: "Atualizar" },
           ]}
@@ -192,7 +192,7 @@ export const UpdateClassroomLists = () => {
           >
             Salvar
           </Button>
-          <Link to={`/in/classroom/${classroom?.uuid}/lists`}>
+          <Link to={`/classroom/${classroom?.uuid}/lists`}>
             <Button
               fullWidth
               variantStyle="secondary"

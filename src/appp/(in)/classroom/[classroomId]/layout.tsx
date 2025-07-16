@@ -1,4 +1,3 @@
-"use client";
 import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";

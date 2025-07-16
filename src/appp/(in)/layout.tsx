@@ -1,4 +1,3 @@
-"use client";
 import { Header } from "@/components/common/Header";
 import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";

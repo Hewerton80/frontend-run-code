@@ -18,17 +18,17 @@ export const useGetHeaderMenuItems = () => {
       {
         text: "Home",
         icon: "🏠",
-        link: "/in/home",
+        link: "/home",
       },
       {
         text: "Playground",
         icon: "🎮",
-        link: "/in/playground",
+        link: "/playground",
       },
       {
-        text: "exercícios",
+        text: "Exercícios",
         icon: "🧩",
-        link: "/in/exercises",
+        link: "/exercises",
       },
     ].map((item) => ({
       ...item,

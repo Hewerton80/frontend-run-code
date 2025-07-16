@@ -1,4 +1,3 @@
-"use client";
 import { ExerciseDescription } from "./ExerciseDescription";
 import { IDEExercise } from "./IDEExercise";
 import { Suspense, useEffect } from "react";
@@ -48,16 +47,16 @@ export const SolveExerciseEnvirolment = () => {
 
     if (classroomId && listId) {
       return [
-        { label: "🏠 Home", href: "/in/home" },
+        { label: "🏠 Home", href: "/home" },
         {
           label: classroom?.name || "-",
-          href: `/in/classroom/${classroomId}/lists`,
+          href: `/classroom/${classroomId}/lists`,
         },
         { label: exercise?.title || "" },
       ];
     }
     return [
-      { label: "🧩 Exerciseas ", href: "/exercises" },
+      { label: "🧩 Exercícios ", href: "/exercises" },
       { label: exercise?.title || "" },
     ];
   };
@@ -70,7 +69,13 @@ export const SolveExerciseEnvirolment = () => {
     <>
       <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
         <Breadcrumbs isLoading={isLoading} items={getBreadcrumbsItems()} />
-        <BackLink to={`/in/classroom/${classroom?.uuid}/lists`}>
+        <BackLink
+          to={
+            params?.classroomId && params?.listId
+              ? `/classroom/${classroom?.uuid}/lists`
+              : "/exercises"
+          }
+        >
           Voltar para listas da turma
         </BackLink>
         <Resizable.Group

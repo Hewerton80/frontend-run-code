@@ -15,7 +15,7 @@ export function ClassroomLists() {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "in/home" },
+            { label: "🏠 Home", href: "home" },
             { label: classroom?.name || "-" },
             { label: "📝 Listas" },
           ]}

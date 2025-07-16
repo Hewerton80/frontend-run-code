@@ -71,7 +71,7 @@ export const ExercisesTable = () => {
         onParse: (exercise) => (
           <div className="flex justify-end">
             <Button variantStyle="dark-ghost" asChild>
-              <Link to={`/in/exercises/${exercise?.uuid}`}>Ver</Link>
+              <Link to={`/exercises/${exercise?.uuid}`}>Ver</Link>
             </Button>
           </div>
         ),
@@ -84,7 +84,7 @@ export const ExercisesTable = () => {
     <div className="flex flex-col gap-4 w-full p-8">
       <Breadcrumbs
         isLoading={isExercisesLoading}
-        items={[{ label: "🧩 Exerciseas" }]}
+        items={[{ label: "🧩 Exercícios" }]}
       />
       <DataTable
         columns={columns}

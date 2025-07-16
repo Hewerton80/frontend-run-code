@@ -1,5 +1,3 @@
-"use client";
-
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card } from "@/components/ui/cards/Card";
 import { LuTrendingUp } from "react-icons/lu";

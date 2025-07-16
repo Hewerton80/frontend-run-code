@@ -1,4 +1,3 @@
-"use client";
 import { Select, SelectOption } from "@/components/ui/forms/selects";
 import { ComponentPropsWithoutRef, useCallback, useState } from "react";
 import { useAxios } from "@/hooks/useAxios";

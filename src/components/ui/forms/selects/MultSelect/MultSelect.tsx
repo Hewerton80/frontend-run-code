@@ -1,4 +1,3 @@
-"use client";
 import React, { forwardRef } from "react";
 import { PrimitiveSelect, PrimitiveSelectProps } from "./../PrimitiveSelect";
 import { OnchangeMultValue, SelectOption } from "../type";

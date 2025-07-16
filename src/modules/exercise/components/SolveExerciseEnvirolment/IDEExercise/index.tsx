@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/buttons/Button";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IDE } from "@/modules/submission/components/IDE";

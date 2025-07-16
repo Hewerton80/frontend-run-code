@@ -1,4 +1,3 @@
-"use client";
 import { twMerge } from "tailwind-merge";
 import { useTypeWriterText } from "@/hooks/useTypeWriterText";
 

@@ -1,4 +1,3 @@
-"use client";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { ClassroomKeys, IClassroom } from "../classroomType";

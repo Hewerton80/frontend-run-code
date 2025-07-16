@@ -49,7 +49,7 @@ export function ProfilePopover() {
         <GroupedUserInfo user={loggedUser!} />
         <Dropdown.Separator />
         <Dropdown.Item asChild>
-          <Link to="/in/profile">
+          <Link to="/profile">
             <FiUser className="mr-2" size={20} /> Perfil
           </Link>
         </Dropdown.Item>

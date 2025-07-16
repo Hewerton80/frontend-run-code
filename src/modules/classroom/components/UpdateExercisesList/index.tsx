@@ -1,10 +1,8 @@
-"use client";
-
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import {
   UpdateExercises,
-  useUpdateClassroomExercisesFromListForm,
-} from "./useUpdateClassroomExercisesFromListForm";
+  useUpdateExercisesList,
+} from "./useUpdateExercisesList";
 import {
   DataTable,
   IColmunDataTable,
@@ -28,7 +26,7 @@ import { CiUndo } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 
-export const UpdateClassroomExercisesFromListFrom = () => {
+export const UpdateExercisesList = () => {
   const {
     classroom,
     list,
@@ -57,7 +55,7 @@ export const UpdateClassroomExercisesFromListFrom = () => {
     openExerciseDetailsDialog,
     closeExerciseDetailsDialog,
     refetchExerciseDetails,
-  } = useUpdateClassroomExercisesFromListForm();
+  } = useUpdateExercisesList();
 
   const getAuthorInfo = useCallback((author?: IUser) => {
     return (
@@ -214,11 +212,11 @@ export const UpdateClassroomExercisesFromListFrom = () => {
         <Breadcrumbs
           isLoading={isLoadingExercises}
           items={[
-            { label: "🏠 Home", href: "/in/home" },
+            { label: "🏠 Home", href: "/home" },
             { label: classroom?.name || "-" },
             {
               label: "📝 Listas",
-              href: `/in/classroom/${classroom?.uuid}/lists`,
+              href: `/classroom/${classroom?.uuid}/lists`,
             },
             { label: list?.title || "-" },
             {
@@ -229,7 +227,7 @@ export const UpdateClassroomExercisesFromListFrom = () => {
           ]}
         />
         <div className="flex justify-between items-end">
-          <BackLink to={`/in/classroom/${classroom?.uuid}/lists`}>
+          <BackLink to={`/classroom/${classroom?.uuid}/lists`}>
             Voltar para listas da turma
           </BackLink>
           <div className="flex gap-4">

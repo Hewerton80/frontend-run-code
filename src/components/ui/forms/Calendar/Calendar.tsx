@@ -1,4 +1,3 @@
-"use client";
 import { ComponentProps } from "react";
 import { DayPicker } from "react-day-picker";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";

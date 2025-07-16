@@ -1,4 +1,3 @@
-"use client";
 import { KeyboardEvent, useState } from "react";
 import { MultSelect, MultSelectSelectProps } from "..";
 import style from "./EnterMultSelect.module.css";

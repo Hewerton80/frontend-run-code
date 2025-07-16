@@ -1,4 +1,3 @@
-"use client";
 import { useTheme } from "@/hooks/useTheme";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { IconButton } from "../IconButton";

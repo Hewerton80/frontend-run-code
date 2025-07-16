@@ -1,5 +1,3 @@
-"use client";
-
 // import { TrendingUp } from "lucide-react"
 import { LuTrendingUp } from "react-icons/lu";
 import { Label, Pie, PieChart } from "recharts";

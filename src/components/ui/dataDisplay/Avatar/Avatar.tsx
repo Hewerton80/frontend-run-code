@@ -1,4 +1,3 @@
-"use client";
 import { getNameInitial } from "@/utils/getNameInitials";
 import * as RadixAvatar from "@radix-ui/react-avatar";
 import { ComponentProps } from "react";

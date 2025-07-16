@@ -1,4 +1,3 @@
-import { useParams, useRouter } from "next/navigation";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useGetList } from "@/modules/list/hooks/useGetList";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -17,12 +16,13 @@ import { useUpdateClasrromExercisesFromList } from "../../hooks/useUpdateClasrro
 import { useToast } from "@/hooks/useToast";
 import { ClassroomKeys, IClassroom } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
 
-export const useUpdateClassroomExercisesFromListForm = () => {
-  const router = useRouter();
+export const useUpdateExercisesList = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -35,14 +35,14 @@ export const useUpdateClassroomExercisesFromListForm = () => {
     errorExercises: errorCuerrentExercises,
     refetchExercises: refetchCurrentExercises,
   } = useGetList({
-    classroomId: params?.classroomId,
-    listId: params?.listId,
+    classroomId: params?.classroomId!,
+    listId: params?.listId!,
   });
 
   const {
     updateClasrromExercisesFromList,
     isUpdatingClasrromExercisesFromList,
-  } = useUpdateClasrromExercisesFromList(params?.classroomId, list?.id!);
+  } = useUpdateClasrromExercisesFromList(params?.classroomId!, list?.id!);
 
   const {
     exercisesToAdd,
@@ -218,7 +218,7 @@ export const useUpdateClassroomExercisesFromListForm = () => {
         })) || [];
 
     const onSuccess = () => {
-      router.push(`/classroom/${classroom?.uuid}/lists`);
+      navigate(`/classroom/${classroom?.uuid}/lists`);
       queryClient.setQueryData(
         [ClassroomKeys.Details, classroom?.uuid],
         (classroom: IClassroom) => {
@@ -255,7 +255,7 @@ export const useUpdateClassroomExercisesFromListForm = () => {
     updateClasrromExercisesFromList,
     toast,
     formStateExercisesForm.isDirty,
-    router,
+    navigate,
     queryClient,
     classroom,
     list,

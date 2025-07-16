@@ -11,7 +11,7 @@ export function Header() {
   return (
     <header className="bg-card h-15 shadow-xs border-b relative">
       <div className="flex items-center w-full h-full px-8 sm:px-16 justify-between">
-        <Link className="flex items-center gap-2" to="/in/home">
+        <Link className="flex items-center gap-2" to="/home">
           <FaRegPlayCircle />
           <span className="text-2xl">Play Code</span>
         </Link>

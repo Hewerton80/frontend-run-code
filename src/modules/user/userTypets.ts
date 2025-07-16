@@ -1,4 +1,10 @@
-export const RoleUserEnum: Record<number, string> = {
+export type RolesNames =
+  | "Aluno(a)"
+  | "Professor(a)"
+  | "Super Admin"
+  | (string & {});
+
+export const RoleUserEnum: Record<number, RolesNames> = {
   1: "Aluno(a)",
   2: "Professor(a)",
   3: "Super Admin",

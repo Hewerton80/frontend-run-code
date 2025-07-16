@@ -103,7 +103,7 @@ const ClassRoomsCard = ({
             className="mt-4 ml-auto"
             variantStyle="dark-ghost"
           >
-            <Link to={`/in/classroom/${classroom?.uuid}/lists`}>Acessar</Link>
+            <Link to={`/classroom/${classroom?.uuid}/lists`}>Acessar</Link>
           </Button>
         </div>
       </div>

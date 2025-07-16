@@ -22,32 +22,32 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Home",
           icon: "🏠",
-          link: "/in/home",
+          link: "/home",
           basePath: "home",
         },
         {
           title: "Usuários",
           icon: "👤",
-          link: "/in/users",
+          link: "/users",
           basePath: "users",
         },
         {
           title: "Turmas",
           icon: "🏫",
-          link: "/in/classroom-list",
-          basePath: "classroom-list",
+          link: "/classrooms",
+          basePath: "classrooms",
         },
         {
-          title: "Exerciseas",
+          title: "Exercícios",
           icon: "🧩",
-          link: "/in/exercises",
+          link: "/exercises",
           basePath: "exercises",
         },
         {
           title: "Listas",
           icon: "📝",
-          link: "/in/lists",
-          basePath: "listExercises",
+          link: "/lists",
+          basePath: "lists",
         },
       ];
     } else {
@@ -61,20 +61,20 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Listas",
           icon: "📝",
-          link: `/in/classroom/${params?.classroomId}/lists`,
+          link: `/classroom/${params?.classroomId}/lists`,
           basePath: "lists",
         },
-        {
-          title: "Provas",
-          icon: "📚",
-          link: "/in/classroom/dsadsad/tests",
-          basePath: "tests",
-        },
+        // {
+        //   title: "Provas",
+        //   icon: "📚",
+        //   link: "/classroom/dsadsad/tests",
+        //   basePath: "tests",
+        // },
         {
           title: "Participantes",
           icon: "👨‍🎓",
-          link: `/in/classroom/${params?.classroomId}/people`,
-          basePath: "people",
+          link: `/classroom/${params?.classroomId}/users`,
+          basePath: "users",
         },
       ];
     }

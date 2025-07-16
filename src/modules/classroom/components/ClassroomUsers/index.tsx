@@ -1,4 +1,3 @@
-"use client";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useClassroomUsers } from "./useClassroomUsers";
 import { IUser, RoleUserEnum } from "@/modules/user/userTypets";
@@ -60,13 +59,14 @@ export function ClassroomUsers() {
       {
         field: "actions",
         label: "",
-        onParse: (user) => (
-          <div className="flex justify-end">
-            <ClasrromUsersActionsTriggerButton
-              onClickToEditUser={() => handleSetTeacherIdToEdit(user?.uuid!)}
-            />
-          </div>
-        ),
+        onParse: (user) =>
+          user?.role === 2 && (
+            <div className="flex justify-end">
+              <ClasrromUsersActionsTriggerButton
+                onClickToEditUser={() => handleSetTeacherIdToEdit(user?.uuid!)}
+              />
+            </div>
+          ),
       },
     ],
     [classroom, loggedUser, handleSetTeacherIdToEdit]
@@ -78,12 +78,12 @@ export function ClassroomUsers() {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "/in/home" },
+            { label: "🏠 Home", href: "/home" },
             { label: classroom?.name || "-" },
             { label: "Participantes" },
           ]}
         />
-        <BackLink to="/in/home">Voltar para Home</BackLink>
+        <BackLink to="/home">Voltar para Home</BackLink>
 
         <div className="flex justify-between items-end gap-4">
           <Card.Title>🏫 {classroom?.name}</Card.Title>

@@ -19,7 +19,7 @@ export const useLoginForm = () => {
 
   useEffect(() => {
     if (storedAccessToken) {
-      navigate("/in/home", { replace: true });
+      navigate("/home", { replace: true });
     }
   }, [storedAccessToken, navigate]);
 

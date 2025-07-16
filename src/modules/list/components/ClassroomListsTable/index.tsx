@@ -75,7 +75,7 @@ export const ClassroomListsTable = ({
 
   return (
     <>
-      <BackLink to="/in/home">Voltar para Home</BackLink>
+      <BackLink to="/home">Voltar para Home</BackLink>
       <div className="flex justify-between items-end gap-4">
         <Card.Title>🏫 {classroom?.name}</Card.Title>
         <div className="flex justify-end gap-2">

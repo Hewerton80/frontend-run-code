@@ -1,5 +1,3 @@
-"use client";
-
 import * as ResizablePrimitive from "react-resizable-panels";
 import { twMerge } from "tailwind-merge";
 import { LuGripVertical } from "react-icons/lu";

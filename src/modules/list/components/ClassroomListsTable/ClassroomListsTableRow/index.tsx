@@ -146,7 +146,7 @@ export const ClassroomListsTableRow = ({
                 </Dropdown.Item>
                 <Dropdown.Item asChild className="gap-2">
                   <Link
-                    to={`/in/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
+                    to={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
                   >
                     <RiArrowUpDownFill />
                     {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios

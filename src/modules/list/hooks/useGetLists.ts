@@ -19,7 +19,7 @@ export const useGetLists = (listExercisesParams?: IGetListExercisesParams) => {
   } = useQuery({
     queryFn: () =>
       apiBase
-        .get<IPaginatedDocs<IList>>("/list-exercises", {
+        .get<IPaginatedDocs<IList>>("/list", {
           params: removeEmptyKeys(listExercisesParams),
         })
         .then((res) => res.data || { data: [] }),

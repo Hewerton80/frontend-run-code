@@ -1,4 +1,3 @@
-"use client";
 import { Dialog } from "@/components/ui/overlay/Dialog";
 import { useClassromTeacherFormDialog } from "./useClassromTeacherFormDialog";
 import { Controller } from "react-hook-form";

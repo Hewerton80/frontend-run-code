@@ -1,4 +1,3 @@
-"use client";
 import React, { useMemo, useCallback } from "react";
 import { getRange } from "@/utils/getRange";
 import { IconButton } from "../../buttons/IconButton";

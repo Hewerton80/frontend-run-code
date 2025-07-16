@@ -1,4 +1,3 @@
-"use client";
 import { useTypeWriterText } from "@/hooks/useTypeWriterText";
 
 interface TypeWriterTextProps {

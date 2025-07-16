@@ -1,4 +1,3 @@
-"use client";
 import React, { ComponentPropsWithRef, ReactNode, useMemo } from "react";
 import { Table } from "@/components/ui/dataDisplay/Table/Table";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";

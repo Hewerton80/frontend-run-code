@@ -1,4 +1,3 @@
-"use client";
 import React, { forwardRef, useMemo } from "react";
 import { PrimitiveSelect, PrimitiveSelectProps } from "../PrimitiveSelect";
 import { ActionMeta } from "react-select";

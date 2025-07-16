@@ -41,10 +41,6 @@ export default function InLayoutPage() {
     return <SplashScreen />;
   }
 
-  // if (loggedUser?.role === 3) {
-  //   return ;
-  // }
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header />

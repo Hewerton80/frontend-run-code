@@ -8,7 +8,7 @@ export default function Custom404() {
         <h1 className="text-6xl font-bold mb-4">404</h1>
         <p className="text-xl mb-6">Oops! Página não encontrada.</p>
         <Button variantStyle="primary" asChild>
-          <Link to="in/home">Voltar para o início</Link>
+          <Link to="home">Voltar para o início</Link>
         </Button>
       </div>
     </div>

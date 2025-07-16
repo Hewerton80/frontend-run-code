@@ -1,4 +1,3 @@
-"use client";
 import { Card } from "@/components/ui/cards/Card";
 import {
   DataTable,

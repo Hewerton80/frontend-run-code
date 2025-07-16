@@ -38,7 +38,7 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
       )}
     >
       <Link
-        to={`/in/classroom/${exercise?.classroom?.uuid}/lists/${exercise?.listExercise?.uuid}/exercise/${exercise?.uuid}`}
+        to={`/classroom/${exercise?.classroom?.uuid}/lists/${exercise?.listExercise?.uuid}/exercise/${exercise?.uuid}`}
       >
         <div className="flex gap-1 ">
           <div className="flex flex-col">
