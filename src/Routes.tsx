@@ -14,6 +14,7 @@ import ListPage from "./pages/Lists";
 import PlayGroundPage from "./pages/Playground";
 import ExercisePage from "./pages/ExercisePage";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { NotFound404 } from "./components/ui/feedback/NotFound404";
 
 export const Routers = () => {
   return (
@@ -31,10 +32,24 @@ export const Routers = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="classrooms" element={<ClassroomsPage />} />
+          <Route
+            path="classrooms"
+            element={
+              <ProtectedRoute roles={["Super Admin"]}>
+                <ClassroomsPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="exercises" element={<ExercisesPage />} />
           <Route path="exercises/:exerciseId" element={<ExercisePage />} />
-          <Route path="lists" element={<ListPage />} />
+          <Route
+            path="lists"
+            element={
+              <ProtectedRoute roles={["Super Admin"]}>
+                <ListPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="playground" element={<PlayGroundPage />} />
           <Route
             path="classroom/:classroomId"
@@ -53,7 +68,7 @@ export const Routers = () => {
           </Route>
         </Route>
 
-        <Route path="*" element={<h1>404 - Not Found</h1>} />
+        <Route path="*" element={<NotFound404 />} />
       </Routes>
     </BrowserRouter>
   );

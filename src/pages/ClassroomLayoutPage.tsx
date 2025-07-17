@@ -8,9 +8,9 @@ import { useParams } from "react-router-dom";
 
 export default function ClassroomLayoutPage() {
   const params = useParams<{ classroomId: string }>();
+
   const { errorClassroom, isLoadingClassroom, refetchClassroom } =
     useGetClassroomById(params?.classroomId);
-  console.log({ classroomId: params?.classroomId });
 
   const handledChildren = useMemo(() => {
     if (errorClassroom) {
