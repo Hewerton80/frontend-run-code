@@ -58,9 +58,12 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
       field: "output",
       label: "Saída do seu código",
       onParse: (test) => (
-        <div className="font-[monospace] whitespace-pre">
-          {parseStringToHtmlFormat(test?.output || "")}
-        </div>
+        <div
+          className="font-[monospace] whitespace-pre"
+          dangerouslySetInnerHTML={{
+            __html: parseStringToHtmlFormat(test?.output || ""),
+          }}
+        />
       ),
     },
   ];
@@ -101,31 +104,29 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         )}
         {submitResponse && (
           <div className="grid grid-cols-2 gap-4">
-            {submitResponse?.externalSubmissionResponse?.map(
-              ({ status }, index) => (
-                <div
-                  key={`response-${index}`}
-                  className="flex flex-col gap-2 col-span-1"
-                >
-                  <div className="flex items-center gap-2">
-                    <p>
-                      <span className="text-xs">Case {index + 1}:</span>{" "}
-                      {status === "FAIL" ? "😞" : "😀"}&nbsp;
-                    </p>
-                  </div>
-
-                  <DataTable
-                    className={twMerge(
-                      "h-full",
-                      status === "FAIL" ? "border-danger" : "border-success"
-                    )}
-                    key={`response-${index}`}
-                    columns={responseColumns}
-                    data={[submitResponse?.externalSubmissionResponse[index]]}
-                  />
+            {submitResponse?.submissionResponse?.map(({ status }, index) => (
+              <div
+                key={`response-${index}`}
+                className="flex flex-col gap-2 col-span-1"
+              >
+                <div className="flex items-center gap-2">
+                  <p>
+                    <span className="text-xs">Case {index + 1}:</span>{" "}
+                    {status === "FAIL" ? "😞" : "😀"}&nbsp;
+                  </p>
                 </div>
-              )
-            )}
+
+                <DataTable
+                  className={twMerge(
+                    "h-full",
+                    status === "FAIL" ? "border-danger" : "border-success"
+                  )}
+                  key={`response-${index}`}
+                  columns={responseColumns}
+                  data={[submitResponse?.submissionResponse[index]]}
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import {
   LanguageConfig,
   languagesConfig,
@@ -19,11 +19,11 @@ interface IdeProps {
 }
 
 export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
-  const { languageMode, changeLanguageMode } = useLanguage(
-    Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0
-      ? avaliableLanguages[0]
-      : "javascript"
-  );
+  const { languageMode, changeLanguageMode } =
+    useLanguage();
+    // Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0
+    //   ? avaliableLanguages[0]
+    //   : "javascript"
   const [showScriptCodeExample, setShowScriptCodeExample] = useState(false);
 
   const avaliablesLanguagesConfig = useMemo<LanguageConfig>(() => {
@@ -44,6 +44,10 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
     [avaliablesLanguagesConfig, languageMode]
   );
 
+  useEffect(() => {
+    console.log("Current language mode:", languageMode);
+  }, [languageMode]);
+
   const modeOptions = useMemo(() => {
     return Object.keys(avaliablesLanguagesConfig).map((key) => ({
       label: (
@@ -60,7 +64,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
       value: key,
     }));
   }, [avaliablesLanguagesConfig]);
-
+  console.log({ languageMode, modeOptions, currentSelectLanguage });
   return (
     <>
       <div className="flex flex-col h-full w-full gap-4">

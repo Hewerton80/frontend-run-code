@@ -12,6 +12,7 @@ interface Actions {
 export const useLanguageStore = create<State & Actions>((set) => ({
   languageMode: "javascript",
   changeLanguageMode: (mode: LanguageNames) => {
+    console.log("Changing language mode to:", mode);
     set(() => ({ languageMode: mode }));
   },
 }));

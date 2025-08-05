@@ -17,7 +17,7 @@ export interface ResultSubmissionCode {
 
 export interface SubmissionCodeBodyResponse {
   score: number;
-  externalSubmissionResponse: ResultSubmissionCode[];
+  submissionResponse: ResultSubmissionCode[];
 }
 
 interface SubmissionCodeBodyErrorResponse {
