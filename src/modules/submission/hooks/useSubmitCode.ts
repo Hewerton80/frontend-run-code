@@ -18,6 +18,7 @@ export interface ResultSubmissionCode {
 export interface SubmissionCodeBodyResponse {
   score: number;
   submissionResponse: ResultSubmissionCode[];
+  isFirstCorrectSubmission: boolean;
 }
 
 interface SubmissionCodeBodyErrorResponse {

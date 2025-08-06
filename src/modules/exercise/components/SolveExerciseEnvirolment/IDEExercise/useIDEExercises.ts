@@ -3,21 +3,17 @@ import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
 import { useParams } from "react-router-dom";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { ClassroomKeys, IClassroom } from "@/modules/classroom/classroomType";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useIDEExercise = (exercise: IExercise) => {
   const params = useParams<{
     listId?: string;
     classroomId?: string;
   }>();
-
-  // const { isLoadingExercise, exercise, exerciseError, refetchExercise } =
-  //   useGetExercise({
-  //     exerciseId: params?.exerciseId || "",
-  //     classroomId: params?.classroomId,
-  //     listId: params?.listId,
-  //   });
+  const queryClient = useQueryClient();
 
   const { classroom } = useGetClassroomById(params?.classroomId!);
 
@@ -66,14 +62,50 @@ export const useIDEExercise = (exercise: IExercise) => {
   };
 
   //TODO ao submeter com sucesso, atualizar da lista, contabilizar o solved (solved)
-  const handleSubmitCode = () => {
-    submitCode({
-      sourceCode,
-      language: languageMode,
-      classroomId: params?.classroomId,
-      listId: params?.listId,
-    });
-  };
+  const handleSubmitCode = useCallback(() => {
+    submitCode(
+      {
+        sourceCode,
+        language: languageMode,
+        classroomId: params?.classroomId,
+        listId: params?.listId,
+      },
+      {
+        onSuccess: (data) => {
+          if (data?.isFirstCorrectSubmission && classroom?.uuid) {
+            queryClient.setQueryData<IClassroom>(
+              [ClassroomKeys.Details, classroom?.uuid],
+              (currentClassroom) => {
+                const listsRmp = [...(currentClassroom?.lists || [])]?.map(
+                  (list) => {
+                    return {
+                      ...list,
+                      solved:
+                        list?.uuid === params?.listId
+                          ? (list?.solved || 0) + 1
+                          : list?.solved || 0,
+                    };
+                  }
+                ) as IClassroom;
+                return {
+                  ...currentClassroom,
+                  lists: listsRmp,
+                } as IClassroom;
+              }
+            );
+          }
+        },
+      }
+    );
+  }, [
+    submitCode,
+    sourceCode,
+    languageMode,
+    params?.classroomId,
+    params?.listId,
+    classroom?.uuid,
+    queryClient,
+  ]);
 
   return {
     sourceCode,

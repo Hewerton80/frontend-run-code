@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { ComponentProps, useId } from "react";
-import AceEditor from 'react-ace'
+import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-javascript";

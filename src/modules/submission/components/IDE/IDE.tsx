@@ -19,11 +19,10 @@ interface IdeProps {
 }
 
 export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
-  const { languageMode, changeLanguageMode } =
-    useLanguage();
-    // Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0
-    //   ? avaliableLanguages[0]
-    //   : "javascript"
+  const { languageMode, changeLanguageMode } = useLanguage();
+  // Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0
+  //   ? avaliableLanguages[0]
+  //   : "javascript"
   const [showScriptCodeExample, setShowScriptCodeExample] = useState(false);
 
   const avaliablesLanguagesConfig = useMemo<LanguageConfig>(() => {
@@ -40,13 +39,15 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
   }, [avaliableLanguages]);
 
   const currentSelectLanguage = useMemo(
-    () => avaliablesLanguagesConfig[languageMode],
+    () => avaliablesLanguagesConfig?.[languageMode],
     [avaliablesLanguagesConfig, languageMode]
   );
 
   useEffect(() => {
-    console.log("Current language mode:", languageMode);
-  }, [languageMode]);
+    if (!Array.isArray(avaliableLanguages) || !avaliableLanguages?.length)
+      return;
+    changeLanguageMode(avaliableLanguages[0]);
+  }, [changeLanguageMode, avaliableLanguages]);
 
   const modeOptions = useMemo(() => {
     return Object.keys(avaliablesLanguagesConfig).map((key) => ({
@@ -64,13 +65,12 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
       value: key,
     }));
   }, [avaliablesLanguagesConfig]);
-  console.log({ languageMode, modeOptions, currentSelectLanguage });
+
   return (
     <>
       <div className="flex flex-col h-full w-full gap-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex max-w-[13.625rem] w-full">
-            {/* TODO nao esta funcionando */}
             <Picker
               showLabelInner
               full
@@ -78,6 +78,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
               value={languageMode}
               onChange={changeLanguageMode}
               options={modeOptions}
+              disabled={modeOptions?.length <= 1}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -91,7 +92,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
           </div>
         </div>
         <CodeEditor
-          mode={currentSelectLanguage.editorName}
+          mode={currentSelectLanguage?.editorName}
           value={value}
           onChange={onChange}
           placeholder="Type your code here..."
@@ -106,7 +107,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
         <Modal.Body>
           <div className="h-[524px]">
             <CodeEditor
-              mode={currentSelectLanguage.editorName}
+              mode={currentSelectLanguage?.editorName}
               readOnly
               defaultValue={currentSelectLanguage?.example}
               focus={false}

@@ -11,6 +11,7 @@ import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
+import { useLanguage } from "@/modules/language/hooks/useLanguage";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -28,6 +29,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     submitCode,
     changeSourceCode,
   } = useIDEExercise(exercise);
+  const { changeLanguageMode } = useLanguage();
 
   const responseColumns: IColmunDataTable<ResultSubmissionCode>[] = [
     {
