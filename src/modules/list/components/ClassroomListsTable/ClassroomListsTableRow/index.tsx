@@ -18,6 +18,7 @@ import { Alert } from "@/components/ui/feedback/Alert";
 import { Ping, PingWrapper } from "@/components/ui/feedback/Ping";
 import { RiArrowUpDownFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { RoleUser } from "@/modules/user/userTypets";
 
 interface ClassroomListsTableRowProps {
   list: IList;
@@ -72,7 +73,7 @@ export const ClassroomListsTableRow = ({
                 <Alert.Title>
                   Não há exercícios cadastrados nesta lista
                 </Alert.Title>
-                {loggedUser?.role === 2 && (
+                {loggedUser?.role === RoleUser.TEACHER && (
                   <Alert.Description className="text-sm text-muted-foreground">
                     Você pode adicionar exercícios clicando no botão de
                     adicionar e remover exercícios.
@@ -115,7 +116,7 @@ export const ClassroomListsTableRow = ({
             <ClasrromListStatus list={list} />
           </div>
         </DivTable.Data>
-        {loggedUser?.role === 1 && (
+        {loggedUser?.role === RoleUser.STUDENT && (
           <DivTable.Data className="gap-2">
             <ProgressBar value={progress} />
             <span className="text-xs text-muted-foreground">
@@ -123,12 +124,12 @@ export const ClassroomListsTableRow = ({
             </span>
           </DivTable.Data>
         )}
-        {loggedUser?.role === 2 && (
+        {loggedUser?.role === RoleUser.TEACHER && (
           <DivTable.Data className="gap-2">{totalExercises}</DivTable.Data>
         )}
         <DivTable.Data className="justify-end pr-4 gap-2">
           <DivTable.AccordionTrigger />
-          {loggedUser?.role === 2 && (
+          {loggedUser?.role === RoleUser.TEACHER && (
             <Dropdown.Root>
               <PingWrapper active={totalExercises === 0}>
                 <Dropdown.Trigger asChild>

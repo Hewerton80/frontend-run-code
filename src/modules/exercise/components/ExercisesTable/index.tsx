@@ -12,6 +12,7 @@ import { IconButton } from "@/components/ui/buttons/IconButton";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { Link } from "react-router-dom";
+import { RoleUser } from "@/modules/user/userTypets";
 
 export const ExercisesTable = () => {
   const { loggedUser } = useAuth();
@@ -51,7 +52,7 @@ export const ExercisesTable = () => {
       },
     ];
 
-    if (loggedUser?.role === 3) {
+    if (loggedUser?.role === RoleUser.SUPER_ADMIN) {
       resultColumns.push({
         field: "actions",
         label: "",

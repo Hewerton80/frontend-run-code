@@ -1,6 +1,6 @@
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useClassroomUsers } from "./useClassroomUsers";
-import { IUser, RoleUserEnum } from "@/modules/user/userTypets";
+import { IUser, RoleUser, RoleUserEnum } from "@/modules/user/userTypets";
 import {
   DataTable,
   IColmunDataTable,
@@ -60,7 +60,7 @@ export function ClassroomUsers() {
         field: "actions",
         label: "",
         onParse: (user) =>
-          user?.role === 2 && (
+          user?.role === RoleUser.TEACHER && (
             <div className="flex justify-end">
               <ClasrromUsersActionsTriggerButton
                 onClickToEditUser={() => handleSetTeacherIdToEdit(user?.uuid!)}
@@ -87,7 +87,7 @@ export function ClassroomUsers() {
 
         <div className="flex justify-between items-end gap-4">
           <Card.Title>🏫 {classroom?.name}</Card.Title>
-          {loggedUser?.role === 2 && (
+          {loggedUser?.role === RoleUser.TEACHER && (
             <Tooltip
               align="start"
               textContent="Você não permissão para adicionar professores(as)"

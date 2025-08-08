@@ -14,6 +14,7 @@ import { ClasrromActionsTriggerButton } from "@/modules/classroom/components/Cla
 import { ClassroomFormDialog } from "@/modules/classroom/components/ClassroomFormDialog";
 import { Card } from "@/components/ui/cards/Card";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { RoleUser } from "@/modules/user/userTypets";
 
 interface ClassroomListsTableProps {
   isLoading?: boolean;
@@ -79,11 +80,11 @@ export const ClassroomListsTable = ({
       <div className="flex justify-between items-end gap-4">
         <Card.Title>🏫 {classroom?.name}</Card.Title>
         <div className="flex justify-end gap-2">
-          {loggedUser?.role === 2 && (
+          {loggedUser?.role === RoleUser.TEACHER && (
             <>
               <Tooltip
                 align="start"
-                textContent="Você não permissão para criar listas nessa turma"
+                textContent="Você não tem permissão para criar listas nessa turma"
                 disableHoverableContent={canCreateList}
               >
                 <span
@@ -117,10 +118,10 @@ export const ClassroomListsTable = ({
           <DivTable.Container>
             <DivTable.Row header>
               <DivTable.Data>Nome</DivTable.Data>
-              {loggedUser?.role === 1 && (
+              {loggedUser?.role === RoleUser.STUDENT && (
                 <DivTable.Data>Progresso</DivTable.Data>
               )}
-              {loggedUser?.role === 2 && (
+              {loggedUser?.role === RoleUser.TEACHER && (
                 <DivTable.Data>N° de exercícios</DivTable.Data>
               )}
               <DivTable.Data></DivTable.Data>

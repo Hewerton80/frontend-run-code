@@ -12,6 +12,8 @@ import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
+import { SubmissionStatusLabels } from "@/modules/submission/submissionType";
+import { Tooltip } from "@/components/ui/overlay/Tooltip";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -112,17 +114,24 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                 className="flex flex-col gap-2 col-span-1"
               >
                 <div className="flex items-center gap-2">
-                  <p>
-                    <span className="text-xs">Case {index + 1}:</span>{" "}
-                    {status === "FAIL" ? "😞" : "😀"}&nbsp;
-                  </p>
+                  <Tooltip
+                    textContent={SubmissionStatusLabels?.[status]?.label}
+                  >
+                    <p>
+                      <span className="text-xs">Case {index + 1}:</span>{" "}
+                      {SubmissionStatusLabels?.[status]?.emoji}&nbsp;
+                    </p>
+                  </Tooltip>
                 </div>
 
                 <DataTable
                   className={twMerge(
-                    "h-full",
-                    status === "FAIL" ? "border-danger" : "border-success"
+                    "h-full"
+                    // status === "FAIL" ? "border-danger" : "border-success"
                   )}
+                  style={{
+                    borderColor: SubmissionStatusLabels?.[status]?.color,
+                  }}
                   key={`response-${index}`}
                   columns={responseColumns}
                   data={[submitResponse?.submissionResponse[index]]}

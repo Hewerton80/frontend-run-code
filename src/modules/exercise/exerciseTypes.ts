@@ -8,11 +8,15 @@ export interface IExerciseTest {
   input: string;
   expectedOutput: string;
 }
-export const ExerciseSolveStatusEnum = {
-  1: "Resolvido",
-  2: "Não resolvido",
-  3: "Errado",
-};
+export enum ExerciseSubmissionStatus {
+  SOLVED = "SOLVED",
+  WRONG = "WRONG",
+  PENDING = "PENDING",
+}
+
+export type ExerciseSubmissionStatusType =
+  | keyof typeof ExerciseSubmissionStatus
+  | (string & {});
 
 export interface IExercise {
   id?: number;
@@ -26,7 +30,7 @@ export interface IExercise {
   listExercise?: IList;
   classroomId?: string;
   listId?: string;
-  status?: number;
+  status?: ExerciseSubmissionStatus;
   author?: IUser;
   createdAt?: string;
   submissionStats?: ISubmission & {

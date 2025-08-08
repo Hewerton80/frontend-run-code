@@ -1,5 +1,6 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
+import { SubmissionStatus } from "../submissionType";
 
 interface SubmissionCodeBody {
   sourceCode: string;
@@ -12,7 +13,7 @@ export interface ResultSubmissionCode {
   inputs: string[];
   expectedOutput: string;
   output: string;
-  status: "OK" | "FAIL";
+  status: SubmissionStatus;
 }
 
 export interface SubmissionCodeBodyResponse {

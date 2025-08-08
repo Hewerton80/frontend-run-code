@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useAuth } from "./useAuth";
 import { useLocation, useParams } from "react-router-dom";
+import { RoleUser } from "@/modules/user/userTypets";
 
 interface ISidebarMenuItem {
   title: string;
@@ -17,7 +18,7 @@ export const useGetSidebarMenuItems = () => {
 
   const sidebarMenuItems = useMemo<ISidebarMenuItem[]>(() => {
     let result: ISidebarMenuItem[] = [];
-    if (loggedUser?.role === 3) {
+    if (loggedUser?.role === RoleUser.SUPER_ADMIN) {
       result = [
         {
           title: "Home",

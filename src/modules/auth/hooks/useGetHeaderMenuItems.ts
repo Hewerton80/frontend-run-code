@@ -1,6 +1,7 @@
 import { ReactNode, useMemo } from "react";
 import { useAuth } from "./useAuth";
 import { useLocation, matchPath } from "react-router-dom";
+import { RoleUser } from "@/modules/user/userTypets";
 interface IHeaderMenu {
   text: string;
   icon: ReactNode;
@@ -12,7 +13,7 @@ export const useGetHeaderMenuItems = () => {
   const location = useLocation();
 
   const headerMenuItems = useMemo<IHeaderMenu[]>(() => {
-    if (loggedUser?.role === 3) return [];
+    if (loggedUser?.role === RoleUser.SUPER_ADMIN) return [];
 
     return [
       {

@@ -4,6 +4,7 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
+import { RoleUser } from "@/modules/user/userTypets";
 import { isNull, isUndefined } from "@/utils/isType";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
@@ -44,7 +45,7 @@ export default function InLayoutPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      {loggedUser?.role === 3 ? (
+      {loggedUser?.role === RoleUser.SUPER_ADMIN ? (
         <SideBarTamplateWrapper>
           <Outlet />
         </SideBarTamplateWrapper>

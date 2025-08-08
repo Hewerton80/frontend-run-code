@@ -27,7 +27,7 @@ export const Routers = () => {
           <Route
             path="users"
             element={
-              <ProtectedRoute roles={["Super Admin"]}>
+              <ProtectedRoute roles={["SUPER_ADMIN"]}>
                 <UsersPage />
               </ProtectedRoute>
             }
@@ -35,7 +35,7 @@ export const Routers = () => {
           <Route
             path="classrooms"
             element={
-              <ProtectedRoute roles={["Super Admin"]}>
+              <ProtectedRoute roles={["SUPER_ADMIN"]}>
                 <ClassroomsPage />
               </ProtectedRoute>
             }
@@ -45,7 +45,7 @@ export const Routers = () => {
           <Route
             path="lists"
             element={
-              <ProtectedRoute roles={["Super Admin"]}>
+              <ProtectedRoute roles={["SUPER_ADMIN"]}>
                 <ListPage />
               </ProtectedRoute>
             }

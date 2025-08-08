@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { getRange } from "@/utils/getRange";
 import { IClassroom } from "../../classroomType";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
-import { IUser } from "@/modules/user/userTypets";
+import { IUser, RoleUser } from "@/modules/user/userTypets";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { ClassroomFormDialog } from "../ClassroomFormDialog";
 import { useState } from "react";
@@ -76,7 +76,7 @@ const ClassRoomsCard = ({
                 ))}
               </span>
             </p>
-            {loggedUser?.role === 2 && (
+            {loggedUser?.role === RoleUser.TEACHER && (
               <p className="inline-flex gap-2 items-center text-sm w-fit line-clamp-1 text-muted-foreground">
                 Visibilidate:{" "}
                 <Tooltip
@@ -129,7 +129,7 @@ export const ClassRoomsCards = () => {
     <>
       {errorClassrooms && <FeedBackError onTryAgain={refetchClassrooms} />}
       <div className="grid grid-cols-3 gap-4">
-        {loggedUser?.role !== 1 && (
+        {loggedUser?.role !== RoleUser.STUDENT && (
           <div className="flex justify-end col-span-3">
             <Button onClick={() => setOpenDialog(true)}>Criar turma</Button>
           </div>

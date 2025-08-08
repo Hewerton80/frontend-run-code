@@ -2,6 +2,7 @@ import { DateTime } from "@/utils/dateTime";
 import { IList } from "../listTypes";
 import { useMemo } from "react";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { RoleUser } from "@/modules/user/userTypets";
 
 export const useGetClassroomListStatus = (list: IList) => {
   const startDate = list.startDate;
@@ -39,7 +40,7 @@ export const useGetClassroomListStatus = (list: IList) => {
   }, [endDate]);
 
   const closed = useMemo(() => {
-    if (loggedUser?.role === 2) {
+    if (loggedUser?.role === RoleUser.TEACHER) {
       return false;
     }
     return didNotStart || alreadyFinished || list?.status === 1;

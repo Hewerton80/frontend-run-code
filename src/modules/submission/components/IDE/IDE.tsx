@@ -11,6 +11,7 @@ import { IconButton } from "../../../../components/ui/buttons/IconButton";
 import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
+import { Select } from "@/components/ui/forms/selects";
 
 interface IdeProps {
   value?: string;
@@ -71,13 +72,23 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
       <div className="flex flex-col h-full w-full gap-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex max-w-[13.625rem] w-full">
-            <Picker
+            {/* <Picker
+              defaultValue={languageMode}
               showLabelInner
               full
               label="Language"
               value={languageMode}
               onChange={changeLanguageMode}
               options={modeOptions}
+              disabled={modeOptions?.length <= 1}
+            /> */}
+            <Select
+              value={languageMode}
+              onChange={(option) =>
+                changeLanguageMode(option?.value as LanguageNames)
+              }
+              options={modeOptions}
+              placeholder="Select language"
               disabled={modeOptions?.length <= 1}
             />
           </div>

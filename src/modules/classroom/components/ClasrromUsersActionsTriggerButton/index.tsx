@@ -2,6 +2,7 @@ import { ButtonVariantStyle } from "@/components/ui/buttons/Button";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { RoleUser } from "@/modules/user/userTypets";
 import { BsThreeDots } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
 
@@ -17,7 +18,7 @@ export const ClasrromUsersActionsTriggerButton = ({
 }: ClasrromUsersActionsTriggerButtonProps) => {
   const { loggedUser } = useAuth();
 
-  if (loggedUser?.role === 1) {
+  if (loggedUser?.role === RoleUser.STUDENT) {
     return <></>;
   }
 

@@ -1,13 +1,20 @@
+export enum RoleUser {
+  STUDENT = 1,
+  TEACHER = 2,
+  SUPER_ADMIN = 3,
+}
+export type RoleType = keyof typeof RoleUser | (string & {});
+
 export type RolesNames =
   | "Aluno(a)"
   | "Professor(a)"
   | "Super Admin"
   | (string & {});
 
-export const RoleUserEnum: Record<number, RolesNames> = {
-  1: "Aluno(a)",
-  2: "Professor(a)",
-  3: "Super Admin",
+export const RoleUserEnum: Record<RoleUser | number, RolesNames> = {
+  [RoleUser.STUDENT]: "Aluno(a)",
+  [RoleUser.TEACHER]: "Professor(a)",
+  [RoleUser.SUPER_ADMIN]: "Super Admin",
 };
 
 export type TeacherPermissions = {
@@ -30,7 +37,7 @@ export interface IUser {
   avatarUrl?: string;
   avatarBgColor?: string;
   avatarFontColor?: string;
-  role: number;
+  role: RoleUser;
   createdAt?: string;
 }
 

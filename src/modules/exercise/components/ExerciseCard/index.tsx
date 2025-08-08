@@ -1,31 +1,40 @@
 import { Card } from "@/components/ui/cards/Card";
 import { twMerge } from "tailwind-merge";
-import { IExercise } from "../../exerciseTypes";
+import { ExerciseSubmissionStatusType, IExercise } from "../../exerciseTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { RoleUser } from "@/modules/user/userTypets";
 
 interface ExerciseCardProps {
   data: IExercise;
 }
 
 const exerciseSolveStatusEmojis: Record<
-  number,
+  ExerciseSubmissionStatusType,
   { icon: string; name: string }
 > = {
-  1: { icon: "✅", name: "Resolvida" },
-  2: { icon: "❌", name: "Errada" },
-  3: { icon: "🕒", name: "Aguardando submissão" },
+  SOLVED: { icon: "✅", name: "Resolvida" },
+  WRONG: { icon: "❌", name: "Errada" },
+  PENDING: { icon: "🕒", name: "Aguardando submissão" },
 };
 
 export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
   const { loggedUser } = useAuth();
-  const status = exercise?.status as number;
 
-  const solveStatusEmoji = exerciseSolveStatusEmojis?.[status]?.icon;
+  const status = useMemo(() => exercise?.status!, [exercise?.status]);
 
-  const solveStatusName = exerciseSolveStatusEmojis?.[status]?.name;
+  const solveStatusEmoji = useMemo(
+    () => exerciseSolveStatusEmojis?.[status]?.icon,
+    [status]
+  );
+
+  const solveStatusName = useMemo(
+    () => exerciseSolveStatusEmojis?.[status]?.name,
+    [status]
+  );
 
   return (
     <Card.Root
@@ -47,7 +56,7 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
                 {exercise?.title}
               </h4>
             </Tooltip>
-            {loggedUser?.role === 1 && solveStatusEmoji && (
+            {loggedUser?.role === RoleUser.STUDENT && solveStatusEmoji && (
               <Tooltip
                 align="start"
                 textContent={

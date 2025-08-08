@@ -1,11 +1,11 @@
 import { ReactElement, useMemo } from "react";
 import { Navigate } from "react-router-dom";
-import { RolesNames, RoleUserEnum } from "./modules/user/userTypets";
+import { RolesNames, RoleType, RoleUserEnum } from "./modules/user/userTypets";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 type ProtectedRouteProps = {
   children: ReactElement;
-  roles?: RolesNames[];
+  roles?: RoleType[];
 };
 
 export const ProtectedRoute = ({
