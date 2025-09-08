@@ -14,6 +14,8 @@ import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { SubmissionStatusLabels } from "@/modules/submission/submissionType";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { Badge } from "@/components/ui/dataDisplay/Badge";
+import { getContrastColor } from "@/utils/colors";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -114,14 +116,25 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                 className="flex flex-col gap-2 col-span-1"
               >
                 <div className="flex items-center gap-2">
-                  <Tooltip
-                    textContent={SubmissionStatusLabels?.[status]?.label}
-                  >
-                    <p>
-                      <span className="text-xs">Case {index + 1}:</span>{" "}
-                      {SubmissionStatusLabels?.[status]?.emoji}&nbsp;
-                    </p>
-                  </Tooltip>
+                  <p>
+                    <span className="text-xs">Caso {index + 1}:</span>{" "}
+                    {/* <span
+                      style={{ color: SubmissionStatusLabels?.[status]?.color }}
+                    > */}
+                    <Badge
+                      variant="info"
+                      style={{
+                        backgroundColor:
+                          SubmissionStatusLabels?.[status]?.color,
+                        color: getContrastColor(
+                          SubmissionStatusLabels?.[status]?.color
+                        ),
+                      }}
+                    >
+                      {SubmissionStatusLabels?.[status]?.label}{" "}
+                      {SubmissionStatusLabels?.[status]?.emoji}
+                    </Badge>
+                  </p>
                 </div>
 
                 <DataTable

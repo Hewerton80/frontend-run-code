@@ -15,11 +15,13 @@ import PlayGroundPage from "./pages/Playground";
 import ExercisePage from "./pages/ExercisePage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { NotFound404 } from "./components/ui/feedback/NotFound404";
+import { TESTE } from "./pages/TESTE";
 
 export const Routers = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/teste" element={<TESTE />} />
         <Route index path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<AuthLoginPage />} />
         <Route element={<InLayoutPage />}>

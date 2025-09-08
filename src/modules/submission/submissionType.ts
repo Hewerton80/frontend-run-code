@@ -7,6 +7,7 @@ export enum SubmissionStatus {
   MEMORY_LIMIT_EXCEEDED = 6,
   RUNTIME_ERROR = 7,
   COMPILATION_ERROR = 8,
+  UNKNOWN_ERROR = 9,
 }
 
 export const SubmissionStatusLabels: Record<
@@ -16,42 +17,47 @@ export const SubmissionStatusLabels: Record<
   [SubmissionStatus.PENDING]: {
     label: "Pendente",
     emoji: "⏳",
-    color: "#FFA500",
+    color: "rgb(255,165,0)",
   },
   [SubmissionStatus.RUNNING]: {
     label: "Em execução",
     emoji: "🏃",
-    color: "#007bff",
+    color: "rgb(0,123,255)",
   },
   [SubmissionStatus.ACCEPTED]: {
     label: "Aceito",
     emoji: "😀",
-    color: "#28a745",
+    color: "rgb(40,167,69)",
   },
   [SubmissionStatus.WRONG_ANSWER]: {
     label: "Resposta Incorreta",
     emoji: "❌",
-    color: "#dc3545",
+    color: "rgb(220,53,69)",
   },
   [SubmissionStatus.TIME_LIMIT_EXCEEDED]: {
     label: "Tempo Excedido",
     emoji: "⏰",
-    color: "#ffc107",
+    color: "rgb(255,193,7)",
   },
   [SubmissionStatus.MEMORY_LIMIT_EXCEEDED]: {
     label: "Memória Excedida",
     emoji: "💾",
-    color: "#6f42c1",
+    color: "rgb(111,66,193)",
   },
   [SubmissionStatus.RUNTIME_ERROR]: {
     label: "Erro de Execução",
     emoji: "💥",
-    color: "#fd7e14",
+    color: "rgb(253,126,20)",
   },
   [SubmissionStatus.COMPILATION_ERROR]: {
     label: "Erro de Compilação",
     emoji: "🛠️",
-    color: "#17a2b8",
+    color: "rgb(23,162,184)",
+  },
+  [SubmissionStatus.UNKNOWN_ERROR]: {
+    label: "Erro Desconhecido",
+    emoji: "❓",
+    color: "rgb(108,117,125)",
   },
 };
 

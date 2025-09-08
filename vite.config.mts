@@ -8,6 +8,10 @@ export default defineConfig({
   plugins: [react(), viteTsconfigPaths(), svgrPlugin(), tailwindcss()],
   server: {
     open: true,
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    },
   },
   build: {
     outDir: "build",
