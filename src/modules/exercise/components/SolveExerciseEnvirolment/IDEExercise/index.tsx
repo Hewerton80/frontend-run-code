@@ -123,13 +123,17 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                     > */}
                     <Badge
                       variant="info"
-                      style={{
-                        backgroundColor:
-                          SubmissionStatusLabels?.[status]?.color,
-                        color: getContrastColor(
-                          SubmissionStatusLabels?.[status]?.color
-                        ),
-                      }}
+                      style={
+                        status
+                          ? {
+                              backgroundColor:
+                                SubmissionStatusLabels?.[status]?.color,
+                              color: getContrastColor(
+                                SubmissionStatusLabels?.[status]?.color
+                              ),
+                            }
+                          : undefined
+                      }
                     >
                       {SubmissionStatusLabels?.[status]?.label}{" "}
                       {SubmissionStatusLabels?.[status]?.emoji}

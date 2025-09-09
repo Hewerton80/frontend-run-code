@@ -8,6 +8,7 @@ export enum SubmissionStatus {
   RUNTIME_ERROR = 7,
   COMPILATION_ERROR = 8,
   UNKNOWN_ERROR = 9,
+  NO_OUTPUT = 11,
 }
 
 export const SubmissionStatusLabels: Record<
@@ -58,6 +59,11 @@ export const SubmissionStatusLabels: Record<
     label: "Erro Desconhecido",
     emoji: "❓",
     color: "rgb(108,117,125)",
+  },
+  [SubmissionStatus.NO_OUTPUT]: {
+    label: "Sem output",
+    emoji: "🚫",
+    color: "rgb(52,58,64)",
   },
 };
 
