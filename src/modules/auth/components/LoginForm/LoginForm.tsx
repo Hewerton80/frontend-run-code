@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/buttons/Button";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { useLoginForm } from "./useLoginForm";
+import { PasswordInput } from "@/components/ui/forms/inputs/PasswordInput";
 
 export function LoginForm() {
   const { loginFormRegister, login, loginFormState, isLogging } =
@@ -33,11 +34,11 @@ export function LoginForm() {
               placeholder="email@example.com"
               error={loginFormState.errors.email?.message}
             />
-            <Input
+            <PasswordInput
               {...loginFormRegister("password")}
               id={loginFormRegister("password").name}
               label="Senha"
-              type="password"
+              // type="password"
               placeholder="********"
               error={loginFormState.errors.password?.message}
             />

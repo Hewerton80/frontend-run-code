@@ -13,6 +13,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { Link } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
+import { Card } from "@/components/ui/cards/Card";
 
 export const ExercisesTable = () => {
   const { loggedUser } = useAuth();
@@ -72,7 +73,7 @@ export const ExercisesTable = () => {
         onParse: (exercise) => (
           <div className="flex justify-end">
             <Button variantStyle="dark-ghost" asChild>
-              <Link to={`/exercises/${exercise?.uuid}`}>Ver</Link>
+              <Link to={`/exercises/${exercise?.uuid}/info`}>Ver</Link>
             </Button>
           </div>
         ),
@@ -83,10 +84,19 @@ export const ExercisesTable = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full p-8">
-      <Breadcrumbs
+      {/* <Breadcrumbs
         isLoading={isExercisesLoading}
         items={[{ label: "🧩 Exercícios" }]}
-      />
+      /> */}
+      <div className="flex justify-between items-end gap-4">
+        <Card.Title>🧩 Exercícios</Card.Title>
+        {loggedUser?.role === RoleUser.TEACHER && (
+          <Button asChild>
+            <Link to="/exercises/create">Criar Exercício</Link>
+          </Button>
+        )}
+      </div>
+
       <DataTable
         columns={columns}
         data={exercises?.data || []}

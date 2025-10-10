@@ -40,7 +40,7 @@ export default function PlayGroundPage() {
             <EnterMultSelect
               value={inputs}
               onChange={setInputs}
-              label="Custom ipunts:"
+              label="Custom inputs:"
               placeholder="Enter inputs"
             />
             <div className="flex justify-end">

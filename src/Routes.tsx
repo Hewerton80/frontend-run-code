@@ -16,6 +16,7 @@ import ExercisePage from "./pages/ExercisePage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { NotFound404 } from "./components/ui/feedback/NotFound404";
 import { TESTE } from "./pages/TESTE";
+import { CreateExercisePage } from "./pages/CreateExercisePage";
 
 export const Routers = () => {
   return (
@@ -43,7 +44,15 @@ export const Routers = () => {
             }
           />
           <Route path="exercises" element={<ExercisesPage />} />
-          <Route path="exercises/:exerciseId" element={<ExercisePage />} />
+          <Route
+            path="exercises/create"
+            element={
+              <ProtectedRoute roles={["SUPER_ADMIN", "TEACHER"]}>
+                <CreateExercisePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="exercises/:exerciseId/info" element={<ExercisePage />} />
           <Route
             path="lists"
             element={

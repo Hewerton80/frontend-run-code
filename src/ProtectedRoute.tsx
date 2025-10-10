@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from "react";
 import { Navigate } from "react-router-dom";
-import { RolesNames, RoleType, RoleUserEnum } from "./modules/user/userTypets";
+import { RoleType, RoleUser } from "./modules/user/userTypets";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 type ProtectedRouteProps = {
@@ -19,7 +19,7 @@ export const ProtectedRoute = ({
 
     if (!loggedUser) return false;
 
-    return roles.includes(RoleUserEnum[loggedUser.role as number]);
+    return roles.some((role) => role === RoleUser[loggedUser?.role!]);
   }, [loggedUser, roles]);
 
   if (!shouldRender) {

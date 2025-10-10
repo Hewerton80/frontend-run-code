@@ -11,6 +11,9 @@ export interface InputProps
   leftIcon?: JSX.Element;
   label?: string;
   error?: string;
+  rightIcon?: JSX.Element;
+  onClickRightIcon?: () => void;
+  onClickLeftIcon?: () => void;
 }
 
 export const Input = forwardRef(
@@ -22,6 +25,9 @@ export const Input = forwardRef(
       label,
       error,
       required,
+      rightIcon,
+      onClickRightIcon,
+      onClickLeftIcon,
       ...restProps
     }: InputProps,
     ref?: any
@@ -39,10 +45,39 @@ export const Input = forwardRef(
           </FormLabel>
         )}
         {leftIcon && (
-          <Slot className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground">
+          <Slot
+            role={onClickLeftIcon ? "button" : undefined}
+            onClick={onClickLeftIcon}
+            className="absolute left-2 top-10 h-4 w-4 text-muted-foreground"
+          >
             {leftIcon}
           </Slot>
         )}
+        {rightIcon && (
+          <Slot
+            role={onClickRightIcon ? "button" : undefined}
+            onClick={onClickRightIcon}
+            className={twMerge(
+              "absolute right-2 top-10 h-4 w-4 text-muted-foreground",
+              onClickRightIcon && "cursor-pointer"
+            )}
+          >
+            {rightIcon}
+          </Slot>
+        )}
+        {/* {rightIcon && (
+          <span
+            role={onClickRightIcon ? "button" : undefined}
+            onClick={onClickRightIcon}
+            className={twMerge(
+              "icon absolute z-[2] right-3 top-10",
+              // "icon absolute z-[2] top-1/2 -translate-y-1/2 right-3 right-icon",
+              onClickRightIcon && "cursor-pointer"
+            )}
+          >
+            {rightIcon}
+          </span>
+        )} */}
         <input
           ref={ref}
           required={required}
@@ -54,6 +89,7 @@ export const Input = forwardRef(
             error &&
               "border-danger/60 focus-visible:border-danger focus-visible:ring-danger/40",
             leftIcon && "pl-8",
+            rightIcon && "pr-8",
             inputClassName
           )}
           {...restProps}

@@ -61,7 +61,6 @@ export const useIDEExercise = (exercise: IExercise) => {
     setSourceCode(value);
   };
 
-  //TODO ao submeter com sucesso, atualizar da lista, contabilizar o solved (solved)
   const handleSubmitCode = useCallback(() => {
     submitCode(
       {
