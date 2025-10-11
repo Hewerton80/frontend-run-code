@@ -9,6 +9,7 @@ interface TooltipContentProps {
   children?: ReactNode;
   textContent?: ReactNode;
   open?: boolean;
+  hideTextContent?: boolean;
   disableHoverableContent?: boolean;
   onOpenChange?: (open: boolean) => void;
   side?: "top" | "right" | "bottom" | "left";
@@ -40,6 +41,7 @@ export const Tooltip = ({
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
+            hideWhenDetached
             sideOffset={sideOffset}
             side={side}
             align={align}

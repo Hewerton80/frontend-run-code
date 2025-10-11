@@ -8,6 +8,7 @@ interface EnterMultSelectProps extends MultSelectSelectProps {}
 
 export function EnterMultSelect({
   value,
+  disabled,
   onKeyDown,
   onChange,
   ...restprops
@@ -33,6 +34,7 @@ export function EnterMultSelect({
   return (
     <Tooltip
       open={showTooltip}
+      disableHoverableContent={disabled}
       textContent={
         <em>
           Press <b>Enter</b> to add a new value
@@ -53,6 +55,7 @@ export function EnterMultSelect({
           onInputChange={setInputValue}
           onKeyDown={handleKeyDown}
           onChange={onChange}
+          disabled={disabled}
           {...restprops}
         />
       </div>
