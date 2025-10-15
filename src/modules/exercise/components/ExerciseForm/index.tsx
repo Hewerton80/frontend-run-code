@@ -14,8 +14,27 @@ import { IDE } from "@/modules/submission/components/IDE";
 import { getRange } from "@/utils/getRange";
 import { BsTrash } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
+import { useExerciseForm } from "./useExerciseForm";
+import { useMemo } from "react";
+import { Controller, useFieldArray } from "react-hook-form";
 
 export const ExerciseForm = () => {
+  const { exerciseFormSchemaMethods } = useExerciseForm();
+
+  const { control, register, formState } = useMemo(
+    () => exerciseFormSchemaMethods,
+    [exerciseFormSchemaMethods]
+  );
+
+  const {
+    fields: testCases,
+    append: addTestCase,
+    remove: removeTestCase,
+  } = useFieldArray({
+    name: "testCases",
+    control,
+  });
+
   return (
     <>
       <div className="flex flex-col w-full gap-4 p-8">
@@ -47,15 +66,30 @@ export const ExerciseForm = () => {
               className="flex flex-col gap-4 p-4"
               onSubmit={(e) => e.preventDefault()}
             >
+              {/* <Input
+                  {...registerClassroomForm("name")}
+                  id={registerClassroomForm("name").name}
+                  label="Nome"
+                  placeholder="EX: Turma de lógica 2025.2"
+                  required
+                  error={classroomFormState.errors.name?.message}
+                  disabled={!canEditClassroom}
+                /> */}
               <Input
+                {...register("title")}
+                id={register("title").name}
                 required
                 label="Título"
                 placeholder="Digite o título do exercício"
+                error={formState.errors.title?.message}
               />
               <Textarea
+                {...register("description")}
+                id={register("description").name}
                 required
                 label="Descrição"
                 placeholder="Digite a descrição do exercício"
+                error={formState.errors.title?.message}
               />
               <DivTable.Container>
                 <DivTable.Row header>
@@ -64,8 +98,9 @@ export const ExerciseForm = () => {
                   <DivTable.Data>Público</DivTable.Data>
                   {/* <DivTable.Data></DivTable.Data> */}
                 </DivTable.Row>
-                {getRange(0, 8).map((index) => {
-                  const isDisabled = index === 2;
+
+                {testCases.map((_, index) => {
+                  const isFirst = index === 0;
                   return (
                     <DivTable.Row
                       disableAccordion
@@ -73,37 +108,38 @@ export const ExerciseForm = () => {
                     >
                       <DivTable.Data>
                         <div className="w-full">
-                          <EnterMultSelect
-                            disabled={isDisabled}
-                            value={[
-                              { label: "10", value: "10" },
-                              { label: "20", value: "20" },
-                              { label: "30", value: "30" },
-                              { label: "110", value: "110" },
-                              { label: "210", value: "210" },
-                              { label: "310", value: "310" },
-                            ]}
-                            // value={inputs}
-                            // onChange={setInputs}
-                            placeholder={`Entrada de Teste (${index + 1})`}
+                          <Controller
+                            name={`testCases.${index}.input`}
+                            control={control}
+                            render={({ field, fieldState }) => (
+                              <EnterMultSelect
+                                {...field}
+                                autoFocus={false}
+                                id={field.name}
+                                placeholder={`Entrada de Teste (${index + 1})`}
+                                error={fieldState.error?.message}
+                              />
+                            )}
                           />
                         </div>
                       </DivTable.Data>
                       <DivTable.Data>
                         <Textarea
-                          disabled={isDisabled}
                           required
                           placeholder={`Saída Esperada (${index + 1})`}
                         />
                       </DivTable.Data>
                       <DivTable.Data className="gap-8 justify-between">
-                        <Switch disabled={isDisabled} />
-                        <Tooltip textContent="Remover caso de teste">
-                          <IconButton
-                            variantStyle="danger"
-                            icon={<BsTrash />}
-                          />
-                        </Tooltip>
+                        <Switch />
+                        {!isFirst && (
+                          <Tooltip textContent="Remover caso de teste">
+                            <IconButton
+                              variantStyle="danger"
+                              icon={<BsTrash />}
+                              onClick={() => removeTestCase(index)}
+                            />
+                          </Tooltip>
+                        )}
                       </DivTable.Data>
                       {/* <DivTable.Data>
                       
@@ -111,24 +147,36 @@ export const ExerciseForm = () => {
                     </DivTable.Row>
                   );
                 })}
+                <DivTable.Row disableAccordion className="border-t-transparent">
+                  <DivTable.Data className="justify-end">
+                    <Tooltip textContent="Adicionar novo caso de teste">
+                      <Button
+                        onClick={() =>
+                          addTestCase({
+                            input: [],
+                            expectedOutput: "",
+                            isPublic: false,
+                          })
+                        }
+                        variantStyle="outline"
+                      >
+                        Adicionar
+                      </Button>
+                    </Tooltip>
+                  </DivTable.Data>
+                </DivTable.Row>
               </DivTable.Container>
-              <div className="flex justify-end">
-                <Button
-                // isLoading={isRunningCode} onClick={handleSubmit}
-                >
-                  Run Code 🚀
-                </Button>
-              </div>
-              <div className="flex flex-col h-full gap-4">
+
+              {/*  <div className="flex flex-col h-full gap-4">
                 <p>Output:</p>
-                {/* {isRunningCode && <ThreeDotsLoading />}
+             {isRunningCode && <ThreeDotsLoading />}
                 {runCodeResponse && (
                   <TerminalCode content={runCodeResponse?.output || ""} />
                 )}
                 {runCodeError && (
                   <TerminalCode content={runCodeError?.description || ""} />
-                )} */}
-              </div>
+                )}
+              </div> */}
             </form>
           </Resizable.Panel>
           <Resizable.Handle withHandle />
@@ -137,10 +185,17 @@ export const ExerciseForm = () => {
             minSize={15}
             className="flex flex-1/4 w-full flex-col col-span-8 h-full gap-4"
           >
-            <div className="p-4">
+            <div className="flex flex-col gap-4 p-4">
               <IDE
               // value={editorValue} onChange={setEditorValue}
               />
+              <div className="flex justify-end">
+                <Button
+                // isLoading={isRunningCode} onClick={handleSubmit}
+                >
+                  Testar
+                </Button>
+              </div>
             </div>
           </Resizable.Panel>
         </Resizable.Group>

@@ -1,10 +1,13 @@
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useCallback, useState } from "react";
 import { MultSelect, MultSelectSelectProps } from "..";
 import style from "./EnterMultSelect.module.css";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { useDebouncedCallback } from "use-debounce";
 
-interface EnterMultSelectProps extends MultSelectSelectProps {}
+interface EnterMultSelectProps
+  extends Omit<MultSelectSelectProps, "value" | "onChange"> {
+  value?: string[];
+  onChange?: (value: string[]) => void;
+}
 
 export function EnterMultSelect({
   value,
@@ -16,28 +19,25 @@ export function EnterMultSelect({
   const [inputValue, setInputValue] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    onKeyDown?.(e);
-    const currentValue = value || [];
-    if (e.key === "Enter" && inputValue?.trim()) {
-      onChange?.(
-        [
-          ...currentValue,
-          { label: inputValue, value: `${inputValue}-${Math.random()}` },
-        ],
-        "input-change" as any
-      );
-      setInputValue("");
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLDivElement>) => {
+      onKeyDown?.(e);
+      const currentValue = value || [];
+      if (e.key === "Enter" && inputValue?.trim()) {
+        onChange?.([...currentValue, inputValue]);
+        setInputValue("");
+      }
+    },
+    [inputValue, onChange, onKeyDown, value]
+  );
 
   return (
     <Tooltip
       open={showTooltip}
-      disableHoverableContent={disabled}
+      disableHoverableContent={disabled || !inputValue?.trim()}
       textContent={
         <em>
-          Press <b>Enter</b> to add a new value
+          Pressione <b>Enter</b> para adicionar o valor
         </em>
       }
       side="bottom"
@@ -49,14 +49,22 @@ export function EnterMultSelect({
         onMouseLeave={() => setShowTooltip(false)}
       >
         <MultSelect
-          value={value}
+          value={(value || []).map((v, i) => ({
+            label: v,
+            value: `${v}-${i}`,
+          }))}
           inputValue={inputValue}
           isSearchable={true}
           onInputChange={setInputValue}
           onKeyDown={handleKeyDown}
-          onChange={onChange}
+          onChange={(options) => {
+            onChange?.(
+              (options || []).map((option) => (option?.label as string) || "")
+            );
+          }}
           disabled={disabled}
           {...restprops}
+          autoFocus={false}
         />
       </div>
     </Tooltip>
