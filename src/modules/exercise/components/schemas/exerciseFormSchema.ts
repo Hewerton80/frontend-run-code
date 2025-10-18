@@ -8,21 +8,25 @@ const { VALIDATION } = CONSTANTS;
 export const exerciseFormSchema = z.object({
   title: z.string().min(1, VALIDATION.REQUIRED_FIELD),
   description: z.string().min(1, VALIDATION.REQUIRED_FIELD),
-  categoryId: z.string().min(1, VALIDATION.REQUIRED_FIELD),
-  difficulty: z.string().min(1, VALIDATION.REQUIRED_FIELD),
+  // categoryId: z.string().min(1, VALIDATION.REQUIRED_FIELD),
+  // difficulty: z.string().min(1, VALIDATION.REQUIRED_FIELD),
   testCases: z
     .array(
       z.object({
         input: z.array(z.string()).min(1, VALIDATION.REQUIRED_FIELD),
         expectedOutput: z.string().min(1, VALIDATION.REQUIRED_FIELD),
-        isPublic: z.boolean().optional(),
+        isPublic: z.boolean(),
       })
     )
     .min(3, "Deve conter ao menos 3 casos de teste")
     .refine(
-      (testCases) =>
-        testCases.some((testCase) => testCase.isPublic) &&
-        testCases.some((testCase) => !testCase.isPublic),
+      (testCases) => {
+        // console.log("testCases", testCases);
+        return (
+          testCases.some((testCase) => testCase.isPublic) &&
+          testCases.some((testCase) => !testCase.isPublic)
+        );
+      },
       {
         message: "Deve conter ao menos um caso de teste público e um privado",
       }
@@ -36,8 +40,8 @@ export const useExerciseFormSchema = () => {
     () => ({
       title: "",
       description: "",
-      categoryId: "",
-      difficulty: "",
+      // categoryId: "",
+      // difficulty: "",
       testCases: [{ input: [], expectedOutput: "", isPublic: true }],
     }),
     []
