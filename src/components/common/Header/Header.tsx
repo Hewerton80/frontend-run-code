@@ -4,6 +4,7 @@ import { ProgressHeaderBar } from "@/components/ui/feedback/ProgressHeaderBar";
 import { ProfilePopover } from "@/components/ui/overlay/ProfilePopover";
 import { useGetHeaderMenuItems } from "@/modules/auth/hooks/useGetHeaderMenuItems";
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
 
 export function Header() {
   const { headerMenuItems } = useGetHeaderMenuItems();
@@ -11,7 +12,7 @@ export function Header() {
   return (
     <header className="bg-card h-15 shadow-xs border-b relative">
       <div className="flex items-center w-full h-full px-8 sm:px-16 justify-between">
-        <Link className="flex items-center gap-2" to="/home">
+        <Link className="flex items-center gap-2" to={ROUTES.HOME}>
           <FaRegPlayCircle />
           <span className="text-2xl">Play Code</span>
         </Link>
@@ -21,7 +22,7 @@ export function Header() {
               className={twMerge(
                 "flex items-center gap-2 transition-colors",
                 "hover:text-foreground/80 text-foreground group",
-                item.isActive ? "text-foreground" : "text-foreground/80"
+                item.isActive ? "text-foreground" : "text-foreground/80",
               )}
               key={`header-menu-item-${index}`}
               to={item.link}

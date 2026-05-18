@@ -14,6 +14,7 @@ import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { Link } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
 import { Card } from "@/components/ui/cards/Card";
+import { ROUTES } from "@/routes/routes";
 
 export const ExercisesTable = () => {
   const { loggedUser } = useAuth();
@@ -73,7 +74,7 @@ export const ExercisesTable = () => {
         onParse: (exercise) => (
           <div className="flex justify-end">
             <Button variantStyle="dark-ghost" asChild>
-              <Link to={`/exercises/${exercise?.uuid}/info`}>Ver</Link>
+              <Link to={ROUTES.EXERCISE_DETAIL(exercise?.uuid!)}>Ver</Link>
             </Button>
           </div>
         ),
@@ -92,7 +93,7 @@ export const ExercisesTable = () => {
         <Card.Title>🧩 Exercícios</Card.Title>
         {loggedUser?.role === RoleUser.TEACHER && (
           <Button asChild>
-            <Link to="/exercises/create">Criar Exercício</Link>
+            <Link to={ROUTES.EXERCISES_CREATE}>Criar Exercício</Link>
           </Button>
         )}
       </div>

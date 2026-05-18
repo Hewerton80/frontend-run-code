@@ -15,6 +15,7 @@ import { ClassroomFormDialog } from "@/modules/classroom/components/ClassroomFor
 import { Card } from "@/components/ui/cards/Card";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { RoleUser } from "@/modules/user/userTypets";
+import { ROUTES } from "@/routes/routes";
 
 interface ClassroomListsTableProps {
   isLoading?: boolean;
@@ -76,7 +77,7 @@ export const ClassroomListsTable = ({
 
   return (
     <>
-      <BackLink to="/home">Voltar para Home</BackLink>
+      <BackLink to={ROUTES.HOME}>Voltar para Home</BackLink>
       <div className="flex justify-between items-end gap-4">
         <Card.Title>🏫 {classroom?.name}</Card.Title>
         <div className="flex justify-end gap-2">

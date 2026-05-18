@@ -21,10 +21,6 @@ export default function InLayoutPage() {
   } = useAuth();
 
   useEffect(() => {
-    refetchLoggedUser();
-  }, [refetchLoggedUser]);
-
-  useEffect(() => {
     if (hasNotAccess) {
       logout();
     }

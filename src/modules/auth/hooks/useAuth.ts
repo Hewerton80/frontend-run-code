@@ -13,6 +13,7 @@ export const useAuth = () => {
     refetch: refetchLoggedUser,
   } = useQuery({
     queryKey: ["auth"],
+    enabled: true,
     queryFn: (): Promise<IUser | null> =>
       apiBase.get<IUser | null>("/auth/me").then((res) =>
         res.data
@@ -20,7 +21,7 @@ export const useAuth = () => {
               ...res.data,
               username: `${res.data.name} ${res.data.surname}`,
             }
-          : null
+          : null,
       ),
   });
 

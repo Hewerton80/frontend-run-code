@@ -9,6 +9,7 @@ import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUserEnum } from "@/modules/user/userTypets";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
 
 export function ProfilePopover() {
   const { setTheme } = useTheme();
@@ -49,7 +50,7 @@ export function ProfilePopover() {
         <GroupedUserInfo user={loggedUser!} />
         <Dropdown.Separator />
         <Dropdown.Item asChild>
-          <Link to="/profile">
+          <Link to={ROUTES.PROFILE}>
             <FiUser className="mr-2" size={20} /> Perfil
           </Link>
         </Dropdown.Item>

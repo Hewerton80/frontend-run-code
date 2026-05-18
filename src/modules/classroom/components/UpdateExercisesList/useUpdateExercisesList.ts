@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/useToast";
 import { ClassroomKeys, IClassroom } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
@@ -69,7 +70,7 @@ export const useUpdateExercisesList = () => {
 
   const showExerciseDetailsDialog = useMemo(
     () => !!exerciseIdToSeeInDialog,
-    [exerciseIdToSeeInDialog]
+    [exerciseIdToSeeInDialog],
   );
 
   const {
@@ -112,7 +113,7 @@ export const useUpdateExercisesList = () => {
       const alreadyExists = exercisesToAddRecords?.[uuid];
       return alreadyExists;
     },
-    [exercisesToAddRecords]
+    [exercisesToAddRecords],
   );
 
   const addExerciseToList = useCallback(
@@ -129,14 +130,14 @@ export const useUpdateExercisesList = () => {
       exercisesRecords,
       verifyIfExerciseAlreadyExistsInCurrentList,
       appendExercise,
-    ]
+    ],
   );
 
   const removeExerciseToList = useCallback(
     (uuid: string) => {
       const alreadyExists = currentExercisesRecords?.[uuid];
       const index = (exercisesToAdd || []).findIndex(
-        (exercise) => exercise?.uuid === uuid
+        (exercise) => exercise?.uuid === uuid,
       );
       if (alreadyExists) {
         updateExerciseState(index, {
@@ -152,20 +153,20 @@ export const useUpdateExercisesList = () => {
       currentExercisesRecords,
       removeExercise,
       updateExerciseState,
-    ]
+    ],
   );
 
   const unDoRemoveExerciseToList = useCallback(
     (uuid: string) => {
       const index = exercisesToAdd.findIndex(
-        (exercise) => exercise?.uuid === uuid
+        (exercise) => exercise?.uuid === uuid,
       );
       updateExerciseState(index, {
         ...exercisesToAdd[index],
         removed: false,
       });
     },
-    [exercisesToAdd, updateExerciseState]
+    [exercisesToAdd, updateExerciseState],
   );
 
   const handleResetExercisesForm = useCallback(() => {
@@ -218,7 +219,7 @@ export const useUpdateExercisesList = () => {
         })) || [];
 
     const onSuccess = () => {
-      navigate(`/classroom/${classroom?.uuid}/lists`);
+      navigate(ROUTES.CLASSROOM_LISTS(classroom?.uuid!));
       queryClient.setQueryData(
         [ClassroomKeys.Details, classroom?.uuid],
         (classroom: IClassroom) => {
@@ -231,7 +232,7 @@ export const useUpdateExercisesList = () => {
           }));
           classroom.lists = lists;
           return classroom;
-        }
+        },
       );
       toast({
         title: "Exercícios atualizados com sucesso!",

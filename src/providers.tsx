@@ -1,15 +1,15 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode } from "react";
-import { queryClient } from "./utils/queryClient";
-import { ToastProvider } from "./components/ui/feedback/Toaster";
+import { queryClient } from "./utils/tanstackQueryHelpers/queryClient";
+import { ToastProvider, Toaster } from "./components/ui/feedback/Toaster";
+import { Outlet } from "react-router-dom";
 
-interface ProvidersProps {
-  children: ReactNode;
-}
-export function Providers({ children }: ProvidersProps) {
+export function Providers() {
   return (
     <ToastProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <Toaster />
+      </QueryClientProvider>
     </ToastProvider>
   );
 }

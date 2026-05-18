@@ -25,6 +25,7 @@ import { MdOutlineDoubleArrow } from "react-icons/md";
 import { CiUndo } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa";
 import { BackLink } from "@/components/ui/navigation/BackLink";
+import { ROUTES } from "@/routes/routes";
 
 export const UpdateExercisesList = () => {
   const {
@@ -87,7 +88,7 @@ export const UpdateExercisesList = () => {
               role="button"
               className={twMerge(
                 "line-clamp-1 w-fit cursor-pointer hover:underline",
-                exercise?.removed && "line-through"
+                exercise?.removed && "line-through",
               )}
               onClick={() => openExerciseDetailsDialog(exercise?.uuid!)}
             >
@@ -97,7 +98,7 @@ export const UpdateExercisesList = () => {
         </div>
       );
     },
-    [getAuthorInfo, openExerciseDetailsDialog]
+    [getAuthorInfo, openExerciseDetailsDialog],
   );
 
   const exercisesColumns = useMemo<IColmunDataTable<UpdateExercises>[]>(() => {
@@ -212,11 +213,11 @@ export const UpdateExercisesList = () => {
         <Breadcrumbs
           isLoading={isLoadingExercises}
           items={[
-            { label: "🏠 Home", href: "/home" },
+            { label: "🏠 Home", href: ROUTES.HOME },
             { label: classroom?.name || "-" },
             {
               label: "📝 Listas",
-              href: `/classroom/${classroom?.uuid}/lists`,
+              href: ROUTES.CLASSROOM_LISTS(classroom?.uuid!),
             },
             { label: list?.title || "-" },
             {
@@ -227,7 +228,7 @@ export const UpdateExercisesList = () => {
           ]}
         />
         <div className="flex justify-between items-end">
-          <BackLink to={`/classroom/${classroom?.uuid}/lists`}>
+          <BackLink to={ROUTES.CLASSROOM_LISTS(classroom?.uuid!)}>
             Voltar para listas da turma
           </BackLink>
           <div className="flex gap-4">

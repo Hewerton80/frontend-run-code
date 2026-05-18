@@ -7,6 +7,7 @@ import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { RoleUser } from "@/modules/user/userTypets";
+import { ROUTES } from "@/routes/routes";
 
 interface ExerciseCardProps {
   data: IExercise;
@@ -28,12 +29,12 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
 
   const solveStatusEmoji = useMemo(
     () => exerciseSolveStatusEmojis?.[status]?.icon,
-    [status]
+    [status],
   );
 
   const solveStatusName = useMemo(
     () => exerciseSolveStatusEmojis?.[status]?.name,
-    [status]
+    [status],
   );
 
   return (
@@ -43,11 +44,15 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
         "p-4 shadow-md border-none group",
         "bg-linear-to-r from-blue-500 to-blue-700",
         "hover:from-blue-500/80 hover:to-blue-700/80",
-        "duration-300 ease-in-out transition"
+        "duration-300 ease-in-out transition",
       )}
     >
       <Link
-        to={`/classroom/${exercise?.classroom?.uuid}/lists/${exercise?.listExercise?.uuid}/exercise/${exercise?.uuid}`}
+        to={ROUTES.CLASSROOM_LIST_EXERCISE(
+          exercise?.classroom?.uuid!,
+          exercise?.listExercise?.uuid!,
+          exercise?.uuid!,
+        )}
       >
         <div className="flex gap-1 ">
           <div className="flex flex-col">
@@ -78,7 +83,7 @@ export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
               "my-auto ml-auto text-7xl text-white opacity-80",
               "rotate-x-45 rotate-z-43 transform-3d",
               "group-hover:rotate-x-0 group-hover:rotate-z-0",
-              "duration-500 ease-in-out"
+              "duration-500 ease-in-out",
             )}
           />
         </div>

@@ -3,7 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 import { LoginCredentials } from "../schemas/loginSchem";
 
 export interface LoginResponse {
-  access_token: string;
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiresAt: number;
+  refreshTokenExpiresAt: number;
 }
 
 export const useLogin = () => {
@@ -11,7 +14,7 @@ export const useLogin = () => {
   const { isPending: isLogging, mutate: login } = useMutation({
     mutationFn: (loginCredentials: LoginCredentials) =>
       apiBase
-        .post<{ access_token: string }>("/auth/sign-in", loginCredentials)
+        .post<LoginResponse>("/auth/sign-in", loginCredentials)
         .then((res) => res.data),
   });
 

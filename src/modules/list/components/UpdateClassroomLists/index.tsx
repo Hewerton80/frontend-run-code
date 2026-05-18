@@ -17,6 +17,7 @@ import {
   useUpdateClassroomLists,
 } from "./useUpdateClassroomLists";
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
 
 export const UpdateClassroomLists = () => {
   const {
@@ -58,7 +59,7 @@ export const UpdateClassroomLists = () => {
           <p
             className={twMerge(
               "line-clamp-1 w-fit cursor-pointer hover:underline",
-              list?.removed && "line-through"
+              list?.removed && "line-through",
             )}
           >
             {list?.title}
@@ -150,11 +151,11 @@ export const UpdateClassroomLists = () => {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "/home" },
+            { label: "🏠 Home", href: ROUTES.HOME },
             { label: classroom?.name || "-" },
             {
               label: "📝 Listas",
-              href: `/classroom/${classroom?.uuid}/lists`,
+              href: ROUTES.CLASSROOM_LISTS(classroom?.uuid!),
             },
             { label: "Atualizar" },
           ]}
@@ -192,7 +193,7 @@ export const UpdateClassroomLists = () => {
           >
             Salvar
           </Button>
-          <Link to={`/classroom/${classroom?.uuid}/lists`}>
+          <Link to={ROUTES.CLASSROOM_LISTS(classroom?.uuid!)}>
             <Button
               fullWidth
               variantStyle="secondary"

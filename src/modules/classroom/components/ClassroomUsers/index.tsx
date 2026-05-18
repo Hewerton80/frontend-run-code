@@ -14,6 +14,7 @@ import { BackLink } from "@/components/ui/navigation/BackLink";
 import { Card } from "@/components/ui/cards/Card";
 import { ClasrromUsersActionsTriggerButton } from "../ClasrromUsersActionsTriggerButton";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { ROUTES } from "@/routes/routes";
 
 export function ClassroomUsers() {
   const {
@@ -69,7 +70,7 @@ export function ClassroomUsers() {
           ),
       },
     ],
-    [classroom, loggedUser, handleSetTeacherIdToEdit]
+    [classroom, loggedUser, handleSetTeacherIdToEdit],
   );
 
   return (
@@ -78,12 +79,12 @@ export function ClassroomUsers() {
         <Breadcrumbs
           isLoading={isLoadingClassroom}
           items={[
-            { label: "🏠 Home", href: "/home" },
+            { label: "🏠 Home", href: ROUTES.HOME },
             { label: classroom?.name || "-" },
             { label: "Participantes" },
           ]}
         />
-        <BackLink to="/home">Voltar para Home</BackLink>
+        <BackLink to={ROUTES.HOME}>Voltar para Home</BackLink>
 
         <div className="flex justify-between items-end gap-4">
           <Card.Title>🏫 {classroom?.name}</Card.Title>

@@ -3,6 +3,7 @@ import { LoginCredentials, useLoginFormSchema } from "../../schemas/loginSchem";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
 
 export const useLoginForm = () => {
   const {
@@ -19,13 +20,13 @@ export const useLoginForm = () => {
 
   useEffect(() => {
     if (storedAccessToken) {
-      navigate("/home", { replace: true });
+      navigate(ROUTES.HOME, { replace: true });
     }
   }, [storedAccessToken, navigate]);
 
   const handleLogin = (loginCredentials: LoginCredentials) => {
-    const onSuccess = ({ access_token }: LoginResponse) => {
-      setAccessToken(access_token);
+    const onSuccess = ({ accessToken }: LoginResponse) => {
+      setAccessToken(accessToken);
     };
     const onError = (error: any) => {
       const statusCode = error?.response?.status;

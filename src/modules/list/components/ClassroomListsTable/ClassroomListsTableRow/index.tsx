@@ -19,6 +19,7 @@ import { Ping, PingWrapper } from "@/components/ui/feedback/Ping";
 import { RiArrowUpDownFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
+import { ROUTES } from "@/routes/routes";
 
 interface ClassroomListsTableRowProps {
   list: IList;
@@ -52,7 +53,7 @@ export const ClassroomListsTableRow = ({
       solved && totalExercises
         ? Math.round((solved / totalExercises) * 100)
         : 0,
-    [solved, totalExercises]
+    [solved, totalExercises],
   );
 
   const handledOpenAccordion = useCallback(() => {
@@ -147,7 +148,10 @@ export const ClassroomListsTableRow = ({
                 </Dropdown.Item>
                 <Dropdown.Item asChild className="gap-2">
                   <Link
-                    to={`/classroom/${list?.classroom?.uuid}/lists/${list?.uuid}/update-exercises`}
+                    to={ROUTES.CLASSROOM_LIST_UPDATE(
+                      list?.classroom?.uuid!,
+                      list?.uuid!,
+                    )}
                   >
                     <RiArrowUpDownFill />
                     {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios

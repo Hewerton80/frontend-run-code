@@ -16,6 +16,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ClasrromActionsTriggerButton } from "../ClasrromActionsTriggerButton";
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
 
 interface IClassRoomCardProps {
   classroom: IClassroom;
@@ -103,7 +104,7 @@ const ClassRoomsCard = ({
             className="mt-4 ml-auto"
             variantStyle="dark-ghost"
           >
-            <Link to={`/classroom/${classroom?.uuid}/lists`}>Acessar</Link>
+            <Link to={ROUTES.CLASSROOM_LISTS(classroom?.uuid!)}>Acessar</Link>
           </Button>
         </div>
       </div>
@@ -122,7 +123,7 @@ export const ClassRoomsCards = () => {
   const { loggedUser } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
   const [classroomIdToEdit, setClassroomIdToEdit] = useState<string | null>(
-    null
+    null,
   );
 
   return (

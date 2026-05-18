@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useAuth } from "./useAuth";
 import { useLocation, useParams } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
+import { ROUTES } from "@/routes/routes";
 
 interface ISidebarMenuItem {
   title: string;
@@ -23,31 +24,31 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Home",
           icon: "🏠",
-          link: "/home",
+          link: ROUTES.HOME,
           basePath: "home",
         },
         {
           title: "Usuários",
           icon: "👤",
-          link: "/users",
+          link: ROUTES.USERS,
           basePath: "users",
         },
         {
           title: "Turmas",
           icon: "🏫",
-          link: "/classrooms",
+          link: ROUTES.CLASSROOMS,
           basePath: "classrooms",
         },
         {
           title: "Exercícios",
           icon: "🧩",
-          link: "/exercises",
+          link: ROUTES.EXERCISES,
           basePath: "exercises",
         },
         {
           title: "Listas",
           icon: "📝",
-          link: "/lists",
+          link: ROUTES.LISTS,
           basePath: "lists",
         },
       ];
@@ -62,7 +63,7 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Listas",
           icon: "📝",
-          link: `/classroom/${params?.classroomId}/lists`,
+          link: ROUTES.CLASSROOM_LISTS(params?.classroomId!),
           basePath: "lists",
         },
         // {
@@ -74,7 +75,7 @@ export const useGetSidebarMenuItems = () => {
         {
           title: "Participantes",
           icon: "👨‍🎓",
-          link: `/classroom/${params?.classroomId}/users`,
+          link: ROUTES.CLASSROOM_USERS(params?.classroomId!),
           basePath: "users",
         },
       ];

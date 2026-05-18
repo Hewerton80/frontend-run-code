@@ -19,6 +19,7 @@ import { useMemo } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";
+import { ROUTES } from "@/routes/routes";
 
 export const ExerciseForm = () => {
   const {
@@ -29,7 +30,7 @@ export const ExerciseForm = () => {
 
   const { control, register, formState } = useMemo(
     () => exerciseFormSchemaMethods,
-    [exerciseFormSchemaMethods]
+    [exerciseFormSchemaMethods],
   );
 
   const {
@@ -43,7 +44,7 @@ export const ExerciseForm = () => {
 
   const testCasesError = useMemo(
     () => formState.errors.testCases?.["root"]?.message,
-    [formState.errors]
+    [formState.errors],
   );
 
   return (
@@ -52,14 +53,16 @@ export const ExerciseForm = () => {
         <Breadcrumbs
           // isLoading={isExercisesLoading}
           items={[
-            { label: "🧩 Exercícios", href: "/exercises" },
+            { label: "🧩 Exercícios", href: ROUTES.EXERCISES },
             {
               label: "Criar Exercício",
             },
           ]}
         />
         <div className="flex justify-between items-end">
-          <BackLink to="/exercises">Voltar para lista de exercícios</BackLink>
+          <BackLink to={ROUTES.EXERCISES}>
+            Voltar para lista de exercícios
+          </BackLink>
           <div className="flex gap-4">
             <Button
               variantStyle="secondary"
@@ -81,7 +84,7 @@ export const ExerciseForm = () => {
           direction="horizontal"
           className={twMerge(
             "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
-            "border-l-3 border-l-info rounded-l-none"
+            "border-l-3 border-l-info rounded-l-none",
           )}
         >
           <Resizable.Panel
