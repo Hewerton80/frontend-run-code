@@ -17,10 +17,15 @@ export interface ResultSubmissionCode {
 }
 
 export interface SubmissionCodeBodyResponse {
-  score: number;
-  submissionResponse: ResultSubmissionCode[];
-  isFirstCorrectSubmission: boolean;
+  submissionId: string;
+  status: SubmissionStatus;
+  exerciseId: string;
 }
+// export interface SubmissionCodeBodyResponse {
+//   score: number;
+//   submissionResponse: ResultSubmissionCode[];
+//   isFirstCorrectSubmission: boolean;
+// }
 
 interface SubmissionCodeBodyErrorResponse {
   description?: string;

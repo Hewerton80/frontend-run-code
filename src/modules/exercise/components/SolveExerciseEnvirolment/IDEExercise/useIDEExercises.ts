@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { ClassroomKeys, IClassroom } from "@/modules/classroom/classroomType";
 import { useQueryClient } from "@tanstack/react-query";
+import { useExerciseSubmissionStatus } from "@/modules/submission/hooks/useExerciseSubmissionStatus";
 
 export const useIDEExercise = (exercise: IExercise) => {
   const params = useParams<{
@@ -21,6 +22,9 @@ export const useIDEExercise = (exercise: IExercise) => {
     useSubmissionCode(exercise?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
+
+  const { exerciseSubmissionStatus, setExerciseSubmissionStatus } =
+    useExerciseSubmissionStatus();
 
   const [sourceCode, setSourceCode] = useState("");
 
@@ -71,30 +75,31 @@ export const useIDEExercise = (exercise: IExercise) => {
       },
       {
         onSuccess: (data) => {
-          if (data?.isFirstCorrectSubmission && classroom?.uuid) {
-            queryClient.setQueryData<IClassroom>(
-              [ClassroomKeys.Details, classroom?.uuid],
-              (currentClassroom) => {
-                const listsRmp = [...(currentClassroom?.lists || [])]?.map(
-                  (list) => {
-                    return {
-                      ...list,
-                      solved:
-                        list?.uuid === params?.listId
-                          ? (list?.solved || 0) + 1
-                          : list?.solved || 0,
-                    };
-                  }
-                ) as IClassroom;
-                return {
-                  ...currentClassroom,
-                  lists: listsRmp,
-                } as IClassroom;
-              }
-            );
-          }
+          setExerciseSubmissionStatus(exercise?.uuid!, data);
+          // if (data?.isFirstCorrectSubmission && classroom?.uuid) {
+          //   queryClient.setQueryData<IClassroom>(
+          //     [ClassroomKeys.Details, classroom?.uuid],
+          //     (currentClassroom) => {
+          //       const listsRmp = [...(currentClassroom?.lists || [])]?.map(
+          //         (list) => {
+          //           return {
+          //             ...list,
+          //             solved:
+          //               list?.uuid === params?.listId
+          //                 ? (list?.solved || 0) + 1
+          //                 : list?.solved || 0,
+          //           };
+          //         }
+          //       ) as IClassroom;
+          //       return {
+          //         ...currentClassroom,
+          //         lists: listsRmp,
+          //       } as IClassroom;
+          //     }
+          //   );
+          // }
         },
-      }
+      },
     );
   }, [
     submitCode,
@@ -102,8 +107,8 @@ export const useIDEExercise = (exercise: IExercise) => {
     languageMode,
     params?.classroomId,
     params?.listId,
-    classroom?.uuid,
-    queryClient,
+    exercise?.uuid,
+    setExerciseSubmissionStatus,
   ]);
 
   return {
@@ -114,5 +119,6 @@ export const useIDEExercise = (exercise: IExercise) => {
     avaliableLanguages,
     changeSourceCode,
     submitCode: handleSubmitCode,
+    exerciseSubmissionStatus,
   };
 };

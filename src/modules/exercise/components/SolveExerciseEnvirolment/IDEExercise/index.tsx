@@ -12,10 +12,13 @@ import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import { SubmissionStatusLabels } from "@/modules/submission/submissionType";
-import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import {
+  SubmissionStatus,
+  SubmissionStatusLabels,
+} from "@/modules/submission/submissionType";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { getContrastColor } from "@/utils/colors";
+import { useMemo } from "react";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -32,8 +35,24 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     avaliableLanguages,
     submitCode,
     changeSourceCode,
+    exerciseSubmissionStatus,
   } = useIDEExercise(exercise);
   const { changeLanguageMode } = useLanguage();
+
+  const showFeedbackDots = useMemo(() => {
+    if (isSubmitting) return true;
+    const submissionsStatus = exerciseSubmissionStatus?.get(exercise?.uuid!);
+    console.log("submissionsStatus", submissionsStatus);
+    if (!submissionsStatus) return false;
+    if (
+      [SubmissionStatus.PENDING, SubmissionStatus.RUNNING].includes(
+        submissionsStatus?.status,
+      )
+    ) {
+      return true;
+    }
+    return false;
+  }, [isSubmitting, exerciseSubmissionStatus, exercise?.uuid]);
 
   const responseColumns: IColmunDataTable<ResultSubmissionCode>[] = [
     {
@@ -88,7 +107,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
           {/* <ButtonGroup> */}
           <Button
             variantStyle="info"
-            isLoading={isSubmitting}
+            isLoading={showFeedbackDots}
             onClick={submitCode}
             disabled={!sourceCode?.trim()}
           >
@@ -97,7 +116,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         </div>
         {/* <Button variantStyle="success">Submit</Button> */}
         {/* </ButtonGroup> */}
-        {isSubmitting && (
+        {showFeedbackDots && (
           <div className="py-4">
             <ThreeDotsLoading />
           </div>
@@ -108,7 +127,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
             content={submitError?.description || ""}
           />
         )}
-        {submitResponse && (
+        {/* {submitResponse && (
           <div className="grid grid-cols-2 gap-4">
             {submitResponse?.submissionResponse?.map(({ status }, index) => (
               <div
@@ -118,9 +137,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                 <div className="flex items-center gap-2">
                   <p>
                     <span className="text-xs">Caso {index + 1}:</span>{" "}
-                    {/* <span
-                      style={{ color: SubmissionStatusLabels?.[status]?.color }}
-                    > */}
+               
                     <Badge
                       variant="info"
                       style={
@@ -129,7 +146,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                               backgroundColor:
                                 SubmissionStatusLabels?.[status]?.color,
                               color: getContrastColor(
-                                SubmissionStatusLabels?.[status]?.color
+                                SubmissionStatusLabels?.[status]?.color,
                               ),
                             }
                           : undefined
@@ -143,8 +160,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
 
                 <DataTable
                   className={twMerge(
-                    "h-full"
-                    // status === "FAIL" ? "border-danger" : "border-success"
+                    "h-full",
                   )}
                   style={{
                     borderColor: SubmissionStatusLabels?.[status]?.color,
@@ -156,7 +172,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
               </div>
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </>
   );
