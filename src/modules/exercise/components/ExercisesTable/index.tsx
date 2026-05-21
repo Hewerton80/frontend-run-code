@@ -7,7 +7,7 @@ import { useExercissesTable } from "./useExercissesTable";
 import { IExercise } from "../../exerciseTypes";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { useMemo } from "react";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
@@ -17,7 +17,7 @@ import { Card } from "@/components/ui/cards/Card";
 import { ROUTES } from "@/routes/routes";
 
 export const ExercisesTable = () => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const {
     isExercisesLoading,

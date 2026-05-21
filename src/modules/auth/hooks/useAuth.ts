@@ -1,19 +1,22 @@
 import { useAxios } from "@/hooks/useAxios";
 import { IUser } from "@/modules/user/userTypets";
 import { useQuery } from "@tanstack/react-query";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
+import { useEffect } from "react";
 
 export const useAuth = () => {
   const { apiBase } = useAxios();
+  const { setLoggedUser } = useLoggedUser();
 
   const {
-    data: loggedUser,
+    data: me,
     isLoading: isLoadingUser,
     error: errorUser,
     isError: isErrorUser,
-    refetch: refetchLoggedUser,
+    refetch: fetchMe,
   } = useQuery({
     queryKey: ["auth"],
-    enabled: true,
+    enabled: false,
     queryFn: (): Promise<IUser | null> =>
       apiBase.get<IUser | null>("/auth/me").then((res) =>
         res.data
@@ -25,13 +28,15 @@ export const useAuth = () => {
       ),
   });
 
-  const hasNotAccess = (errorUser as any)?.response?.status === 401;
+  useEffect(() => {
+    if (!me) return;
+    setLoggedUser(me);
+  }, [me, setLoggedUser]);
 
   return {
-    loggedUser,
     isLoadingUser,
-    hasNotAccess,
+    errorUser,
     isErrorUser,
-    refetchLoggedUser,
+    fetchMe,
   };
 };

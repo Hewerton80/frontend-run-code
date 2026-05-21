@@ -3,7 +3,7 @@ import {
   TeacherFormSchema,
   useTeacherFormSchema,
 } from "../../schemas/teacherFormSchema";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useParams } from "react-router-dom";
 import {
   AddTeacherToClassroomBody,
@@ -21,13 +21,13 @@ import {
 
 export const useClassromTeacherFormDialog = (
   teacherId?: string | null,
-  onSuccessSubmitted?: () => void
+  onSuccessSubmitted?: () => void,
 ) => {
   const isEdit = useMemo(() => !!teacherId, [teacherId]);
   const params = useParams<{ classroomId: string }>();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const { classroom } = useGetClassroomById(params?.classroomId);
 
@@ -36,7 +36,7 @@ export const useClassromTeacherFormDialog = (
     classroomUserError,
     isLoadingClassroomUser,
     refetchClassroomUser,
-  } = useGetClassroomUserById(params?.classroomId, teacherId);
+  } = useGetClassroomUserById(params?.classroomId!, teacherId!);
 
   const isClassroomAuthor = useMemo(() => {
     return classroomUser?.uuid === classroom?.author?.uuid;
@@ -63,10 +63,10 @@ export const useClassromTeacherFormDialog = (
   } = useTeacherFormSchema();
 
   const { addTeacherToClassroom, isAddingTeacherToClassroom } =
-    useAddTeacherToClassroom(params?.classroomId);
+    useAddTeacherToClassroom(params?.classroomId!);
 
   const { updateTeacherInClassroom, isUpdatingTeacherInClassroom } =
-    useUpdateTeacherInClassroom(params?.classroomId, teacherId as string);
+    useUpdateTeacherInClassroom(params?.classroomId!, teacherId as string);
 
   useEffect(() => {
     if (classroomUser) {
@@ -149,12 +149,12 @@ export const useClassromTeacherFormDialog = (
       clearClassroomTeacherStates,
       getHandledTeacherBody,
       addTeacherToClassroom,
-    ]
+    ],
   );
 
   const isSubmitting = useMemo(
     () => isAddingTeacherToClassroom || isUpdatingTeacherInClassroom,
-    [isAddingTeacherToClassroom, isUpdatingTeacherInClassroom]
+    [isAddingTeacherToClassroom, isUpdatingTeacherInClassroom],
   );
 
   return {
@@ -168,7 +168,7 @@ export const useClassromTeacherFormDialog = (
     classroom,
     canEditClassroomUser,
     submitClassroomTeacherForm: handleClassroomTeacherFormSubmit(
-      handleSubmitClassroomTeacherForm
+      handleSubmitClassroomTeacherForm,
     ),
     refetchClassroomUser,
   };

@@ -1,7 +1,7 @@
 import { ButtonVariantStyle } from "@/components/ui/buttons/Button";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { RoleUser } from "@/modules/user/userTypets";
 import { BsThreeDots } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
@@ -15,7 +15,7 @@ export const ClasrromActionsTriggerButton = ({
   onClickToEditClassroom,
   variantStyle = "dark-ghost",
 }: ClassroomActionTriggerButtonProps) => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   if (loggedUser?.role === RoleUser.STUDENT) {
     return <></>;

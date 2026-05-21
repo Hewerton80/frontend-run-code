@@ -4,7 +4,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { FaMoon, FaSun, FaChevronRight, FaChevronDown } from "react-icons/fa";
 import { LuPaintbrush } from "react-icons/lu";
 import { Dropdown } from "../Dropdown/Dropdown";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUserEnum } from "@/modules/user/userTypets";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
@@ -13,7 +13,7 @@ import { ROUTES } from "@/routes/routes";
 
 export function ProfilePopover() {
   const { setTheme } = useTheme();
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
   const { logout } = useLogout();
 
   return (

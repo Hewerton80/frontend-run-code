@@ -1,11 +1,11 @@
 import { HomeHeader } from "@/components/common/HomeHeader/HomeHeader";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { ClassroomsHome } from "@/modules/classroom/components/ClassroomsHome";
 import { SuperAdminHome } from "@/modules/user/components/SuperAdminHome";
 import { RoleUser } from "@/modules/user/userTypets";
 
 export default function HomePage() {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   return (
     <div className="flex flex-col w-full">

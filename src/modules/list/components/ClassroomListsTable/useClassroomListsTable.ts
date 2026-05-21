@@ -1,11 +1,11 @@
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IList } from "../../listTypes";
 import { useCallback, useMemo, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
 import { useParams } from "react-router-dom";
 
 export const useClassroomListsTable = () => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const params = useParams<{ classroomId: string }>();
   const [isOpenClassroomFormDialog, setOpenClassroomFormDialog] =
@@ -46,7 +46,7 @@ export const useClassroomListsTable = () => {
       setListToEdit(list);
       openListDialog();
     },
-    [openListDialog]
+    [openListDialog],
   );
 
   const closeListDialog = useCallback(() => {

@@ -1,30 +1,36 @@
-import * as ResizablePrimitive from "react-resizable-panels";
+import {
+  Group,
+  Panel,
+  Separator,
+  GroupProps,
+  SeparatorProps,
+  PanelProps,
+} from "react-resizable-panels";
 import { twMerge } from "tailwind-merge";
 import { LuGripVertical } from "react-icons/lu";
+import { memo } from "react";
 
-const ResizablePanelGroup = ({
-  className,
-  ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
-  <ResizablePrimitive.PanelGroup
+const ResizablePanelGroup = memo(({ className, ...props }: GroupProps) => (
+  <Group
     className={twMerge(
       "flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
-      className
+      className,
     )}
     {...props}
   />
-);
-
-const ResizablePanel = ResizablePrimitive.Panel;
+));
+const ResizablePanel = ({ ...props }: PanelProps) => {
+  return <Panel data-slot="resizable-panel" {...props} />;
+};
 
 const ResizableHandle = ({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
+}: SeparatorProps & {
   withHandle?: boolean;
 }) => (
-  <ResizablePrimitive.PanelResizeHandle
+  <Separator
     className={twMerge(
       "relative flex w-px items-center justify-center bg-border",
       "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
@@ -40,7 +46,7 @@ const ResizableHandle = ({
       "data-[panel-group-direction=vertical]:after:-translate-y-1/2",
       "data-[panel-group-direction=vertical]:after:translate-x-0",
       "[&[data-panel-group-direction=vertical]>div]:rotate-90",
-      className
+      className,
     )}
     {...props}
   >
@@ -49,13 +55,17 @@ const ResizableHandle = ({
         <LuGripVertical className="size-2.5" />
       </div>
     )}
-  </ResizablePrimitive.PanelResizeHandle>
+  </Separator>
 );
 
-export { ResizablePanelGroup, ResizablePanel, ResizableHandle };
-
-export const Resizable = {
-  Group: ResizablePanelGroup,
-  Panel: ResizablePanel,
-  Handle: ResizableHandle,
+const Resizable = {
+  Group: memo(ResizablePanelGroup),
+  Panel: memo(ResizablePanel),
+  Handle: memo(ResizableHandle),
 };
+
+export { Resizable };
+
+ResizablePanelGroup.displayName = "ResizablePanelGroup";
+ResizablePanel.displayName = "ResizablePanel";
+ResizableHandle.displayName = "ResizableHandle";

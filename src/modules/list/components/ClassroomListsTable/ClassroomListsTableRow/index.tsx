@@ -8,7 +8,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { useGetList } from "@/modules/list/hooks/useGetList";
 import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { FaPen } from "react-icons/fa";
@@ -30,7 +30,7 @@ export const ClassroomListsTableRow = ({
   list,
   onOpenEditModal,
 }: ClassroomListsTableRowProps) => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const {
     list: { exercises } = {},

@@ -10,6 +10,7 @@ import { ROUTE_PATTERNS } from "./routes";
 
 // ── Layouts ───────────────────────────────────────────────────────────────
 import InLayoutPage from "@/pages/InLayoutPage";
+import { Spinner } from "@/components/ui/feedback/Spinner";
 
 // ── Auth ──────────────────────────────────────────────────────────────────
 const AuthLoginPage = lazy(() => import("@/pages/AuthLoginPage"));
@@ -56,8 +57,8 @@ function SuspenseWrapper({ element }: { element: React.ReactNode }) {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground" />
+        <div className="flex items-center justify-center m-auto">
+          <Spinner size={64} />
         </div>
       }
     >

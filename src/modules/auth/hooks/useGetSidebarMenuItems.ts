@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAuth } from "./useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useLocation, useParams } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
@@ -13,7 +13,7 @@ interface ISidebarMenuItem {
 }
 
 export const useGetSidebarMenuItems = () => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
   const params = useParams<{ classroomId: string }>();
   const location = useLocation();
 

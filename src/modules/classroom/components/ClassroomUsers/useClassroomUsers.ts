@@ -2,11 +2,11 @@ import { useParams } from "react-router-dom";
 import { useGetClassroomUsers } from "../../hooks/useGetClassroomUsers";
 import { useGetClassroomById } from "../../hooks/useGetClassroomById";
 import { useCallback, useMemo, useState } from "react";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 
 export const useClassroomUsers = () => {
   const params = useParams<{ classroomId: string }>();
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
   const {
     refetchClassroomUsers,
     classroomUsers,
@@ -38,7 +38,7 @@ export const useClassroomUsers = () => {
       setTeacherIdToEdit(teacherId);
       openTeacherFormDialog();
     },
-    [openTeacherFormDialog]
+    [openTeacherFormDialog],
   );
 
   return {

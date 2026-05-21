@@ -8,7 +8,7 @@ import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { getRange } from "@/utils/getRange";
 import { IClassroom } from "../../classroomType";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IUser, RoleUser } from "@/modules/user/userTypets";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { ClassroomFormDialog } from "../ClassroomFormDialog";
@@ -120,7 +120,7 @@ export const ClassRoomsCards = () => {
     refetchClassrooms,
   } = useGetMyClassrooms();
 
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
   const [openDialog, setOpenDialog] = useState(false);
   const [classroomIdToEdit, setClassroomIdToEdit] = useState<string | null>(
     null,
@@ -142,7 +142,7 @@ export const ClassRoomsCards = () => {
               className="rounded-lg w-full h-36"
             />
           ))}
-        {classrooms?.map((classroom, index) => (
+        {(classrooms || [])?.map((classroom, index) => (
           <ClassRoomsCard
             loggedUser={loggedUser!}
             key={`classroom-${index}`}

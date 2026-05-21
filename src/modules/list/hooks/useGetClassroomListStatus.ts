@@ -1,14 +1,14 @@
 import { DateTime } from "@/utils/dateTime";
 import { IList } from "../listTypes";
 import { useMemo } from "react";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { RoleUser } from "@/modules/user/userTypets";
 
 export const useGetClassroomListStatus = (list: IList) => {
   const startDate = list.startDate;
   const endDate = list.endDate;
 
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const alreadyStarted = useMemo(() => {
     const now = new Date();

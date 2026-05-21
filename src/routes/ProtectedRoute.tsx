@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { RoleType, RoleUser } from "@/modules/user/userTypets";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { ROUTE_PATTERNS } from "./routes";
 
 type ProtectedRouteProps = {
@@ -14,7 +14,7 @@ type ProtectedRouteProps = {
  * Redireciona para HOME quando não autorizado.
  */
 export const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const shouldRender = useMemo(() => {
     if (!roles?.length) return true;

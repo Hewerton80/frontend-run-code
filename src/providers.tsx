@@ -2,14 +2,17 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./utils/tanstackQueryHelpers/queryClient";
 import { ToastProvider, Toaster } from "./components/ui/feedback/Toaster";
 import { Outlet } from "react-router-dom";
+import { NuqsAdapter } from "nuqs/adapters/react";
 
 export function Providers() {
   return (
-    <ToastProvider>
-      <QueryClientProvider client={queryClient}>
-        <Outlet />
-        <Toaster />
-      </QueryClientProvider>
-    </ToastProvider>
+    <QueryClientProvider client={queryClient}>
+      <NuqsAdapter>
+        <ToastProvider>
+          <Outlet />
+          <Toaster />
+        </ToastProvider>
+      </NuqsAdapter>
+    </QueryClientProvider>
   );
 }

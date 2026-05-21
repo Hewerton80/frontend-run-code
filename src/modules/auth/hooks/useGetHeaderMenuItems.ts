@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from "react";
-import { useAuth } from "./useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useLocation, matchPath } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
@@ -10,7 +10,7 @@ interface IHeaderMenu {
   isActive?: boolean;
 }
 export const useGetHeaderMenuItems = () => {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
   const location = useLocation();
 
   const headerMenuItems = useMemo<IHeaderMenu[]>(() => {

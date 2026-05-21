@@ -2,41 +2,44 @@ import { Header } from "@/components/common/Header";
 import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
+import { useSessionStorage } from "@/hooks/useSessionStorage";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUser } from "@/modules/user/userTypets";
-import { isNull, isUndefined } from "@/utils/isType";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 export default function InLayoutPage() {
   const { logout } = useLogout();
+  const [access_token] = useSessionStorage("access_token");
+  const { loggedUser } = useLoggedUser();
 
-  const {
-    refetchLoggedUser,
-    isErrorUser,
-    hasNotAccess,
-    isLoadingUser,
-    loggedUser,
-  } = useAuth();
+  const { fetchMe, errorUser, isErrorUser } = useAuth();
 
   useEffect(() => {
-    if (hasNotAccess) {
-      logout();
-    }
-  }, [hasNotAccess, logout]);
+    if (loggedUser) return;
 
-  if (isErrorUser || isNull(loggedUser)) {
+    if (!access_token) {
+      logout();
+      return;
+    }
+    fetchMe();
+  }, [fetchMe, loggedUser, access_token, logout]);
+
+  useEffect(() => {
+    if (errorUser) logout();
+  }, [errorUser, logout]);
+
+  if (isErrorUser) {
     return (
       <div className="flex items-center justify-center flex-col min-h-screen">
-        <FeedBackError onTryAgain={refetchLoggedUser} />
+        <FeedBackError onTryAgain={fetchMe} />
       </div>
     );
   }
 
-  if (isLoadingUser || isUndefined(loggedUser)) {
-    return <SplashScreen />;
-  }
+  if (!loggedUser) return <SplashScreen />;
 
   return (
     <div className="flex flex-col min-h-screen">

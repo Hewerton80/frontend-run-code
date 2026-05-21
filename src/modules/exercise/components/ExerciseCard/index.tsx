@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { ExerciseSubmissionStatusType, IExercise } from "../../exerciseTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { RoleUser } from "@/modules/user/userTypets";
@@ -23,7 +23,7 @@ const exerciseSolveStatusEmojis: Record<
 };
 
 export function ExerciseCard({ data: exercise }: ExerciseCardProps) {
-  const { loggedUser } = useAuth();
+  const { loggedUser } = useLoggedUser();
 
   const status = useMemo(() => exercise?.status!, [exercise?.status]);
 
