@@ -78,3 +78,9 @@ export interface ISubmission {
   updatedAt?: string;
   createdAt?: string;
 }
+
+export enum SubmissionQueryKeys {
+  List = "submission-list",
+  Details = "submission-details",
+  Status = "submission-status",
+}
