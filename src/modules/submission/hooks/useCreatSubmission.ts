@@ -1,6 +1,7 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 import { SubmissionStatus } from "../submissionType";
+import { SubmissionJobResponse } from "./useFetchSubmissionJobs";
 
 interface SubmissionCodeBody {
   sourceCode: string;
@@ -31,11 +32,11 @@ interface SubmissionCodeBodyErrorResponse {
   description?: string;
 }
 
-export const useSubmissionCode = (exerciseId: string) => {
+export const useCreatSubmission = (exerciseId: string) => {
   const { apiBase } = useAxios();
 
   const {
-    mutate: submitCode,
+    mutate: createSubmission,
     isPending: isSubmitting,
     data: submitResponse,
     error: submitError,
@@ -47,7 +48,7 @@ export const useSubmissionCode = (exerciseId: string) => {
         url += `/classroom/${classroomId}/list/${listId}`;
       }
       return apiBase
-        .post<SubmissionCodeBodyResponse>(url, data)
+        .post<SubmissionJobResponse>(url, data)
         .then((res) => res.data);
     },
   });
@@ -61,7 +62,7 @@ export const useSubmissionCode = (exerciseId: string) => {
   };
 
   return {
-    submitCode,
+    createSubmission,
     isSubmitting,
     submitResponse,
     submitError: getHandleError(),

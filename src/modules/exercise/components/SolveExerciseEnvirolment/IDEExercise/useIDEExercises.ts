@@ -1,36 +1,32 @@
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
-import { useSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
+import { useCreatSubmission } from "@/modules/submission/hooks/useCreatSubmission";
 import { useParams } from "react-router-dom";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
-import { ClassroomKeys, IClassroom } from "@/modules/classroom/classroomType";
-import { useQueryClient } from "@tanstack/react-query";
-import { useExerciseSubmissionStatus } from "@/modules/submission/hooks/useExerciseSubmissionStatus";
+import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 
 export const useIDEExercise = (exercise: IExercise) => {
   const params = useParams<{
     listId?: string;
     classroomId?: string;
   }>();
-  const queryClient = useQueryClient();
 
   const { classroom } = useGetClassroomById(params?.classroomId!);
 
-  const { submitCode, isSubmitting, submitError, submitResponse } =
-    useSubmissionCode(exercise?.uuid || "");
+  const { createSubmission, isSubmitting, submitError, submitResponse } =
+    useCreatSubmission(exercise?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
-
-  const { exerciseSubmissionStatus, setExerciseSubmissionStatus } =
-    useExerciseSubmissionStatus();
 
   const [sourceCode, setSourceCode] = useState("");
 
   const avaliableLanguages = useMemo(() => {
     return classroom?.languages?.split(",");
   }, [classroom]);
+
+  const { cachedSubmissionJobs, addCachedSubmissionJob } =
+    useCachedSubmissionJobs();
 
   // const sourceCodeRef = useRef(sourceCode);
 
@@ -65,8 +61,8 @@ export const useIDEExercise = (exercise: IExercise) => {
     setSourceCode(value);
   };
 
-  const handleSubmitCode = useCallback(() => {
-    submitCode(
+  const handlecreateSubmission = useCallback(() => {
+    createSubmission(
       {
         sourceCode,
         language: languageMode,
@@ -75,7 +71,9 @@ export const useIDEExercise = (exercise: IExercise) => {
       },
       {
         onSuccess: (data) => {
-          setExerciseSubmissionStatus(exercise?.uuid!, data);
+          console.log("submit code response", data);
+          addCachedSubmissionJob(exercise?.uuid!, data);
+          // setExerciseSubmissionStatus(exercise?.uuid!, data);
           // if (data?.isFirstCorrectSubmission && classroom?.uuid) {
           //   queryClient.setQueryData<IClassroom>(
           //     [ClassroomKeys.Details, classroom?.uuid],
@@ -102,13 +100,13 @@ export const useIDEExercise = (exercise: IExercise) => {
       },
     );
   }, [
-    submitCode,
+    createSubmission,
     sourceCode,
     languageMode,
     params?.classroomId,
     params?.listId,
+    addCachedSubmissionJob,
     exercise?.uuid,
-    setExerciseSubmissionStatus,
   ]);
 
   return {
@@ -118,7 +116,7 @@ export const useIDEExercise = (exercise: IExercise) => {
     submitResponse,
     avaliableLanguages,
     changeSourceCode,
-    submitCode: handleSubmitCode,
-    exerciseSubmissionStatus,
+    cachedSubmissionJobs,
+    createSubmission: handlecreateSubmission,
   };
 };

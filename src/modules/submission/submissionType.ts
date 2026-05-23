@@ -83,4 +83,5 @@ export enum SubmissionQueryKeys {
   List = "submission-list",
   Details = "submission-details",
   Status = "submission-status",
+  Jobs = "submission-jobs",
 }

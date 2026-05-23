@@ -6,7 +6,7 @@ import {
   DataTable,
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
-import { ResultSubmissionCode } from "@/modules/submission/hooks/useSubmitCode";
+import { ResultSubmissionCode } from "@/modules/submission/hooks/useCreatSubmission";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
@@ -31,28 +31,27 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     sourceCode,
     isSubmitting,
     submitError,
-    submitResponse,
+    cachedSubmissionJobs,
     avaliableLanguages,
-    submitCode,
+    createSubmission,
     changeSourceCode,
-    exerciseSubmissionStatus,
   } = useIDEExercise(exercise);
   const { changeLanguageMode } = useLanguage();
 
-  const showFeedbackDots = useMemo(() => {
-    if (isSubmitting) return true;
-    const submissionsStatus = exerciseSubmissionStatus?.get(exercise?.uuid!);
-    console.log("submissionsStatus", submissionsStatus);
-    if (!submissionsStatus) return false;
-    if (
-      [SubmissionStatus.PENDING, SubmissionStatus.RUNNING].includes(
-        submissionsStatus?.status,
-      )
-    ) {
-      return true;
-    }
-    return false;
-  }, [isSubmitting, exerciseSubmissionStatus, exercise?.uuid]);
+  // const showFeedbackDots = useMemo(() => {
+  //   if (isSubmitting) return true;
+  //   const submissionsStatus = exerciseSubmissionStatus?.get(exercise?.uuid!);
+  //   console.log("submissionsStatus", submissionsStatus);
+  //   if (!submissionsStatus) return false;
+  //   if (
+  //     [SubmissionStatus.PENDING, SubmissionStatus.RUNNING].includes(
+  //       submissionsStatus?.status,
+  //     )
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // }, [isSubmitting, exerciseSubmissionStatus, exercise?.uuid]);
 
   const responseColumns: IColmunDataTable<ResultSubmissionCode>[] = [
     {
@@ -95,6 +94,13 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
 
   // const responseRows
 
+  const submissionsResult = useMemo(() => {
+    const foundSubmissionResult = cachedSubmissionJobs.find(
+      (job) => job.exerciseUuId === exercise?.uuid,
+    );
+    return foundSubmissionResult;
+  }, [cachedSubmissionJobs, exercise?.uuid]);
+
   return (
     <>
       <div className="flex flex-col w-full col-span-8 h-full p-4">
@@ -107,8 +113,8 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
           {/* <ButtonGroup> */}
           <Button
             variantStyle="info"
-            isLoading={showFeedbackDots}
-            onClick={submitCode}
+            isLoading={isSubmitting}
+            onClick={createSubmission}
             disabled={!sourceCode?.trim()}
           >
             Executar 🚀
@@ -116,63 +122,63 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         </div>
         {/* <Button variantStyle="success">Submit</Button> */}
         {/* </ButtonGroup> */}
-        {showFeedbackDots && (
-          <div className="py-4">
-            <ThreeDotsLoading />
-          </div>
-        )}
+        {isSubmitting ||
+          (submissionsResult?.isProcessing && (
+            <div className="py-4">
+              <ThreeDotsLoading />
+            </div>
+          ))}
         {submitError && (
           <TerminalCode
             className="mt-4"
             content={submitError?.description || ""}
           />
         )}
-        {/* {submitResponse && (
+        {submissionsResult?.result?.testCasesResults && (
           <div className="grid grid-cols-2 gap-4">
-            {submitResponse?.submissionResponse?.map(({ status }, index) => (
-              <div
-                key={`response-${index}`}
-                className="flex flex-col gap-2 col-span-1"
-              >
-                <div className="flex items-center gap-2">
-                  <p>
-                    <span className="text-xs">Caso {index + 1}:</span>{" "}
-               
-                    <Badge
-                      variant="info"
-                      style={
-                        status
-                          ? {
-                              backgroundColor:
-                                SubmissionStatusLabels?.[status]?.color,
-                              color: getContrastColor(
-                                SubmissionStatusLabels?.[status]?.color,
-                              ),
-                            }
-                          : undefined
-                      }
-                    >
-                      {SubmissionStatusLabels?.[status]?.label}{" "}
-                      {SubmissionStatusLabels?.[status]?.emoji}
-                    </Badge>
-                  </p>
-                </div>
-
-                <DataTable
-                  className={twMerge(
-                    "h-full",
-                  )}
-                  style={{
-                    borderColor: SubmissionStatusLabels?.[status]?.color,
-                  }}
+            {submissionsResult?.result?.testCasesResults?.map(
+              ({ status }, index) => (
+                <div
                   key={`response-${index}`}
-                  columns={responseColumns}
-                  data={[submitResponse?.submissionResponse[index]]}
-                />
-              </div>
-            ))}
+                  className="flex flex-col gap-2 col-span-1"
+                >
+                  <div className="flex items-center gap-2">
+                    <p>
+                      <span className="text-xs">Caso {index + 1}:</span>{" "}
+                      <Badge
+                        variant="info"
+                        style={
+                          status
+                            ? {
+                                backgroundColor:
+                                  SubmissionStatusLabels?.[status]?.color,
+                                color: getContrastColor(
+                                  SubmissionStatusLabels?.[status]?.color,
+                                ),
+                              }
+                            : undefined
+                        }
+                      >
+                        {SubmissionStatusLabels?.[status!]?.label}{" "}
+                        {SubmissionStatusLabels?.[status!]?.emoji}
+                      </Badge>
+                    </p>
+                  </div>
+
+                  <DataTable
+                    className={twMerge("h-full")}
+                    style={{
+                      borderColor: SubmissionStatusLabels?.[status!]?.color,
+                    }}
+                    key={`response-${index}`}
+                    columns={responseColumns}
+                    data={[submissionsResult?.result?.testCasesResults[index]]}
+                  />
+                </div>
+              ),
+            )}
           </div>
-        )} */}
+        )}
       </div>
     </>
   );
