@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export default function ClassroomLayoutPage() {
   const params = useParams<{ classroomId: string }>();
 
   const { errorClassroom, isLoadingClassroom, refetchClassroom } =
-    useGetClassroomById(params?.classroomId);
+    useFetchClassroomById(params?.classroomId);
 
   const handledChildren = useMemo(() => {
     if (errorClassroom) {

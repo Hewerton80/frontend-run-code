@@ -9,7 +9,9 @@ export interface IGetListExercisesParams extends IPaginationParams {
   notIn?: string;
 }
 
-export const useGetLists = (listExercisesParams?: IGetListExercisesParams) => {
+export const useFetchLists = (
+  listExercisesParams?: IGetListExercisesParams,
+) => {
   const { apiBase } = useAxios();
   const {
     data: listExercises,

@@ -8,7 +8,7 @@ interface ExerciseParams {
   listId?: string;
 }
 
-export const useGetExercise = ({
+export const useFetchExercise = ({
   exerciseId,
   classroomId,
   listId,
@@ -21,7 +21,7 @@ export const useGetExercise = ({
     error: exerciseError,
     refetch: refetchExercise,
   } = useQuery({
-    queryKey: [ExerciseQueryKey.PROBLEM, exerciseId, classroomId, listId],
+    queryKey: [ExerciseQueryKey.EXERCISE, exerciseId, classroomId, listId],
     queryFn: async () => {
       let url = `/exercise/${exerciseId}`;
       if (classroomId && listId) {

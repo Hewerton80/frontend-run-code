@@ -1,12 +1,12 @@
-import { useGetClassroomById } from "../../hooks/useGetClassroomById";
-import { useGetList } from "@/modules/list/hooks/useGetList";
+import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
+import { useFetchList } from "@/modules/list/hooks/useFetchList";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useGetExercise } from "@/modules/exercise/hooks/useGetExercise";
+import { useFetchExercise } from "@/modules/exercise/hooks/useFetchExercise";
 import { usePagination } from "@/hooks/usePagination";
 import {
   IGetExercisesParams,
-  useGetExercises,
-} from "@/modules/exercise/hooks/useGetExercises";
+  useFetchExercises,
+} from "@/modules/exercise/hooks/useFetchExercises";
 import {
   IUpdateClassroomExercisesFromListFrom,
   useUdateClassroomExercisesFromListsSchema,
@@ -28,14 +28,14 @@ export const useUpdateExercisesList = () => {
   const queryClient = useQueryClient();
 
   const params = useParams<{ classroomId: string; listId: string }>();
-  const { classroom } = useGetClassroomById(params?.classroomId);
+  const { classroom } = useFetchClassroomById(params?.classroomId);
 
   const {
     list,
     isLoadingExercises,
     errorExercises: errorCuerrentExercises,
     refetchExercises: refetchCurrentExercises,
-  } = useGetList({
+  } = useFetchList({
     classroomId: params?.classroomId!,
     listId: params?.listId!,
   });
@@ -60,7 +60,7 @@ export const useUpdateExercisesList = () => {
     ...paginationParams,
   };
   const { isExercisesLoading, exercisesError, exercises, refetchExercises } =
-    useGetExercises(usersParams);
+    useFetchExercises(usersParams);
 
   const [exerciseIdToSeeInDialog, setExerciseIdToSeeInDialog] = useState<
     string | null
@@ -78,7 +78,7 @@ export const useUpdateExercisesList = () => {
     exerciseError: exerciseErrorDetails,
     isLoadingExercise: isLoadingExerciseDetails,
     refetchExercise: refetchExerciseDetails,
-  } = useGetExercise({
+  } = useFetchExercise({
     exerciseId: exerciseIdToSeeInDialog || "",
     listId: params?.listId,
     classroomId: params?.classroomId,

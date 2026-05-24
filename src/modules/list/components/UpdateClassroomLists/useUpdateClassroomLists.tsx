@@ -1,10 +1,13 @@
 import { ClassroomKeys } from "@/modules/classroom/classroomType";
-import { IGetListExercisesParams, useGetLists } from "../../hooks/useGetLists";
+import {
+  IGetListExercisesParams,
+  useFetchLists,
+} from "../../hooks/useFetchLists";
 import { usePagination } from "@/hooks/usePagination";
 import { useQueryClient } from "@tanstack/react-query";
 import { IList } from "../../listTypes";
 import { useMemo, useState } from "react";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useParams, useRouter } from "next/navigation";
 import { useUpdateClasrromLists } from "@/modules/classroom/hooks/useUpdateClasrromLists";
 import { toast } from "react-toastify";
@@ -22,8 +25,8 @@ export const useUpdateClassroomLists = () => {
 
   const params = useParams<{ classroomId: string }>();
   const router = useRouter();
-  const { classroom, isLoadingClassroom } = useGetClassroomById(
-    params?.classroomId
+  const { classroom, isLoadingClassroom } = useFetchClassroomById(
+    params?.classroomId,
   );
 
   const queryClient = useQueryClient();
@@ -40,7 +43,7 @@ export const useUpdateClassroomLists = () => {
     listExercises,
     isListExercisesLoading,
     listExercisesError,
-  } = useGetLists(listsParams);
+  } = useFetchLists(listsParams);
 
   const { updateClassroomLists, isUpdatingClassroomLists } =
     useUpdateClasrromLists();
@@ -144,7 +147,7 @@ export const useUpdateClassroomLists = () => {
             variant: "danger",
           });
         },
-      }
+      },
     );
   };
 

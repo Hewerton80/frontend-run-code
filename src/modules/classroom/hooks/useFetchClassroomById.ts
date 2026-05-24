@@ -2,7 +2,7 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { ClassroomKeys, IClassroom } from "../classroomType";
 
-export const useGetClassroomById = (classroomId?: string) => {
+export const useFetchClassroomById = (classroomId?: string) => {
   const { apiBase } = useAxios();
 
   const {
@@ -14,7 +14,7 @@ export const useGetClassroomById = (classroomId?: string) => {
     queryKey: [ClassroomKeys.Details, classroomId],
     queryFn: async () => {
       const { data } = await apiBase.get<IClassroom>(
-        `/classroom/${classroomId}`
+        `/classroom/${classroomId}`,
       );
       return data;
     },

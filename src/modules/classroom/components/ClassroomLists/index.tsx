@@ -1,4 +1,4 @@
-import { useGetClassroomById } from "../../hooks/useGetClassroomById";
+import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
 import { useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
 
   const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
-    useGetClassroomById(params?.classroomId);
+    useFetchClassroomById(params?.classroomId);
 
   return (
     <>

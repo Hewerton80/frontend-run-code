@@ -1,8 +1,8 @@
 import { usePagination } from "@/hooks/usePagination";
 import {
   IGetExercisesParams,
-  useGetExercises,
-} from "@/modules/exercise/hooks/useGetExercises";
+  useFetchExercises,
+} from "@/modules/exercise/hooks/useFetchExercises";
 
 export const useExercissesTable = () => {
   const { goToPage, paginationParams } = usePagination();
@@ -10,7 +10,7 @@ export const useExercissesTable = () => {
     ...paginationParams,
   };
   const { isExercisesLoading, exercises, exercisesError, refetchExercises } =
-    useGetExercises(usersParams);
+    useFetchExercises(usersParams);
 
   return {
     isExercisesLoading,

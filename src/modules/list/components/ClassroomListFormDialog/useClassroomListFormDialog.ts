@@ -16,17 +16,17 @@ import {
   ICreateClassroomListBody,
   useCreateClasrromList,
 } from "@/modules/classroom/hooks/useCreateClasrromList";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useParams } from "react-router-dom";
 
 export const useClassroomListFormDialog = (
-  currentListToEdit?: IList | null
+  currentListToEdit?: IList | null,
 ) => {
   const params = useParams<{ classroomId: string }>();
 
   const isEdit = !!currentListToEdit?.uuid;
 
-  const { classroom } = useGetClassroomById(params?.classroomId);
+  const { classroom } = useFetchClassroomById(params?.classroomId);
 
   const {
     classroomListFormState,
@@ -95,7 +95,7 @@ export const useClassroomListFormDialog = (
       }
       return result;
     },
-    [currentListToEdit, classroom]
+    [currentListToEdit, classroom],
   );
 
   const handleSubmit = useCallback(
@@ -119,7 +119,7 @@ export const useClassroomListFormDialog = (
         });
       };
       const handleClassroomListFormBody = getHandleClassroomListFormBody(
-        updateClassroomListForm
+        updateClassroomListForm,
       );
       if (isEdit) {
         updateClassroomList(handleClassroomListFormBody, {
@@ -142,7 +142,7 @@ export const useClassroomListFormDialog = (
       clearClassroomListFormStates,
       getHandleClassroomListFormBody,
       updateClassroomList,
-    ]
+    ],
   );
 
   return {

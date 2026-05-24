@@ -3,7 +3,7 @@ import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useCreatSubmission } from "@/modules/submission/hooks/useCreatSubmission";
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 
 export const useIDEExercise = (exercise: IExercise) => {
@@ -12,7 +12,7 @@ export const useIDEExercise = (exercise: IExercise) => {
     classroomId?: string;
   }>();
 
-  const { classroom } = useGetClassroomById(params?.classroomId!);
+  const { classroom } = useFetchClassroomById(params?.classroomId!);
 
   const { createSubmission, isSubmitting, submitError, submitResponse } =
     useCreatSubmission(exercise?.uuid || "");

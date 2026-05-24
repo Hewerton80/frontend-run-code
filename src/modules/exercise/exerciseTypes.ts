@@ -40,7 +40,8 @@ export interface IExercise {
 }
 
 export enum ExerciseQueryKey {
-  PROBLEMS = "exercises",
-  PROBLEM = "exercise",
-  PROBLEMS_BY_CLASSROOM = "exercisesByClassroom",
+  EXERCISES = "exercises",
+  EXERCISE = "exercise",
+  EXERCISES_BY_CLASSROOM = "exercisesByClassroom",
+  EXERCISE_OF_LIST = "exerciseList",
 }

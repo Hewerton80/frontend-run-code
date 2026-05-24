@@ -3,9 +3,9 @@ import { IExercise } from "../exercise/exerciseTypes";
 import { IUser } from "../user/userTypets";
 
 export interface IList {
-  id?: number;
+  id: number;
   exercises: IExercise[];
-  uuid?: string;
+  uuid: string;
   title: string;
   startDate?: string;
   endDate?: string;
@@ -13,10 +13,10 @@ export interface IList {
   totalExercises?: number;
   classroom?: IClassroom;
   author?: IUser;
-  createdAt?: string;
-  status?: number;
+  createdAt: string;
+  status: number;
 }
 
 export enum ListQueryKey {
-  LIST = "LIST_PROBLEMS",
+  LIST = "LIST_EXERCISE",
 }

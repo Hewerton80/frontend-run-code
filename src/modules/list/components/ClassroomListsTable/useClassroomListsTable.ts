@@ -1,7 +1,7 @@
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IList } from "../../listTypes";
 import { useCallback, useMemo, useState } from "react";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useParams } from "react-router-dom";
 
 export const useClassroomListsTable = () => {
@@ -11,7 +11,7 @@ export const useClassroomListsTable = () => {
   const [isOpenClassroomFormDialog, setOpenClassroomFormDialog] =
     useState(false);
 
-  const { classroom } = useGetClassroomById(params?.classroomId);
+  const { classroom } = useFetchClassroomById(params?.classroomId);
 
   const lists = useMemo(() => {
     return classroom?.lists?.map((list) => ({

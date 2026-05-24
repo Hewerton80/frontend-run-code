@@ -1,11 +1,11 @@
 import { IList } from "../../../listTypes";
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
 import { BsThreeDots } from "react-icons/bs";
-import { useGetList } from "@/modules/list/hooks/useGetList";
+import { useFetchList } from "@/modules/list/hooks/useFetchList";
 import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
@@ -26,143 +26,140 @@ interface ClassroomListsTableRowProps {
   onOpenEditModal?: () => void;
 }
 
-export const ClassroomListsTableRow = ({
-  list,
-  onOpenEditModal,
-}: ClassroomListsTableRowProps) => {
-  const { loggedUser } = useLoggedUser();
+export const ClassroomListsTableRow = memo(
+  ({ list, onOpenEditModal }: ClassroomListsTableRowProps) => {
+    const { loggedUser } = useLoggedUser();
 
-  const {
-    list: { exercises } = {},
-    errorExercises,
-    isLoadingExercises,
-    refetchExercises,
-  } = useGetList({
-    classroomId: list?.classroom?.uuid as string,
-    listId: list?.uuid as string,
-  });
+    const {
+      exerciseIdsOfList,
+      errorExercises,
+      isLoadingExercises,
+      refetchExercises,
+    } = useFetchList({
+      classroomId: list?.classroom?.uuid as string,
+      listId: list?.uuid as string,
+    });
 
-  const [alreadyAccordionOpened, setAlreadyAccordionOpened] = useState(false);
+    const [alreadyAccordionOpened, setAlreadyAccordionOpened] = useState(false);
 
-  const { closed } = useGetClassroomListStatus(list);
+    const { closed } = useGetClassroomListStatus(list);
 
-  const solved = useMemo(() => list?.solved || 0, [list]);
-  const totalExercises = useMemo(() => list?.totalExercises || 0, [list]);
-  const progress = useMemo(
-    () =>
-      solved && totalExercises
-        ? Math.round((solved / totalExercises) * 100)
-        : 0,
-    [solved, totalExercises],
-  );
+    const solved = useMemo(() => list?.solved || 0, [list]);
+    const totalExercises = useMemo(() => list?.totalExercises || 0, [list]);
+    const progress = useMemo(
+      () =>
+        solved && totalExercises
+          ? Math.round((solved / totalExercises) * 100)
+          : 0,
+      [solved, totalExercises],
+    );
 
-  const handledOpenAccordion = useCallback(() => {
-    if (closed || alreadyAccordionOpened || totalExercises === 0) return;
-    setAlreadyAccordionOpened(true);
-    refetchExercises();
-  }, [alreadyAccordionOpened, closed, totalExercises, refetchExercises]);
+    const handledOpenAccordion = useCallback(() => {
+      if (closed || alreadyAccordionOpened || totalExercises === 0) return;
+      setAlreadyAccordionOpened(true);
+      refetchExercises();
+    }, [alreadyAccordionOpened, closed, totalExercises, refetchExercises]);
 
-  return (
-    <>
-      <DivTable.Row
-        disableAccordion={closed}
-        onAccordionChange={() => handledOpenAccordion()}
-        accordionContent={
-          <div className=" p-2">
-            {totalExercises === 0 ? (
-              <Alert.Root>
-                <Alert.Title>
-                  Não há exercícios cadastrados nesta lista
-                </Alert.Title>
-                {loggedUser?.role === RoleUser.TEACHER && (
-                  <Alert.Description className="text-sm text-muted-foreground">
-                    Você pode adicionar exercícios clicando no botão de
-                    adicionar e remover exercícios.
-                  </Alert.Description>
-                )}
-              </Alert.Root>
-            ) : (
-              <>
-                {errorExercises && (
-                  <FeedBackError onTryAgain={refetchExercises} />
-                )}
-                <div className="grid grid-cols-3 gap-2 w-full border-none">
-                  {isLoadingExercises &&
-                    getRange(0, 5).map((index) => (
-                      <Skeleton
-                        key={`exercise-skeleton-${index}`}
-                        className="w-full h-26 rounded-lg"
+    return (
+      <>
+        <DivTable.Row
+          disableAccordion={closed}
+          onAccordionChange={() => handledOpenAccordion()}
+          accordionContent={
+            <div className=" p-2">
+              {totalExercises === 0 ? (
+                <Alert.Root>
+                  <Alert.Title>
+                    Não há exercícios cadastrados nesta lista
+                  </Alert.Title>
+                  {loggedUser?.role === RoleUser.TEACHER && (
+                    <Alert.Description className="text-sm text-muted-foreground">
+                      Você pode adicionar exercícios clicando no botão de
+                      adicionar e remover exercícios.
+                    </Alert.Description>
+                  )}
+                </Alert.Root>
+              ) : (
+                <>
+                  {errorExercises && (
+                    <FeedBackError onTryAgain={refetchExercises} />
+                  )}
+                  <div className="grid grid-cols-3 gap-2 w-full border-none">
+                    {isLoadingExercises &&
+                      getRange(0, 5).map((index) => (
+                        <Skeleton
+                          key={`exercise-skeleton-${index}`}
+                          className="w-full h-26 rounded-lg"
+                        />
+                      ))}
+
+                    {exerciseIdsOfList?.map((exerciseUuid) => (
+                      <ExerciseCard
+                        key={`${exerciseUuid}-${list?.uuid}-${list?.classroom?.uuid}`}
+                        exerciseId={exerciseUuid}
+                        listId={list?.uuid!}
+                        classroomId={list?.classroom?.uuid!}
                       />
                     ))}
-
-                  {exercises?.map((exercise, index) => (
-                    <ExerciseCard
-                      key={`${exercise?.uuid}-${index}`}
-                      data={{
-                        ...exercise,
-                        listExercise: list,
-                        classroom: list?.classroom,
-                      }}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        }
-      >
-        <DivTable.Data>
-          <div className="flex flex-col gap-1">
-            <p className="line-clamp-1">{list?.title}</p>
-            <ClasrromListStatus list={list} />
-          </div>
-        </DivTable.Data>
-        {loggedUser?.role === RoleUser.STUDENT && (
-          <DivTable.Data className="gap-2">
-            <ProgressBar value={progress} />
-            <span className="text-xs text-muted-foreground">
-              {solved}/{totalExercises}
-            </span>
+                  </div>
+                </>
+              )}
+            </div>
+          }
+        >
+          <DivTable.Data>
+            <div className="flex flex-col gap-1">
+              <p className="line-clamp-1">{list?.title}</p>
+              <ClasrromListStatus list={list} />
+            </div>
           </DivTable.Data>
-        )}
-        {loggedUser?.role === RoleUser.TEACHER && (
-          <DivTable.Data className="gap-2">{totalExercises}</DivTable.Data>
-        )}
-        <DivTable.Data className="justify-end pr-4 gap-2">
-          <DivTable.AccordionTrigger />
-          {loggedUser?.role === RoleUser.TEACHER && (
-            <Dropdown.Root>
-              <PingWrapper active={totalExercises === 0}>
-                <Dropdown.Trigger asChild>
-                  <IconButton
-                    variantStyle="dark-ghost"
-                    icon={<BsThreeDots />}
-                  />
-                </Dropdown.Trigger>
-              </PingWrapper>
-
-              <Dropdown.Content>
-                <Dropdown.Item onClick={onOpenEditModal} className="gap-2">
-                  <FaPen />
-                  Visualizar Liata
-                </Dropdown.Item>
-                <Dropdown.Item asChild className="gap-2">
-                  <Link
-                    to={ROUTES.CLASSROOM_LIST_UPDATE(
-                      list?.classroom?.uuid!,
-                      list?.uuid!,
-                    )}
-                  >
-                    <RiArrowUpDownFill />
-                    {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios
-                    {totalExercises === 0 && <Ping />}
-                  </Link>
-                </Dropdown.Item>
-              </Dropdown.Content>
-            </Dropdown.Root>
+          {loggedUser?.role === RoleUser.STUDENT && (
+            <DivTable.Data className="gap-2">
+              <ProgressBar value={progress} />
+              <span className="text-xs text-muted-foreground">
+                {solved}/{totalExercises}
+              </span>
+            </DivTable.Data>
           )}
-        </DivTable.Data>
-      </DivTable.Row>
-    </>
-  );
-};
+          {loggedUser?.role === RoleUser.TEACHER && (
+            <DivTable.Data className="gap-2">{totalExercises}</DivTable.Data>
+          )}
+          <DivTable.Data className="justify-end pr-4 gap-2">
+            <DivTable.AccordionTrigger />
+            {loggedUser?.role === RoleUser.TEACHER && (
+              <Dropdown.Root>
+                <PingWrapper active={totalExercises === 0}>
+                  <Dropdown.Trigger asChild>
+                    <IconButton
+                      variantStyle="dark-ghost"
+                      icon={<BsThreeDots />}
+                    />
+                  </Dropdown.Trigger>
+                </PingWrapper>
+
+                <Dropdown.Content>
+                  <Dropdown.Item onClick={onOpenEditModal} className="gap-2">
+                    <FaPen />
+                    Visualizar Liata
+                  </Dropdown.Item>
+                  <Dropdown.Item asChild className="gap-2">
+                    <Link
+                      to={ROUTES.CLASSROOM_LIST_UPDATE(
+                        list?.classroom?.uuid!,
+                        list?.uuid!,
+                      )}
+                    >
+                      <RiArrowUpDownFill />
+                      {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios
+                      {totalExercises === 0 && <Ping />}
+                    </Link>
+                  </Dropdown.Item>
+                </Dropdown.Content>
+              </Dropdown.Root>
+            )}
+          </DivTable.Data>
+        </DivTable.Row>
+      </>
+    );
+  },
+);

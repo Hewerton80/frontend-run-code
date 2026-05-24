@@ -4,9 +4,9 @@ import { IExercise, ExerciseQueryKey } from "../exerciseTypes";
 import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
 import { removeEmptyKeys } from "@/utils/queryParams";
 
-export interface IGetExercisesParams extends IPaginationParams {}
+export type IGetExercisesParams = IPaginationParams;
 
-export const useGetExercises = (exercisesParams?: IGetExercisesParams) => {
+export const useFetchExercises = (exercisesParams?: IGetExercisesParams) => {
   const { apiBase } = useAxios();
   const {
     data: exercises,
@@ -20,10 +20,7 @@ export const useGetExercises = (exercisesParams?: IGetExercisesParams) => {
           params: removeEmptyKeys(exercisesParams),
         })
         .then((res) => res.data || { data: [] }),
-    queryKey: [
-      ExerciseQueryKey.PROBLEMS,
-      ...Object.values(removeEmptyKeys(exercisesParams)),
-    ],
+    queryKey: [ExerciseQueryKey.EXERCISES, removeEmptyKeys(exercisesParams)],
     enabled: true,
   });
   return {

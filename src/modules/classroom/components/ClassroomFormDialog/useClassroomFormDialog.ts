@@ -1,4 +1,4 @@
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useCallback, useEffect, useMemo } from "react";
 import {
   ClassroomFormSchema,
@@ -16,7 +16,7 @@ import { ClassroomKeys, IClassroom } from "../../classroomType";
 
 export const useClassroomFormDialog = (
   classroomId?: string | null,
-  onSuccessSubmitted?: () => void
+  onSuccessSubmitted?: () => void,
 ) => {
   const isEditClassroom = useMemo(() => !!classroomId, [classroomId]);
   const queryClient = useQueryClient();
@@ -24,14 +24,14 @@ export const useClassroomFormDialog = (
 
   const { createClassroom, isCreatingClassroom } = useCreateClassroom();
   const { updateClassroom, isUpdatingClassroom } = useUpdateClassroom(
-    classroomId!
+    classroomId!,
   );
   const {
     classroom: currentClassroom,
     errorClassroom,
     isLoadingClassroom,
     refetchClassroom,
-  } = useGetClassroomById(classroomId as string);
+  } = useFetchClassroomById(classroomId as string);
 
   const {
     classroomFormControl,
@@ -56,7 +56,7 @@ export const useClassroomFormDialog = (
 
   const isSubmittingClassroom = useMemo(
     () => isCreatingClassroom || isUpdatingClassroom,
-    [isCreatingClassroom, isUpdatingClassroom]
+    [isCreatingClassroom, isUpdatingClassroom],
   );
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const useClassroomFormDialog = (
       };
       return handleClassroomFormBody;
     },
-    []
+    [],
   );
 
   const handleSubmitClassroom = useCallback(
@@ -120,13 +120,13 @@ export const useClassroomFormDialog = (
             (oldData: IClassroom | undefined) => ({
               ...(oldData || {}),
               ...newClassroomValues,
-            })
+            }),
           );
           queryClient.setQueryData(
             [ClassroomKeys.List],
             (oldData: IClassroom[] | undefined) => {
               const foundIndex = (oldData || [])?.findIndex(
-                (oldClassroom) => oldClassroom.uuid === classroomId
+                (oldClassroom) => oldClassroom.uuid === classroomId,
               );
               if (foundIndex !== -1 && oldData) {
                 oldData[foundIndex] = {
@@ -135,7 +135,7 @@ export const useClassroomFormDialog = (
                 };
               }
               return oldData;
-            }
+            },
           );
         } else {
           queryClient.resetQueries({ queryKey: [ClassroomKeys.List] });
@@ -171,7 +171,7 @@ export const useClassroomFormDialog = (
       toast,
       getHandleClassroomFormBody,
       createClassroom,
-    ]
+    ],
   );
 
   return {

@@ -4,10 +4,10 @@ import { Suspense, useEffect } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "react-router-dom";
-import { useGetClassroomById } from "@/modules/classroom/hooks/useGetClassroomById";
+import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
-import { useGetExercise } from "../../hooks/useGetExercise";
+import { useFetchExercise } from "../../hooks/useFetchExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 
@@ -18,12 +18,12 @@ export const SolveExerciseEnvirolment = () => {
     exerciseId: string;
   }>();
 
-  const { classroom, isLoadingClassroom } = useGetClassroomById(
-    params?.classroomId as string
+  const { classroom, isLoadingClassroom } = useFetchClassroomById(
+    params?.classroomId as string,
   );
 
   const { isLoadingExercise, exercise, exerciseError, refetchExercise } =
-    useGetExercise({
+    useFetchExercise({
       exerciseId: params?.exerciseId || "",
       classroomId: params?.classroomId,
       listId: params?.listId,
@@ -82,7 +82,7 @@ export const SolveExerciseEnvirolment = () => {
           direction="horizontal"
           className={twMerge(
             "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
-            "border-l-3 border-l-info rounded-l-none"
+            "border-l-3 border-l-info rounded-l-none",
           )}
         >
           <Resizable.Panel
