@@ -1,6 +1,7 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
-import { SubmissionQueryKeys, SubmissionStatus } from "../submissionType";
+import { SubmissionStatus } from "../submissionType";
+import { submissionQueryKeyFactory } from "@/modules/submission/utils/submissionQueryKeyFactory";
 
 export interface SubmissionTestCaseResult {
   match: boolean;
@@ -39,12 +40,13 @@ export const useFetchSubmissionJobs = () => {
     isFetching: isFetchingSubmissionJobs,
     refetch: fetchSubmissionJobs,
   } = useQuery({
-    queryKey: [SubmissionQueryKeys.Jobs],
+    queryKey: submissionQueryKeyFactory.jobs(),
     queryFn: ({ signal }) =>
       apiBase
         .get<SubmissionJobResponse[]>("/submission/me/jobs", { signal })
         .then((res) => res.data),
     enabled: false,
+    retry: 0,
   });
   return {
     submissionJobs,

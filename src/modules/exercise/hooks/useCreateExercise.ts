@@ -1,29 +1,40 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 
-interface CreateExerciseTesCaseBody {
+interface ICreateExerciseTestCaseBody {
   input: string[];
   expectedOutput: string;
   isPublic: boolean;
 }
 
-interface CreateExerciseBody {
+export interface ICreateExerciseBody {
   title: string;
   description: string;
   difficulty: number;
-  testCases: CreateExerciseTesCaseBody[];
+  testCases: ICreateExerciseTestCaseBody[];
   categoryId: string;
 }
 
-export const useCraeteExercise = () => {
+/**
+ * Mutation para criação de um novo exercício.
+ * A invalidação/atualização de cache é responsabilidade do `onSuccess` no componente.
+ */
+export const useCreateExercise = () => {
   const { apiBase } = useAxios();
 
   const { mutate: createExercise, isPending: isCreatingExercise } = useMutation(
     {
-      mutationFn: (createExerciseBody: CreateExerciseBody) =>
-        apiBase.post("/exercises", createExerciseBody),
-    }
+      mutationFn: (body: ICreateExerciseBody) =>
+        apiBase.post("/exercises", body),
+      retry: 0,
+    },
   );
 
   return { createExercise, isCreatingExercise };
 };
+
+/**
+ * @deprecated Use `useCreateExercise` diretamente.
+ * Alias para compatibilidade retroativa (typo corrigido: useCraeteExercise → useCreateExercise).
+ */
+export const useCraeteExercise = useCreateExercise;

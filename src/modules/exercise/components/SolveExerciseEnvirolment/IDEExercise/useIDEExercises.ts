@@ -1,6 +1,6 @@
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
-import { useCreatSubmission } from "@/modules/submission/hooks/useCreatSubmission";
+import { useCreateSubmission } from "@/modules/submission/hooks/useCreateSubmission";
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
@@ -15,7 +15,7 @@ export const useIDEExercise = (exercise: IExercise) => {
   const { classroom } = useFetchClassroomById(params?.classroomId!);
 
   const { createSubmission, isSubmitting, submitError, submitResponse } =
-    useCreatSubmission(exercise?.uuid || "");
+    useCreateSubmission(exercise?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
 

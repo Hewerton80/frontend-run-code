@@ -23,6 +23,7 @@ export const useRunCode = () => {
       apiBase
         .post<RunCodeBodyResponse>("/submission/playground", runCodeBody)
         .then((res) => res.data),
+    retry: 0,
   });
 
   const getHandleError = () => {

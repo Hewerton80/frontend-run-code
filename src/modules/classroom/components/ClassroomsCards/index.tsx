@@ -1,4 +1,4 @@
-import { useGetMyClassrooms } from "../../hooks/useGetMyClassrooms";
+import { useFetchMyClassrooms } from "../../hooks/useFetchMyClassrooms";
 import { Card } from "@/components/ui/cards/Card";
 import { Button } from "@/components/ui/buttons/Button";
 import { FaUsers } from "react-icons/fa6";
@@ -114,11 +114,11 @@ const ClassRoomsCard = ({
 
 export const ClassRoomsCards = () => {
   const {
-    classrooms,
-    errorClassrooms,
-    isLoadingClassrooms,
-    refetchClassrooms,
-  } = useGetMyClassrooms();
+    myClassroomsRecords: classrooms,
+    myClassroomsError: errorClassrooms,
+    isFetchingMyClassrooms: isLoadingClassrooms,
+    refetchMyClassrooms: refetchClassrooms,
+  } = useFetchMyClassrooms();
 
   const { loggedUser } = useLoggedUser();
   const [openDialog, setOpenDialog] = useState(false);

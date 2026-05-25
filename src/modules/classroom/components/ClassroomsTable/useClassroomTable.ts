@@ -1,8 +1,8 @@
 import { usePagination } from "@/hooks/usePagination";
 import {
-  IGetClassroomsParams,
-  useGetClassrooms,
-} from "../../hooks/useGetClassrooms";
+  type IFetchClassroomsParams as IGetClassroomsParams,
+  useFetchClassrooms,
+} from "../../hooks/useFetchClassrooms";
 
 export const useClassroomsTable = () => {
   const { goToPage, paginationParams } = usePagination();
@@ -11,10 +11,10 @@ export const useClassroomsTable = () => {
   };
   const {
     refetchClassrooms,
-    classrooms,
-    isClassroomsLoading,
+    classroomsRecords: classrooms,
+    isFetchingClassrooms: isClassroomsLoading,
     classroomsError,
-  } = useGetClassrooms(classroomsParams);
+  } = useFetchClassrooms(classroomsParams);
 
   return {
     refetchClassrooms,

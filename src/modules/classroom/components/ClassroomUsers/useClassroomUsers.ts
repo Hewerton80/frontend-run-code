@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetClassroomUsers } from "../../hooks/useGetClassroomUsers";
+import { useFetchClassroomUsers } from "../../hooks/useFetchClassroomUsers";
 import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
 import { useCallback, useMemo, useState } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
@@ -9,13 +9,17 @@ export const useClassroomUsers = () => {
   const { loggedUser } = useLoggedUser();
   const {
     refetchClassroomUsers,
-    classroomUsers,
-    isLoadingClassroomUsers,
+    classroomUsersRecords: classroomUsers,
+    isFetchingClassroomUsers: isLoadingClassroomUsers,
     classroomUsersError,
-  } = useGetClassroomUsers(params?.classroomId);
+  } = useFetchClassroomUsers(params?.classroomId!);
 
-  const { classroom, errorClassroom, isLoadingClassroom, refetchClassroom } =
-    useFetchClassroomById(params?.classroomId);
+  const {
+    classroom,
+    classroomError: errorClassroom,
+    isFetchingClassroom: isLoadingClassroom,
+    refetchClassroom,
+  } = useFetchClassroomById(params?.classroomId);
 
   const [isOpenTeacherFormDialog, setIsOpenTeacherFormDialog] = useState(false);
   const [teacherIdToEdit, setTeacherIdToEdit] = useState<string | null>(null);

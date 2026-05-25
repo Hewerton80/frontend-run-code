@@ -6,18 +6,18 @@ import {
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useParams } from "react-router-dom";
 import {
-  AddTeacherToClassroomBody,
+  type IAddTeacherToClassroomBody as AddTeacherToClassroomBody,
   useAddTeacherToClassroom,
 } from "../../hooks/useAddTeacherToClassroom";
 import { useToast } from "@/hooks/useToast";
 import { ClassroomKeys } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetClassroomUserById } from "../../hooks/useGetClassroomUserById";
+import { useFetchClassroomUserById } from "../../hooks/useFetchClassroomUserById";
 import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
 import {
-  UpdateTeacherInClassroomBody,
+  type IUpdateTeacherInClassroomBody as UpdateTeacherInClassroomBody,
   useUpdateTeacherInClassroom,
-} from "../../hooks/updateTeacherInClassroom";
+} from "../../hooks/useUpdateTeacherInClassroom";
 
 export const useClassromTeacherFormDialog = (
   teacherId?: string | null,
@@ -34,9 +34,9 @@ export const useClassromTeacherFormDialog = (
   const {
     classroomUser,
     classroomUserError,
-    isLoadingClassroomUser,
+    isFetchingClassroomUser: isLoadingClassroomUser,
     refetchClassroomUser,
-  } = useGetClassroomUserById(params?.classroomId!, teacherId!);
+  } = useFetchClassroomUserById(params?.classroomId!, teacherId);
 
   const isClassroomAuthor = useMemo(() => {
     return classroomUser?.uuid === classroom?.author?.uuid;

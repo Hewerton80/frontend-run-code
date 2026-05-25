@@ -8,10 +8,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { IList } from "../../listTypes";
 import { useMemo, useState } from "react";
 import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
-import { useParams, useRouter } from "next/navigation";
-import { useUpdateClasrromLists } from "@/modules/classroom/hooks/useUpdateClasrromLists";
-import { toast } from "react-toastify";
+
+import { useUpdateClassroomLists as useUpdateClassroomListsMutation } from "@/modules/classroom/hooks/useUpdateClassroomLists";
 import { useToast } from "@/hooks/useToast";
+import { useNavigate, useNavigation, useSearchParams } from "react-router-dom";
 
 export interface IUpdateClassroomList extends IList {
   removed?: boolean;
@@ -23,11 +23,10 @@ type ListRecord = Record<string, IUpdateClassroomList>;
 export const useUpdateClassroomLists = () => {
   const { toast } = useToast();
 
-  const params = useParams<{ classroomId: string }>();
-  const router = useRouter();
-  const { classroom, isLoadingClassroom } = useFetchClassroomById(
-    params?.classroomId,
-  );
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const { classroom, isFetchingClassroom: isLoadingClassroom } =
+    useFetchClassroomById(params.get("classroomId") as string);
 
   const queryClient = useQueryClient();
 
@@ -46,7 +45,7 @@ export const useUpdateClassroomLists = () => {
   } = useFetchLists(listsParams);
 
   const { updateClassroomLists, isUpdatingClassroomLists } =
-    useUpdateClasrromLists();
+    useUpdateClassroomListsMutation();
 
   const [classroomListsToAddRecords, setClassroomListsToAddRecords] =
     useState<ListRecord>(() => {
@@ -131,7 +130,7 @@ export const useUpdateClassroomLists = () => {
       },
       {
         onSuccess: () => {
-          router.push(`/classroom/${classroom?.uuid}/lists`);
+          navigate(`/classroom/${classroom?.uuid}/lists`);
           queryClient.resetQueries({
             queryKey: [ClassroomKeys.Details, classroom?.uuid],
           });

@@ -6,7 +6,7 @@ import {
   DataTable,
   IColmunDataTable,
 } from "@/components/ui/dataDisplay/DataTable";
-import { ResultSubmissionCode } from "@/modules/submission/hooks/useCreatSubmission";
+import { ResultSubmissionCode } from "@/modules/submission/hooks/useCreateSubmission";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";

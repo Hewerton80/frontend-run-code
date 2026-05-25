@@ -1,7 +1,7 @@
 import {
   IUpdateClassroomListBody,
-  useUpdateClasrromList,
-} from "@/modules/classroom/hooks/useUpdateClasrromList";
+  useUpdateClassroomList,
+} from "@/modules/classroom/hooks/useUpdateClassroomList";
 import {
   ClassroomListForm,
   useClassroomListFormSchema,
@@ -14,8 +14,8 @@ import { ClassroomKeys } from "@/modules/classroom/classroomType";
 import { useToast } from "@/hooks/useToast";
 import {
   ICreateClassroomListBody,
-  useCreateClasrromList,
-} from "@/modules/classroom/hooks/useCreateClasrromList";
+  useCreateClassroomList,
+} from "@/modules/classroom/hooks/useCreateClassroomList";
 import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useParams } from "react-router-dom";
 
@@ -44,13 +44,13 @@ export const useClassroomListFormDialog = (
 
   const queryClient = useQueryClient();
 
-  const { createClassroomList, isCraetingClassroomList } =
-    useCreateClasrromList();
+  const { createClassroomList, isCreatingClassroomList } =
+    useCreateClassroomList();
 
   const { isUpdatingClassroomList, updateClassroomList } =
-    useUpdateClasrromList();
+    useUpdateClassroomList();
 
-  const isSubmitting = isCraetingClassroomList || isUpdatingClassroomList;
+  const isSubmitting = isCreatingClassroomList || isUpdatingClassroomList;
 
   const { hasRangeDate } = watchClassroomListForm();
 

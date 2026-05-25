@@ -22,17 +22,12 @@ export interface SubmissionCodeBodyResponse {
   status: SubmissionStatus;
   exerciseId: string;
 }
-// export interface SubmissionCodeBodyResponse {
-//   score: number;
-//   submissionResponse: ResultSubmissionCode[];
-//   isFirstCorrectSubmission: boolean;
-// }
 
 interface SubmissionCodeBodyErrorResponse {
   description?: string;
 }
 
-export const useCreatSubmission = (exerciseId: string) => {
+export const useCreateSubmission = (exerciseId: string) => {
   const { apiBase } = useAxios();
 
   const {
@@ -51,6 +46,7 @@ export const useCreatSubmission = (exerciseId: string) => {
         .post<SubmissionJobResponse>(url, data)
         .then((res) => res.data);
     },
+    retry: 0,
   });
 
   const getHandleError = () => {

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFetchExercise } from "@/modules/exercise/hooks/useFetchExercise";
 import { usePagination } from "@/hooks/usePagination";
 import {
-  IGetExercisesParams,
+  IFetchExercisesParams as IGetExercisesParams,
   useFetchExercises,
 } from "@/modules/exercise/hooks/useFetchExercises";
 import {
@@ -12,7 +12,7 @@ import {
   useUdateClassroomExercisesFromListsSchema,
 } from "../../schemas/updateClassroomExercisesFromLists";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
-import { useUpdateClasrromExercisesFromList } from "../../hooks/useUpdateClasrromExercisesFromList";
+import { useUpdateClassroomExercisesFromList } from "../../hooks/useUpdateClassroomExercisesFromList";
 import { useToast } from "@/hooks/useToast";
 import { ClassroomKeys, IClassroom } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
@@ -41,9 +41,9 @@ export const useUpdateExercisesList = () => {
   });
 
   const {
-    updateClasrromExercisesFromList,
-    isUpdatingClasrromExercisesFromList,
-  } = useUpdateClasrromExercisesFromList(params?.classroomId!, list?.id!);
+    updateClassroomExercisesFromList,
+    isUpdatingClassroomExercisesFromList,
+  } = useUpdateClassroomExercisesFromList(params?.classroomId!, list?.id!);
 
   const {
     exercisesToAdd,
@@ -59,8 +59,12 @@ export const useUpdateExercisesList = () => {
   const usersParams: IGetExercisesParams = {
     ...paginationParams,
   };
-  const { isExercisesLoading, exercisesError, exercises, refetchExercises } =
-    useFetchExercises(usersParams);
+  const {
+    isFetchingExercises: isExercisesLoading,
+    exercisesError,
+    exercisesRecords: exercises,
+    refetchExercises,
+  } = useFetchExercises(usersParams);
 
   const [exerciseIdToSeeInDialog, setExerciseIdToSeeInDialog] = useState<
     string | null
@@ -76,7 +80,7 @@ export const useUpdateExercisesList = () => {
   const {
     exercise: exerciseDetails,
     exerciseError: exerciseErrorDetails,
-    isLoadingExercise: isLoadingExerciseDetails,
+    isFetchingExercise: isLoadingExerciseDetails,
     refetchExercise: refetchExerciseDetails,
   } = useFetchExercise({
     exerciseId: exerciseIdToSeeInDialog || "",
@@ -247,13 +251,13 @@ export const useUpdateExercisesList = () => {
         direction: "bottom-right",
       });
     };
-    updateClasrromExercisesFromList(handledData, {
+    updateClassroomExercisesFromList(handledData, {
       onSuccess,
       onError,
     });
   }, [
     getValuesExercisesForm,
-    updateClasrromExercisesFromList,
+    updateClassroomExercisesFromList,
     toast,
     formStateExercisesForm.isDirty,
     navigate,
@@ -276,7 +280,7 @@ export const useUpdateExercisesList = () => {
     exercises,
     exercisesToAdd,
     isDirtyExercisesForm: formStateExercisesForm.isDirty,
-    isUpdatingClasrromExercisesFromList,
+    isUpdatingClassroomExercisesFromList,
     currentExercises,
     handleResetExercisesForm,
     handleUpdateClasrromExercisesFromList,

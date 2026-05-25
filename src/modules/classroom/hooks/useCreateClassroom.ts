@@ -1,23 +1,30 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
-import { TeacherPermissions } from "../classroomType";
+import { TeacherPermissions } from "@/modules/user/userTypets";
 
-type CreateTeacher = TeacherPermissions & {
+type CreateClassroomTeacher = TeacherPermissions & {
   id: number;
 };
-export interface CreateClassroomBody {
+
+export interface ICreateClassroomBody {
   name: string;
   languages: string[];
   status: number;
-  teachers?: CreateTeacher[];
+  teachers?: CreateClassroomTeacher[];
 }
+
+/**
+ * Mutation para criação de uma nova turma.
+ * A invalidação/atualização de cache é responsabilidade do `onSuccess` no componente.
+ */
 export const useCreateClassroom = () => {
   const { apiBase } = useAxios();
 
   const { isPending: isCreatingClassroom, mutateAsync: createClassroom } =
     useMutation({
-      mutationFn: (createClassroomBody: CreateClassroomBody) =>
-        apiBase.post("/classroom", createClassroomBody),
+      mutationFn: (body: ICreateClassroomBody) =>
+        apiBase.post("/classroom", body),
+      retry: 0,
     });
 
   return {

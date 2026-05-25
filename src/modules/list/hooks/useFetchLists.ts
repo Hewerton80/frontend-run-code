@@ -1,9 +1,10 @@
+import { useMemo } from "react";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
 import { removeEmptyKeys } from "@/utils/queryParams";
-import { IList, ListQueryKey } from "../listTypes";
-import { isBoolean } from "@/utils/isType";
+import { IList } from "../listTypes";
+import { listQueryKeyFactory } from "@/modules/list/utils/listQueryKeyFactory";
 
 export interface IGetListExercisesParams extends IPaginationParams {
   notIn?: string;
@@ -13,23 +14,27 @@ export const useFetchLists = (
   listExercisesParams?: IGetListExercisesParams,
 ) => {
   const { apiBase } = useAxios();
+
+  const normalizedParams = useMemo(
+    () => removeEmptyKeys(listExercisesParams),
+    [listExercisesParams],
+  );
+
   const {
     data: listExercises,
     isFetching: isListExercisesLoading,
     error: listExercisesError,
     refetch: refetchListExercises,
   } = useQuery({
-    queryFn: () =>
-      apiBase
-        .get<IPaginatedDocs<IList>>("/list", {
-          params: removeEmptyKeys(listExercisesParams),
-        })
-        .then((res) => res.data || { data: [] }),
-    queryKey: [
-      ListQueryKey.LIST,
-      ...Object.values(removeEmptyKeys(listExercisesParams)),
-    ],
-    enabled: true,
+    queryKey: listQueryKeyFactory.list(normalizedParams),
+    queryFn: async ({ signal }) => {
+      const res = await apiBase.get<IPaginatedDocs<IList>>("/list", {
+        params: normalizedParams,
+        signal,
+      });
+      return res.data ?? { data: [] };
+    },
+    retry: 0,
   });
 
   return {
