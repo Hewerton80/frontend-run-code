@@ -26,8 +26,8 @@ export const ClassroomFormDialog = ({
     classroomFormControl,
     languagesOptions,
     isSubmittingClassroom,
-    errorClassroom,
-    isLoadingClassroom,
+    classroomError,
+    isFetchingClassroom,
     isEditClassroom,
     canEditClassroom,
     refetchClassroom,
@@ -44,16 +44,16 @@ export const ClassroomFormDialog = ({
               🏫 {isEditClassroom ? "Editar" : "Criar"} turma
             </Dialog.Title>
           </Dialog.Header>
-          {errorClassroom || isLoadingClassroom ? (
+          {classroomError || isFetchingClassroom ? (
             <div
               className={twMerge(
-                "flex items-center justify-center w-full h-80"
+                "flex items-center justify-center w-full h-80",
               )}
             >
-              {errorClassroom && (
+              {classroomError && (
                 <FeedBackError onTryAgain={refetchClassroom} />
               )}
-              {isLoadingClassroom && <Spinner size={64} />}
+              {isFetchingClassroom && <Spinner size={64} />}
             </div>
           ) : (
             <form className="flex flex-col gap-4" onSubmit={submitClassroom}>

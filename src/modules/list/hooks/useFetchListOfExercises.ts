@@ -3,32 +3,25 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 import { IList } from "@/modules/list/listTypes";
-import { listQueryKeyFactory } from "@/modules/list/utils/listQueryKeyFactory";
+import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
 
-/**
- * Busca o detalhe de uma lista com seus exercícios.
- * Semeia o cache individual de cada exercício via `setItemInCache` para
- * que `useGetCachedExerciseOfList` possa ler sem HTTP.
- * Suporta cancelamento automático via AbortSignal.
- * Não executa sem `classroomId` e `listId`.
- */
-export const useFetchList = ({
+export const useFetchListOfExercises = ({
   classroomId,
   listId,
 }: {
   classroomId: string;
-  listId: string;
+  listId: number;
 }) => {
   const { apiBase } = useAxios();
 
   const {
     data: list,
     error: errorExercises,
-    isFetching: isLoadingExercises,
+    isFetching: isFetchingExercises,
     refetch: refetchExercises,
   } = useQuery({
-    queryKey: listQueryKeyFactory.detail(listId, classroomId),
+    queryKey: listOfExercisesQueryKeyFactory.withExercises(listId),
     queryFn: async ({ signal }) => {
       const { data } = await apiBase.get<IList>(
         `/list/${listId}/classroom/${classroomId}`,
@@ -36,7 +29,6 @@ export const useFetchList = ({
       );
       return data;
     },
-    enabled: !!classroomId && !!listId,
     retry: 0,
   });
 
@@ -44,12 +36,11 @@ export const useFetchList = ({
   const exerciseIdsOfList = useMemo(() => {
     return (
       list?.exercises?.map((exercise) => {
-        if (exercise.uuid) {
-          setItemInCache(
-            exerciseQueryKeyFactory.ofList(exercise.uuid, listId),
-            exercise,
-          );
-        }
+        setItemInCache(
+          exerciseQueryKeyFactory.ofList(exercise.uuid, listId),
+          exercise,
+        );
+
         return exercise.uuid!;
       }) ?? []
     );
@@ -58,7 +49,7 @@ export const useFetchList = ({
   return {
     list,
     errorExercises,
-    isLoadingExercises,
+    isFetchingExercises,
     exerciseIdsOfList,
     refetchExercises,
   };

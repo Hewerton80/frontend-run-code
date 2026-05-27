@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/cards/Card";
 import { twMerge } from "tailwind-merge";
-import { ExerciseSubmissionStatusType } from "../../exerciseTypes";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
@@ -9,39 +8,32 @@ import { memo, useMemo } from "react";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
 import { useGetCachedExerciseOfList } from "../../hooks/useGetCachedExerciseOfList";
+import { SubmissionStatusLabels } from "@/modules/submission/submissionType";
 
 interface ExerciseCardProps {
   exerciseId: string;
-  listId: string;
+  listId: number;
   classroomId: string;
 }
-
-const exerciseSolveStatusEmojis: Record<
-  ExerciseSubmissionStatusType,
-  { icon: string; name: string }
-> = {
-  SOLVED: { icon: "✅", name: "Resolvida" },
-  WRONG: { icon: "❌", name: "Errada" },
-  PENDING: { icon: "🕒", name: "Aguardando submissão" },
-};
 
 export const ExerciseCard = memo(
   ({ exerciseId, listId, classroomId }: ExerciseCardProps) => {
     const { loggedUser } = useLoggedUser();
+
     const { exerciseOfList } = useGetCachedExerciseOfList(exerciseId, listId);
 
     const status = useMemo(
-      () => exerciseOfList?.status!,
-      [exerciseOfList?.status],
+      () => exerciseOfList?.submissionStatus!,
+      [exerciseOfList?.submissionStatus],
     );
 
     const solveStatusEmoji = useMemo(
-      () => exerciseSolveStatusEmojis?.[status]?.icon,
+      () => SubmissionStatusLabels?.[status]?.emoji || "🕒",
       [status],
     );
 
     const solveStatusName = useMemo(
-      () => exerciseSolveStatusEmojis?.[status]?.name,
+      () => SubmissionStatusLabels?.[status]?.label || "Aguardando submissão",
       [status],
     );
 

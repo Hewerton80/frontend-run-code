@@ -19,7 +19,6 @@ import { ROUTES } from "@/routes/routes";
 export function ClassroomUsers() {
   const {
     classroom,
-    isLoadingClassroom,
     classroomUsers,
     isLoadingClassroomUsers,
     classroomUsersError,
@@ -77,7 +76,6 @@ export function ClassroomUsers() {
     <>
       <div className="flex flex-col w-full gap-4 p-8">
         <Breadcrumbs
-          isLoading={isLoadingClassroom}
           items={[
             { label: "🏠 Home", href: ROUTES.HOME },
             { label: classroom?.name || "-" },

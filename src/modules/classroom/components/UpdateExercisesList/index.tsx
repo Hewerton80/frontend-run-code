@@ -31,7 +31,7 @@ export const UpdateExercisesList = () => {
   const {
     classroom,
     list,
-    isLoadingExercises,
+    isFetchingExercises,
     exercisesError,
     showExerciseDetailsDialog,
     exerciseDetails,
@@ -42,7 +42,7 @@ export const UpdateExercisesList = () => {
     exercises,
     exercisesToAdd,
     isDirtyExercisesForm,
-    isUpdatingClasrromExercisesFromList,
+    isUpdatingClassroomExercisesFromList,
     currentExercises,
     handleResetExercisesForm,
     handleUpdateClasrromExercisesFromList,
@@ -211,7 +211,7 @@ export const UpdateExercisesList = () => {
     <>
       <div className="flex flex-col w-full gap-4 p-8">
         <Breadcrumbs
-          isLoading={isLoadingExercises}
+          isLoading={isFetchingExercises}
           items={[
             { label: "🏠 Home", href: ROUTES.HOME },
             { label: classroom?.name || "-" },
@@ -235,7 +235,7 @@ export const UpdateExercisesList = () => {
             <Button
               variantStyle="secondary"
               disabled={
-                isUpdatingClasrromExercisesFromList || !isDirtyExercisesForm
+                isUpdatingClassroomExercisesFromList || !isDirtyExercisesForm
               }
               onClick={handleResetExercisesForm}
             >
@@ -244,7 +244,7 @@ export const UpdateExercisesList = () => {
             <Button
               disabled={!isDirtyExercisesForm}
               onClick={handleUpdateClasrromExercisesFromList}
-              isLoading={isUpdatingClasrromExercisesFromList}
+              isLoading={isUpdatingClassroomExercisesFromList}
             >
               Salvar
             </Button>
@@ -271,7 +271,7 @@ export const UpdateExercisesList = () => {
             <DataTable
               columns={exercisesToAddColumns}
               data={exercisesToAdd || []}
-              isLoading={isLoadingExercises}
+              isLoading={isFetchingExercises}
               isError={!!errorCuerrentExercises}
               onTryAgainIfError={refetchExercises}
             />

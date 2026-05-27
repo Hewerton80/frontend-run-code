@@ -1,44 +1,31 @@
 import { Dialog } from "@/components/ui/overlay/Dialog";
-import { IList } from "../../listTypes";
 import { Switch } from "@/components/ui/forms/Switch";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { Checkbox } from "@/components/ui/forms/Checkbox";
 import { Button } from "@/components/ui/buttons/Button";
 import { useClassroomListFormDialog } from "./useClassroomListFormDialog";
 import { Controller } from "react-hook-form";
+import { memo, ReactNode } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { useTriggerClassroomListFormDialog } from "./useTriggerClassroomListFormDialog";
 
-interface ClassroomListFormDialogProps {
-  data?: IList | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export const ClassroomListFormDialog = ({
-  data: listToEdit,
-  isOpen,
-  onClose,
-}: ClassroomListFormDialogProps) => {
+const ClassroomListFormDialog = () => {
   const {
     classroomListFormControl,
     classroomListFormState,
     hasRangeDate,
     isSubmitting,
+    isEditing,
+    showClassroomListFormDialog,
+    handleClose,
     classroomListFormRegister,
-    clearClassroomListFormStates,
     updateClassroomList,
-  } = useClassroomListFormDialog(listToEdit);
-
-  const isEditing = !!listToEdit?.uuid;
-
-  const handleClose = () => {
-    onClose();
-    clearClassroomListFormStates();
-  };
+  } = useClassroomListFormDialog();
 
   return (
     <>
       <Dialog.Root
-        open={isOpen}
+        open={showClassroomListFormDialog}
         onOpenChange={(value) => !value && handleClose()}
       >
         <Dialog.Content>
@@ -128,3 +115,32 @@ export const ClassroomListFormDialog = ({
     </>
   );
 };
+interface ClassroomListFormTriggerButtonProps {
+  children?: ReactNode;
+  listId?: number | null;
+}
+
+const ClassroomListFormTriggerButton = ({
+  children,
+  listId,
+}: ClassroomListFormTriggerButtonProps) => {
+  const { showClassroomListFormDialogWithListId } =
+    useTriggerClassroomListFormDialog();
+
+  const Comp = Slot;
+
+  return (
+    <Comp onClick={() => showClassroomListFormDialogWithListId(listId || null)}>
+      {children}
+    </Comp>
+  );
+};
+
+const ClassroomListForm = {
+  Dialog: memo(ClassroomListFormDialog),
+  TriggerButton: memo(ClassroomListFormTriggerButton),
+};
+
+export { ClassroomListForm };
+
+ClassroomListForm.Dialog.displayName = "ClassroomListFormDialog";

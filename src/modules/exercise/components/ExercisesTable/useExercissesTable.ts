@@ -1,20 +1,24 @@
 import { usePagination } from "@/hooks/usePagination";
 import {
-  IGetExercisesParams,
+  IFetchExercisesParams,
   useFetchExercises,
 } from "@/modules/exercise/hooks/useFetchExercises";
 
 export const useExercissesTable = () => {
   const { goToPage, paginationParams } = usePagination();
-  const usersParams: IGetExercisesParams = {
+  const usersParams: IFetchExercisesParams = {
     ...paginationParams,
   };
-  const { isExercisesLoading, exercises, exercisesError, refetchExercises } =
-    useFetchExercises(usersParams);
+  const {
+    isFetchingExercises,
+    exercisesRecords,
+    exercisesError,
+    refetchExercises,
+  } = useFetchExercises(usersParams);
 
   return {
-    isExercisesLoading,
-    exercises,
+    isFetchingExercises,
+    exercises: exercisesRecords,
     exercisesError,
     goToPage,
     refetchExercises,

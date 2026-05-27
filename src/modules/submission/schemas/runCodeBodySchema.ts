@@ -5,18 +5,14 @@ import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 const { REQUIRED_FIELD } = CONSTANTS.VALIDATION;
 
 export const runCodeBodySchema = z.object({
-  sourceCode: z
-    .string({ required_error: REQUIRED_FIELD })
-    .min(1, REQUIRED_FIELD),
-  language: z
-    .string({ required_error: REQUIRED_FIELD })
-    .refine((language) => !!languagesConfig?.[language], {
-      message: `Invalid language. Avaliable languages: ${Object.keys(
-        languagesConfig
-      ).join(", ")}`,
-    }),
-  inputValues: z.array(z.string({ required_error: REQUIRED_FIELD }), {
-    required_error: REQUIRED_FIELD,
+  sourceCode: z.string().min(1, REQUIRED_FIELD),
+  language: z.refine((language) => !!languagesConfig?.[language as string], {
+    message: `Invalid language. Avaliable languages: ${Object.keys(
+      languagesConfig,
+    ).join(", ")}`,
+  }),
+  inputValues: z.array(z.string({ error: REQUIRED_FIELD }), {
+    error: REQUIRED_FIELD,
   }),
 });
 

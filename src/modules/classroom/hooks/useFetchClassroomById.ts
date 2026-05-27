@@ -2,14 +2,9 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { IClassroom } from "@/modules/classroom/classroomType";
 import { classroomQueryKeyFactory } from "@/modules/classroom/utils/classroomQueryKeyFactory";
-import { getItemFromQueryCache } from "@/utils/tanstackQueryHelpers/getItemFromQueryCache";
+import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
+import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 
-/**
- * Busca o detalhe de uma turma por ID.
- * Aplica cache-first: exibe o dado do cache instantaneamente enquanto refetch ocorre em background.
- * Suporta cancelamento automático via AbortSignal.
- * Não executa sem `classroomId`.
- */
 export const useFetchClassroomById = (classroomId?: string) => {
   const { apiBase } = useAxios();
 
@@ -25,14 +20,17 @@ export const useFetchClassroomById = (classroomId?: string) => {
         `/classroom/${classroomId}`,
         { signal },
       );
+      data?.lists?.forEach((list) => {
+        setItemInCache(listOfExercisesQueryKeyFactory.ofClassroom(list.id), {
+          ...list,
+          classroom: data,
+        });
+      });
       return data;
     },
-    initialData: () =>
-      getItemFromQueryCache<IClassroom>(
-        classroomQueryKeyFactory.detail(classroomId),
-      ),
+
     enabled: !!classroomId,
-    staleTime: Infinity,
+    staleTime: 60 * 1000 * 30, // 30 minutes
     gcTime: Infinity,
     retry: 0,
   });

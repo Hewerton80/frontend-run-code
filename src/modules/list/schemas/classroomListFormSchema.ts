@@ -12,8 +12,9 @@ const {
 
 export const classroomListFormSchemaSchema = z
   .object({
-    //   id: z.string().min(1, REQUIRED_FIELD),
+    id: z.number().optional(),
     title: z.string().min(1, REQUIRED_FIELD),
+    classroomId: z.string().min(1, REQUIRED_FIELD),
     hasRangeDate: z.boolean(),
     startDate: z
       .string()
@@ -22,7 +23,7 @@ export const classroomListFormSchemaSchema = z
           startDate
             ? startDate.match(REGEX.isoDate) && DateTime.isValid(startDate)
             : true,
-        INVALID_DATE
+        INVALID_DATE,
       )
       .optional(),
     endDate: z
@@ -32,7 +33,7 @@ export const classroomListFormSchemaSchema = z
           endDate
             ? endDate.match(REGEX.isoDate) && DateTime.isValid(endDate)
             : true,
-        INVALID_DATE
+        INVALID_DATE,
       )
       .optional(),
     isVisible: z.boolean(),
@@ -42,7 +43,7 @@ export const classroomListFormSchemaSchema = z
     {
       path: ["startDate"],
       message: REQUIRED_FIELD,
-    }
+    },
   )
   .refine(({ endDate, hasRangeDate }) => (hasRangeDate ? !!endDate : true), {
     path: ["endDate"],
@@ -65,7 +66,7 @@ export const classroomListFormSchemaSchema = z
     {
       path: ["endDate"],
       message: "Data de fim deve ser maior ou igual que a data de início",
-    }
+    },
   );
 
 export type ClassroomListForm = z.infer<typeof classroomListFormSchemaSchema>;
@@ -73,13 +74,15 @@ export type ClassroomListForm = z.infer<typeof classroomListFormSchemaSchema>;
 export const useClassroomListFormSchema = () => {
   const defaultValues = useMemo<ClassroomListForm>(
     () => ({
+      id: undefined,
+      classroomId: "",
       title: "",
       hasRangeDate: true,
       startDate: "",
       endDate: "",
       isVisible: false,
     }),
-    []
+    [],
   );
 
   const {

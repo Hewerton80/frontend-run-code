@@ -5,7 +5,7 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { ClassroomListsTableRow } from "./ClassroomListsTableRow";
 import { useClassroomListsTable } from "./useClassroomListsTable";
-import { ClassroomListFormDialog } from "../ClassroomListFormDialog";
+import { ClassroomListForm } from "../ClassroomListFormDialog";
 import { Button } from "@/components/ui/buttons/Button";
 import { Highlight } from "@/components/ui/feedback/Highlight";
 import { Alert } from "@/components/ui/feedback/Alert";
@@ -29,17 +29,12 @@ export const ClassroomListsTable = ({
   onTryAgainIfError,
 }: ClassroomListsTableProps) => {
   const {
-    handleSetListToEdit,
-    openListDialog,
-    closeListDialog,
     openClassroomDialog,
     closeClassroomDialog,
+    listIdsOfClassroom,
     canCreateList,
     classroom,
     isOpenClassroomFormDialog,
-    lists,
-    isOpenListDialog,
-    listToEdit,
     loggedUser,
   } = useClassroomListsTable();
 
@@ -64,16 +59,22 @@ export const ClassroomListsTable = ({
     }
     return (
       <>
-        {lists?.map((list) => (
+        {listIdsOfClassroom?.map((id) => (
           <ClassroomListsTableRow
-            key={`${list?.uuid}-list-exercise`}
-            list={list}
-            onOpenEditModal={() => handleSetListToEdit(list)}
+            key={`${id}-list-exercise`}
+            listId={id}
+            classroomId={classroom?.uuid!}
           />
         ))}
       </>
     );
-  }, [lists, error, isLoading, onTryAgainIfError, handleSetListToEdit]);
+  }, [
+    listIdsOfClassroom,
+    error,
+    isLoading,
+    onTryAgainIfError,
+    classroom?.uuid,
+  ]);
 
   return (
     <>
@@ -91,10 +92,12 @@ export const ClassroomListsTable = ({
                 <span
                   className={!canCreateList ? "cursor-not-allowed" : undefined}
                 >
-                  <Highlight active={lists?.length === 0 && canCreateList}>
-                    <Button disabled={!canCreateList} onClick={openListDialog}>
-                      Criar Lista
-                    </Button>
+                  <Highlight
+                    active={listIdsOfClassroom?.length === 0 && canCreateList}
+                  >
+                    <ClassroomListForm.TriggerButton>
+                      <Button disabled={!canCreateList}>Criar Lista</Button>
+                    </ClassroomListForm.TriggerButton>
                   </Highlight>
                 </span>
               </Tooltip>
@@ -108,7 +111,7 @@ export const ClassroomListsTable = ({
       </div>
 
       <div className="flex overflow-auto">
-        {lists?.length === 0 ? (
+        {listIdsOfClassroom?.length === 0 ? (
           <Alert.Root>
             <Alert.Title>Ainda não há listas</Alert.Title>
             <Alert.Description>
@@ -131,11 +134,7 @@ export const ClassroomListsTable = ({
           </DivTable.Container>
         )}
       </div>
-      <ClassroomListFormDialog
-        isOpen={isOpenListDialog}
-        data={listToEdit}
-        onClose={closeListDialog}
-      />
+      <ClassroomListForm.Dialog />
       <ClassroomFormDialog
         isOpen={isOpenClassroomFormDialog}
         classroomId={classroom?.uuid}

@@ -5,7 +5,7 @@ import {
   useClassroomFormSchema,
 } from "../../schemas/classroomFormSchema";
 import {
-  CreateClassroomBody,
+  ICreateClassroomBody,
   useCreateClassroom,
 } from "../../hooks/useCreateClassroom";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
@@ -28,8 +28,8 @@ export const useClassroomFormDialog = (
   );
   const {
     classroom: currentClassroom,
-    errorClassroom,
-    isLoadingClassroom,
+    classroomError,
+    isFetchingClassroom,
     refetchClassroom,
   } = useFetchClassroomById(classroomId as string);
 
@@ -76,7 +76,7 @@ export const useClassroomFormDialog = (
 
   const getHandleClassroomFormBody = useCallback(
     (data: ClassroomFormSchema) => {
-      const handleClassroomFormBody: CreateClassroomBody = {
+      const handleClassroomFormBody: ICreateClassroomBody = {
         name: data.name,
         languages: data.languages.map((language) => language.value),
         status: data.isVisible ? 1 : 2,
@@ -115,6 +115,7 @@ export const useClassroomFormDialog = (
             languages: handleClassroomFormBody.languages.join(","),
             status: handleClassroomFormBody.status,
           };
+          //TODO adicionar hook para editar no cache
           queryClient.setQueryData(
             [ClassroomKeys.Details, currentClassroom?.uuid],
             (oldData: IClassroom | undefined) => ({
@@ -179,8 +180,8 @@ export const useClassroomFormDialog = (
     classroomFormControl,
     languagesOptions,
     isSubmittingClassroom,
-    errorClassroom,
-    isLoadingClassroom,
+    classroomError,
+    isFetchingClassroom,
     isEditClassroom,
     canEditClassroom,
     refetchClassroom,

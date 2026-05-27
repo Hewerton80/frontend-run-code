@@ -13,11 +13,11 @@ import { useToast } from "@/hooks/useToast";
 import { ClassroomKeys } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFetchClassroomUserById } from "../../hooks/useFetchClassroomUserById";
-import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
 import {
   type IUpdateTeacherInClassroomBody as UpdateTeacherInClassroomBody,
   useUpdateTeacherInClassroom,
 } from "../../hooks/useUpdateTeacherInClassroom";
+import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
 
 export const useClassromTeacherFormDialog = (
   teacherId?: string | null,
@@ -29,7 +29,9 @@ export const useClassromTeacherFormDialog = (
   const queryClient = useQueryClient();
   const { loggedUser } = useLoggedUser();
 
-  const { classroom } = useFetchClassroomById(params?.classroomId);
+  const { cachedClassroom: classroom } = useGetCachedClassrom(
+    params?.classroomId!,
+  );
 
   const {
     classroomUser,

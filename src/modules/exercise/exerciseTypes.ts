@@ -1,6 +1,6 @@
 import { IClassroom } from "../classroom/classroomType";
 import { IList } from "../list/listTypes";
-import { ISubmission } from "../submission/submissionType";
+import { ISubmission, SubmissionStatus } from "../submission/submissionType";
 import { IUser } from "../user/userTypets";
 
 export interface IExerciseTest {
@@ -8,19 +8,10 @@ export interface IExerciseTest {
   input: string;
   expectedOutput: string;
 }
-export enum ExerciseSubmissionStatus {
-  SOLVED = "SOLVED",
-  WRONG = "WRONG",
-  PENDING = "PENDING",
-}
-
-export type ExerciseSubmissionStatusType =
-  | keyof typeof ExerciseSubmissionStatus
-  | (string & {});
 
 export interface IExercise {
-  id?: number;
-  uuid?: string;
+  id: number;
+  uuid: string;
   title?: string;
   category?: { id: string; name: string };
   description?: string;
@@ -30,7 +21,7 @@ export interface IExercise {
   listExercise?: IList;
   classroomId?: string;
   listId?: string;
-  status?: ExerciseSubmissionStatus;
+  submissionStatus?: SubmissionStatus;
   author?: IUser;
   createdAt?: string;
   submissionStats?: ISubmission & {

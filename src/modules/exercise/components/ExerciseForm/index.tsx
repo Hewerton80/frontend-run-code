@@ -81,7 +81,6 @@ export const ExerciseForm = () => {
           </div>
         </div>
         <Resizable.Group
-          direction="horizontal"
           className={twMerge(
             "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
             "border-l-3 border-l-info rounded-l-none",

@@ -4,12 +4,12 @@ import { Suspense, useEffect } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "react-router-dom";
-import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { useFetchExercise } from "../../hooks/useFetchExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { BackLink } from "@/components/ui/navigation/BackLink";
+import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
 
 export const SolveExerciseEnvirolment = () => {
   const params = useParams<{
@@ -18,11 +18,11 @@ export const SolveExerciseEnvirolment = () => {
     exerciseId: string;
   }>();
 
-  const { classroom, isLoadingClassroom } = useFetchClassroomById(
-    params?.classroomId as string,
+  const { cachedClassroom: classroom } = useGetCachedClassrom(
+    params?.classroomId!,
   );
 
-  const { isLoadingExercise, exercise, exerciseError, refetchExercise } =
+  const { isFetchingExercise, exercise, exerciseError, refetchExercise } =
     useFetchExercise({
       exerciseId: params?.exerciseId || "",
       classroomId: params?.classroomId,
@@ -38,8 +38,6 @@ export const SolveExerciseEnvirolment = () => {
       <Skeleton className="size-full min-h-[468px]" />
     </div>
   );
-
-  const isLoading = isLoadingClassroom || isLoadingExercise;
 
   const getBreadcrumbsItems = () => {
     const classroomId = params?.classroomId;
@@ -68,7 +66,10 @@ export const SolveExerciseEnvirolment = () => {
   return (
     <>
       <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
-        <Breadcrumbs isLoading={isLoading} items={getBreadcrumbsItems()} />
+        <Breadcrumbs
+          isLoading={isFetchingExercise}
+          items={getBreadcrumbsItems()}
+        />
         <BackLink
           to={
             params?.classroomId && params?.listId
@@ -79,7 +80,6 @@ export const SolveExerciseEnvirolment = () => {
           Voltar para listas da turma
         </BackLink>
         <Resizable.Group
-          direction="horizontal"
           className={twMerge(
             "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
             "border-l-3 border-l-info rounded-l-none",
@@ -90,7 +90,7 @@ export const SolveExerciseEnvirolment = () => {
             minSize={15}
             className="h-full w-full flex-1/4"
           >
-            {isLoading ? (
+            {isFetchingExercise ? (
               skeleton
             ) : (
               <Suspense fallback={skeleton}>
@@ -106,7 +106,7 @@ export const SolveExerciseEnvirolment = () => {
             minSize={15}
             className="flex flex-3/4 w-full flex-col col-span-8 h-full gap-4"
           >
-            {isLoading ? (
+            {isFetchingExercise ? (
               skeleton
             ) : (
               <Suspense fallback={skeleton}>

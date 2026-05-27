@@ -24,6 +24,7 @@ export interface SubmissionJobResponse {
   jobId: string;
   submissionUuid: string;
   exerciseUuId: string;
+  listId: number | null;
   isProcessing: boolean;
   jobState: string;
   result: SubmissionResultSummary | null;

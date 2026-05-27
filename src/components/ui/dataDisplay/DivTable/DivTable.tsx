@@ -1,16 +1,10 @@
-import {
-  ComponentPropsWithRef,
-  JSX,
-  ReactElement,
-  ReactNode,
-  useId,
-} from "react";
+import { ComponentPropsWithRef, ReactNode, useId } from "react";
 import { twMerge } from "tailwind-merge";
 import { PrimitiveAccordion } from "../PrimitiveAccordion";
 import { IconButton } from "../../buttons/IconButton";
 import { BsChevronDown } from "react-icons/bs";
 
-interface TableContainerProps extends ComponentPropsWithRef<"div"> {}
+type TableContainerProps = ComponentPropsWithRef<"div">;
 interface RowProps {
   className?: string;
   children?: ReactNode;
@@ -20,16 +14,16 @@ interface RowProps {
   accordionContent?: ReactNode;
   onAccordionChange?: (value: string) => void;
 }
-interface TdProps extends ComponentPropsWithRef<"div"> {}
+type TdProps = ComponentPropsWithRef<"div">;
 
 function Container({ className, children, ...restProps }: TableContainerProps) {
   return (
     <div
       role="table"
       className={twMerge(
-        "[&_[role=row]]:border-t",
+        "**:[[role=row]]:border-t",
         "flex flex-col rounded-md overflow-x-auto border w-full text-sm",
-        className
+        className,
       )}
       {...restProps}
     >
@@ -67,7 +61,7 @@ function Row({
               "hidden md:flex text-xs font-medium h-10 text-muted-foreground border-t-transparent",
             "duration-[.15s] ease-in-out transition-colors",
             disableAccordion ? "[&_.trigger]:hidden" : "hover:bg-muted/50",
-            className
+            className,
           )}
         >
           {children}
@@ -104,7 +98,7 @@ function AccordionTrigger() {
         icon={
           <BsChevronDown
             className={twMerge(
-              "arrow size-4 transition-transform duration-200"
+              "arrow size-4 transition-transform duration-200",
             )}
           />
         }

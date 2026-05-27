@@ -20,7 +20,7 @@ export const ExercisesTable = () => {
   const { loggedUser } = useLoggedUser();
 
   const {
-    isExercisesLoading,
+    isFetchingExercises,
     exercises,
     exercisesError,
     goToPage,
@@ -86,7 +86,7 @@ export const ExercisesTable = () => {
   return (
     <div className="flex flex-col gap-4 w-full p-8">
       {/* <Breadcrumbs
-        isLoading={isExercisesLoading}
+        isLoading={isFetchingExercises}
         items={[{ label: "🧩 Exercícios" }]}
       /> */}
       <div className="flex justify-between items-end gap-4">
@@ -101,7 +101,7 @@ export const ExercisesTable = () => {
       <DataTable
         columns={columns}
         data={exercises?.data || []}
-        isLoading={isExercisesLoading}
+        isLoading={isFetchingExercises}
         isError={!!exercisesError}
         onTryAgainIfError={refetchExercises}
         paginationConfig={{

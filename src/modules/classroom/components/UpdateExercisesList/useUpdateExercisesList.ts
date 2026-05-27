@@ -1,5 +1,4 @@
-import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
-import { useFetchList } from "@/modules/list/hooks/useFetchList";
+import { useFetchListOfExercises } from "@/modules/list/hooks/useFetchListOfExercises";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFetchExercise } from "@/modules/exercise/hooks/useFetchExercise";
 import { usePagination } from "@/hooks/usePagination";
@@ -7,10 +6,7 @@ import {
   IFetchExercisesParams as IGetExercisesParams,
   useFetchExercises,
 } from "@/modules/exercise/hooks/useFetchExercises";
-import {
-  IUpdateClassroomExercisesFromListFrom,
-  useUdateClassroomExercisesFromListsSchema,
-} from "../../schemas/updateClassroomExercisesFromLists";
+import { useUdateClassroomExercisesFromListsSchema } from "../../schemas/updateClassroomExercisesFromLists";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useUpdateClassroomExercisesFromList } from "../../hooks/useUpdateClassroomExercisesFromList";
 import { useToast } from "@/hooks/useToast";
@@ -18,6 +14,7 @@ import { ClassroomKeys, IClassroom } from "../../classroomType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
+import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
@@ -28,16 +25,18 @@ export const useUpdateExercisesList = () => {
   const queryClient = useQueryClient();
 
   const params = useParams<{ classroomId: string; listId: string }>();
-  const { classroom } = useFetchClassroomById(params?.classroomId);
+  const { cachedClassroom: classroom } = useGetCachedClassrom(
+    params?.classroomId!,
+  );
 
   const {
     list,
-    isLoadingExercises,
+    isFetchingExercises,
     errorExercises: errorCuerrentExercises,
     refetchExercises: refetchCurrentExercises,
-  } = useFetchList({
+  } = useFetchListOfExercises({
     classroomId: params?.classroomId!,
-    listId: params?.listId!,
+    listId: parseInt(params?.listId!),
   });
 
   const {
@@ -105,7 +104,7 @@ export const useUpdateExercisesList = () => {
   }, [currentExercises]);
 
   const exercisesToAddRecords = useMemo<ExercisesRecord>(() => {
-    const result = { dsad: {} } as ExercisesRecord;
+    const result = {} as ExercisesRecord;
     exercisesToAdd?.forEach((exercise) => {
       result[exercise?.uuid!] = exercise as UpdateExercises;
     });
@@ -269,7 +268,7 @@ export const useUpdateExercisesList = () => {
   return {
     classroom,
     list,
-    isLoadingExercises,
+    isFetchingExercises,
     errorCuerrentExercises,
     showExerciseDetailsDialog,
     exerciseDetails,

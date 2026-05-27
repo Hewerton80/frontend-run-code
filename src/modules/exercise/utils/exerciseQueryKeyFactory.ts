@@ -16,7 +16,7 @@ export const exerciseQueryKeyFactory = {
   all: () => [ExerciseQueryKeys.Exercises] as const,
 
   /** Lista paginada de exercícios com params normalizados */
-  list: (params?: object) =>
+  pages: (params?: object) =>
     [...exerciseQueryKeyFactory.all(), params] as const,
 
   /** Detalhe de um exercício (com contexto opcional de turma/lista) */
@@ -28,6 +28,6 @@ export const exerciseQueryKeyFactory = {
     [ExerciseQueryKeys.ExercisesByClassroom, listId, classroomId] as const,
 
   /** Exercício individual dentro de uma lista (lido por useGetCachedExerciseOfList) */
-  ofList: (exerciseId: string, listId: string) =>
+  ofList: (exerciseId: string, listId: number) =>
     [ExerciseQueryKeys.ExerciseOfList, exerciseId, listId] as const,
 };

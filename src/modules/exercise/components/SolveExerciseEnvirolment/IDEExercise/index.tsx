@@ -11,11 +11,7 @@ import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
-import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import {
-  SubmissionStatus,
-  SubmissionStatusLabels,
-} from "@/modules/submission/submissionType";
+import { SubmissionStatusLabels } from "@/modules/submission/submissionType";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { getContrastColor } from "@/utils/colors";
 import { useMemo } from "react";
@@ -36,7 +32,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     createSubmission,
     changeSourceCode,
   } = useIDEExercise(exercise);
-  const { changeLanguageMode } = useLanguage();
 
   // const showFeedbackDots = useMemo(() => {
   //   if (isSubmitting) return true;

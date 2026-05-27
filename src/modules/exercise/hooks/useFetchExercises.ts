@@ -27,7 +27,7 @@ export const useFetchExercises = (params?: IFetchExercisesParams) => {
     error: exercisesError,
     refetch: refetchExercises,
   } = useQuery({
-    queryKey: exerciseQueryKeyFactory.list(normalizedParams),
+    queryKey: exerciseQueryKeyFactory.pages(normalizedParams),
     queryFn: async ({ signal }) => {
       const { data: response } = await apiBase.get<IPaginatedDocs<IExercise>>(
         "/exercise",

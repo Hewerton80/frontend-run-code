@@ -1,32 +1,32 @@
-import {
-  IUpdateClassroomListBody,
-  useUpdateClassroomList,
-} from "@/modules/classroom/hooks/useUpdateClassroomList";
+import { useUpdateClassroomList } from "@/modules/classroom/hooks/useUpdateClassroomList";
 import {
   ClassroomListForm,
   useClassroomListFormSchema,
 } from "../../schemas/classroomListFormSchema";
 import { IList } from "../../listTypes";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { DateTime } from "@/utils/dateTime";
-import { useQueryClient } from "@tanstack/react-query";
-import { ClassroomKeys } from "@/modules/classroom/classroomType";
 import { useToast } from "@/hooks/useToast";
-import {
-  ICreateClassroomListBody,
-  useCreateClassroomList,
-} from "@/modules/classroom/hooks/useCreateClassroomList";
-import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
-import { useParams } from "react-router-dom";
+import { useCreateClassroomList } from "@/modules/classroom/hooks/useCreateClassroomList";
+import { handleClassroomListFormBody } from "../../utils/handleClassroomListFormBody";
+import { updateCachedListOfClassroom } from "../../utils/updateCachedListOfClassroom";
+import { useGetCachedListOfClassroom } from "../../hooks/useGetCachedListOfClassroom";
+import { useTriggerClassroomListFormDialog } from "./useTriggerClassroomListFormDialog";
 
-export const useClassroomListFormDialog = (
-  currentListToEdit?: IList | null,
-) => {
-  const params = useParams<{ classroomId: string }>();
+export const useClassroomListFormDialog = () => {
+  const {
+    listIdToEdit,
+    closeClassroomListFormDialog,
+    showClassroomListFormDialog,
+  } = useTriggerClassroomListFormDialog();
 
-  const isEdit = !!currentListToEdit?.uuid;
+  const isEditing = !!listIdToEdit;
 
-  const { classroom } = useFetchClassroomById(params?.classroomId);
+  const { cachedListOfClassroom } = useGetCachedListOfClassroom(listIdToEdit!);
+  const currentListToEdit = useMemo(
+    () => cachedListOfClassroom as IList | undefined,
+    [cachedListOfClassroom],
+  );
 
   const {
     classroomListFormState,
@@ -41,8 +41,6 @@ export const useClassroomListFormDialog = (
   } = useClassroomListFormSchema();
 
   const { toast } = useToast();
-
-  const queryClient = useQueryClient();
 
   const { createClassroomList, isCreatingClassroomList } =
     useCreateClassroomList();
@@ -68,7 +66,9 @@ export const useClassroomListFormDialog = (
       const endDate = currentListToEdit?.endDate;
       const hasRangeDate = !!startDate && !!endDate;
       resetClassroomListForm({
+        id: currentListToEdit?.id,
         title: currentListToEdit?.title,
+        classroomId: currentListToEdit?.classroom?.uuid as string,
         hasRangeDate,
         startDate: hasRangeDate ? DateTime.format(startDate, "yyyy-MM-dd") : "",
         endDate: hasRangeDate ? DateTime.format(endDate, "yyyy-MM-dd") : "",
@@ -77,71 +77,58 @@ export const useClassroomListFormDialog = (
     }
   }, [currentListToEdit, resetClassroomListForm]);
 
-  const getHandleClassroomListFormBody = useCallback(
-    (updateClassroomListForm: ClassroomListForm) => {
-      const result: ICreateClassroomListBody & IUpdateClassroomListBody = {
-        title: updateClassroomListForm.title,
-        classroomId: classroom?.uuid as string,
-        startDate: updateClassroomListForm.hasRangeDate
-          ? `${updateClassroomListForm?.startDate!} 00:00:00`
-          : null,
-        endDate: updateClassroomListForm.hasRangeDate
-          ? `${updateClassroomListForm?.endDate!} 23:59:59`
-          : null,
-        status: updateClassroomListForm.isVisible ? 2 : 1,
-      };
-      if (currentListToEdit?.id) {
-        result.listId = currentListToEdit?.id;
-      }
-      return result;
-    },
-    [currentListToEdit, classroom],
-  );
+  const handleClose = useCallback(() => {
+    closeClassroomListFormDialog();
+    clearClassroomListFormStates();
+  }, [closeClassroomListFormDialog, clearClassroomListFormStates]);
 
   const handleSubmit = useCallback(
     (updateClassroomListForm: ClassroomListForm) => {
+      const handledClassroomListFormBody = handleClassroomListFormBody(
+        updateClassroomListForm,
+      );
+      console.log(handledClassroomListFormBody);
       const onSuccess = () => {
         clearClassroomListFormStates();
         toast({
-          title: `Lista ${isEdit ? "atualizada" : "criada"} com sucesso!`,
+          title: `Lista ${isEditing ? "atualizada" : "criada"} com sucesso!`,
           variant: "success",
         });
-        queryClient.resetQueries({
-          queryKey: [ClassroomKeys.Details, classroom?.uuid],
-        });
+        handleClose();
+        updateCachedListOfClassroom(
+          currentListToEdit?.uuid!,
+          handledClassroomListFormBody,
+        );
       };
       const onError = () => {
         toast({
           title: "Erro",
-          description: `Erro ao ${isEdit ? "atualizar" : "criar"} lista`,
+          description: `Erro ao ${isEditing ? "atualizar" : "criar"} lista`,
           variant: "danger",
           direction: "bottom-right",
         });
       };
-      const handleClassroomListFormBody = getHandleClassroomListFormBody(
-        updateClassroomListForm,
-      );
-      if (isEdit) {
-        updateClassroomList(handleClassroomListFormBody, {
+
+      if (isEditing) {
+        updateClassroomList(handledClassroomListFormBody, {
           onSuccess,
           onError,
         });
-      } else {
-        createClassroomList(handleClassroomListFormBody, {
-          onSuccess,
-          onError,
-        });
+        return;
       }
+      createClassroomList(handledClassroomListFormBody, {
+        onSuccess,
+        onError,
+      });
     },
     [
-      isEdit,
-      queryClient,
-      classroom,
+      isEditing,
       createClassroomList,
       toast,
       clearClassroomListFormStates,
-      getHandleClassroomListFormBody,
       updateClassroomList,
+      currentListToEdit?.uuid,
+      handleClose,
     ],
   );
 
@@ -150,12 +137,14 @@ export const useClassroomListFormDialog = (
     classroomListFormControl,
     isSubmitting,
     hasRangeDate,
+    isEditing,
+    showClassroomListFormDialog,
     handleClassroomListFormSubmit,
     resetClassroomListForm,
     setClassroomListFormValue,
     clearClassroomListFormErrors,
     classroomListFormRegister,
-    clearClassroomListFormStates,
+    handleClose,
     updateClassroomList: handleClassroomListFormSubmit(handleSubmit),
   };
 };

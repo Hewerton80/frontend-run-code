@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useFetchClassroomUsers } from "../../hooks/useFetchClassroomUsers";
-import { useFetchClassroomById } from "../../hooks/useFetchClassroomById";
 import { useCallback, useMemo, useState } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
+import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
 
 export const useClassroomUsers = () => {
   const params = useParams<{ classroomId: string }>();
@@ -14,19 +14,14 @@ export const useClassroomUsers = () => {
     classroomUsersError,
   } = useFetchClassroomUsers(params?.classroomId!);
 
-  const {
-    classroom,
-    classroomError: errorClassroom,
-    isFetchingClassroom: isLoadingClassroom,
-    refetchClassroom,
-  } = useFetchClassroomById(params?.classroomId);
+  const { cachedClassroom } = useGetCachedClassrom(params?.classroomId!);
 
   const [isOpenTeacherFormDialog, setIsOpenTeacherFormDialog] = useState(false);
   const [teacherIdToEdit, setTeacherIdToEdit] = useState<string | null>(null);
 
   const canAddTeacher = useMemo(() => {
-    return classroom?.myClassroomPermissions?.canManageTeachers;
-  }, [classroom]);
+    return cachedClassroom?.myClassroomPermissions?.canManageTeachers;
+  }, [cachedClassroom]);
 
   const openTeacherFormDialog = useCallback(() => {
     setIsOpenTeacherFormDialog(true);
@@ -46,9 +41,7 @@ export const useClassroomUsers = () => {
   );
 
   return {
-    classroom,
-    errorClassroom,
-    isLoadingClassroom,
+    classroom: cachedClassroom,
     classroomUsers,
     isLoadingClassroomUsers,
     classroomUsersError,
@@ -59,7 +52,6 @@ export const useClassroomUsers = () => {
     handleSetTeacherIdToEdit,
     openTeacherFormDialog,
     closeTeacherFormDialog,
-    refetchClassroom,
     refetchClassroomUsers,
   };
 };

@@ -7,7 +7,7 @@ export const StatusClassroomEnum: Record<number, string> = {
 };
 
 export interface IClassroom {
-  uuid?: string;
+  uuid: string;
   languages?: string;
   name?: string;
   description?: string;

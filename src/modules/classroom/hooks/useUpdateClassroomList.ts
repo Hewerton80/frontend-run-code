@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ICreateClassroomListBody } from "./useCreateClassroomList";
 
 export type IUpdateClassroomListBody = Partial<ICreateClassroomListBody> & {
-  listId?: number;
+  id?: number;
 };
 
 /**
@@ -15,12 +15,8 @@ export const useUpdateClassroomList = () => {
 
   const { mutate: updateClassroomList, isPending: isUpdatingClassroomList } =
     useMutation({
-      mutationFn: ({
-        classroomId,
-        listId,
-        ...body
-      }: IUpdateClassroomListBody) =>
-        apiBase.put(`/classroom/${classroomId}/list/${listId}`, body),
+      mutationFn: ({ classroomId, id, ...body }: IUpdateClassroomListBody) =>
+        apiBase.put(`/classroom/${classroomId}/list/${id}`, body),
       retry: 0,
     });
 

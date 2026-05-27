@@ -9,14 +9,14 @@ import { useParams } from "react-router-dom";
 export default function ClassroomLayoutPage() {
   const params = useParams<{ classroomId: string }>();
 
-  const { errorClassroom, isLoadingClassroom, refetchClassroom } =
+  const { classroomError, isFetchingClassroom, refetchClassroom } =
     useFetchClassroomById(params?.classroomId);
 
   const handledChildren = useMemo(() => {
-    if (errorClassroom) {
+    if (classroomError) {
       return <FeedBackError onTryAgain={refetchClassroom} />;
     }
-    if (isLoadingClassroom) {
+    if (isFetchingClassroom) {
       return (
         <div className="flex items-center justify-center w-full h-full">
           <Spinner size={64} />
@@ -24,7 +24,7 @@ export default function ClassroomLayoutPage() {
       );
     }
     return <Outlet />;
-  }, [errorClassroom, refetchClassroom, isLoadingClassroom]);
+  }, [classroomError, refetchClassroom, isFetchingClassroom]);
 
   return <SideBarTamplateWrapper>{handledChildren}</SideBarTamplateWrapper>;
 }

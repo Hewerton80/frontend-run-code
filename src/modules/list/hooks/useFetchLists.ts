@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { IList } from "../listTypes";
-import { listQueryKeyFactory } from "@/modules/list/utils/listQueryKeyFactory";
+import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 
 export interface IGetListExercisesParams extends IPaginationParams {
   notIn?: string;
@@ -26,7 +26,7 @@ export const useFetchLists = (
     error: listExercisesError,
     refetch: refetchListExercises,
   } = useQuery({
-    queryKey: listQueryKeyFactory.list(normalizedParams),
+    queryKey: listOfExercisesQueryKeyFactory.pages(normalizedParams),
     queryFn: async ({ signal }) => {
       const res = await apiBase.get<IPaginatedDocs<IList>>("/list", {
         params: normalizedParams,

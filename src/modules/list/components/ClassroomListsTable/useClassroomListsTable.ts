@@ -1,8 +1,7 @@
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
-import { IList } from "../../listTypes";
 import { useCallback, useMemo, useState } from "react";
-import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useParams } from "react-router-dom";
+import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
 
 export const useClassroomListsTable = () => {
   const { loggedUser } = useLoggedUser();
@@ -11,22 +10,19 @@ export const useClassroomListsTable = () => {
   const [isOpenClassroomFormDialog, setOpenClassroomFormDialog] =
     useState(false);
 
-  const { classroom } = useFetchClassroomById(params?.classroomId);
+  const { cachedClassroom: classroom } = useGetCachedClassrom(
+    params?.classroomId!,
+  );
 
-  const lists = useMemo(() => {
-    return classroom?.lists?.map((list) => ({
-      ...list,
-      classroom,
-    }));
-  }, [classroom]);
+  const listIdsOfClassroom = useMemo(
+    () => classroom?.lists?.map((list) => list.id),
+    [classroom],
+  );
 
-  const [listToEdit, setListToEdit] = useState<IList | null>(null);
-
-  const [isOpenListDialog, setIsOpen] = useState(false);
-
-  const canCreateList = useMemo(() => {
-    return classroom?.myClassroomPermissions?.canCreateList;
-  }, [classroom]);
+  const canCreateList = useMemo(
+    () => classroom?.myClassroomPermissions?.canCreateList,
+    [classroom],
+  );
 
   const openClassroomDialog = useCallback(() => {
     setOpenClassroomFormDialog(true);
@@ -36,36 +32,13 @@ export const useClassroomListsTable = () => {
     setOpenClassroomFormDialog(false);
   }, []);
 
-  const openListDialog = useCallback(() => {
-    if (!canCreateList) return;
-    setIsOpen(true);
-  }, [canCreateList]);
-
-  const handleSetListToEdit = useCallback(
-    (list: IList) => {
-      setListToEdit(list);
-      openListDialog();
-    },
-    [openListDialog],
-  );
-
-  const closeListDialog = useCallback(() => {
-    setListToEdit(null);
-    setIsOpen(false);
-  }, []);
-
   return {
-    loggedUser,
-    listToEdit,
-    isOpenListDialog,
-    lists,
-    isOpenClassroomFormDialog,
-    classroom,
-    canCreateList,
     openClassroomDialog,
     closeClassroomDialog,
-    closeListDialog,
-    openListDialog,
-    handleSetListToEdit,
+    listIdsOfClassroom,
+    canCreateList,
+    classroom,
+    isOpenClassroomFormDialog,
+    loggedUser,
   };
 };

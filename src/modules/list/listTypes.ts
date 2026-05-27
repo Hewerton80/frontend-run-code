@@ -5,10 +5,9 @@ import { IUser } from "../user/userTypets";
 export interface IList {
   id: number;
   exercises: IExercise[];
-  uuid: string;
   title: string;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | null;
+  endDate?: string | null;
   solved?: number;
   totalExercises?: number;
   classroom?: IClassroom;

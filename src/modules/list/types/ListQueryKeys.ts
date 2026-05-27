@@ -7,4 +7,6 @@ export enum ListQueryKeys {
   Lists = "LIST_EXERCISE",
   /** Detalhe de uma lista com seus exercícios (por listId + classroomId) */
   List = "list-detail",
+  /** Lista de exercícios de uma turma específica */
+  ListOfClassroom = "list-of-classroom",
 }

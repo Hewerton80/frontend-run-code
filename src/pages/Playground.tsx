@@ -37,12 +37,12 @@ export default function PlayGroundPage() {
         </Card.Root>
         <Card.Root asChild className="col-span-4 h-full p-4 gap-4">
           <form onSubmit={(e) => e.preventDefault()}>
-            <EnterMultSelect
-              value={inputs}
+            {/* <EnterMultSelect
+              value={inputs || []}
               onChange={setInputs}
               label="Custom inputs:"
               placeholder="Enter inputs"
-            />
+            /> */}
             <div className="flex justify-end">
               <Button isLoading={isRunningCode} onClick={handleSubmit}>
                 Run Code 🚀

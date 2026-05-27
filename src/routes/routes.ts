@@ -63,12 +63,10 @@ export const ROUTES = {
   CLASSROOM_USERS: (classroomId: string | number) =>
     `/classroom/${classroomId}/users`,
   CLASSROOM_LIST_EXERCISE: (
-    classroomId: string | number,
-    listId: string | number,
-    exerciseId: string | number,
+    classroomId: string,
+    listId: number,
+    exerciseId: string,
   ) => `/classroom/${classroomId}/lists/${listId}/exercise/${exerciseId}`,
-  CLASSROOM_LIST_UPDATE: (
-    classroomId: string | number,
-    listId: string | number,
-  ) => `/classroom/${classroomId}/lists/${listId}/update-exercises`,
+  CLASSROOM_LIST_UPDATE: (classroomId: string, listId: number) =>
+    `/classroom/${classroomId}/lists/${listId}/update-exercises`,
 };

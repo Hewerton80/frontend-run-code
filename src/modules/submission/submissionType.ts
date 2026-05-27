@@ -27,7 +27,7 @@ export const SubmissionStatusLabels: Record<
   },
   [SubmissionStatus.ACCEPTED]: {
     label: "Aceito",
-    emoji: "😀",
+    emoji: "✅",
     color: "rgb(40,167,69)",
   },
   [SubmissionStatus.WRONG_ANSWER]: {

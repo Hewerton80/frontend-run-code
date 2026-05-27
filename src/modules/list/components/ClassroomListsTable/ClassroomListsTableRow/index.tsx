@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { ProgressBar } from "@/components/ui/feedback/ProgressBar";
 import { BsThreeDots } from "react-icons/bs";
-import { useFetchList } from "@/modules/list/hooks/useFetchList";
+import { useFetchListOfExercises } from "@/modules/list/hooks/useFetchListOfExercises";
 import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
@@ -20,32 +20,42 @@ import { RiArrowUpDownFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
+import { useGetCachedListOfClassroom } from "@/modules/list/hooks/useGetCachedListOfClassroom";
+import { ClassroomListForm } from "../../ClassroomListFormDialog";
 
 interface ClassroomListsTableRowProps {
-  list: IList;
-  onOpenEditModal?: () => void;
+  listId: number;
+  classroomId: string;
 }
 
 export const ClassroomListsTableRow = memo(
-  ({ list, onOpenEditModal }: ClassroomListsTableRowProps) => {
+  ({ listId, classroomId }: ClassroomListsTableRowProps) => {
     const { loggedUser } = useLoggedUser();
+
+    const { cachedListOfClassroom } = useGetCachedListOfClassroom(listId);
 
     const {
       exerciseIdsOfList,
       errorExercises,
-      isLoadingExercises,
+      isFetchingExercises,
       refetchExercises,
-    } = useFetchList({
-      classroomId: list?.classroom?.uuid as string,
-      listId: list?.uuid as string,
+    } = useFetchListOfExercises({
+      classroomId,
+      listId,
     });
 
     const [alreadyAccordionOpened, setAlreadyAccordionOpened] = useState(false);
 
-    const { closed } = useGetClassroomListStatus(list);
+    const { closed } = useGetClassroomListStatus(cachedListOfClassroom);
 
-    const solved = useMemo(() => list?.solved || 0, [list]);
-    const totalExercises = useMemo(() => list?.totalExercises || 0, [list]);
+    const solved = useMemo(
+      () => cachedListOfClassroom?.solved || 0,
+      [cachedListOfClassroom],
+    );
+    const totalExercises = useMemo(
+      () => cachedListOfClassroom?.totalExercises || 0,
+      [cachedListOfClassroom],
+    );
     const progress = useMemo(
       () =>
         solved && totalExercises
@@ -85,7 +95,7 @@ export const ClassroomListsTableRow = memo(
                     <FeedBackError onTryAgain={refetchExercises} />
                   )}
                   <div className="grid grid-cols-3 gap-2 w-full border-none">
-                    {isLoadingExercises &&
+                    {isFetchingExercises &&
                       getRange(0, 5).map((index) => (
                         <Skeleton
                           key={`exercise-skeleton-${index}`}
@@ -95,10 +105,10 @@ export const ClassroomListsTableRow = memo(
 
                     {exerciseIdsOfList?.map((exerciseUuid) => (
                       <ExerciseCard
-                        key={`${exerciseUuid}-${list?.uuid}-${list?.classroom?.uuid}`}
+                        key={`${exerciseUuid}-${cachedListOfClassroom?.id}-${cachedListOfClassroom?.classroom?.uuid}`}
                         exerciseId={exerciseUuid}
-                        listId={list?.uuid!}
-                        classroomId={list?.classroom?.uuid!}
+                        listId={cachedListOfClassroom?.id!}
+                        classroomId={cachedListOfClassroom?.classroom?.uuid!}
                       />
                     ))}
                   </div>
@@ -109,8 +119,8 @@ export const ClassroomListsTableRow = memo(
         >
           <DivTable.Data>
             <div className="flex flex-col gap-1">
-              <p className="line-clamp-1">{list?.title}</p>
-              <ClasrromListStatus list={list} />
+              <p className="line-clamp-1">{cachedListOfClassroom?.title}</p>
+              <ClasrromListStatus list={cachedListOfClassroom} />
             </div>
           </DivTable.Data>
           {loggedUser?.role === RoleUser.STUDENT && (
@@ -138,15 +148,19 @@ export const ClassroomListsTableRow = memo(
                 </PingWrapper>
 
                 <Dropdown.Content>
-                  <Dropdown.Item onClick={onOpenEditModal} className="gap-2">
-                    <FaPen />
-                    Visualizar Liata
-                  </Dropdown.Item>
+                  <ClassroomListForm.TriggerButton
+                    listId={cachedListOfClassroom?.id}
+                  >
+                    <Dropdown.Item className="gap-2">
+                      <FaPen />
+                      Visualizar Liata
+                    </Dropdown.Item>
+                  </ClassroomListForm.TriggerButton>
                   <Dropdown.Item asChild className="gap-2">
                     <Link
                       to={ROUTES.CLASSROOM_LIST_UPDATE(
-                        list?.classroom?.uuid!,
-                        list?.uuid!,
+                        cachedListOfClassroom?.classroom?.uuid!,
+                        cachedListOfClassroom?.id!,
                       )}
                     >
                       <RiArrowUpDownFill />

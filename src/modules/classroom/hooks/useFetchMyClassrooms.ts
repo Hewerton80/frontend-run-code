@@ -37,6 +37,7 @@ export const useFetchMyClassrooms = () => {
 
       return response ?? [];
     },
+    enabled: true,
     retry: 0,
   });
 

@@ -7,7 +7,7 @@ interface SubmissionCodeBody {
   sourceCode: string;
   language: string;
   classroomId?: string;
-  listId?: string;
+  listId?: number;
 }
 
 export interface ResultSubmissionCode {
@@ -15,12 +15,6 @@ export interface ResultSubmissionCode {
   expectedOutput: string;
   output: string;
   status: SubmissionStatus;
-}
-
-export interface SubmissionCodeBodyResponse {
-  submissionId: string;
-  status: SubmissionStatus;
-  exerciseId: string;
 }
 
 interface SubmissionCodeBodyErrorResponse {
