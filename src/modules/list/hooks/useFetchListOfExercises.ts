@@ -19,7 +19,7 @@ export const useFetchListOfExercises = ({
     data: list,
     error: errorExercises,
     isFetching: isFetchingExercises,
-    refetch: refetchExercises,
+    refetch: refetchListOfExercises,
   } = useQuery({
     queryKey: listOfExercisesQueryKeyFactory.withExercises(listId),
     queryFn: async ({ signal }) => {
@@ -27,30 +27,27 @@ export const useFetchListOfExercises = ({
         `/list/${listId}/classroom/${classroomId}`,
         { signal },
       );
+      data.exercises.forEach((exercise) => {
+        setItemInCache(
+          exerciseQueryKeyFactory.ofList(exercise?.uuid!, listId),
+          exercise,
+        );
+      });
       return data;
     },
+    enabled: !!classroomId && !!listId,
     retry: 0,
   });
 
-  /** IDs dos exercícios da lista — semeia o cache individual de cada exercício */
-  const exerciseIdsOfList = useMemo(() => {
-    return (
-      list?.exercises?.map((exercise) => {
-        setItemInCache(
-          exerciseQueryKeyFactory.ofList(exercise.uuid, listId),
-          exercise,
-        );
-
-        return exercise.uuid!;
-      }) ?? []
-    );
-  }, [list, listId]);
+  const exerciseIdsOfList = useMemo(
+    () => list?.exercises?.map((exercise) => exercise.uuid) ?? [],
+    [list],
+  );
 
   return {
-    list,
     errorExercises,
     isFetchingExercises,
     exerciseIdsOfList,
-    refetchExercises,
+    refetchListOfExercises,
   };
 };

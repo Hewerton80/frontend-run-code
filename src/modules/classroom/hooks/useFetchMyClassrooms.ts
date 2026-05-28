@@ -29,7 +29,7 @@ export const useFetchMyClassrooms = () => {
       response?.forEach((classroom) => {
         if (classroom.uuid) {
           setItemInCache<IClassroom>(
-            classroomQueryKeyFactory.detail(classroom.uuid),
+            classroomQueryKeyFactory.card(classroom.uuid),
             classroom,
           );
         }

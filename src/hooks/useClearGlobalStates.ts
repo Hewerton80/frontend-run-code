@@ -1,12 +1,10 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { queryClient } from "@/utils/tanstackQueryHelpers/queryClient";
+import { useCallback } from "react";
 
 export const useClearGlobalStates = () => {
-  const queryClient = useQueryClient();
-
-  const clearGlobalStates = () => {
+  const clearGlobalStates = useCallback(() => {
     queryClient.clear();
     queryClient.getQueryCache().clear();
-  };
-
+  }, []);
   return { clearGlobalStates };
 };

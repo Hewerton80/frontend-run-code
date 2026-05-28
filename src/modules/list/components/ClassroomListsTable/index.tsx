@@ -60,21 +60,11 @@ export const ClassroomListsTable = ({
     return (
       <>
         {listIdsOfClassroom?.map((id) => (
-          <ClassroomListsTableRow
-            key={`${id}-list-exercise`}
-            listId={id}
-            classroomId={classroom?.uuid!}
-          />
+          <ClassroomListsTableRow key={`${id}-list-exercise`} listId={id} />
         ))}
       </>
     );
-  }, [
-    listIdsOfClassroom,
-    error,
-    isLoading,
-    onTryAgainIfError,
-    classroom?.uuid,
-  ]);
+  }, [listIdsOfClassroom, error, isLoading, onTryAgainIfError]);
 
   return (
     <>

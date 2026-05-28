@@ -1,5 +1,5 @@
 import { IList } from "../../../listTypes";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
@@ -23,28 +23,81 @@ import { ROUTES } from "@/routes/routes";
 import { useGetCachedListOfClassroom } from "@/modules/list/hooks/useGetCachedListOfClassroom";
 import { ClassroomListForm } from "../../ClassroomListFormDialog";
 
-interface ClassroomListsTableRowProps {
-  listId: number;
-  classroomId: string;
+interface ClassroomListsTableRowAccordionContentProps {
+  totalExercises: number;
+  list: IList;
+  role: RoleUser;
 }
 
-export const ClassroomListsTableRow = memo(
-  ({ listId, classroomId }: ClassroomListsTableRowProps) => {
-    const { loggedUser } = useLoggedUser();
-
-    const { cachedListOfClassroom } = useGetCachedListOfClassroom(listId);
-
+const ClassroomListsTableRowAccordionContent = memo(
+  ({
+    role,
+    list,
+    totalExercises,
+  }: ClassroomListsTableRowAccordionContentProps) => {
     const {
       exerciseIdsOfList,
       errorExercises,
       isFetchingExercises,
-      refetchExercises,
+      refetchListOfExercises,
     } = useFetchListOfExercises({
-      classroomId,
-      listId,
+      classroomId: list?.classroom?.uuid!,
+      listId: list?.id!,
     });
 
-    const [alreadyAccordionOpened, setAlreadyAccordionOpened] = useState(false);
+    return (
+      <div className="p-2">
+        {totalExercises === 0 ? (
+          <Alert.Root>
+            <Alert.Title>Não há exercícios cadastrados nesta lista</Alert.Title>
+            {role === RoleUser.TEACHER && (
+              <Alert.Description className="text-sm text-muted-foreground">
+                Você pode adicionar exercícios clicando no botão de adicionar e
+                remover exercícios.
+              </Alert.Description>
+            )}
+          </Alert.Root>
+        ) : (
+          <>
+            {errorExercises && (
+              <FeedBackError onTryAgain={refetchListOfExercises} />
+            )}
+            <div className="grid grid-cols-3 gap-2 w-full border-none">
+              {isFetchingExercises &&
+                getRange(0, 5).map((index) => (
+                  <Skeleton
+                    key={`exercise-skeleton-${index}-${list.id}-${list.classroom?.uuid}`}
+                    className="w-full h-26 rounded-lg"
+                  />
+                ))}
+
+              {exerciseIdsOfList?.map((exerciseUuid) => (
+                <ExerciseCard
+                  key={`exercise-${exerciseUuid}-${list?.id}-${list?.classroom?.uuid}`}
+                  exerciseId={exerciseUuid}
+                  listId={list?.id!}
+                  classroomId={list?.classroom?.uuid!}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  },
+);
+
+ClassroomListsTableRowAccordionContent.displayName =
+  "ClassroomListsTableRowAccordionContent";
+interface ClassroomListsTableRowProps {
+  listId: number;
+}
+
+export const ClassroomListsTableRow = memo(
+  ({ listId }: ClassroomListsTableRowProps) => {
+    const { loggedUser } = useLoggedUser();
+
+    const { cachedListOfClassroom } = useGetCachedListOfClassroom(listId);
 
     const { closed } = useGetClassroomListStatus(cachedListOfClassroom);
 
@@ -64,58 +117,59 @@ export const ClassroomListsTableRow = memo(
       [solved, totalExercises],
     );
 
-    const handledOpenAccordion = useCallback(() => {
-      if (closed || alreadyAccordionOpened || totalExercises === 0) return;
-      setAlreadyAccordionOpened(true);
-      refetchExercises();
-    }, [alreadyAccordionOpened, closed, totalExercises, refetchExercises]);
-
     return (
       <>
         <DivTable.Row
           disableAccordion={closed}
-          onAccordionChange={() => handledOpenAccordion()}
+          // onAccordionChange={() => handledOpenAccordion()}
           accordionContent={
-            <div className=" p-2">
-              {totalExercises === 0 ? (
-                <Alert.Root>
-                  <Alert.Title>
-                    Não há exercícios cadastrados nesta lista
-                  </Alert.Title>
-                  {loggedUser?.role === RoleUser.TEACHER && (
-                    <Alert.Description className="text-sm text-muted-foreground">
-                      Você pode adicionar exercícios clicando no botão de
-                      adicionar e remover exercícios.
-                    </Alert.Description>
-                  )}
-                </Alert.Root>
-              ) : (
-                <>
-                  {errorExercises && (
-                    <FeedBackError onTryAgain={refetchExercises} />
-                  )}
-                  <div className="grid grid-cols-3 gap-2 w-full border-none">
-                    {isFetchingExercises &&
-                      getRange(0, 5).map((index) => (
-                        <Skeleton
-                          key={`exercise-skeleton-${index}`}
-                          className="w-full h-26 rounded-lg"
-                        />
-                      ))}
-
-                    {exerciseIdsOfList?.map((exerciseUuid) => (
-                      <ExerciseCard
-                        key={`${exerciseUuid}-${cachedListOfClassroom?.id}-${cachedListOfClassroom?.classroom?.uuid}`}
-                        exerciseId={exerciseUuid}
-                        listId={cachedListOfClassroom?.id!}
-                        classroomId={cachedListOfClassroom?.classroom?.uuid!}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+            <ClassroomListsTableRowAccordionContent
+              list={cachedListOfClassroom!}
+              role={loggedUser?.role!}
+              totalExercises={totalExercises}
+            />
           }
+          // accordionContent={
+          //   <div className=" p-2">
+          //     {totalExercises === 0 ? (
+          //       <Alert.Root>
+          //         <Alert.Title>
+          //           Não há exercícios cadastrados nesta lista
+          //         </Alert.Title>
+          //         {loggedUser?.role === RoleUser.TEACHER && (
+          //           <Alert.Description className="text-sm text-muted-foreground">
+          //             Você pode adicionar exercícios clicando no botão de
+          //             adicionar e remover exercícios.
+          //           </Alert.Description>
+          //         )}
+          //       </Alert.Root>
+          //     ) : (
+          //       <>
+          //         {errorExercises && (
+          //           <FeedBackError onTryAgain={refetchListOfExercises} />
+          //         )}
+          //         <div className="grid grid-cols-3 gap-2 w-full border-none">
+          //           {isFetchingExercises &&
+          //             getRange(0, 5).map((index) => (
+          //               <Skeleton
+          //                 key={`exercise-skeleton-${index}`}
+          //                 className="w-full h-26 rounded-lg"
+          //               />
+          //             ))}
+
+          //           {exerciseIdsOfList?.map((exerciseUuid) => (
+          //             <ExerciseCard
+          //               key={`${exerciseUuid}-${cachedListOfClassroom?.id}-${cachedListOfClassroom?.classroom?.uuid}`}
+          //               exerciseId={exerciseUuid}
+          //               listId={cachedListOfClassroom?.id!}
+          //               classroomId={cachedListOfClassroom?.classroom?.uuid!}
+          //             />
+          //           ))}
+          //         </div>
+          //       </>
+          //     )}
+          //   </div>
+          // }
         >
           <DivTable.Data>
             <div className="flex flex-col gap-1">
@@ -177,3 +231,5 @@ export const ClassroomListsTableRow = memo(
     );
   },
 );
+
+ClassroomListsTableRow.displayName = "ClassroomListsTableRow";

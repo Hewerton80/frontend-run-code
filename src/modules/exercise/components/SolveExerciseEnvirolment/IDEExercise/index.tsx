@@ -130,7 +130,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
           />
         )}
         {submissionsResult?.result?.testCasesResults && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {submissionsResult?.result?.testCasesResults?.map(
               ({ status }, index) => (
                 <div

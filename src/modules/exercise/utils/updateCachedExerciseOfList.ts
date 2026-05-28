@@ -1,20 +1,20 @@
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 import { exerciseQueryKeyFactory } from "./exerciseQueryKeyFactory";
 import { IExercise } from "../exerciseTypes";
+import { hasQueryCache } from "@/utils/tanstackQueryHelpers/hasQueryCache";
 
 export const updateCachedExerciseOfList = (
-  exerciseId: string,
+  exerciseUuId: string,
   listId: number,
-  exerciseData: Parameters<typeof setItemInCache<Partial<IExercise>>>[1],
+  updater: Parameters<typeof setItemInCache<Partial<IExercise>>>[1],
 ) => {
-  setItemInCache<IExercise>(
-    exerciseQueryKeyFactory.ofList(exerciseId, listId),
-    (oldExercise) => {
-      if (!oldExercise) return oldExercise;
-      return {
-        ...oldExercise,
-        ...exerciseData,
-      };
-    },
+  const hasExerciseCache = hasQueryCache(
+    exerciseQueryKeyFactory.ofList(exerciseUuId, listId),
+  );
+  if (!hasExerciseCache) return;
+
+  setItemInCache<Partial<IExercise>>(
+    exerciseQueryKeyFactory.ofList(exerciseUuId, listId),
+    updater,
   );
 };

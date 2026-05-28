@@ -59,7 +59,7 @@ function Row({
             "flex flex-col md:flex-row gap-0 md:gap-2",
             header &&
               "hidden md:flex text-xs font-medium h-10 text-muted-foreground border-t-transparent",
-            "duration-[.15s] ease-in-out transition-colors",
+            "duration-150 ease-in-out transition-colors",
             disableAccordion ? "[&_.trigger]:hidden" : "hover:bg-muted/50",
             className,
           )}

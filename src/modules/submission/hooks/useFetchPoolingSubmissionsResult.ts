@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useCachedSubmissionJobs } from "./useCachedSubmissionJobs";
 import { useFetchSubmissionJobs } from "./useFetchSubmissionJobs";
-import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
 import { updateCachedExerciseOfList } from "@/modules/exercise/utils/updateCachedExerciseOfList";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { SubmissionStatus } from "../submissionType";
 
 export const useFetchPoolingSubmissionsResult = () => {
@@ -19,30 +17,45 @@ export const useFetchPoolingSubmissionsResult = () => {
   const handleFetchSubmissionJobs = useCallback(async () => {
     const { data: submissionJobs } = await fetchSubmissionJobs();
     if (submissionJobs && submissionJobs.length > 0) {
-      submissionJobs.forEach((job) => {
-        const result = job.result;
+      console.log("--------------------------------------------------");
+      submissionJobs
+        .filter((job) => !!job?.listId)
+        .forEach((job, index) => {
+          console.log(index, { job });
+          const result = job.result;
+          updateCachedExerciseOfList(
+            job.exerciseUuId!,
+            job.listId!,
+            // (prevExerciseData) => {
+            //   if (!prevExerciseData) return prevExerciseData;
 
-        updateCachedExerciseOfList(
-          job.exerciseUuId!,
-          job.listId!,
-          (prevExerciseData) => {
-            if (!prevExerciseData) return prevExerciseData;
-            if (
-              prevExerciseData.submissionStatus === SubmissionStatus.ACCEPTED
-            ) {
-              return prevExerciseData;
-            }
+            //   return {
+            //     ...prevExerciseData,
+            //     submissionStatus: SubmissionStatus.ACCEPTED,
+            //   };
+            // },
+            (prevExerciseData) => {
+              console.log({ prevExerciseData });
+              if (!prevExerciseData) return prevExerciseData;
+              if (
+                prevExerciseData?.submissionStatus === SubmissionStatus.ACCEPTED
+              ) {
+                return prevExerciseData;
+              }
 
-            if (result?.isFirstCorrectSubmission) {
+              // if (result?.isFirstCorrectSubmission) {
               return {
                 ...prevExerciseData,
-                submissionStatus: prevExerciseData.submissionStatus,
+                submissionStatus: result?.status,
               };
-            }
-          },
-        );
-        // updateCachedListOfClassroom
-      });
+              // }
+            },
+          );
+          // updateCachedListOfClassroom
+        });
+      console.log("--------------------------------------------------");
+      console.log("");
+      console.log("");
       setCachedSubmissionJobs(submissionJobs);
     }
   }, [fetchSubmissionJobs, setCachedSubmissionJobs]);

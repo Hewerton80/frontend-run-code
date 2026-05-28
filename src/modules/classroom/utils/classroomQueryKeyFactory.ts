@@ -26,6 +26,8 @@ export const classroomQueryKeyFactory = {
   /** Detalhe de uma turma por ID */
   detail: (classroomId?: string) =>
     [ClassroomQueryKeys.Classroom, classroomId] as const,
+  card: (classroomId?: string) =>
+    [ClassroomQueryKeys.ClassroomCard, classroomId] as const,
 
   /** Lista de usuários de uma turma */
   users: (classroomId: string) =>
