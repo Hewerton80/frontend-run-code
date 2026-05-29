@@ -16,7 +16,6 @@ export interface SubmissionTestCaseResult {
 export interface SubmissionResultSummary {
   score: number;
   testCasesResults: SubmissionTestCaseResult[];
-  isFirstCorrectSubmission: boolean;
   status: SubmissionStatus;
 }
 

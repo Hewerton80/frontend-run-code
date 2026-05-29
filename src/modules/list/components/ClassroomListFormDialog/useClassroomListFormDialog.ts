@@ -3,7 +3,6 @@ import {
   ClassroomListForm,
   useClassroomListFormSchema,
 } from "../../schemas/classroomListFormSchema";
-import { IList } from "../../listTypes";
 import { useCallback, useEffect, useMemo } from "react";
 import { DateTime } from "@/utils/dateTime";
 import { useToast } from "@/hooks/useToast";
@@ -23,8 +22,9 @@ export const useClassroomListFormDialog = () => {
   const isEditing = !!listIdToEdit;
 
   const { cachedListOfClassroom } = useGetCachedListOfClassroom(listIdToEdit!);
+
   const currentListToEdit = useMemo(
-    () => cachedListOfClassroom as IList | undefined,
+    () => cachedListOfClassroom,
     [cachedListOfClassroom],
   );
 
@@ -50,7 +50,8 @@ export const useClassroomListFormDialog = () => {
 
   const isSubmitting = isCreatingClassroomList || isUpdatingClassroomList;
 
-  const { hasRangeDate } = watchClassroomListForm();
+  const hasRangeDate = watchClassroomListForm("hasRangeDate");
+  console.log("errors", classroomListFormState.errors);
 
   useEffect(() => {
     if (hasRangeDate) {
@@ -87,7 +88,6 @@ export const useClassroomListFormDialog = () => {
       const handledClassroomListFormBody = handleClassroomListFormBody(
         updateClassroomListForm,
       );
-      console.log(handledClassroomListFormBody);
       const onSuccess = () => {
         clearClassroomListFormStates();
         toast({
@@ -96,7 +96,7 @@ export const useClassroomListFormDialog = () => {
         });
         handleClose();
         updateCachedListOfClassroom(
-          currentListToEdit?.uuid!,
+          currentListToEdit?.id!,
           handledClassroomListFormBody,
         );
       };
@@ -127,7 +127,7 @@ export const useClassroomListFormDialog = () => {
       toast,
       clearClassroomListFormStates,
       updateClassroomList,
-      currentListToEdit?.uuid,
+      currentListToEdit?.id,
       handleClose,
     ],
   );

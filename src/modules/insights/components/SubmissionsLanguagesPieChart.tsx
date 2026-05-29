@@ -1,13 +1,7 @@
 // import { TrendingUp } from "lucide-react"
 import { LuTrendingUp } from "react-icons/lu";
-import { Label, Pie, PieChart } from "recharts";
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/charts/Chart";
+import { ChartConfig } from "@/components/ui/charts/Chart";
 import { Card } from "@/components/ui/cards/Card";
 import { useMemo } from "react";
 const chartData = [
@@ -56,7 +50,7 @@ export function SubmissionsLanguagesPieChart() {
         {/* <Card.Description>January - June 2024</Card.Description> */}
       </Card.Header>
       <Card.Body className="flex-1 pb-0">
-        <ChartContainer
+        {/* <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
@@ -103,7 +97,7 @@ export function SubmissionsLanguagesPieChart() {
               />
             </Pie>
           </PieChart>
-        </ChartContainer>
+        </ChartContainer> */}
       </Card.Body>
       <Card.Footer className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">

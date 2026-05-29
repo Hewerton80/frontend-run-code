@@ -49,6 +49,7 @@ export const useFetchExercises = (params?: IFetchExercisesParams) => {
       );
     },
     retry: 0,
+    enabled: true,
   });
 
   return {

@@ -41,7 +41,7 @@ export function DateRangePicker({
             leftIcon={<CiCalendar className="h-4 w-4" />}
             className={twMerge(
               "max-w-[300px] justify-start text-left font-normal",
-              !rangeDate && "text-muted-foreground"
+              !rangeDate && "text-muted-foreground",
             )}
           >
             {rangeDate?.from ? (
@@ -60,7 +60,7 @@ export function DateRangePicker({
         </Popover.Trigger>
         <Popover.Content className="w-auto p-0" align="start">
           <Calendar
-            initialFocus
+            // initialFocus
             defaultMonth={rangeDate?.from || undefined}
             mode="range"
             selected={rangeDate}

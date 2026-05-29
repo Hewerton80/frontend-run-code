@@ -1,16 +1,20 @@
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
-import { IList } from "../listTypes";
 import { listOfExercisesQueryKeyFactory } from "./listOfExercisesQueryKeyFactory";
+import { IFetchListsByClassromUuidResponse } from "../hooks/useFetchListsByClassromUuid";
+import { hasQueryCache } from "@/utils/tanstackQueryHelpers/hasQueryCache";
 
 export const updateCachedListOfClassroom = (
-  listId: string,
-  listData: Partial<IList>,
+  listId: number,
+  updater: Parameters<
+    typeof setItemInCache<Partial<IFetchListsByClassromUuidResponse>>
+  >[1],
 ) => {
-  setItemInCache<IList>(
-    listOfExercisesQueryKeyFactory.ofClassroom(listId),
-    (oldList) => {
-      if (!oldList) return oldList;
-      return { ...oldList, ...listData };
-    },
+  const hasListCache = hasQueryCache(
+    listOfExercisesQueryKeyFactory.oneOfClassroom(listId),
+  );
+  if (!hasListCache) return;
+  setItemInCache<Partial<IFetchListsByClassromUuidResponse>>(
+    listOfExercisesQueryKeyFactory.oneOfClassroom(listId),
+    updater,
   );
 };

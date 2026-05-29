@@ -1,4 +1,3 @@
-import { IList } from "../list/listTypes";
 import { ITeacher, IUser, TeacherPermissions } from "../user/userTypets";
 
 export const StatusClassroomEnum: Record<number, string> = {
@@ -11,7 +10,6 @@ export interface IClassroom {
   languages?: string;
   name?: string;
   description?: string;
-  lists?: IList[];
   author?: IUser;
   teachers?: ITeacher[];
   status?: number;

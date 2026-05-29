@@ -10,11 +10,10 @@ import { useUdateClassroomExercisesFromListsSchema } from "../../schemas/updateC
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useUpdateClassroomExercisesFromList } from "../../hooks/useUpdateClassroomExercisesFromList";
 import { useToast } from "@/hooks/useToast";
-import { ClassroomKeys, IClassroom } from "../../classroomType";
-import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
 import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
@@ -22,7 +21,6 @@ type ExercisesRecord = Record<string, UpdateExercises>;
 export const useUpdateExercisesList = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const params = useParams<{ classroomId: string; listId: string }>();
   const { cachedClassroom: classroom } = useGetCachedClassrom(
@@ -33,11 +31,13 @@ export const useUpdateExercisesList = () => {
     list,
     isFetchingExercises,
     errorExercises: errorCuerrentExercises,
-    refetchExercises: refetchCurrentExercises,
+    refetchListOfExercises: refetchCurrentExercises,
   } = useFetchListOfExercises({
     classroomId: params?.classroomId!,
     listId: parseInt(params?.listId!),
   });
+
+  console.log("list", list);
 
   const {
     updateClassroomExercisesFromList,
@@ -223,20 +223,11 @@ export const useUpdateExercisesList = () => {
 
     const onSuccess = () => {
       navigate(ROUTES.CLASSROOM_LISTS(classroom?.uuid!));
-      queryClient.setQueryData(
-        [ClassroomKeys.Details, classroom?.uuid],
-        (classroom: IClassroom) => {
-          const lists = classroom?.lists?.map((classroomList) => ({
-            ...classroomList,
-            totalExercises:
-              list?.id === classroomList?.id
-                ? handledData?.length
-                : classroomList?.totalExercises,
-          }));
-          classroom.lists = lists;
-          return classroom;
-        },
-      );
+
+      updateCachedListOfClassroom(list?.id!, (prevData) => {
+        if (!prevData) return prevData;
+        return { ...prevData, totalExercises: handledData?.length };
+      });
       toast({
         title: "Exercícios atualizados com sucesso!",
         variant: "success",
@@ -260,7 +251,6 @@ export const useUpdateExercisesList = () => {
     toast,
     formStateExercisesForm.isDirty,
     navigate,
-    queryClient,
     classroom,
     list,
   ]);

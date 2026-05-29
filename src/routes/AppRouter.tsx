@@ -16,9 +16,6 @@ import { Spinner } from "@/components/ui/feedback/Spinner";
 const AuthLoginPage = lazy(() => import("@/pages/AuthLoginPage"));
 
 // ── Geral ─────────────────────────────────────────────────────────────────
-const TESTE = lazy(() =>
-  import("@/pages/TESTE").then((m) => ({ default: m.TESTE })),
-);
 const HomePage = lazy(() => import("@/pages/HomePage"));
 const PlayGroundPage = lazy(() => import("@/pages/Playground"));
 const NotFound404 = lazy(() =>
@@ -72,10 +69,6 @@ const router = createBrowserRouter([
   {
     element: <Providers />,
     children: [
-      {
-        path: ROUTE_PATTERNS.TESTE,
-        element: <SuspenseWrapper element={<TESTE />} />,
-      },
       {
         index: true,
         element: <Navigate to={ROUTE_PATTERNS.LOGIN} replace />,

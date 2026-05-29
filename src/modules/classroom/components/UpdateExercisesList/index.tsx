@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dataDisplay/DataTable";
 import { Button } from "@/components/ui/buttons/Button";
 import { useCallback, useMemo } from "react";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { DateTime } from "@/utils/dateTime";
 import { twMerge } from "tailwind-merge";

@@ -5,20 +5,23 @@ import { DateTime } from "@/utils/dateTime";
 import { useMemo } from "react";
 
 interface ClasrromListStatusProps {
-  list: IList;
+  startDate?: string | null;
+  endDate?: string | null;
+  status: number;
 }
 
-export const ClasrromListStatus = ({ list }: ClasrromListStatusProps) => {
+export const ClasrromListStatus = ({
+  startDate,
+  endDate,
+  status,
+}: ClasrromListStatusProps) => {
   const { alreadyFinished, alreadyStarted, didNotStart } =
-    useGetClassroomListStatus(list);
-
-  const startDate = list.startDate;
-  const endDate = list.endDate;
+    useGetClassroomListStatus({ startDate, endDate, status });
 
   const hasNotRangeDates = !startDate && !endDate;
 
   const badgeStatusInfoElement = useMemo(() => {
-    if (list?.status === 1) {
+    if (status === 1) {
       return (
         <>
           <Badge variant="info">Não visível para os alunos</Badge>
@@ -46,7 +49,7 @@ export const ClasrromListStatus = ({ list }: ClasrromListStatusProps) => {
         </>
       );
     }
-  }, [alreadyStarted, didNotStart, alreadyFinished, hasNotRangeDates, list]);
+  }, [alreadyStarted, didNotStart, alreadyFinished, hasNotRangeDates, status]);
 
   return (
     <div className="flex items-center gap-2">
@@ -57,7 +60,6 @@ export const ClasrromListStatus = ({ list }: ClasrromListStatusProps) => {
             ? `${DateTime.format(startDate!, "dd MMM, yyyy")}`
             : undefined,
           endDate ? `${DateTime.format(endDate!, "dd MMM, yyyy")}` : undefined,
-          ,
         ]
           .filter((value) => !!value)
           .join(" - ")}

@@ -2,6 +2,7 @@ import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { useFetchListsByClassromUuid } from "../../hooks/useFetchListsByClassromUuid";
 
 export const useClassroomListsTable = () => {
   const { loggedUser } = useLoggedUser();
@@ -13,11 +14,12 @@ export const useClassroomListsTable = () => {
   const { cachedClassroom: classroom } = useGetCachedClassrom(
     params?.classroomId!,
   );
-
-  const listIdsOfClassroom = useMemo(
-    () => classroom?.lists?.map((list) => list.id),
-    [classroom],
-  );
+  const {
+    listIdsOfClassroom,
+    isFetchingListsOfClassroom,
+    listsOfClassroomError,
+    refetchListsOfClassroom,
+  } = useFetchListsByClassromUuid(params?.classroomId!);
 
   const canCreateList = useMemo(
     () => classroom?.myClassroomPermissions?.canCreateList,
@@ -40,5 +42,8 @@ export const useClassroomListsTable = () => {
     classroom,
     isOpenClassroomFormDialog,
     loggedUser,
+    isFetchingListsOfClassroom,
+    listsOfClassroomError,
+    refetchListsOfClassroom,
   };
 };

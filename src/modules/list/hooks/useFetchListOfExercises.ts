@@ -45,6 +45,7 @@ export const useFetchListOfExercises = ({
   );
 
   return {
+    list,
     errorExercises,
     isFetchingExercises,
     exerciseIdsOfList,

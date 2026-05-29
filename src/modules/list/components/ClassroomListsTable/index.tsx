@@ -17,17 +17,7 @@ import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
 
-interface ClassroomListsTableProps {
-  isLoading?: boolean;
-  error?: string;
-  onTryAgainIfError?: () => void;
-}
-
-export const ClassroomListsTable = ({
-  isLoading,
-  error,
-  onTryAgainIfError,
-}: ClassroomListsTableProps) => {
+export const ClassroomListsTable = () => {
   const {
     openClassroomDialog,
     closeClassroomDialog,
@@ -36,13 +26,16 @@ export const ClassroomListsTable = ({
     classroom,
     isOpenClassroomFormDialog,
     loggedUser,
+    isFetchingListsOfClassroom,
+    listsOfClassroomError,
+    refetchListsOfClassroom,
   } = useClassroomListsTable();
 
   const handledDataTable = useMemo(() => {
-    if (error) {
-      return <FeedBackError onTryAgain={onTryAgainIfError} />;
+    if (listsOfClassroomError) {
+      return <FeedBackError onTryAgain={refetchListsOfClassroom} />;
     }
-    if (isLoading) {
+    if (isFetchingListsOfClassroom) {
       return (
         <>
           {getRange(0, 8).map((index) => (
@@ -57,14 +50,15 @@ export const ClassroomListsTable = ({
         </>
       );
     }
-    return (
-      <>
-        {listIdsOfClassroom?.map((id) => (
-          <ClassroomListsTableRow key={`${id}-list-exercise`} listId={id} />
-        ))}
-      </>
-    );
-  }, [listIdsOfClassroom, error, isLoading, onTryAgainIfError]);
+    return listIdsOfClassroom?.map((id) => (
+      <ClassroomListsTableRow key={`${id}-list-exercise`} listId={id} />
+    ));
+  }, [
+    listIdsOfClassroom,
+    isFetchingListsOfClassroom,
+    listsOfClassroomError,
+    refetchListsOfClassroom,
+  ]);
 
   return (
     <>

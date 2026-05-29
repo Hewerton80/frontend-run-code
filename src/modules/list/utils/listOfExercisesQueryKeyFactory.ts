@@ -6,7 +6,9 @@ export const listOfExercisesQueryKeyFactory = {
   pages: (params?: object) =>
     [...listOfExercisesQueryKeyFactory.all(), params] as const,
 
-  ofClassroom: (listId: number) =>
+  oneOfClassroom: (listId: number) =>
     [ListQueryKeys.ListOfClassroom, listId] as const,
+  allOfClassroom: (classroomUuid: string) =>
+    [ListQueryKeys.ListsOfClassroom, classroomUuid] as const,
   withExercises: (listId: number) => [ListQueryKeys.List, listId] as const,
 };

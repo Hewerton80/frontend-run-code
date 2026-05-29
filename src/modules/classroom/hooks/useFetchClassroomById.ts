@@ -2,8 +2,6 @@ import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { IClassroom } from "@/modules/classroom/classroomType";
 import { classroomQueryKeyFactory } from "@/modules/classroom/utils/classroomQueryKeyFactory";
-import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
-import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 
 export const useFetchClassroomById = (classroomId?: string) => {
   const { apiBase } = useAxios();
@@ -20,17 +18,11 @@ export const useFetchClassroomById = (classroomId?: string) => {
         `/classroom/${classroomId}`,
         { signal },
       );
-      data?.lists?.forEach((list) => {
-        setItemInCache(listOfExercisesQueryKeyFactory.ofClassroom(list.id), {
-          ...list,
-          classroom: data,
-        });
-      });
       return data;
     },
 
     enabled: !!classroomId,
-    staleTime: 60 * 1000 * 30, // 30 minutes
+    staleTime: Infinity,
     gcTime: Infinity,
     retry: 0,
   });

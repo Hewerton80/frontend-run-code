@@ -1,12 +1,6 @@
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card } from "@/components/ui/cards/Card";
 import { LuTrendingUp } from "react-icons/lu";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/charts/Chart";
+import { ChartConfig } from "@/components/ui/charts/Chart";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -35,7 +29,7 @@ export const SubmissionHistoricBarChart = () => {
         <Card.Title>Bar Chart - Multiple</Card.Title>
       </Card.Header>
       <Card.Body>
-        <ChartContainer config={chartConfig}>
+        {/* <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -52,7 +46,7 @@ export const SubmissionHistoricBarChart = () => {
             <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
             <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
           </BarChart>
-        </ChartContainer>
+        </ChartContainer> */}
       </Card.Body>
       <Card.Footer className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">

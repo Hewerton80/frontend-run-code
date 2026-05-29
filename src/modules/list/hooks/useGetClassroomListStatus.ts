@@ -1,10 +1,15 @@
 import { DateTime } from "@/utils/dateTime";
-import { IList } from "../listTypes";
 import { useMemo } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { RoleUser } from "@/modules/user/userTypets";
 
-export const useGetClassroomListStatus = (list: IList) => {
+interface IUseGetClassroomListStatus {
+  startDate?: string | null;
+  endDate?: string | null;
+  status: number;
+}
+
+export const useGetClassroomListStatus = (list: IUseGetClassroomListStatus) => {
   const startDate = list.startDate;
   const endDate = list.endDate;
 

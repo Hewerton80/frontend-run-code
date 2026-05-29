@@ -3,6 +3,7 @@ import { useCachedSubmissionJobs } from "./useCachedSubmissionJobs";
 import { useFetchSubmissionJobs } from "./useFetchSubmissionJobs";
 import { updateCachedExerciseOfList } from "@/modules/exercise/utils/updateCachedExerciseOfList";
 import { SubmissionStatus } from "../submissionType";
+import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
 
 export const useFetchPoolingSubmissionsResult = () => {
   const { cachedSubmissionJobs, setCachedSubmissionJobs } =
@@ -17,7 +18,6 @@ export const useFetchPoolingSubmissionsResult = () => {
   const handleFetchSubmissionJobs = useCallback(async () => {
     const { data: submissionJobs } = await fetchSubmissionJobs();
     if (submissionJobs && submissionJobs.length > 0) {
-      console.log("--------------------------------------------------");
       submissionJobs
         .filter((job) => !!job?.listId)
         .forEach((job, index) => {
@@ -26,14 +26,7 @@ export const useFetchPoolingSubmissionsResult = () => {
           updateCachedExerciseOfList(
             job.exerciseUuId!,
             job.listId!,
-            // (prevExerciseData) => {
-            //   if (!prevExerciseData) return prevExerciseData;
 
-            //   return {
-            //     ...prevExerciseData,
-            //     submissionStatus: SubmissionStatus.ACCEPTED,
-            //   };
-            // },
             (prevExerciseData) => {
               console.log({ prevExerciseData });
               if (!prevExerciseData) return prevExerciseData;
@@ -42,20 +35,23 @@ export const useFetchPoolingSubmissionsResult = () => {
               ) {
                 return prevExerciseData;
               }
-
-              // if (result?.isFirstCorrectSubmission) {
-              return {
-                ...prevExerciseData,
-                submissionStatus: result?.status,
-              };
-              // }
+              return { ...prevExerciseData, submissionStatus: result?.status };
             },
           );
-          // updateCachedListOfClassroom
+
+          if (result?.status !== SubmissionStatus.ACCEPTED) return;
+
+          updateCachedListOfClassroom(job.listId!, (prevListData) => {
+            if (!prevListData) return prevListData;
+            return {
+              ...prevListData,
+              solvedsMap: {
+                ...prevListData.solvedsMap,
+                [job.exerciseUuId!]: true,
+              },
+            };
+          });
         });
-      console.log("--------------------------------------------------");
-      console.log("");
-      console.log("");
       setCachedSubmissionJobs(submissionJobs);
     }
   }, [fetchSubmissionJobs, setCachedSubmissionJobs]);

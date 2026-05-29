@@ -10,16 +10,14 @@ import {
 } from "../../hooks/useCreateClassroom";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
-import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/useToast";
-import { ClassroomKeys, IClassroom } from "../../classroomType";
+import { updateCachedClassroom } from "../../utils/updateCachedClassroom";
 
 export const useClassroomFormDialog = (
   classroomId?: string | null,
   onSuccessSubmitted?: () => void,
 ) => {
   const isEditClassroom = useMemo(() => !!classroomId, [classroomId]);
-  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const { createClassroom, isCreatingClassroom } = useCreateClassroom();
@@ -115,32 +113,13 @@ export const useClassroomFormDialog = (
             languages: handleClassroomFormBody.languages.join(","),
             status: handleClassroomFormBody.status,
           };
-          //TODO adicionar hook para editar no cache
-          queryClient.setQueryData(
-            [ClassroomKeys.Details, currentClassroom?.uuid],
-            (oldData: IClassroom | undefined) => ({
-              ...(oldData || {}),
-              ...newClassroomValues,
-            }),
-          );
-          queryClient.setQueryData(
-            [ClassroomKeys.List],
-            (oldData: IClassroom[] | undefined) => {
-              const foundIndex = (oldData || [])?.findIndex(
-                (oldClassroom) => oldClassroom.uuid === classroomId,
-              );
-              if (foundIndex !== -1 && oldData) {
-                oldData[foundIndex] = {
-                  ...oldData[foundIndex],
-                  ...newClassroomValues,
-                };
-              }
-              return oldData;
-            },
-          );
-        } else {
-          queryClient.resetQueries({ queryKey: [ClassroomKeys.List] });
+          updateCachedClassroom(currentClassroom?.uuid!, (oldData) => ({
+            ...(oldData || {}),
+            ...newClassroomValues,
+          }));
+          return;
         }
+        // TODO force update classroom fetch
       };
       const onError = () => {
         toast({
@@ -162,9 +141,7 @@ export const useClassroomFormDialog = (
       }
     },
     [
-      queryClient,
       isEditClassroom,
-      classroomId,
       currentClassroom,
       clearClassroomFormStates,
       onSuccessSubmitted,

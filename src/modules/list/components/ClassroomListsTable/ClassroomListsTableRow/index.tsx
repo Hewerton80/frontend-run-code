@@ -1,4 +1,3 @@
-import { IList } from "../../../listTypes";
 import { memo, useMemo } from "react";
 import { getRange } from "@/utils/getRange";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
@@ -22,10 +21,11 @@ import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
 import { useGetCachedListOfClassroom } from "@/modules/list/hooks/useGetCachedListOfClassroom";
 import { ClassroomListForm } from "../../ClassroomListFormDialog";
+import { IFetchListsByClassromUuidResponse } from "@/modules/list/hooks/useFetchListsByClassromUuid";
 
 interface ClassroomListsTableRowAccordionContentProps {
   totalExercises: number;
-  list: IList;
+  list: IFetchListsByClassromUuidResponse;
   role: RoleUser;
 }
 
@@ -99,10 +99,16 @@ export const ClassroomListsTableRow = memo(
 
     const { cachedListOfClassroom } = useGetCachedListOfClassroom(listId);
 
-    const { closed } = useGetClassroomListStatus(cachedListOfClassroom);
+    const { closed } = useGetClassroomListStatus({
+      startDate: cachedListOfClassroom?.startDate,
+      endDate: cachedListOfClassroom?.endDate,
+      status: cachedListOfClassroom?.status!,
+    });
 
     const solved = useMemo(
-      () => cachedListOfClassroom?.solved || 0,
+      () =>
+        Object.values(cachedListOfClassroom?.solvedsMap || {}).filter(Boolean)
+          .length,
       [cachedListOfClassroom],
     );
     const totalExercises = useMemo(
@@ -174,7 +180,11 @@ export const ClassroomListsTableRow = memo(
           <DivTable.Data>
             <div className="flex flex-col gap-1">
               <p className="line-clamp-1">{cachedListOfClassroom?.title}</p>
-              <ClasrromListStatus list={cachedListOfClassroom} />
+              <ClasrromListStatus
+                startDate={cachedListOfClassroom?.startDate}
+                endDate={cachedListOfClassroom?.endDate}
+                status={cachedListOfClassroom?.status!}
+              />
             </div>
           </DivTable.Data>
           {loggedUser?.role === RoleUser.STUDENT && (

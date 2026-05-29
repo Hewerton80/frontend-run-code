@@ -9,4 +9,5 @@ export enum ListQueryKeys {
   List = "list-detail",
   /** Lista de exercícios de uma turma específica */
   ListOfClassroom = "list-of-classroom",
+  ListsOfClassroom = "lists-of-classroom",
 }

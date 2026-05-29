@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/buttons/Button";
 import { IconButton } from "@/components/ui/buttons/IconButton";
-import { Card } from "@/components/ui/cards/Card";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
@@ -11,7 +10,6 @@ import { Textarea } from "@/components/ui/forms/Textarea/Textarea";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { IDE } from "@/modules/submission/components/IDE";
-import { getRange } from "@/utils/getRange";
 import { BsTrash } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 import { useExerciseForm } from "./useExerciseForm";
@@ -194,8 +192,6 @@ export const ExerciseForm = () => {
                                 id={restField.name}
                                 checked={value}
                                 onCheckedChange={onChange}
-                                // label="Visível para os alunos"
-                                // disabled={!canEditClassroom}
                               />
                             )}
                           />

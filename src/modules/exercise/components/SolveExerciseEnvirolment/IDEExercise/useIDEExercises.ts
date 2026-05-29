@@ -75,29 +75,6 @@ export const useIDEExercise = (exercise: IExercise) => {
         onSuccess: (data) => {
           console.log("submit code response", data);
           addCachedSubmissionJob(exercise?.uuid!, data);
-          // setExerciseSubmissionStatus(exercise?.uuid!, data);
-          // if (data?.isFirstCorrectSubmission && classroom?.uuid) {
-          //   queryClient.setQueryData<IClassroom>(
-          //     [ClassroomKeys.Details, classroom?.uuid],
-          //     (currentClassroom) => {
-          //       const listsRmp = [...(currentClassroom?.lists || [])]?.map(
-          //         (list) => {
-          //           return {
-          //             ...list,
-          //             solved:
-          //               list?.uuid === params?.listId
-          //                 ? (list?.solved || 0) + 1
-          //                 : list?.solved || 0,
-          //           };
-          //         }
-          //       ) as IClassroom;
-          //       return {
-          //         ...currentClassroom,
-          //         lists: listsRmp,
-          //       } as IClassroom;
-          //     }
-          //   );
-          // }
         },
       },
     );

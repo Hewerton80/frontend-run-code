@@ -1,13 +1,13 @@
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 import { IList } from "../listTypes";
-import { listOfExercisesQueryKeyFactory } from "./listOfExercisesQueryKeyFactory";
+import { listOfExercisesQueryKeyFactory } from "../utils/listOfExercisesQueryKeyFactory";
 
 export const updateCachedListOfClassroom = (
-  listId: string,
+  listId: number,
   listData: Partial<IList>,
 ) => {
   setItemInCache<IList>(
-    listOfExercisesQueryKeyFactory.ofClassroom(listId),
+    listOfExercisesQueryKeyFactory.oneOfClassroom(listId),
     (oldList) => {
       if (!oldList) return oldList;
       return {
