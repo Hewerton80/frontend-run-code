@@ -101,7 +101,6 @@ const ClassroomListFormDialog = () => {
               >
                 Cancelar
               </Button>
-              {/*TODO verifocar porque botao para criar nao está funcionando */}
               <Button
                 disabled={!classroomListFormState.isDirty}
                 isLoading={isSubmitting}
