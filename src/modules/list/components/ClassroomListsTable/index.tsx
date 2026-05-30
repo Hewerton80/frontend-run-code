@@ -96,7 +96,7 @@ export const ClassroomListsTable = () => {
 
       <div className="flex overflow-auto">
         {listIdsOfClassroom?.length === 0 ? (
-          <Alert.Root>
+          <Alert.Root variant="info">
             <Alert.Title>Ainda não há listas</Alert.Title>
             <Alert.Description>
               Crie uma lista para começar a adicionar exercícios.

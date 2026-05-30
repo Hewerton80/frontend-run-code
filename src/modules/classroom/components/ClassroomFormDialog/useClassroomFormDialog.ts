@@ -12,6 +12,7 @@ import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
 import { languagesConfig } from "@/modules/language/utils/languagesConfig";
 import { useToast } from "@/hooks/useToast";
 import { updateCachedClassroom } from "../../utils/updateCachedClassroom";
+import { forceRefetchMyClassrooms } from "../../utils/forceRefetchMyClassrooms";
 
 export const useClassroomFormDialog = (
   classroomId?: string | null,
@@ -119,7 +120,7 @@ export const useClassroomFormDialog = (
           }));
           return;
         }
-        // TODO force update classroom fetch
+        forceRefetchMyClassrooms();
       };
       const onError = () => {
         toast({

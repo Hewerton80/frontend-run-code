@@ -27,7 +27,7 @@ export const useFetchClassrooms = (params?: IFetchClassroomsParams) => {
     error: classroomsError,
     refetch: refetchClassrooms,
   } = useQuery({
-    queryKey: classroomQueryKeyFactory.list(normalizedParams),
+    queryKey: classroomQueryKeyFactory.pages(normalizedParams),
     queryFn: async ({ signal }) => {
       const { data: response } = await apiBase.get<IPaginatedDocs<IClassroom>>(
         "/classroom",

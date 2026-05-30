@@ -6,7 +6,7 @@ import { ClassroomQueryKeys } from "@/modules/classroom/types/ClassroomQueryKeys
  * consistência, autocomplete e invalidação segura.
  *
  * Hierarquia:
- *   all → list(params)
+ *   all → pages(params)
  *   myClassrooms
  *   detail(classroomId)
  *   users(classroomId)
@@ -17,7 +17,7 @@ export const classroomQueryKeyFactory = {
   all: () => [ClassroomQueryKeys.Classrooms] as const,
 
   /** Lista paginada de turmas com params normalizados */
-  list: (params?: object) =>
+  pages: (params?: object) =>
     [...classroomQueryKeyFactory.all(), params] as const,
 
   /** Turmas do usuário logado */

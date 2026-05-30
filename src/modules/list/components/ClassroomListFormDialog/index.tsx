@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/forms/Checkbox";
 import { Button } from "@/components/ui/buttons/Button";
 import { useClassroomListFormDialog } from "./useClassroomListFormDialog";
 import { Controller } from "react-hook-form";
-import { memo, ReactNode } from "react";
+import { forwardRef, memo, ReactNode } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { useTriggerClassroomListFormDialog } from "./useTriggerClassroomListFormDialog";
 
@@ -101,7 +101,7 @@ const ClassroomListFormDialog = () => {
               >
                 Cancelar
               </Button>
-              {/* TODO verifocar porque botao para criar nao está funcionando */}
+              {/*TODO verifocar porque botao para criar nao está funcionando */}
               <Button
                 disabled={!classroomListFormState.isDirty}
                 isLoading={isSubmitting}
@@ -121,17 +121,21 @@ interface ClassroomListFormTriggerButtonProps {
   listId?: number | null;
 }
 
-const ClassroomListFormTriggerButton = ({
-  children,
-  listId,
-}: ClassroomListFormTriggerButtonProps) => {
+const ClassroomListFormTriggerButton = (
+  { children, listId }: ClassroomListFormTriggerButtonProps,
+  ref?: any,
+) => {
   const { showClassroomListFormDialogWithListId } =
     useTriggerClassroomListFormDialog();
 
   const Comp = Slot;
 
   return (
-    <Comp onClick={() => showClassroomListFormDialogWithListId(listId || null)}>
+    <Comp
+      ref={ref}
+      onClick={() => showClassroomListFormDialogWithListId(listId || null)}
+      aria-label={listId ? "Editar lista" : "Criar lista"}
+    >
       {children}
     </Comp>
   );
@@ -139,7 +143,7 @@ const ClassroomListFormTriggerButton = ({
 
 const ClassroomListForm = {
   Dialog: memo(ClassroomListFormDialog),
-  TriggerButton: memo(ClassroomListFormTriggerButton),
+  TriggerButton: memo(forwardRef(ClassroomListFormTriggerButton)),
 };
 
 export { ClassroomListForm };

@@ -10,7 +10,7 @@ export const useTriggerClassroomListFormDialog = () => {
 
   const [listIdToEdit, setListIdToEdit] = useQueryState(
     LIST_ID_PARAM_NAME,
-    parseAsInteger.withDefault(-1),
+    parseAsInteger.withDefault(0),
   );
 
   const closeClassroomListFormDialog = useCallback(() => {

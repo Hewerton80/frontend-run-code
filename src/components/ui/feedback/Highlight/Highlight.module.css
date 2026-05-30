@@ -1,5 +1,3 @@
-@reference '../../../../index.css';
-
 @keyframes highlight {
   75%,
   100% {
@@ -8,6 +6,14 @@
   }
 }
 .root {
-  @apply absolute inset-0 border-8 rounded-lg z-[0];
+  position: absolute;
+  background-color: blueviolet;
+  inset: 0;
+  border-width: 8px;
+  border-radius: 0.5rem;
+  z-index: 0;
   animation: highlight 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.root + * {
+  z-index: 1;
 }

@@ -19,7 +19,9 @@ export const useCreateClassroomList = () => {
   const { mutate: createClassroomList, isPending: isCreatingClassroomList } =
     useMutation({
       mutationFn: ({ classroomId, ...body }: ICreateClassroomListBody) =>
-        apiBase.post(`/classroom/${classroomId}/list`, body),
+        apiBase
+          .post<{ id: number }>(`/classroom/${classroomId}/list`, body)
+          .then((res) => res.data),
       retry: 0,
     });
 
