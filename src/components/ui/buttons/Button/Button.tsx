@@ -102,12 +102,12 @@ const buttonVariants = {
       hoverBg: "hover:bg-accent hover:text-accent-foreground",
     }),
     outline: generateButtonStyles({
-      bg: "bg-background",
-      border: "border-input",
+      bg: "bg-transparent",
+      border: "border-foreground",
       text: "text-foreground",
       // focusRing: "focus:ring-dark/40",
       activeRing: "active:ring-accent/40",
-      hoverBg: "hover:bg-accent hover:text-accent-foreground",
+      hoverBg: "hover:text-accent-foreground",
     }),
   },
 };
@@ -143,13 +143,13 @@ export const Button = forwardRef(
       asChild,
       ...restProps
     }: ButtonProps,
-    ref?: any
+    ref?: any,
   ) => {
     const Comp = asChild ? Slot : "button";
 
     const handledChildren = useMemo(() => {
       let handledChildrenTmp: ReactNode = Children.toArray(
-        children || <></>
+        children || <></>,
       )[0];
 
       const hasIcon = leftIcon || rightIcon;
@@ -163,7 +163,7 @@ export const Button = forwardRef(
             {leftIcon && <span className="mr-3">{leftIcon}</span>}
             {ChildrenComp?.props?.children || children}
             {rightIcon && <span className="ml-3">{rightIcon}</span>}
-          </>
+          </>,
         );
       }
       return handledChildrenTmp;
@@ -182,7 +182,7 @@ export const Button = forwardRef(
           fullWidth && "w-full",
           getButtonVariantStyle(variantStyle),
           isLoading && twMerge("text-transparent", spinnerStyle.root),
-          className
+          className,
         )}
         type={type}
         disabled={disabled || isLoading}
@@ -191,5 +191,5 @@ export const Button = forwardRef(
         {handledChildren}
       </Comp>
     );
-  }
+  },
 );

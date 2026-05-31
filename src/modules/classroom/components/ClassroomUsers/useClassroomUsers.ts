@@ -10,7 +10,7 @@ export const useClassroomUsers = () => {
   const {
     refetchClassroomUsers,
     classroomUsersRecords: classroomUsers,
-    isFetchingClassroomUsers: isLoadingClassroomUsers,
+    isFetchingClassroomUsers: isFetchingClassroomUsers,
     classroomUsersError,
   } = useFetchClassroomUsers(params?.classroomId!);
 
@@ -23,7 +23,7 @@ export const useClassroomUsers = () => {
   return {
     classroom: cachedClassroom,
     classroomUsers,
-    isLoadingClassroomUsers,
+    isFetchingClassroomUsers,
     classroomUsersError,
     loggedUser,
     canAddTeacher,

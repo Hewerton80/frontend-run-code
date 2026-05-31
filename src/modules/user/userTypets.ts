@@ -28,12 +28,12 @@ export type TeacherPermissions = {
 };
 
 export interface IUser {
-  id?: string;
-  uuid?: string;
-  name?: string;
-  surname?: string;
-  username?: string;
-  email?: string;
+  id: string;
+  uuid: string;
+  name: string;
+  surname: string;
+  username: string;
+  email: string;
   avatarUrl?: string;
   avatarBgColor?: string;
   avatarFontColor?: string;

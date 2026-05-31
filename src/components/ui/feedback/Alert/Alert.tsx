@@ -55,7 +55,7 @@ const Root = ({ variant = "default", className, children }: AlertRootProps) => {
         "relative w-full rounded-lg px-4 py-3 text-sm",
         "[&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
         alertVariants[variant].className,
-        className
+        className,
       )}
     >
       {alertVariants[variant].icon}
@@ -68,8 +68,8 @@ const Title = ({ className, children }: AlertTitleProps) => {
   return (
     <h5
       className={twMerge(
-        "mb-1 pl-7 font-bold leading-none tracking-tight",
-        className
+        "pl-7 font-bold leading-none tracking-tight",
+        className,
       )}
     >
       {children}
@@ -81,8 +81,8 @@ const Description = ({ className, children }: AlertDescriptionProps) => {
   return (
     <div
       className={twMerge(
-        "text-sm pl-7 [&_p]:leading-relaxed translate-y-[-3px]",
-        className
+        "text-sm pl-7 pt-1 [&_p]:leading-relaxed translate-y-[-3px]",
+        className,
       )}
     >
       {children}
@@ -90,8 +90,10 @@ const Description = ({ className, children }: AlertDescriptionProps) => {
   );
 };
 
-export const Alert = {
+const Alert = {
   Root,
   Title,
   Description,
 };
+
+export { Alert };

@@ -1,17 +1,17 @@
 import { ComponentPropsWithRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface TableContainerProps extends ComponentPropsWithRef<"div"> {}
-interface TableProps extends ComponentPropsWithRef<"table"> {}
-interface TbodyProps extends ComponentPropsWithRef<"tbody"> {}
-interface TheadProps extends ComponentPropsWithRef<"thead"> {}
-interface ThProps extends ComponentPropsWithRef<"th"> {}
-interface TrProps extends ComponentPropsWithRef<"tr"> {}
-interface TdProps extends ComponentPropsWithRef<"td"> {}
+type TableContainerProps = ComponentPropsWithRef<"div">;
+type TableProps = ComponentPropsWithRef<"table">;
+type TbodyProps = ComponentPropsWithRef<"tbody">;
+type TheadProps = ComponentPropsWithRef<"thead">;
+type ThProps = ComponentPropsWithRef<"th">;
+type TrProps = ComponentPropsWithRef<"tr">;
+type TdProps = ComponentPropsWithRef<"td">;
 
 function Table({ children, className, ...restProps }: TableProps) {
   return (
-    <table className={twMerge("w-full text-sm")} {...restProps}>
+    <table className={twMerge("w-full text-sm", className)} {...restProps}>
       {children}
     </table>
   );
@@ -26,13 +26,13 @@ function TableContainer({
     <div
       className={twMerge(
         "rounded-md overflow-x-hidden border w-full",
-        className
+        className,
       )}
       {...restProps}
     >
       <div
         className={twMerge(
-          "flex flex-col w-full overflow-x-auto custom-scroll "
+          "flex flex-col w-full overflow-x-auto custom-scroll ",
         )}
       >
         {children}
@@ -54,7 +54,7 @@ function Th({ children, className, ...restProps }: ThProps) {
     <th
       className={twMerge(
         "align-middle font-medium h-10 px-2 text-muted-foreground border-b",
-        className
+        className,
       )}
       {...restProps}
     >
@@ -72,7 +72,7 @@ function Tbody({ children, className, ...restProps }: TbodyProps) {
     <tbody
       className={twMerge(
         "[&_tr+tr_td]:border-t font-normal text-sm",
-        className
+        className,
       )}
       {...restProps}
     >
