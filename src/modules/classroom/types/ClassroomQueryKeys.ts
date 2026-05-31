@@ -14,5 +14,6 @@ export enum ClassroomQueryKeys {
   /** Lista de usuários de uma turma */
   ClassroomUsers = "classroomUsers",
   /** Detalhe de um usuário de uma turma */
-  ClassroomUser = "classroomUser",
+  ClassroomUserDetail = "classroomUserDetail",
+  ClassroomUserRow = "classroomUserRow",
 }

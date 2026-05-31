@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dataDisplay/DataTable";
 import { Button } from "@/components/ui/buttons/Button";
 import { useMemo } from "react";
-import { ClassroomTeacherFormDialog } from "../ClassromTeacherFormDialog";
+import { ClassroomTeacherForm } from "../ClassromTeacherFormDialog";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { BackLink } from "@/components/ui/navigation/BackLink";
@@ -22,14 +22,9 @@ export function ClassroomUsers() {
     classroomUsers,
     isLoadingClassroomUsers,
     classroomUsersError,
-    isOpenTeacherFormDialog,
-    teacherIdToEdit,
     loggedUser,
     canAddTeacher,
-    openTeacherFormDialog,
-    closeTeacherFormDialog,
     refetchClassroomUsers,
-    handleSetTeacherIdToEdit,
   } = useClassroomUsers();
 
   const columns = useMemo<IColmunDataTable<IUser>[]>(
@@ -62,14 +57,12 @@ export function ClassroomUsers() {
         onParse: (user) =>
           user?.role === RoleUser.TEACHER && (
             <div className="flex justify-end">
-              <ClasrromUsersActionsTriggerButton
-                onClickToEditUser={() => handleSetTeacherIdToEdit(user?.uuid!)}
-              />
+              <ClasrromUsersActionsTriggerButton userUuid={user?.uuid!} />
             </div>
           ),
       },
     ],
-    [classroom, loggedUser, handleSetTeacherIdToEdit],
+    [classroom, loggedUser],
   );
 
   return (
@@ -95,12 +88,11 @@ export function ClassroomUsers() {
               <span
                 className={!canAddTeacher ? "cursor-not-allowed" : undefined}
               >
-                <Button
-                  disabled={!canAddTeacher}
-                  onClick={openTeacherFormDialog}
-                >
-                  Adicionar professor(a)
-                </Button>
+                <ClassroomTeacherForm.TriggerButton teacherId={null}>
+                  <Button disabled={!canAddTeacher}>
+                    Adicionar professor(a)
+                  </Button>
+                </ClassroomTeacherForm.TriggerButton>
               </span>
             </Tooltip>
           )}
@@ -115,11 +107,7 @@ export function ClassroomUsers() {
           />
         </div>
       </div>
-      <ClassroomTeacherFormDialog
-        isOpen={isOpenTeacherFormDialog}
-        teacherId={teacherIdToEdit}
-        onClose={closeTeacherFormDialog}
-      />
+      <ClassroomTeacherForm.Dialog />
     </>
   );
 }

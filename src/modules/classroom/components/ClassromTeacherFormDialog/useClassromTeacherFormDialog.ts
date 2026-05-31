@@ -18,11 +18,15 @@ import {
   useUpdateTeacherInClassroom,
 } from "../../hooks/useUpdateTeacherInClassroom";
 import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+import { useTriggerClassroomTeacherFormDialog } from "./useTriggerClassroomTeacherFormDialog";
 
-export const useClassromTeacherFormDialog = (
-  teacherId?: string | null,
-  onSuccessSubmitted?: () => void,
-) => {
+export const useClassromTeacherFormDialog = () => {
+  const {
+    teacherIdToEdit: teacherId,
+    showClassroomTeacherFormDialog,
+    closeClassroomTeacherFormDialog,
+  } = useTriggerClassroomTeacherFormDialog();
+
   const isEdit = useMemo(() => !!teacherId, [teacherId]);
   const params = useParams<{ classroomId: string }>();
   const { toast } = useToast();
@@ -71,7 +75,9 @@ export const useClassromTeacherFormDialog = (
     useUpdateTeacherInClassroom(params?.classroomId!, teacherId as string);
 
   useEffect(() => {
+    if (!showClassroomTeacherFormDialog) return;
     if (classroomUser) {
+      console.log("resetando form com classroomUser", classroomUser);
       resetClassroomTeacherForm({
         value: classroomUser?.uuid,
         label: `${classroomUser?.email} - ${classroomUser?.name} ${classroomUser?.surname}`,
@@ -84,7 +90,11 @@ export const useClassromTeacherFormDialog = (
         canRemoveMember: classroomUser?.canRemoveMember,
       });
     }
-  }, [resetClassroomTeacherForm, classroomUser]);
+  }, [
+    showClassroomTeacherFormDialog,
+    resetClassroomTeacherForm,
+    classroomUser,
+  ]);
 
   const getHandledTeacherBody = useCallback((data: TeacherFormSchema) => {
     return {
@@ -99,12 +109,17 @@ export const useClassromTeacherFormDialog = (
     } as AddTeacherToClassroomBody & UpdateTeacherInClassroomBody;
   }, []);
 
+  const handleClose = useCallback(() => {
+    closeClassroomTeacherFormDialog();
+    clearClassroomTeacherStates();
+  }, [closeClassroomTeacherFormDialog, clearClassroomTeacherStates]);
+
   const handleSubmitClassroomTeacherForm = useCallback(
     (data: TeacherFormSchema) => {
       const handledTeacherBody = getHandledTeacherBody(data);
       const onSuccess = () => {
         clearClassroomTeacherStates();
-        onSuccessSubmitted?.();
+        handleClose();
         toast({
           title: `Professor(a) ${
             isEdit ? "editado(a)" : "adicionado(a)"
@@ -112,6 +127,7 @@ export const useClassromTeacherFormDialog = (
           variant: "success",
         });
         if (!isEdit) {
+          // TODO adicionar hooks para editar no cache sem precisar refetchar toda a lista
           queryClient.resetQueries({
             queryKey: [ClassroomKeys.Users, params?.classroomId],
           });
@@ -147,7 +163,7 @@ export const useClassromTeacherFormDialog = (
       setClassroomTeacherFormError,
       updateTeacherInClassroom,
       toast,
-      onSuccessSubmitted,
+      handleClose,
       clearClassroomTeacherStates,
       getHandledTeacherBody,
       addTeacherToClassroom,
@@ -169,6 +185,8 @@ export const useClassromTeacherFormDialog = (
     isEdit,
     classroom,
     canEditClassroomUser,
+    showClassroomTeacherFormDialog,
+    handleClose,
     submitClassroomTeacherForm: handleClassroomTeacherFormSubmit(
       handleSubmitClassroomTeacherForm,
     ),

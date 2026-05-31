@@ -2,28 +2,19 @@ import { Dialog } from "@/components/ui/overlay/Dialog";
 import { useClassromTeacherFormDialog } from "./useClassromTeacherFormDialog";
 import { Controller } from "react-hook-form";
 import { FormLabel } from "@/components/ui/forms/FormLabel";
-import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { AsyncTeacherSelect } from "@/modules/user/components/AsyncTeacherSelect";
 import { Checkbox } from "@/components/ui/forms/Checkbox";
 import { Button } from "@/components/ui/buttons/Button";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
-import { useMemo } from "react";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";
-import { twMerge } from "tailwind-merge";
 import { Alert } from "@/components/ui/feedback/Alert";
+import { cn } from "@/utils/cn";
+import { forwardRef, memo, ReactNode } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { useTriggerClassroomTeacherFormDialog } from "./useTriggerClassroomTeacherFormDialog";
 
-interface ClassroomTeacherFormDialogProps {
-  teacherId?: string | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export const ClassroomTeacherFormDialog = ({
-  isOpen,
-  onClose,
-  teacherId,
-}: ClassroomTeacherFormDialogProps) => {
+const ClassroomTeacherFormDialog = () => {
   const {
     classroomTeacherFormControl,
     classroomTeacherFormState,
@@ -34,22 +25,25 @@ export const ClassroomTeacherFormDialog = ({
     isLoadingClassroomUser,
     isEdit,
     canEditClassroomUser,
+    showClassroomTeacherFormDialog,
+    handleClose,
     refetchClassroomUser,
     submitClassroomTeacherForm,
-  } = useClassromTeacherFormDialog(teacherId, onClose);
+  } = useClassromTeacherFormDialog();
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={(value) => !value && onClose()}>
+    <Dialog.Root
+      open={showClassroomTeacherFormDialog}
+      onOpenChange={(value) => !value && handleClose()}
+    >
       <Dialog.Content>
         <Dialog.Header>
           <Dialog.Title>
-            {teacherId ? "Editar" : "Criar"} professor(a)
+            {isEdit ? "Editar" : "Criar"} professor(a)
           </Dialog.Title>
         </Dialog.Header>
         {classroomUserError || isLoadingClassroomUser ? (
-          <div
-            className={twMerge("flex items-center justify-center w-full h-80")}
-          >
+          <div className={cn("flex items-center justify-center w-full h-80")}>
             {classroomUserError && (
               <FeedBackError onTryAgain={refetchClassroomUser} />
             )}
@@ -207,7 +201,7 @@ export const ClassroomTeacherFormDialog = ({
                     <Button
                       disabled={isSubmitting}
                       variantStyle="secondary"
-                      onClick={onClose}
+                      onClick={handleClose}
                     >
                       Cancelar
                     </Button>
@@ -228,3 +222,39 @@ export const ClassroomTeacherFormDialog = ({
     </Dialog.Root>
   );
 };
+
+interface ClassroomTeacherFormTriggerButtonProps {
+  children?: ReactNode;
+  teacherId?: string | null;
+}
+
+const ClassroomTeacherFormTriggerButton = (
+  { children, teacherId }: ClassroomTeacherFormTriggerButtonProps,
+  ref?: any,
+) => {
+  const { showClassroomTeacherFormDialogWithTeacherId } =
+    useTriggerClassroomTeacherFormDialog();
+
+  const Comp = Slot;
+
+  return (
+    <Comp
+      ref={ref}
+      onClick={() =>
+        showClassroomTeacherFormDialogWithTeacherId(teacherId || null)
+      }
+      aria-label={teacherId ? "Editar professor(a)" : "Adicionar professor(a)"}
+    >
+      {children}
+    </Comp>
+  );
+};
+
+const ClassroomTeacherForm = {
+  Dialog: memo(ClassroomTeacherFormDialog),
+  TriggerButton: memo(forwardRef(ClassroomTeacherFormTriggerButton)),
+};
+
+export { ClassroomTeacherForm };
+
+ClassroomTeacherForm.Dialog.displayName = "ClassroomTeacherFormDialog";

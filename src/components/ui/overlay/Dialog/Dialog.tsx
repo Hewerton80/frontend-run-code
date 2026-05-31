@@ -24,7 +24,7 @@ const DialogOverlay = (
     className,
     ...props
   }: ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>,
-  ref?: any
+  ref?: any,
 ) => (
   <DialogPrimitive.Overlay
     ref={ref}
@@ -32,21 +32,22 @@ const DialogOverlay = (
       "fixed inset-0 z-50 bg-black/80",
       "data-[state=open]:animate-in data-[state=closed]:animate-out",
       "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className
+      className,
     )}
     {...props}
   />
 );
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-interface DialogContentProps
-  extends ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+interface DialogContentProps extends ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Content
+> {
   size?: keyof typeof sizes;
 }
 
 const DialogContent = (
   { className, children, size = "sm", ...props }: DialogContentProps,
-  ref?: any
+  ref?: any,
 ) => (
   <DialogPortal>
     <DialogOverlay />
@@ -67,17 +68,17 @@ const DialogContent = (
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
         sizes[size],
-        className
+        className,
       )}
       {...props}
     >
       {children}
       <DialogPrimitive.Close
         className={twMerge(
-          "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background",
+          "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background cursor-pointer",
           "transition-opacity hover:opacity-100 focus:outline-none focus:ring-2",
           "focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none",
-          "data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          "data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
         )}
       >
         <FaTimes className="h-4 w-4" />
@@ -95,7 +96,7 @@ const DialogHeader = ({
   <div
     className={twMerge(
       "flex flex-col space-y-1.5 text-center sm:text-left",
-      className
+      className,
     )}
     {...props}
   />
@@ -109,7 +110,7 @@ const DialogFooter = ({
   <div
     className={twMerge(
       "flex sm:items-center flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
+      className,
     )}
     {...props}
   />
@@ -122,13 +123,13 @@ const DialogTitle = (
     children,
     ...props
   }: ComponentPropsWithoutRef<typeof DialogPrimitive.Title>,
-  ref?: any
+  ref?: any,
 ) => (
   <DialogPrimitive.Title
     ref={ref}
     className={twMerge(
       "text-lg font-semibold leading-none tracking-tight",
-      className
+      className,
     )}
     {...props}
   >
@@ -142,7 +143,7 @@ const DialogDescription = (
     className,
     ...props
   }: ComponentPropsWithoutRef<typeof DialogPrimitive.Description>,
-  ref?: any
+  ref?: any,
 ) => (
   <DialogPrimitive.Description
     ref={ref}
@@ -152,7 +153,7 @@ const DialogDescription = (
 );
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
-export const Dialog = {
+const Dialog = {
   Root,
   Trigger: DialogTrigger,
   Portal: DialogPortal,
@@ -164,6 +165,7 @@ export const Dialog = {
   Description: DialogDescription,
   Close: DialogClose,
 };
+export { Dialog };
 
 // export {
 //   Dialog,

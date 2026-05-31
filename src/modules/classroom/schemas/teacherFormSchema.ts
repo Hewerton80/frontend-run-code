@@ -1,8 +1,7 @@
 import { CONSTANTS } from "@/utils/constants";
-import { isNumber } from "@/utils/isType";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useCallback, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const {
@@ -38,7 +37,7 @@ export const useTeacherFormSchema = () => {
       canManageExercises: false,
       canRemoveMember: false,
     }),
-    []
+    [],
   );
 
   const {
@@ -62,13 +61,6 @@ export const useTeacherFormSchema = () => {
     resetClassroomTeacherForm,
     clearClassroomTeacherFormErrors,
   ]);
-
-  useEffect(() => {
-    console.log(
-      "classroomTeacherFormState.errors",
-      classroomTeacherFormState.errors
-    );
-  }, [classroomTeacherFormState.errors]);
 
   return {
     classroomTeacherFormState,

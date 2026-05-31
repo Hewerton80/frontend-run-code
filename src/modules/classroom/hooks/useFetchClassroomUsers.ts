@@ -27,11 +27,10 @@ export const useFetchClassroomUsers = (classroomId: string) => {
         { signal },
       );
 
-      // Semeia o cache individual de cada usuário da turma
       response?.data?.forEach((user) => {
         if (user.uuid) {
           setItemInCache<IUser>(
-            classroomQueryKeyFactory.user(classroomId, user.uuid),
+            classroomQueryKeyFactory.row(classroomId, user.uuid),
             user,
           );
         }
