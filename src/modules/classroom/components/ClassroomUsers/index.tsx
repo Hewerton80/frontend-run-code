@@ -18,6 +18,7 @@ export function ClassroomUsers() {
     classroomUsersError,
     loggedUser,
     canAddTeacher,
+    goToPage,
     refetchClassroomUsers,
   } = useClassroomUsers();
 
@@ -69,6 +70,13 @@ export function ClassroomUsers() {
           renderItem={({ item: user }) => (
             <ClassroomUsersTableRow userUuid={user?.uuid!} />
           )}
+          pagination={{
+            currentPage: classroomUsers?.currentPage || 1,
+            perPage: classroomUsers?.perPage || 10,
+            totalPages: classroomUsers?.lastPage || 0,
+            totalRecords: classroomUsers?.total || 0,
+            onChangePage: goToPage,
+          }}
         />
       </div>
       <ClassroomTeacherForm.Dialog />

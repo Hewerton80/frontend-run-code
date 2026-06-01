@@ -1,12 +1,30 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { classroomQueryKeyFactory } from "@/modules/classroom/utils/classroomQueryKeyFactory";
-import { IPaginatedDocs } from "@/types/paginad";
+import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
 import { IUser } from "@/modules/user/userTypets";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
+import { useMemo } from "react";
+import { removeEmptyKeys } from "@/utils/queryParams";
+import { isNumberable } from "@/utils/isType";
 
-export const useFetchClassroomUsers = (classroomId: string) => {
+export type IFetchClassroomUsersParams = IPaginationParams;
+
+export const useFetchClassroomUsers = (
+  classroomId: string,
+  params?: IFetchClassroomUsersParams,
+) => {
   const { apiBase } = useAxios();
+
+  const normalizedParams = useMemo(() => {
+    const _params = {
+      currentPage: isNumberable(params?.currentPage)
+        ? Number(params?.currentPage)
+        : 1,
+      perPage: isNumberable(params?.perPage) ? Number(params?.perPage) : 10,
+    };
+    return removeEmptyKeys(_params);
+  }, [params]);
 
   const {
     data: classroomUsersRecords,
@@ -14,11 +32,11 @@ export const useFetchClassroomUsers = (classroomId: string) => {
     error: classroomUsersError,
     refetch: refetchClassroomUsers,
   } = useQuery({
-    queryKey: classroomQueryKeyFactory.users(classroomId),
+    queryKey: classroomQueryKeyFactory.users(classroomId, normalizedParams),
     queryFn: async ({ signal }) => {
       const { data: response } = await apiBase.get<IPaginatedDocs<IUser>>(
         `/classroom/${classroomId}/users`,
-        { signal },
+        { signal, params: normalizedParams },
       );
 
       response?.data?.forEach((user) => {

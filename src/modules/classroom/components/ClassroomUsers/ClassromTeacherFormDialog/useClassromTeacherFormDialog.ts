@@ -19,6 +19,7 @@ import { useGetCachedClassrom } from "../../../hooks/useGetCachedClassrom";
 import { useTriggerClassroomTeacherFormDialog } from "./useTriggerClassroomTeacherFormDialog";
 import { forceRefetchMyClassroomUsers } from "@/modules/classroom/utils/forceRefetchMyClassroomUsers";
 import { updateCachedClassroomUserDetail } from "@/modules/classroom/utils/updateCachedClassroomUserDatail";
+import { usePagination } from "@/hooks/usePagination";
 
 export const useClassromTeacherFormDialog = () => {
   const {
@@ -29,6 +30,8 @@ export const useClassromTeacherFormDialog = () => {
 
   const isEdit = useMemo(() => !!teacherId, [teacherId]);
   const params = useParams<{ classroomId: string }>();
+  const { goToPage } = usePagination();
+
   const { toast } = useToast();
   const { loggedUser } = useLoggedUser();
 
@@ -139,6 +142,7 @@ export const useClassromTeacherFormDialog = () => {
           return;
         }
         forceRefetchMyClassroomUsers(params?.classroomId!);
+        // goToPage(1);
       };
       const onError = (erro?: any) => {
         const errorResponse = erro?.response;
@@ -156,16 +160,19 @@ export const useClassromTeacherFormDialog = () => {
         });
       };
       if (isEdit) {
-        return updateTeacherInClassroom(handledTeacherBody, {
+        updateTeacherInClassroom(handledTeacherBody, {
           onSuccess,
           onError,
         });
+        return;
       }
       addTeacherToClassroom(handledTeacherBody, { onSuccess, onError });
     },
     [
       isEdit,
       params,
+      teacherId,
+      goToPage,
       setClassroomTeacherFormError,
       updateTeacherInClassroom,
       toast,

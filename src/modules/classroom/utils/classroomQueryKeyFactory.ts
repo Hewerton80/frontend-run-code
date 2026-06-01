@@ -1,4 +1,5 @@
 import { ClassroomQueryKeys } from "@/modules/classroom/types/ClassroomQueryKeys";
+import { IFetchClassroomUsersParams } from "../hooks/useFetchClassroomUsers";
 
 /**
  * Factory de query keys do módulo classroom.
@@ -30,8 +31,8 @@ export const classroomQueryKeyFactory = {
     [ClassroomQueryKeys.ClassroomCard, classroomId] as const,
 
   /** Lista de usuários de uma turma */
-  users: (classroomId: string) =>
-    [ClassroomQueryKeys.ClassroomUsers, classroomId] as const,
+  users: (classroomId: string, params?: IFetchClassroomUsersParams) =>
+    [ClassroomQueryKeys.ClassroomUsers, classroomId, params] as const,
 
   /** Detalhe de um usuário específico de uma turma */
   userDetail: (userUuid: string) =>

@@ -3,16 +3,18 @@ import { useFetchClassroomUsers } from "../../hooks/useFetchClassroomUsers";
 import { useMemo } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+import { usePagination } from "@/hooks/usePagination";
 
 export const useClassroomUsers = () => {
   const params = useParams<{ classroomId: string }>();
   const { loggedUser } = useLoggedUser();
+  const { goToPage, paginationParams } = usePagination();
   const {
     refetchClassroomUsers,
     classroomUsersRecords: classroomUsers,
     isFetchingClassroomUsers: isFetchingClassroomUsers,
     classroomUsersError,
-  } = useFetchClassroomUsers(params?.classroomId!);
+  } = useFetchClassroomUsers(params?.classroomId!, paginationParams);
 
   const { cachedClassroom } = useGetCachedClassrom(params?.classroomId!);
 
@@ -27,6 +29,8 @@ export const useClassroomUsers = () => {
     classroomUsersError,
     loggedUser,
     canAddTeacher,
+    paginationParams,
+    goToPage,
     refetchClassroomUsers,
   };
 };

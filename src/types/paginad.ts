@@ -9,6 +9,6 @@ export interface IPaginatedDocs<DocsType> {
 }
 
 export interface IPaginationParams {
-  currentPage?: string | number;
-  perPage?: string | number;
+  currentPage?: number;
+  perPage?: number;
 }
