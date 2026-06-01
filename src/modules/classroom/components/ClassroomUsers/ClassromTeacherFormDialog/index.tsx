@@ -39,7 +39,7 @@ const ClassroomTeacherFormDialog = () => {
       <Dialog.Content>
         <Dialog.Header>
           <Dialog.Title>
-            {isEdit ? "Editar" : "Criar"} professor(a)
+            {isEdit ? "Editar" : "Adicionar"} professor(a)
           </Dialog.Title>
         </Dialog.Header>
         {classroomUserError || isLoadingClassroomUser ? (

@@ -5,12 +5,6 @@ import { IPaginatedDocs } from "@/types/paginad";
 import { IUser } from "@/modules/user/userTypets";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
-/**
- * Busca os usuários de uma turma.
- * Semeia o cache individual de cada usuário para navegação cache-first.
- * Suporta cancelamento automático via AbortSignal.
- * Não executa sem `classroomId`.
- */
 export const useFetchClassroomUsers = (classroomId: string) => {
   const { apiBase } = useAxios();
 
@@ -29,10 +23,7 @@ export const useFetchClassroomUsers = (classroomId: string) => {
 
       response?.data?.forEach((user) => {
         if (user.uuid) {
-          setItemInCache<IUser>(
-            classroomQueryKeyFactory.row(classroomId, user.uuid),
-            user,
-          );
+          setItemInCache<IUser>(classroomQueryKeyFactory.row(user.uuid), user);
         }
       });
 

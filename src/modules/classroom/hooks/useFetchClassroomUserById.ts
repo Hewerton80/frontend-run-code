@@ -5,7 +5,7 @@ import { ITeacher } from "@/modules/user/userTypets";
 
 export const useFetchClassroomUserById = (
   classroomId: string,
-  userUuId?: string | null,
+  userUuid?: string | null,
 ) => {
   const { apiBase } = useAxios();
 
@@ -15,15 +15,15 @@ export const useFetchClassroomUserById = (
     error: classroomUserError,
     refetch: refetchClassroomUser,
   } = useQuery({
-    queryKey: classroomQueryKeyFactory.userDetail(classroomId, userUuId),
+    queryKey: userUuid ? classroomQueryKeyFactory.userDetail(userUuid) : [],
     queryFn: ({ signal }) =>
       apiBase
-        .get<ITeacher>(`/classroom/${classroomId}/users/${userUuId}`, {
+        .get<ITeacher>(`/classroom/${classroomId}/users/${userUuid}`, {
           signal,
         })
         .then((res) => res.data),
 
-    enabled: !!userUuId,
+    enabled: !!userUuid,
     staleTime: Infinity,
     gcTime: Infinity,
     retry: 0,

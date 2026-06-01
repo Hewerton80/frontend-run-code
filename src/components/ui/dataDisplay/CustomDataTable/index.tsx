@@ -6,8 +6,8 @@ import {
   PaginationBarProps,
 } from "@/components/ui/navigation/PaginationBar";
 import { Slot } from "@radix-ui/react-slot";
-import { Button } from "../buttons/Button";
-import { Alert } from "../feedback/Alert";
+import { Button } from "../../buttons/Button";
+import { Alert } from "../../feedback/Alert";
 
 export interface IRenderItemInfo<TItem> {
   item: TItem;
@@ -20,6 +20,7 @@ export interface IDataTableProps<TItem> {
   isLoading?: boolean;
   pagination?: PaginationBarProps | null;
   numberOfSkeletonRows?: number;
+  emptyMessage?: string;
   errorMessage?: string;
   onRetry?: () => void;
   renderItem: (info: IRenderItemInfo<TItem>) => ReactNode;
@@ -31,6 +32,7 @@ function DataTableComponent<TItem>({
   columns,
   isLoading = false,
   pagination,
+  emptyMessage = "Nenhuma informação encontrada",
   numberOfSkeletonRows = 10,
   errorMessage,
   onRetry,
@@ -85,7 +87,7 @@ function DataTableComponent<TItem>({
           <Table.Data colSpan={columns.length}>
             <div className="flex justify-center items-center p-8">
               <h5 className="text-2xl text-foreground-subtle">
-                Nenhuma informação encontrada
+                {emptyMessage}
               </h5>
             </div>
           </Table.Data>
@@ -146,6 +148,6 @@ function DataTableComponent<TItem>({
 }
 
 DataTableComponent.displayName = "DataTable";
-const DataTable = memo(DataTableComponent) as typeof DataTableComponent;
+const CustomDataTable = memo(DataTableComponent) as typeof DataTableComponent;
 
-export { DataTable };
+export { CustomDataTable };

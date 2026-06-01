@@ -4,7 +4,7 @@ import { ClassroomsHome } from "@/modules/classroom/components/ClassroomsHome";
 import { SuperAdminHome } from "@/modules/user/components/SuperAdminHome";
 import { RoleUser } from "@/modules/user/userTypets";
 
-// TODO mifrar todos os selects e combobox
+// TODO migrar todos os selects e combobox
 // TODO migrar todas as tabelas
 // TODO Mudar layout da tela de login
 // TODO adicionar refresh token

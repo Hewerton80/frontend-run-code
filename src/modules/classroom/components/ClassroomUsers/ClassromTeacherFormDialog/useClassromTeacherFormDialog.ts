@@ -2,23 +2,23 @@ import { useCallback, useEffect, useMemo } from "react";
 import {
   TeacherFormSchema,
   useTeacherFormSchema,
-} from "../../schemas/teacherFormSchema";
+} from "../../../schemas/teacherFormSchema";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useParams } from "react-router-dom";
 import {
   type IAddTeacherToClassroomBody as AddTeacherToClassroomBody,
   useAddTeacherToClassroom,
-} from "../../hooks/useAddTeacherToClassroom";
+} from "../../../hooks/useAddTeacherToClassroom";
 import { useToast } from "@/hooks/useToast";
-import { ClassroomKeys } from "../../classroomType";
-import { useQueryClient } from "@tanstack/react-query";
-import { useFetchClassroomUserById } from "../../hooks/useFetchClassroomUserById";
+import { useFetchClassroomUserById } from "../../../hooks/useFetchClassroomUserById";
 import {
   type IUpdateTeacherInClassroomBody as UpdateTeacherInClassroomBody,
   useUpdateTeacherInClassroom,
-} from "../../hooks/useUpdateTeacherInClassroom";
-import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+} from "../../../hooks/useUpdateTeacherInClassroom";
+import { useGetCachedClassrom } from "../../../hooks/useGetCachedClassrom";
 import { useTriggerClassroomTeacherFormDialog } from "./useTriggerClassroomTeacherFormDialog";
+import { forceRefetchMyClassroomUsers } from "@/modules/classroom/utils/forceRefetchMyClassroomUsers";
+import { updateCachedClassroomUserDetail } from "@/modules/classroom/utils/updateCachedClassroomUserDatail";
 
 export const useClassromTeacherFormDialog = () => {
   const {
@@ -30,7 +30,6 @@ export const useClassromTeacherFormDialog = () => {
   const isEdit = useMemo(() => !!teacherId, [teacherId]);
   const params = useParams<{ classroomId: string }>();
   const { toast } = useToast();
-  const queryClient = useQueryClient();
   const { loggedUser } = useLoggedUser();
 
   const { cachedClassroom: classroom } = useGetCachedClassrom(
@@ -126,12 +125,20 @@ export const useClassromTeacherFormDialog = () => {
           } com sucesso`,
           variant: "success",
         });
-        if (!isEdit) {
-          // TODO adicionar hooks para editar no cache sem precisar refetchar toda a lista
-          queryClient.resetQueries({
-            queryKey: [ClassroomKeys.Users, params?.classroomId],
-          });
+        if (isEdit) {
+          updateCachedClassroomUserDetail(teacherId!, (oldData) => ({
+            ...(oldData || {}),
+            canEditClassroom: handledTeacherBody.canEditClassroom,
+            canManageTeachers: handledTeacherBody.canManageTeachers,
+            canCreateList: handledTeacherBody.canCreateList,
+            canEditList: handledTeacherBody.canEditList,
+            canDeleteList: handledTeacherBody.canDeleteList,
+            canManageExercises: handledTeacherBody.canManageExercises,
+            canRemoveMember: handledTeacherBody.canRemoveMember,
+          }));
+          return;
         }
+        forceRefetchMyClassroomUsers(params?.classroomId!);
       };
       const onError = (erro?: any) => {
         const errorResponse = erro?.response;
@@ -159,7 +166,6 @@ export const useClassromTeacherFormDialog = () => {
     [
       isEdit,
       params,
-      queryClient,
       setClassroomTeacherFormError,
       updateTeacherInClassroom,
       toast,

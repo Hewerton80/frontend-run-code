@@ -7,13 +7,13 @@ export const StatusClassroomEnum: Record<number, string> = {
 
 export interface IClassroom {
   uuid: string;
-  languages?: string;
-  name?: string;
-  description?: string;
-  author?: IUser;
+  languages: string;
+  name: string;
+  description: string;
+  author: IUser;
   teachers?: ITeacher[];
-  status?: number;
-  createdAt?: string;
+  status: number;
+  createdAt: string;
   myClassroomPermissions?: TeacherPermissions;
 }
 

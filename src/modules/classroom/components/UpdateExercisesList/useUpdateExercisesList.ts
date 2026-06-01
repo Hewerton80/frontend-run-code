@@ -14,9 +14,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
 import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
 import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
+import { PaginationBarProps } from "@/components/ui/navigation/PaginationBar";
+import { forceRefetchExercisesOfList } from "@/modules/list/utils/forceRefetchExercisesOfList";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
+
+export type UpdateExercisesListSelectedItem = {
+  uuid: string;
+  removed?: boolean;
+};
 
 export const useUpdateExercisesList = () => {
   const navigate = useNavigate();
@@ -61,7 +68,7 @@ export const useUpdateExercisesList = () => {
   const {
     isFetchingExercises: isExercisesLoading,
     exercisesError,
-    exercisesRecords: exercises,
+    exercisesRecords,
     refetchExercises,
   } = useFetchExercises(usersParams);
 
@@ -87,13 +94,13 @@ export const useUpdateExercisesList = () => {
     classroomId: params?.classroomId,
   });
 
-  const exercisesRecords = useMemo<ExercisesRecord>(() => {
+  const exercisesMap = useMemo<ExercisesRecord>(() => {
     const result = {} as ExercisesRecord;
-    exercises?.data?.forEach((exercise) => {
+    exercisesRecords?.data?.forEach((exercise) => {
       result[exercise?.uuid!] = exercise;
     });
     return result;
-  }, [exercises]);
+  }, [exercisesRecords]);
 
   const currentExercisesRecords = useMemo<ExercisesRecord>(() => {
     const result = {} as ExercisesRecord;
@@ -111,6 +118,34 @@ export const useUpdateExercisesList = () => {
     return result;
   }, [exercisesToAdd]);
 
+  /** UUIDs da tabela esquerda (exercícios disponíveis paginados) */
+  const exerciseUuids = useMemo(
+    () => exercisesRecords?.data?.map((e) => e.uuid ?? "") ?? [],
+    [exercisesRecords],
+  );
+
+  /** Items mínimos da tabela direita (exercícios selecionados com estado removed) */
+  const exercisesToAddItems = useMemo<UpdateExercisesListSelectedItem[]>(
+    () =>
+      exercisesToAdd?.map((e) => ({
+        uuid: e.uuid!,
+        removed: e.removed,
+      })) ?? [],
+    [exercisesToAdd],
+  );
+
+  /** Paginação da tabela esquerda */
+  const pagination = useMemo<PaginationBarProps | null>(() => {
+    if (!exercisesRecords) return null;
+    return {
+      currentPage: exercisesRecords.currentPage ?? 1,
+      totalPages: exercisesRecords.lastPage ?? 1,
+      perPage: exercisesRecords.perPage ?? 25,
+      totalRecords: exercisesRecords.total ?? 0,
+      onChangePage: goToPage,
+    };
+  }, [exercisesRecords, goToPage]);
+
   const verifyIfExerciseAlreadyExistsInCurrentList = useCallback(
     (uuid: string) => {
       const alreadyExists = exercisesToAddRecords?.[uuid];
@@ -123,17 +158,13 @@ export const useUpdateExercisesList = () => {
     (uuid: string) => {
       const alreadyExists = verifyIfExerciseAlreadyExistsInCurrentList(uuid);
       if (alreadyExists) return;
-      const exerciseToAdd = { ...(exercisesRecords?.[uuid] || {}) };
+      const exerciseToAdd = { ...(exercisesMap?.[uuid] || {}) };
       appendExercise({
         ...exerciseToAdd,
         removed: false,
       });
     },
-    [
-      exercisesRecords,
-      verifyIfExerciseAlreadyExistsInCurrentList,
-      appendExercise,
-    ],
+    [exercisesMap, verifyIfExerciseAlreadyExistsInCurrentList, appendExercise],
   );
 
   const removeExerciseToList = useCallback(
@@ -223,15 +254,15 @@ export const useUpdateExercisesList = () => {
 
     const onSuccess = () => {
       navigate(ROUTES.CLASSROOM_LISTS(classroom?.uuid!));
-
-      updateCachedListOfClassroom(list?.id!, (prevData) => {
-        if (!prevData) return prevData;
-        return { ...prevData, totalExercises: handledData?.length };
-      });
       toast({
         title: "Exercícios atualizados com sucesso!",
         variant: "success",
       });
+      updateCachedListOfClassroom(list?.id!, (prevData) => {
+        if (!prevData) return prevData;
+        return { ...prevData, totalExercises: handledData?.length };
+      });
+      forceRefetchExercisesOfList(list?.id!);
     };
     const onError = () => {
       toast({
@@ -266,8 +297,9 @@ export const useUpdateExercisesList = () => {
     isLoadingExerciseDetails,
     isExercisesLoading,
     exercisesError,
-    exercises,
-    exercisesToAdd,
+    exerciseUuids,
+    exercisesToAddItems,
+    pagination,
     isDirtyExercisesForm: formStateExercisesForm.isDirty,
     isUpdatingClassroomExercisesFromList,
     currentExercises,
@@ -277,7 +309,6 @@ export const useUpdateExercisesList = () => {
     removeExerciseToList,
     verifyIfExerciseAlreadyExistsInCurrentList,
     addExerciseToList,
-    goToPage,
     refetchExercises,
     openExerciseDetailsDialog,
     closeExerciseDetailsDialog,

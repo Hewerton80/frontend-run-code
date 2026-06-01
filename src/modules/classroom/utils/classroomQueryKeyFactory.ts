@@ -34,8 +34,8 @@ export const classroomQueryKeyFactory = {
     [ClassroomQueryKeys.ClassroomUsers, classroomId] as const,
 
   /** Detalhe de um usuário específico de uma turma */
-  userDetail: (classroomId: string, userId?: string | null) =>
-    [ClassroomQueryKeys.ClassroomUserDetail, classroomId, userId] as const,
-  row: (classroomId: string, userId?: string | null) =>
-    [ClassroomQueryKeys.ClassroomUserRow, classroomId, userId] as const,
+  userDetail: (userUuid: string) =>
+    [ClassroomQueryKeys.ClassroomUserDetail, userUuid] as const,
+  row: (userId?: string | null) =>
+    [ClassroomQueryKeys.ClassroomUserRow, userId] as const,
 };
