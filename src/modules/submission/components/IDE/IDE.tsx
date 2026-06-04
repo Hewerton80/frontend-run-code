@@ -1,19 +1,18 @@
-import { useEffect, useId, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   LanguagesConfigMap,
   LANGUAGES_CONFIG_MAP,
   LIST_OF_LANGUAGES,
 } from "@/modules/language/utils/languagesConfig";
-import { Picker } from "../../../../components/ui/forms/selects/Picker/Picker";
-import { LanguageNames } from "@/modules/language/utils/languagesName";
+import { LanguageNames } from "@/modules/language/types/languagesName";
 import { FaRegCircleQuestion } from "react-icons/fa6";
 import { Modal } from "../../../../components/ui/overlay/Modal";
 import { IconButton } from "../../../../components/ui/buttons/IconButton";
 import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
-import { Select } from "@/components/ui/forms/selects";
 import { CustomSelect } from "@/components/ui/forms/selects/CustomSelect";
+import { LanguageOptionDisplay } from "@/modules/language/components/LanguangeOptionDisplay";
 
 interface IdeProps {
   value?: string;
@@ -74,50 +73,20 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
       <div className="flex flex-col h-full w-full gap-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex max-w-[13.625rem] w-full">
-            {/* <Picker
-              defaultValue={languageMode}
-              showLabelInner
-              full
-              label="Language"
-              value={languageMode}
-              onChange={changeLanguageMode}
-              options={modeOptions}
-              disabled={modeOptions?.length <= 1}
-            /> */}
-            {/* <Select
-              value={languageMode}
-              onChange={(option) =>
-                changeLanguageMode(option)
-              }
-              options={LIST_OF_LANGUAGES}
-              placeholder="Select language"
-              disabled={modeOptions?.length <= 1}
-            /> */}
             <CustomSelect
               items={LIST_OF_LANGUAGES}
               value={languageMode}
               onChangeValue={(item) => item && changeLanguageMode(item)}
               placeholder="Select language"
+              // TODO deixar apenas as linguages da turma
               disabled={LIST_OF_LANGUAGES?.length <= 1}
+              valueExtractor={(item) => item.value}
               displayItem={(item) => (
-                <span className="flex items-center gap-2">
-                  <img src={item.url} alt={item.label} width={14} height={14} />
-                  {item.label}
-                </span>
+                <LanguageOptionDisplay languageName={item.value} />
               )}
               renderItem={(item) => (
-                <span className="flex items-center gap-2">
-                  <img src={item.url} alt={item.label} width={14} height={14} />
-                  {item.label}
-                </span>
+                <LanguageOptionDisplay languageName={item.value} />
               )}
-              // displayItem={(item) => (
-              //   <span className="flex items-center gap-2">
-              //     <img src={item.url} alt={item.label} width={14} height={14} />
-              //     {item.label}
-              //   </span>
-              // )}
-              valueExtractor={(item) => item.value}
             />
           </div>
           <div className="flex items-center gap-2">

@@ -81,8 +81,7 @@ export const useClassromTeacherFormDialog = () => {
     if (classroomUser) {
       console.log("resetando form com classroomUser", classroomUser);
       resetClassroomTeacherForm({
-        value: classroomUser?.uuid,
-        label: `${classroomUser?.email} - ${classroomUser?.name} ${classroomUser?.surname}`,
+        teacherUuid: classroomUser?.uuid,
         canEditClassroom: classroomUser?.canEditClassroom,
         canManageTeachers: classroomUser?.canManageTeachers,
         canCreateList: classroomUser?.canCreateList,
@@ -100,7 +99,7 @@ export const useClassromTeacherFormDialog = () => {
 
   const getHandledTeacherBody = useCallback((data: TeacherFormSchema) => {
     return {
-      id: data?.value,
+      id: data?.teacherUuid,
       canEditClassroom: data?.canEditClassroom,
       canManageTeachers: data?.canManageTeachers,
       canCreateList: data?.canCreateList,
@@ -147,7 +146,7 @@ export const useClassromTeacherFormDialog = () => {
       const onError = (erro?: any) => {
         const errorResponse = erro?.response;
         if (errorResponse?.status === 409) {
-          setClassroomTeacherFormError("value", {
+          setClassroomTeacherFormError("teacherUuid", {
             message:
               errorResponse?.data?.description ||
               "Professor(a) já está vinculado(a) a turma",
@@ -172,7 +171,6 @@ export const useClassromTeacherFormDialog = () => {
       isEdit,
       params,
       teacherId,
-      goToPage,
       setClassroomTeacherFormError,
       updateTeacherInClassroom,
       toast,

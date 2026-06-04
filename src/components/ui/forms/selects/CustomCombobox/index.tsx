@@ -24,13 +24,14 @@ export interface CustomComboboxProps<TItem> {
   items: TItem[];
   emptyText?: string;
   hiddenPopup?: boolean;
-  displayItem: (item: TItem) => string;
-  renderItem: (item: TItem) => string | ReactNode;
+  displayItem: (item: TItem) => ReactNode;
+  renderItem: (item: TItem) => ReactNode;
   valueExtractor: (item: TItem) => string;
   keyExtractor?: (item: TItem) => string;
   inputValue?: string;
   onInputValueChange?: (value: string, event?: { reason: string }) => void;
   onInputKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  itemToStringLabel?: (item: TItem) => string;
 }
 
 function CustomComboboxComponent<TItem>({
@@ -57,6 +58,7 @@ function CustomComboboxComponent<TItem>({
   inputValue,
   onInputValueChange,
   onInputKeyDown,
+  itemToStringLabel,
 }: CustomComboboxProps<TItem>) {
   const reactId = useId();
   const htmlFor = useMemo(() => id || name || reactId, [id, name, reactId]);
@@ -97,7 +99,7 @@ function CustomComboboxComponent<TItem>({
         onOpenChange={handleOpenChange}
         items={items}
         name={name}
-        itemToStringLabel={displayItem}
+        itemToStringLabel={itemToStringLabel}
         filteredItems={unselectedItems}
         inputValue={inputValue}
         onInputValueChange={onInputValueChange}
@@ -126,14 +128,10 @@ function CustomComboboxComponent<TItem>({
                     return (
                       <Combobox.Chip
                         key={key}
-                        aria-label={label}
                         className="flex items-center gap-1 rounded-md bg-primary/80 text-primary-foreground px-1.5 py-0.5 text-xs font-medium"
                       >
                         {label}
-                        <Combobox.ChipRemove
-                          aria-label={`Remover ${label}`}
-                          className="rounded-sm p-0.5 hover:bg-primary/20 transition-colors cursor-pointer"
-                        >
+                        <Combobox.ChipRemove className="rounded-sm p-0.5 hover:bg-primary/20 transition-colors cursor-pointer">
                           <FaTimes className="size-2.5" />
                         </Combobox.ChipRemove>
                       </Combobox.Chip>

@@ -1,4 +1,4 @@
-import { LanguageNames } from "@/modules/language/utils/languagesName";
+import { LanguageNames } from "@/modules/language/types/languagesName";
 import { create } from "zustand";
 
 interface State {

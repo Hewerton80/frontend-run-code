@@ -9,6 +9,9 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";
 import { twMerge } from "tailwind-merge";
 import { Alert } from "@/components/ui/feedback/Alert";
+import { CustomCombobox } from "@/components/ui/forms/selects/CustomCombobox";
+import { LIST_OF_LANGUAGES } from "@/modules/language/utils/languagesConfig";
+import { LanguageOptionDisplay } from "@/modules/language/components/LanguangeOptionDisplay";
 
 interface ClassroomFormDialogProps {
   classroomId?: string | null;
@@ -84,17 +87,29 @@ export const ClassroomFormDialog = ({
                 <Controller
                   name="languages"
                   control={classroomFormControl}
-                  render={({ field, fieldState }) => (
-                    <MultSelect
-                      {...field}
-                      id={field.name}
-                      label="Linguagens"
-                      placeholder="Selecione as linguagens"
-                      options={languagesOptions}
-                      error={fieldState.error?.message}
-                      required
-                      disabled={!canEditClassroom}
-                    />
+                  render={({
+                    field: { onChange, ...restField },
+                    fieldState,
+                  }) => (
+                    <>
+                      <CustomCombobox
+                        {...restField}
+                        name={restField.name}
+                        label="Linguagenssss"
+                        placeholder="Selecione as linguagens"
+                        items={LIST_OF_LANGUAGES}
+                        displayItem={(item) => (
+                          <LanguageOptionDisplay languageName={item.value} />
+                        )}
+                        onChangeValue={onChange}
+                        renderItem={(item) => (
+                          <LanguageOptionDisplay languageName={item.value} />
+                        )}
+                        valueExtractor={(item) => item.value}
+                        disabled={!canEditClassroom}
+                        error={fieldState.error?.message}
+                      />
+                    </>
                   )}
                 />
               </div>

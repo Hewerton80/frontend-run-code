@@ -136,7 +136,7 @@ const Positioner = ({
   return (
     <Combobox.Positioner
       sideOffset={4}
-      className={cn("isolate z-50", className)}
+      className={cn("isolate z-50 pointer-events-auto", className)}
       {...rest}
     >
       {children}

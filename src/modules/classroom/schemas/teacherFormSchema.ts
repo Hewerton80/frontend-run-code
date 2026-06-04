@@ -9,9 +9,7 @@ const {
 } = CONSTANTS;
 
 export const teacherFormSchema = z.object({
-  value: z.string().min(1, REQUIRED_FIELD),
-  label: z.string().optional(),
-  uuid: z.string().optional(),
+  teacherUuid: z.string().min(1, REQUIRED_FIELD),
   canEditClassroom: z.boolean(),
   canManageTeachers: z.boolean(),
   canCreateList: z.boolean(),
@@ -26,9 +24,7 @@ export type TeacherFormSchema = z.infer<typeof teacherFormSchema>;
 export const useTeacherFormSchema = () => {
   const defaultValues = useMemo<TeacherFormSchema>(
     () => ({
-      value: "",
-      label: "",
-      uuid: "",
+      teacherUuid: "",
       canEditClassroom: false,
       canManageTeachers: false,
       canCreateList: false,

@@ -69,8 +69,8 @@ const ClassroomTeacherFormDialog = () => {
             <div className="flex flex-col w-full">
               <Controller
                 control={classroomTeacherFormControl}
-                name="value"
-                render={({ field: { onChange, ...restField }, fieldState }) => (
+                name="teacherUuid"
+                render={({ field, fieldState }) => (
                   <>
                     <div className="flex gap-2 mb-2">
                       <FormLabel className="mb-0" required>
@@ -81,9 +81,8 @@ const ClassroomTeacherFormDialog = () => {
                       <GroupedUserInfo user={classroomUser} />
                     ) : (
                       <AsyncTeacherSelect
-                        {...restField}
-                        id={restField.name}
-                        onChange={(option) => onChange(option?.value)}
+                        {...field}
+                        id={field.name}
                         placeholder="Nome do professor(a)"
                         required
                         disabled={isEdit}

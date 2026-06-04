@@ -1,5 +1,5 @@
 import { useShallow } from "zustand/react/shallow";
-import { LanguageNames } from "../utils/languagesName";
+import { LanguageNames } from "../types/languagesName";
 import { create } from "zustand";
 import { LanguageConfig, LANGUAGES_CONFIG_MAP } from "../utils/languagesConfig";
 
