@@ -10,7 +10,7 @@ import { getRange } from "@/utils/getRange";
 import { IClassroom } from "../../classroomType";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IUser, RoleUser } from "@/modules/user/userTypets";
-import { languagesConfig } from "@/modules/language/utils/languagesConfig";
+import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
 import { ClassroomFormDialog } from "../ClassroomFormDialog";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -68,7 +68,7 @@ const ClassRoomsCard = ({
                     align="center"
                   >
                     <img
-                      src={languagesConfig[lang].url}
+                      src={LANGUAGES_CONFIG_MAP[lang].url}
                       alt={lang}
                       width={16}
                       height={16}

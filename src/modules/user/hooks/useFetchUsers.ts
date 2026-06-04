@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { IUser } from "../userTypets";
-import { IPaginationParams, IPaginatedDocs } from "@/types/paginad";
+import { IPaginationParams, IPaginatedDocs } from "@/types/paginated";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { userQueryKeyFactory } from "@/modules/user/utils/userQueryKeyFactory";
 

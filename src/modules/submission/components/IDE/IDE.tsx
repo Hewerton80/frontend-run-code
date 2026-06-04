@@ -1,7 +1,8 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import {
-  LanguageConfig,
-  languagesConfig,
+  LanguagesConfigMap,
+  LANGUAGES_CONFIG_MAP,
+  LIST_OF_LANGUAGES,
 } from "@/modules/language/utils/languagesConfig";
 import { Picker } from "../../../../components/ui/forms/selects/Picker/Picker";
 import { LanguageNames } from "@/modules/language/utils/languagesName";
@@ -12,6 +13,7 @@ import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
 import { Select } from "@/components/ui/forms/selects";
+import { CustomSelect } from "@/components/ui/forms/selects/CustomSelect";
 
 interface IdeProps {
   value?: string;
@@ -26,46 +28,46 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
   //   : "javascript"
   const [showScriptCodeExample, setShowScriptCodeExample] = useState(false);
 
-  const avaliablesLanguagesConfig = useMemo<LanguageConfig>(() => {
+  const avaliablesLanguagesConfig = useMemo<LanguagesConfigMap>(() => {
     if (Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0) {
       return avaliableLanguages.reduce((acc, key) => {
-        if (languagesConfig?.[key]) {
-          acc[key] = languagesConfig[key];
+        if (LANGUAGES_CONFIG_MAP?.[key]) {
+          acc[key] = LANGUAGES_CONFIG_MAP[key];
         }
         return acc;
-      }, {} as LanguageConfig);
+      }, {} as LanguagesConfigMap);
     }
 
-    return languagesConfig;
+    return LANGUAGES_CONFIG_MAP;
   }, [avaliableLanguages]);
 
   const currentSelectLanguage = useMemo(
-    () => avaliablesLanguagesConfig?.[languageMode],
-    [avaliablesLanguagesConfig, languageMode]
+    () => avaliablesLanguagesConfig[languageMode.value],
+    [avaliablesLanguagesConfig, languageMode],
   );
 
-  useEffect(() => {
-    if (!Array.isArray(avaliableLanguages) || !avaliableLanguages?.length)
-      return;
-    changeLanguageMode(avaliableLanguages[0]);
-  }, [changeLanguageMode, avaliableLanguages]);
+  // useEffect(() => {
+  //   if (!Array.isArray(avaliableLanguages) || !avaliableLanguages?.length)
+  //     return;
+  //   changeLanguageMode(avaliableLanguages[0]);
+  // }, [changeLanguageMode, avaliableLanguages]);
 
-  const modeOptions = useMemo(() => {
-    return Object.keys(avaliablesLanguagesConfig).map((key) => ({
-      label: (
-        <span className="flex items-center gap-2">
-          <img
-            src={avaliablesLanguagesConfig[key as LanguageNames].url}
-            alt={key}
-            width={14}
-            height={14}
-          />
-          {key}
-        </span>
-      ),
-      value: key,
-    }));
-  }, [avaliablesLanguagesConfig]);
+  // const modeOptions = useMemo(() => {
+  //   return Object.keys(avaliablesLanguagesConfig).map((key) => ({
+  //     label: (
+  //       <span className="flex items-center gap-2">
+  //         <img
+  //           src={avaliablesLanguagesConfig[key as LanguageNames].url}
+  //           alt={key}
+  //           width={14}
+  //           height={14}
+  //         />
+  //         {key}
+  //       </span>
+  //     ),
+  //     value: key,
+  //   }));
+  // }, [avaliablesLanguagesConfig]);
 
   return (
     <>
@@ -82,14 +84,40 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
               options={modeOptions}
               disabled={modeOptions?.length <= 1}
             /> */}
-            <Select
+            {/* <Select
               value={languageMode}
               onChange={(option) =>
-                changeLanguageMode(option?.value as LanguageNames)
+                changeLanguageMode(option)
               }
-              options={modeOptions}
+              options={LIST_OF_LANGUAGES}
               placeholder="Select language"
               disabled={modeOptions?.length <= 1}
+            /> */}
+            <CustomSelect
+              items={LIST_OF_LANGUAGES}
+              value={languageMode}
+              onChangeValue={(item) => item && changeLanguageMode(item)}
+              placeholder="Select language"
+              disabled={LIST_OF_LANGUAGES?.length <= 1}
+              displayItem={(item) => (
+                <span className="flex items-center gap-2">
+                  <img src={item.url} alt={item.label} width={14} height={14} />
+                  {item.label}
+                </span>
+              )}
+              renderItem={(item) => (
+                <span className="flex items-center gap-2">
+                  <img src={item.url} alt={item.label} width={14} height={14} />
+                  {item.label}
+                </span>
+              )}
+              // displayItem={(item) => (
+              //   <span className="flex items-center gap-2">
+              //     <img src={item.url} alt={item.label} width={14} height={14} />
+              //     {item.label}
+              //   </span>
+              // )}
+              valueExtractor={(item) => item.value}
             />
           </div>
           <div className="flex items-center gap-2">

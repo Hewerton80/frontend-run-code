@@ -23,3 +23,7 @@ export const useLoggedUser = () => {
 
   return { loggedUser, setLoggedUser };
 };
+
+export const clearLoggedUser = () => {
+  useLoggedUserStore.getState().setLoggedUser(null);
+};

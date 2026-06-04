@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
 
 export const useIDEExercise = (exercise: IExercise) => {
   const params = useParams<{
@@ -37,11 +38,16 @@ export const useIDEExercise = (exercise: IExercise) => {
   // }, [sourceCode]);
 
   useEffect(() => {
-    if (exercise?.submissionStats?.sourceCode) {
-      setSourceCode(exercise?.submissionStats?.sourceCode || "");
+    const submissionStats = exercise?.submissionStats;
+    const sourceCode = submissionStats?.sourceCode;
+    const language = submissionStats?.language;
+    const languageConfig =
+      LANGUAGES_CONFIG_MAP?.[language as keyof typeof LANGUAGES_CONFIG_MAP];
+    if (sourceCode) {
+      setSourceCode(sourceCode);
     }
-    if (exercise?.submissionStats?.language) {
-      changeLanguageMode(exercise.submissionStats?.language);
+    if (languageConfig) {
+      changeLanguageMode(languageConfig);
     }
   }, [exercise, changeLanguageMode]);
 
@@ -67,7 +73,7 @@ export const useIDEExercise = (exercise: IExercise) => {
     createSubmission(
       {
         sourceCode,
-        language: languageMode,
+        language: languageMode.value,
         classroomId: params?.classroomId,
         listId: params?.listId ? parseInt(params?.listId) : undefined,
       },

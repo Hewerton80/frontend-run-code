@@ -1,12 +1,14 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { classroomQueryKeyFactory } from "@/modules/classroom/utils/classroomQueryKeyFactory";
-import { IPaginatedDocs, IPaginationParams } from "@/types/paginad";
+import { IPaginatedDocs, IPaginationParams } from "@/types/paginated";
 import { IUser } from "@/modules/user/userTypets";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 import { useMemo } from "react";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { isNumberable } from "@/utils/isType";
+
+export const CLASSROOM_USER_PER_PAGE = 10;
 
 export type IFetchClassroomUsersParams = IPaginationParams;
 
@@ -21,7 +23,7 @@ export const useFetchClassroomUsers = (
       currentPage: isNumberable(params?.currentPage)
         ? Number(params?.currentPage)
         : 1,
-      perPage: isNumberable(params?.perPage) ? Number(params?.perPage) : 10,
+      perPage: CLASSROOM_USER_PER_PAGE,
     };
     return removeEmptyKeys(_params);
   }, [params]);

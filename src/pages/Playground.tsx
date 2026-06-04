@@ -13,19 +13,20 @@ import { RunCodeBody } from "@/modules/submission/schemas/runCodeBodySchema";
 export default function PlayGroundPage() {
   const [editorValue, setEditorValue] = useState("");
   const [inputs, setInputs] = useState<SelectOption[]>([]);
-  const { languageMode } = useLanguage();
+  // TODO - Adicionar linguagem aqui
+  // const { languageMode } = useLanguage();
 
   const { isRunningCode, runCodeError, runCodeResponse, runCode } =
     useRunCode();
 
   const handleSubmit = () => {
-    const formaData: RunCodeBody = {
-      sourceCode: editorValue,
-      inputValues: inputs.map((input) => input.label as string),
-      language: languageMode,
-    };
-    console.log(formaData);
-    runCode(formaData);
+    // const formaData: RunCodeBody = {
+    //   sourceCode: editorValue,
+    //   inputValues: inputs.map((input) => input.label as string),
+    //   language: languageMode,
+    // };
+    // console.log(formaData);
+    // runCode(formaData);
   };
 
   return (

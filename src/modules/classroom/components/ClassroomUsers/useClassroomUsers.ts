@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useFetchClassroomUsers } from "../../hooks/useFetchClassroomUsers";
+import {
+  CLASSROOM_USER_PER_PAGE,
+  useFetchClassroomUsers,
+} from "../../hooks/useFetchClassroomUsers";
 import { useMemo } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
@@ -8,7 +11,10 @@ import { usePagination } from "@/hooks/usePagination";
 export const useClassroomUsers = () => {
   const params = useParams<{ classroomId: string }>();
   const { loggedUser } = useLoggedUser();
-  const { goToPage, paginationParams } = usePagination();
+  const { goToPage, paginationParams } = usePagination({
+    initialParams: { perPage: CLASSROOM_USER_PER_PAGE },
+  });
+
   const {
     refetchClassroomUsers,
     classroomUsersRecords: classroomUsers,

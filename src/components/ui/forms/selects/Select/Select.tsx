@@ -3,11 +3,10 @@ import { PrimitiveSelect, PrimitiveSelectProps } from "../PrimitiveSelect";
 import { ActionMeta } from "react-select";
 import { OnchangeMultValue, OnchangeSigleValue, SelectOption } from "../type";
 
-export interface SelectSelectProps
-  extends Omit<
-    PrimitiveSelectProps,
-    "isMult" | "onChangeSingleOption" | "onChangeMultValue" | "value"
-  > {
+export interface SelectSelectProps extends Omit<
+  PrimitiveSelectProps,
+  "isMult" | "onChangeSingleOption" | "onChangeMultValue" | "value"
+> {
   onChange?: OnchangeSigleValue;
   value?: string;
 }
@@ -21,7 +20,7 @@ export const Select = forwardRef(
       options = [],
       ...restProps
     }: SelectSelectProps,
-    ref?: any
+    ref?: any,
   ) => {
     const mapedObjectOptions = useMemo(() => {
       const mapedObjectOptionsTmp: { [key: string]: SelectOption } = {};
@@ -56,5 +55,5 @@ export const Select = forwardRef(
         {...restProps}
       />
     );
-  }
+  },
 );

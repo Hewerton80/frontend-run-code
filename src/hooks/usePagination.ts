@@ -1,21 +1,21 @@
 import { useMemo } from "react";
-import { IPaginationParams } from "@/types/paginad";
+import { IPaginationParams } from "@/types/paginated";
 import { useQueryState, parseAsInteger } from "nuqs";
 
 interface IUsePaginationProps {
-  currentPage?: number;
-  perPage?: number;
-  currentPageQueryName?: string;
-  perPageQueryName?: string;
+  initialParams?: IPaginationParams;
+  currentPageParamName?: string;
+  perPageParamName?: string;
 }
+
 export const usePagination = (defaultValues?: IUsePaginationProps) => {
   const [currentPage, setCurrentPage] = useQueryState(
-    defaultValues?.currentPageQueryName || "currentPage",
-    parseAsInteger.withDefault(defaultValues?.currentPage || 1),
+    defaultValues?.currentPageParamName || "currentPage",
+    parseAsInteger.withDefault(defaultValues?.initialParams?.currentPage || 1),
   );
   const [perPage] = useQueryState(
-    defaultValues?.perPageQueryName || "perPage",
-    parseAsInteger.withDefault(defaultValues?.perPage || 10),
+    defaultValues?.perPageParamName || "perPage",
+    parseAsInteger.withDefault(defaultValues?.initialParams?.perPage || 25),
   );
 
   const paginationParams = useMemo<IPaginationParams>(

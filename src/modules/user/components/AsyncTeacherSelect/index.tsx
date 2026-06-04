@@ -4,8 +4,9 @@ import { useAxios } from "@/hooks/useAxios";
 import { IUser } from "../../userTypets";
 import { useDebouncedCallback } from "use-debounce";
 
-interface IAsyncTeacherSelectProps
-  extends ComponentPropsWithoutRef<typeof Select> {
+interface IAsyncTeacherSelectProps extends ComponentPropsWithoutRef<
+  typeof Select
+> {
   defaultOptions?: SelectOption[];
 }
 
@@ -39,7 +40,7 @@ export const AsyncTeacherSelect = ({
         setIsLoadingTeachers(false);
       }
     },
-    [apiBase, defaultOptions]
+    [apiBase, defaultOptions],
   );
 
   const handleChangeInputTextDebounced = useDebouncedCallback(
@@ -51,9 +52,9 @@ export const AsyncTeacherSelect = ({
         }
         getTeachers(keyword);
       },
-      [getTeachers]
+      [getTeachers],
     ),
-    1000
+    1000,
   );
 
   const onInputChange = useCallback(
@@ -61,7 +62,7 @@ export const AsyncTeacherSelect = ({
       handleChangeInputTextDebounced(keyword);
       setIsLoadingTeachers(true);
     },
-    [handleChangeInputTextDebounced]
+    [handleChangeInputTextDebounced],
   );
 
   return (

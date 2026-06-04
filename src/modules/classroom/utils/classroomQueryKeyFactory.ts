@@ -32,7 +32,11 @@ export const classroomQueryKeyFactory = {
 
   /** Lista de usuários de uma turma */
   users: (classroomId: string, params?: IFetchClassroomUsersParams) =>
-    [ClassroomQueryKeys.ClassroomUsers, classroomId, params] as const,
+    [
+      ClassroomQueryKeys.ClassroomUsers,
+      classroomId,
+      ...(params ? [params] : []),
+    ] as const,
 
   /** Detalhe de um usuário específico de uma turma */
   userDetail: (userUuid: string) =>

@@ -9,7 +9,7 @@ import {
   useCreateClassroom,
 } from "../../hooks/useCreateClassroom";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
-import { languagesConfig } from "@/modules/language/utils/languagesConfig";
+import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
 import { useToast } from "@/hooks/useToast";
 import { updateCachedClassroom } from "../../utils/updateCachedClassroom";
 import { forceRefetchMyClassrooms } from "../../utils/forceRefetchMyClassrooms";
@@ -42,7 +42,7 @@ export const useClassroomFormDialog = (
   } = useClassroomFormSchema();
 
   const languagesOptions = useMemo(() => {
-    return Object.keys(languagesConfig).map((key) => ({
+    return Object.keys(LANGUAGES_CONFIG_MAP).map((key) => ({
       label: key,
       value: key,
     }));
