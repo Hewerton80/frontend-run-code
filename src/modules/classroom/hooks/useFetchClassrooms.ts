@@ -9,16 +9,9 @@ import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
 export type IFetchClassroomsParams = IPaginationParams;
 
-/**
- * Busca a lista paginada de turmas.
- * Semeia o cache individual de cada turma via `setItemInCache` para
- * permitir navegação cache-first ao detalhe.
- * Suporta cancelamento automático via AbortSignal.
- */
 export const useFetchClassrooms = (params?: IFetchClassroomsParams) => {
   const { apiBase } = useAxios();
 
-  /** Normaliza os params removendo chaves vazias — estabiliza a queryKey */
   const normalizedParams = useMemo(() => removeEmptyKeys(params), [params]);
 
   const {
@@ -28,17 +21,17 @@ export const useFetchClassrooms = (params?: IFetchClassroomsParams) => {
     refetch: refetchClassrooms,
   } = useQuery({
     queryKey: classroomQueryKeyFactory.pages(normalizedParams),
+    enabled: true,
     queryFn: async ({ signal }) => {
       const { data: response } = await apiBase.get<IPaginatedDocs<IClassroom>>(
         "/classroom",
         { params: normalizedParams, signal },
       );
 
-      // Semeia o cache individual de cada turma para navegação cache-first
       response?.data?.forEach((classroom) => {
         if (classroom.uuid) {
           setItemInCache<IClassroom>(
-            classroomQueryKeyFactory.detail(classroom.uuid),
+            classroomQueryKeyFactory.row(classroom.uuid),
             classroom,
           );
         }

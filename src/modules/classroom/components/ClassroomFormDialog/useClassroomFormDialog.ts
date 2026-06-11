@@ -9,7 +9,6 @@ import {
   useCreateClassroom,
 } from "../../hooks/useCreateClassroom";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
-import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
 import { useToast } from "@/hooks/useToast";
 import { updateCachedClassroom } from "../../utils/updateCachedClassroom";
 import { forceRefetchMyClassrooms } from "../../utils/forceRefetchMyClassrooms";
@@ -40,13 +39,6 @@ export const useClassroomFormDialog = (
     clearClassroomFormStates,
     resetClassroomForm,
   } = useClassroomFormSchema();
-
-  const languagesOptions = useMemo(() => {
-    return Object.keys(LANGUAGES_CONFIG_MAP).map((key) => ({
-      label: key,
-      value: key,
-    }));
-  }, []);
 
   const canEditClassroom = useMemo(() => {
     if (!isEditClassroom) return true;
@@ -134,12 +126,12 @@ export const useClassroomFormDialog = (
           onSuccess,
           onError,
         });
-      } else {
-        createClassroom(handleClassroomFormBody, {
-          onSuccess,
-          onError,
-        });
+        return;
       }
+      createClassroom(handleClassroomFormBody, {
+        onSuccess,
+        onError,
+      });
     },
     [
       isEditClassroom,
@@ -156,7 +148,6 @@ export const useClassroomFormDialog = (
   return {
     classroomFormState,
     classroomFormControl,
-    languagesOptions,
     isSubmittingClassroom,
     classroomError,
     isFetchingClassroom,

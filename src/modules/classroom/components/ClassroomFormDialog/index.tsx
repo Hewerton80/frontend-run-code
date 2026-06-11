@@ -2,7 +2,7 @@ import { useClassroomFormDialog } from "./useClassroomFormDialog";
 import { Dialog } from "@/components/ui/overlay/Dialog";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { Button } from "@/components/ui/buttons/Button";
-import { MultSelect } from "@/components/ui/forms/selects";
+// import { MultSelect } from "@/components/ui/forms/selects";
 import { Controller } from "react-hook-form";
 import { Switch } from "@/components/ui/forms/Switch";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
@@ -27,7 +27,6 @@ export const ClassroomFormDialog = ({
   const {
     classroomFormState,
     classroomFormControl,
-    languagesOptions,
     isSubmittingClassroom,
     classroomError,
     isFetchingClassroom,
@@ -66,9 +65,8 @@ export const ClassroomFormDialog = ({
                     Você não tem permissão para editar essa turma
                   </Alert.Title>
                   <Alert.Description>
-                    Entre em contato com o(async function name(params:type) {})
-                    professor(a) responsável pela turma caso precise fazer
-                    alguma alteração.
+                    Entre em contato com o(a) professor(a) responsável pela
+                    turma caso precise fazer alguma alteração.
                   </Alert.Description>
                 </Alert.Root>
               )}

@@ -17,6 +17,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ClasrromActionsTriggerButton } from "../ClasrromActionsTriggerButton";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
+import { RichText } from "@/components/ui/forms/RichText";
 
 interface IClassRoomCardProps {
   classroom: IClassroom;
@@ -153,6 +154,9 @@ export const ClassRoomsCards = () => {
             }}
           />
         ))}
+      </div>
+      <div className="flex">
+        <RichText />
       </div>
       <ClassroomFormDialog
         isOpen={openDialog}

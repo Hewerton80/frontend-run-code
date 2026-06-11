@@ -4,7 +4,7 @@ import { IUser } from "@/modules/user/userTypets";
 
 export const useGetCachedClassroomUser = (userUuid: string) => {
   const { data: cachedClassroomUser } = useQuery({
-    queryKey: classroomQueryKeyFactory.row(userUuid),
+    queryKey: classroomQueryKeyFactory.userRow(userUuid),
     queryFn: () => null,
     staleTime: Infinity,
     gcTime: Infinity,

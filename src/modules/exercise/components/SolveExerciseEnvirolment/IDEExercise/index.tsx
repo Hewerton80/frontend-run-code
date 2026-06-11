@@ -2,19 +2,15 @@ import { Button } from "@/components/ui/buttons/Button";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IDE } from "@/modules/submission/components/IDE";
 import { useIDEExercise } from "./useIDEExercises";
-import {
-  DataTable,
-  IColmunDataTable,
-} from "@/components/ui/dataDisplay/DataTable";
-import { ResultSubmissionCode } from "@/modules/submission/hooks/useCreateSubmission";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
-import { twMerge } from "tailwind-merge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 import { SubmissionStatusLabels } from "@/modules/submission/submissionType";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { getContrastColor } from "@/utils/colors";
-import { useMemo } from "react";
+import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
+import { Code } from "@/components/ui/dataDisplay/Code";
+import { Table } from "@/components/ui/dataDisplay/Table";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -27,8 +23,8 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     sourceCode,
     isSubmitting,
     submitError,
-    cachedSubmissionJobs,
     avaliableLanguages,
+    submissionsResult,
     createSubmission,
     changeSourceCode,
   } = useIDEExercise(exercise);
@@ -48,53 +44,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
   //   return false;
   // }, [isSubmitting, exerciseSubmissionStatus, exercise?.uuid]);
 
-  const responseColumns: IColmunDataTable<ResultSubmissionCode>[] = [
-    {
-      field: "inputs",
-      label: "Entrada(s) para teste",
-      onParse: (test) => (
-        <div
-          className="font-[monospace] whitespace-pre"
-          dangerouslySetInnerHTML={{
-            __html: parseStringToHtmlFormat(test?.inputs?.join("\n") || ""),
-          }}
-        />
-      ),
-    },
-    {
-      field: "expectedOutput",
-      label: "Saída esperada",
-      onParse: (test) => (
-        <div
-          className="font-[monospace] whitespace-pre"
-          dangerouslySetInnerHTML={{
-            __html: parseStringToHtmlFormat(test?.expectedOutput || ""),
-          }}
-        />
-      ),
-    },
-    {
-      field: "output",
-      label: "Saída do seu código",
-      onParse: (test) => (
-        <div
-          className="font-[monospace] whitespace-pre"
-          dangerouslySetInnerHTML={{
-            __html: parseStringToHtmlFormat(test?.output || ""),
-          }}
-        />
-      ),
-    },
-  ];
-
   // const responseRows
-
-  const submissionsResult = useMemo(() => {
-    const foundSubmissionResult = cachedSubmissionJobs.find(
-      (job) => job.exerciseUuId === exercise?.uuid,
-    );
-    return foundSubmissionResult;
-  }, [cachedSubmissionJobs, exercise?.uuid]);
 
   return (
     <>
@@ -117,61 +67,89 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         </div>
         {/* <Button variantStyle="success">Submit</Button> */}
         {/* </ButtonGroup> */}
-        {isSubmitting ||
-          (submissionsResult?.isProcessing && (
-            <div className="py-4">
-              <ThreeDotsLoading />
-            </div>
-          ))}
+        {isSubmitting && (
+          <div className="py-4">
+            <ThreeDotsLoading />
+          </div>
+        )}
         {submitError && (
           <TerminalCode
             className="mt-4"
             content={submitError?.description || ""}
           />
         )}
-        {submissionsResult?.result?.testCasesResults && (
+        {submissionsResult?.testCasesResults && (
           <div className="grid grid-cols-1 gap-4">
-            {submissionsResult?.result?.testCasesResults?.map(
-              ({ status }, index) => (
+            {submissionsResult?.testCasesResults?.map(({ status }, index) => (
+              <div
+                key={`response-${index}`}
+                className="flex flex-col gap-2 col-span-1"
+              >
+                <div className="flex items-center gap-2">
+                  <p>
+                    <span className="text-xs">Caso {index + 1}:</span>{" "}
+                    <Badge
+                      variant="info"
+                      style={
+                        status
+                          ? {
+                              backgroundColor:
+                                SubmissionStatusLabels?.[status]?.color,
+                              color: getContrastColor(
+                                SubmissionStatusLabels?.[status]?.color,
+                              ),
+                            }
+                          : undefined
+                      }
+                    >
+                      {SubmissionStatusLabels?.[status!]?.label}{" "}
+                      {SubmissionStatusLabels?.[status!]?.emoji}
+                    </Badge>
+                  </p>
+                </div>
                 <div
-                  key={`response-${index}`}
-                  className="flex flex-col gap-2 col-span-1"
+                  className="border rounded-md"
+                  style={{
+                    borderColor: SubmissionStatusLabels?.[status!]?.color,
+                  }}
                 >
-                  <div className="flex items-center gap-2">
-                    <p>
-                      <span className="text-xs">Caso {index + 1}:</span>{" "}
-                      <Badge
-                        variant="info"
-                        style={
-                          status
-                            ? {
-                                backgroundColor:
-                                  SubmissionStatusLabels?.[status]?.color,
-                                color: getContrastColor(
-                                  SubmissionStatusLabels?.[status]?.color,
-                                ),
-                              }
-                            : undefined
-                        }
-                      >
-                        {SubmissionStatusLabels?.[status!]?.label}{" "}
-                        {SubmissionStatusLabels?.[status!]?.emoji}
-                      </Badge>
-                    </p>
-                  </div>
-
-                  <DataTable
-                    className={twMerge("h-full")}
-                    style={{
-                      borderColor: SubmissionStatusLabels?.[status!]?.color,
-                    }}
-                    key={`response-${index}`}
-                    columns={responseColumns}
-                    data={[submissionsResult?.result?.testCasesResults[index]]}
+                  <CustomDataTable
+                    columns={[
+                      "Entrada(s)",
+                      "Saída esperada",
+                      "Saída do seu código",
+                    ]}
+                    data={[submissionsResult?.testCasesResults[index]]}
+                    idExtractor={() => `response-${index}`}
+                    renderItem={({ item }) => (
+                      <Table.Row>
+                        <Table.Data>
+                          <Code
+                            htmlContent={parseStringToHtmlFormat(
+                              item?.inputs?.join("\n") || "",
+                            )}
+                          />
+                        </Table.Data>
+                        <Table.Data>
+                          <Code
+                            htmlContent={parseStringToHtmlFormat(
+                              item?.expectedOutput || "",
+                            )}
+                          />
+                        </Table.Data>
+                        <Table.Data>
+                          <Code
+                            htmlContent={parseStringToHtmlFormat(
+                              item?.output || "",
+                            )}
+                          />
+                        </Table.Data>
+                      </Table.Row>
+                    )}
                   />
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </div>
         )}
       </div>

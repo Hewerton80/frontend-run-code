@@ -28,6 +28,7 @@ export interface AsyncSelectProps<TItem> {
   valueExtractor: (item: TItem) => string;
   /** Key alternativa para o React. Usa valueExtractor quando omitido. */
   keyExtractor?: (item: TItem) => string;
+
   label?: string;
   error?: string;
   required?: boolean;

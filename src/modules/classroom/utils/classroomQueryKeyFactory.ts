@@ -19,7 +19,7 @@ export const classroomQueryKeyFactory = {
 
   /** Lista paginada de turmas com params normalizados */
   pages: (params?: object) =>
-    [...classroomQueryKeyFactory.all(), params] as const,
+    [...classroomQueryKeyFactory.all(), ...(params ? [params] : [])] as const,
 
   /** Turmas do usuário logado */
   myClassrooms: () => [ClassroomQueryKeys.MyClassrooms] as const,
@@ -27,6 +27,8 @@ export const classroomQueryKeyFactory = {
   /** Detalhe de uma turma por ID */
   detail: (classroomId?: string) =>
     [ClassroomQueryKeys.Classroom, classroomId] as const,
+  row: (classroomId?: string | null) =>
+    [ClassroomQueryKeys.ClassroomRow, classroomId] as const,
   card: (classroomId?: string) =>
     [ClassroomQueryKeys.ClassroomCard, classroomId] as const,
 
@@ -41,6 +43,6 @@ export const classroomQueryKeyFactory = {
   /** Detalhe de um usuário específico de uma turma */
   userDetail: (userUuid: string) =>
     [ClassroomQueryKeys.ClassroomUserDetail, userUuid] as const,
-  row: (userId?: string | null) =>
+  userRow: (userId?: string | null) =>
     [ClassroomQueryKeys.ClassroomUserRow, userId] as const,
 };

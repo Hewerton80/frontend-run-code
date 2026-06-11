@@ -10,6 +10,7 @@ export enum ClassroomQueryKeys {
   MyClassrooms = "classroomList",
   /** Detalhe de uma turma por ID */
   Classroom = "classroomDetails",
+  ClassroomRow = "classroomRow",
   ClassroomCard = "classroomCard",
   /** Lista de usuários de uma turma */
   ClassroomUsers = "classroomUsers",

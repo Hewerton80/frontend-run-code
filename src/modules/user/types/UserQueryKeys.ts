@@ -6,6 +6,8 @@
 export enum UserQueryKeys {
   /** Lista paginada de usuários */
   Users = "users",
+  /** Cache individual de uma linha de usuário (seed pela lista) */
+  UserRow = "userRow",
   /** Lista de professores (com filtro opcional por keyword) */
   Teachers = "teachers",
 }

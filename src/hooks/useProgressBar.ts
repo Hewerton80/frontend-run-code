@@ -1,17 +1,50 @@
-import { useProgressBarStore } from "@/stores/useProgressBarStore";
+import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { useRef } from "react";
+
+type ProgressStateType = "initial" | "inProgress" | "completing" | "completed";
+
+interface State {
+  state: ProgressStateType;
+  value: number;
+}
+
+interface Actions {
+  //   start: () => void;
+  //   done: () => void;
+  //   reset: () => void;
+  setValue: (cb: (currnetValue: number) => number) => void;
+  setState: (state: ProgressStateType) => void;
+}
+
+export const useProgressBarStore = create<State & Actions>((set) => ({
+  state: "initial",
+  value: 0,
+  //   start: () => {
+  //     set(() => ({ state: "inProgress" }));
+  //   },
+  //   done: () => {
+  //     set(() => ({ state: "completed" }));
+  //   },
+  //   reset: () => {
+  //     set(() => ({ state: "initial" }));
+  //   },
+  setValue: (cb) => set((state) => ({ value: cb(state.value) })),
+  setState: (state) => set(() => ({ state })),
+}));
+
 
 export const useProgressBar = () => {
-  let intervalId: NodeJS.Timeout | null = null; // Armazena a referência do intervalo
+  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const { value, state, setState, setValue } = useProgressBarStore(
     useShallow((state) => state)
   );
 
   const handleClearInterval = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
+    if (intervalId.current) {
+      clearInterval(intervalId.current);
+      intervalId.current = null;
     }
   };
 
@@ -19,11 +52,11 @@ export const useProgressBar = () => {
     if (state === "inProgress" || state === "completing") return;
     handleClearInterval();
     setState("inProgress");
-    intervalId = setInterval(() => {
+    intervalId.current = setInterval(() => {
       setValue((current) => {
         if (current >= 99) {
-          clearInterval(intervalId!);
-          intervalId = null;
+          clearInterval(intervalId.current!);
+          intervalId.current = null;
           return current;
         }
         return current + 1; // Incrementa lentamente até 99
@@ -35,7 +68,7 @@ export const useProgressBar = () => {
     if (state === "completing") return;
     handleClearInterval();
     setState("completing");
-    intervalId = setInterval(() => {
+    intervalId.current = setInterval(() => {
       setValue((current) => {
         if (current >= 100) {
           handleClearInterval();

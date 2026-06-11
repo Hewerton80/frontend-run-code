@@ -5,10 +5,9 @@ import { SuperAdminHome } from "@/modules/user/components/SuperAdminHome";
 import { RoleUser } from "@/modules/user/userTypets";
 
 // TODO migrar todos os selects e combobox
-// TODO migrar todas as tabelas
 // TODO Mudar layout da tela de login
 // TODO adicionar refresh token
-
+// TODO migrar para toast com zustand
 export default function HomePage() {
   const { loggedUser } = useLoggedUser();
 

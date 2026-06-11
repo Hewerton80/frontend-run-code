@@ -65,6 +65,13 @@ export const useIDEExercise = (exercise: IExercise) => {
   //   };
   // }, [exercise?.id]);
 
+  const submissionsResult = useMemo(() => {
+    const foundSubmissionResult = cachedSubmissionJobs.find(
+      (job) => job.exerciseUuId === exercise?.uuid,
+    );
+    return foundSubmissionResult;
+  }, [cachedSubmissionJobs, exercise?.uuid]);
+
   const changeSourceCode = (value: string) => {
     setSourceCode(value);
   };
@@ -96,12 +103,12 @@ export const useIDEExercise = (exercise: IExercise) => {
 
   return {
     sourceCode,
-    isSubmitting,
+    isSubmitting: isSubmitting || submissionsResult?.isProcessing,
     submitError,
     submitResponse,
     avaliableLanguages,
     changeSourceCode,
-    cachedSubmissionJobs,
+    submissionsResult: submissionsResult?.result,
     createSubmission: handlecreateSubmission,
   };
 };

@@ -17,6 +17,9 @@ export const userQueryKeyFactory = {
   usersList: (params?: object) =>
     [...userQueryKeyFactory.users(), params] as const,
 
+  /** Cache individual de uma linha de usuário (seed pela lista) */
+  userRow: (userId?: string | null) => [UserQueryKeys.UserRow, userId] as const,
+
   /** Raiz de todas as queries de professores */
   teachers: () => [UserQueryKeys.Teachers] as const,
 

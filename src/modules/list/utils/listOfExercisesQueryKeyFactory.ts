@@ -6,6 +6,9 @@ export const listOfExercisesQueryKeyFactory = {
   pages: (params?: object) =>
     [...listOfExercisesQueryKeyFactory.all(), params] as const,
 
+  /** Cache individual de uma linha de lista (seed pela lista paginada) */
+  listRow: (listId?: number | null) => [ListQueryKeys.ListRow, listId] as const,
+
   oneOfClassroom: (listId: number) =>
     [ListQueryKeys.ListOfClassroom, listId] as const,
   allOfClassroom: (classroomUuid: string) =>

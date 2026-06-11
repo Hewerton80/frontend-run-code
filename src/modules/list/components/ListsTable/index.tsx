@@ -1,45 +1,23 @@
-import {
-  DataTable,
-  IColmunDataTable,
-} from "@/components/ui/dataDisplay/DataTable";
-import { IList } from "../../listTypes";
-import { useTableLists } from "./useTableLists";
-import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
-import { DateTime } from "@/utils/dateTime";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
+import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
+import { usePagination } from "@/hooks/usePagination";
+import {
+  IGetListExercisesParams,
+  useFetchLists,
+} from "../../hooks/useFetchLists";
+import { ListsTableRow } from "./ListsTableRow";
 
 export const ListsTable = () => {
+  const { goToPage, paginationParams } = usePagination();
+  const listsParams: IGetListExercisesParams = {
+    ...paginationParams,
+  };
   const {
-    isListExercisesLoading,
-    listExercises,
-    listExercisesError,
-    goToPage,
     refetchListExercises,
-  } = useTableLists();
-
-  const columns: IColmunDataTable<IList>[] = [
-    {
-      field: "title",
-      label: "Título",
-      onParse: (listExercises) => (
-        <p className="line-clamp-1">{listExercises?.title}</p>
-      ),
-    },
-    {
-      field: "author",
-      label: "Autor(a)",
-      onParse: (listExercises) => (
-        <GroupedUserInfo user={listExercises?.author!} />
-      ),
-    },
-    {
-      field: "createdAt",
-      label: "Criado em",
-      onParse: (listExercises) => (
-        <>{DateTime.format(listExercises?.createdAt!, "dd/MM/yyyy - HH:mm")}</>
-      ),
-    },
-  ];
+    listExercises,
+    isListExercisesLoading,
+    listExercisesError,
+  } = useFetchLists(listsParams);
 
   return (
     <div className="flex flex-col gap-4 w-full p-8">
@@ -48,13 +26,20 @@ export const ListsTable = () => {
         items={[{ label: "📝 Listas" }]}
       />
       <div>
-        <DataTable
-          columns={columns}
+        <CustomDataTable
+          columns={["Título", "Autor(a)", "Criado em"]}
           data={listExercises?.data || []}
           isLoading={isListExercisesLoading}
-          isError={!!listExercisesError}
-          onTryAgainIfError={refetchListExercises}
-          paginationConfig={{
+          errorMessage={
+            listExercisesError
+              ? (listExercisesError as any)?.response?.data?.message ||
+                "Erro ao carregar as listas"
+              : undefined
+          }
+          renderItem={({ item }) => <ListsTableRow listId={item.id} />}
+          idExtractor={(list) => String(list.id)}
+          onRetry={refetchListExercises}
+          pagination={{
             currentPage: listExercises?.currentPage || 1,
             totalPages: listExercises?.lastPage || 1,
             perPage: listExercises?.perPage || 25,

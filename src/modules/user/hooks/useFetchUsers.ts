@@ -5,10 +5,11 @@ import { IUser } from "../userTypets";
 import { IPaginationParams, IPaginatedDocs } from "@/types/paginated";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { userQueryKeyFactory } from "@/modules/user/utils/userQueryKeyFactory";
+import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
-export type IGetUsersParams = IPaginationParams;
+export type IFetchUsersParams = IPaginationParams;
 
-export const useFetchUsers = (usersParams?: IGetUsersParams) => {
+export const useFetchUsers = (usersParams?: IFetchUsersParams) => {
   const { apiBase } = useAxios();
 
   const normalizedParams = useMemo(
@@ -28,8 +29,16 @@ export const useFetchUsers = (usersParams?: IGetUsersParams) => {
         params: normalizedParams,
         signal,
       });
+
+      res.data?.data?.forEach((user) => {
+        if (user.uuid) {
+          setItemInCache<IUser>(userQueryKeyFactory.userRow(user.uuid), user);
+        }
+      });
+
       return res.data ?? { data: [] };
     },
+    enabled: true,
     retry: 0,
   });
 

@@ -1,12 +1,10 @@
-import { Card } from "@/components/ui/cards/Card";
-import {
-  DataTable,
-  IColmunDataTable,
-} from "@/components/ui/dataDisplay/DataTable";
-import { IExercise, IExerciseTest } from "@/modules/exercise/exerciseTypes";
-import { twMerge } from "tailwind-merge";
+import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { FaCode } from "react-icons/fa";
 import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
+import { Code } from "@/components/ui/dataDisplay/Code";
+import { cn } from "@/utils/cn";
+import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
+import { Table } from "@/components/ui/dataDisplay/Table";
 
 interface ExerciseDescriptionProps {
   exercise: IExercise;
@@ -17,44 +15,17 @@ export const ExerciseDescription = ({
   exercise,
   orientation = "vertical",
 }: ExerciseDescriptionProps) => {
-  const exampleColumns: IColmunDataTable<IExerciseTest>[] = [
-    {
-      field: "input",
-      label: "Entrada(s)",
-      onParse: (test) => (
-        <code
-          className="font-[monospace] whitespace-pre"
-          dangerouslySetInnerHTML={{
-            __html: parseStringToHtmlFormat(test?.input || ""),
-          }}
-        />
-      ),
-    },
-    {
-      field: "expectedOutput",
-      label: "Exemplo de saída",
-      onParse: (test) => (
-        <code
-          className="font-[monospace] whitespace-pre"
-          dangerouslySetInnerHTML={{
-            __html: parseStringToHtmlFormat(test?.expectedOutput || ""),
-          }}
-        />
-      ),
-    },
-  ];
-
   return (
     <div
-      className={twMerge(
+      className={cn(
         "grid h-full gap-2",
-        orientation === "vertical" ? "grid-cols-1" : "grid-cols-12"
+        orientation === "vertical" ? "grid-cols-1" : "grid-cols-12",
       )}
     >
       <div
-        className={twMerge(
+        className={cn(
           "flex flex-col gap-2 w-full",
-          orientation === "horizontal" && "col-span-8"
+          orientation === "horizontal" && "col-span-8",
         )}
       >
         <div className="flex items-center gap-2">
@@ -67,7 +38,23 @@ export const ExerciseDescription = ({
         />
       </div>
       <div className={orientation === "horizontal" ? "col-span-4" : ""}>
-        <DataTable columns={exampleColumns} data={exercise?.testCases || []} />
+        <CustomDataTable
+          columns={["Entrada(s)", "Saída esperada"]}
+          data={exercise?.testCases || []}
+          idExtractor={(item) => `${item?.id}-${exercise?.id}`}
+          renderItem={({ item }) => (
+            <Table.Row>
+              <Table.Data>
+                <Code htmlContent={parseStringToHtmlFormat(item?.input)} />
+              </Table.Data>
+              <Table.Data>
+                <Code
+                  htmlContent={parseStringToHtmlFormat(item?.expectedOutput)}
+                />
+              </Table.Data>
+            </Table.Row>
+          )}
+        />
       </div>
     </div>
   );

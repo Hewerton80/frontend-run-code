@@ -16,11 +16,11 @@ const ToastProvider = ToastPrimitives.Provider;
 const toastDireationVariant = {
   "top-right": twMerge(
     "top-0 right-0",
-    "[&_.root]:data-[state=open]:slide-in-from-top-full"
+    "[&_.root]:data-[state=open]:slide-in-from-top-full",
   ),
   "bottom-right": twMerge(
     "bottom-0 right-0",
-    "[&_.root]:data-[state=open]:slide-in-from-bottom-full"
+    "[&_.root]:data-[state=open]:slide-in-from-bottom-full",
   ),
 };
 export type ToastDirection = keyof typeof toastDireationVariant;
@@ -33,7 +33,7 @@ const ToastViewport = (
   }: ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport> & {
     direction?: ToastDirection;
   },
-  ref?: any
+  ref?: any,
 ) => (
   <ToastPrimitives.Viewport
     ref={ref}
@@ -41,7 +41,7 @@ const ToastViewport = (
       "viewport fixed z-[100] flex max-h-screen w-full flex-col-reverse p-4",
       "sm:flex-col md:max-w-[420px]",
       toastDireationVariant[direction],
-      className
+      className,
     )}
     {...props}
   />
@@ -52,17 +52,17 @@ const toastVariants = {
   default: twMerge(
     "border bg-background text-foreground",
     "[&_.action]:hover:bg-secondary",
-    "[&_.progress]:bg-foreground"
+    "[&_.progress]:bg-foreground",
   ),
   success: twMerge(
     "success group bg-success text-success-foreground",
     "[&_.action]:hover:border-success-foreground [&_.action]:border-success-foreground/50",
-    "[&_.progress]:bg-white"
+    "[&_.progress]:bg-white",
   ),
   danger: twMerge(
     "danger group border-danger bg-danger text-danger-foreground",
     "[&_.action]:hover:border-danger-foreground [&_.action]:border-danger-foreground/50",
-    "[&_.progress]:bg-white"
+    "[&_.progress]:bg-white",
   ),
 };
 
@@ -78,7 +78,7 @@ const ToastRoot = (
     variant?: ToastVariants;
     // direction?: ToastDirection;
   },
-  ref?: any
+  ref?: any,
 ) => {
   return (
     <ToastPrimitives.Root
@@ -93,7 +93,7 @@ const ToastRoot = (
         "data-[state=closed]:animate-out data-[swipe=end]:animate-out",
         "data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full",
         toastVariants[variant],
-        className
+        className,
       )}
       {...props}
     />
@@ -106,7 +106,7 @@ const ToastAction = (
     className,
     ...props
   }: ComponentPropsWithoutRef<typeof ToastPrimitives.Action>,
-  ref?: any
+  ref?: any,
 ) => (
   <ToastPrimitives.Action
     ref={ref}
@@ -115,7 +115,7 @@ const ToastAction = (
       "border bg-transparent px-3 text-sm font-medium transition-colors ",
       "focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none",
       "disabled:opacity-50",
-      className
+      className,
     )}
     {...props}
   />
@@ -127,7 +127,7 @@ const ToastClose = (
     className,
     ...props
   }: ComponentPropsWithoutRef<typeof ToastPrimitives.Close>,
-  ref?: any
+  ref?: any,
 ) => (
   <ToastPrimitives.Close
     ref={ref}
@@ -135,7 +135,7 @@ const ToastClose = (
       "absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 cursor-pointer",
       "transition-opacity hover:text-foreground focus:opacity-100",
       "focus:outline-none focus:ring-1 group-hover:opacity-100 mr-0",
-      className
+      className,
     )}
     toast-close=""
     {...props}
@@ -150,7 +150,7 @@ const ToastTitle = (
     className,
     ...props
   }: ComponentPropsWithoutRef<typeof ToastPrimitives.Title>,
-  ref?: any
+  ref?: any,
 ) => (
   <ToastPrimitives.Title
     ref={ref}
@@ -165,7 +165,7 @@ const ToastDescription = (
     className,
     ...props
   }: ComponentPropsWithoutRef<typeof ToastPrimitives.Description>,
-  ref?: any
+  ref?: any,
 ) => (
   <ToastPrimitives.Description
     ref={ref}
@@ -180,7 +180,7 @@ const ToastProgress = () => {
   const { show } = useToastStore();
 
   useEffect(() => {
-    let animationProgressTime: NodeJS.Timeout;
+    let animationProgressTime: ReturnType<typeof setTimeout>;
 
     if (show) {
       animationProgressTime = setTimeout(() => setProgress(100), 100);
@@ -194,7 +194,7 @@ const ToastProgress = () => {
   return (
     <span
       className={twMerge(
-        "progress absolute w-full bottom-0 left-0 h-1  transition-transform ease-linear"
+        "progress absolute w-full bottom-0 left-0 h-1  transition-transform ease-linear",
       )}
       style={{
         transform: `translateX(-${progress}%)`,
@@ -223,7 +223,7 @@ export const Toaster = () => {
   } = useToastStore();
 
   useEffect(() => {
-    let timerToClose: NodeJS.Timeout;
+    let timerToClose: ReturnType<typeof setTimeout>;
 
     if (show) {
       timerToClose = setTimeout(() => {

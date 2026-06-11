@@ -43,7 +43,10 @@ export const useFetchClassroomUsers = (
 
       response?.data?.forEach((user) => {
         if (user.uuid) {
-          setItemInCache<IUser>(classroomQueryKeyFactory.row(user.uuid), user);
+          setItemInCache<IUser>(
+            classroomQueryKeyFactory.userRow(user.uuid),
+            user,
+          );
         }
       });
 

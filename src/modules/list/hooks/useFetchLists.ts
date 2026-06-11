@@ -5,6 +5,7 @@ import { IPaginatedDocs, IPaginationParams } from "@/types/paginated";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { IList } from "../listTypes";
 import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
+import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
 export interface IGetListExercisesParams extends IPaginationParams {
   notIn?: string;
@@ -32,9 +33,20 @@ export const useFetchLists = (
         params: normalizedParams,
         signal,
       });
+
+      res.data?.data?.forEach((list) => {
+        if (list.id) {
+          setItemInCache<IList>(
+            listOfExercisesQueryKeyFactory.listRow(list.id),
+            list,
+          );
+        }
+      });
+
       return res.data ?? { data: [] };
     },
     retry: 0,
+    enabled: true,
   });
 
   return {
