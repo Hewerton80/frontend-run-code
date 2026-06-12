@@ -29,7 +29,7 @@ const Root = forwardRef(
       required,
       ...restProps
     }: RadioRootProps,
-    ref?: any
+    ref?: any,
   ) => {
     return (
       <div className={twMerge("flex flex-col w-full", formControlClassName)}>
@@ -39,7 +39,7 @@ const Root = forwardRef(
           className={twMerge(
             "flex flex-wrap gap-2",
             orientation === "vertical" && "flex-col",
-            error && "[&_button]:border-danger"
+            error && "[&_button]:border-danger",
           )}
           {...restProps}
         >
@@ -48,7 +48,7 @@ const Root = forwardRef(
         {error && <FormHelperText>{error}</FormHelperText>}
       </div>
     );
-  }
+  },
 );
 
 function Item({ label, id, value, ...restProps }: RadioItemProps) {
@@ -58,10 +58,10 @@ function Item({ label, id, value, ...restProps }: RadioItemProps) {
       <RadioGroup.Item
         id={htmlFrom}
         className={twMerge(
-          "aspect-square h-4 w-4 rounded-full border border-primary text-primary",
+          "aspect-square size-4 rounded-full border border-primary text-primary",
           "ring-offset-background focus:outline-hidden focus-visible:ring-2",
           "focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed",
-          "disabled:opacity-50"
+          "disabled:opacity-50",
         )}
         value={value}
         {...restProps}

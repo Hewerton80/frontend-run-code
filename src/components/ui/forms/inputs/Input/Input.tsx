@@ -4,8 +4,10 @@ import { FormLabel } from "@/components/ui/forms/FormLabel";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";
 import { Slot } from "@radix-ui/react-slot";
 
-export interface InputProps
-  extends Omit<ComponentPropsWithRef<"input">, "className"> {
+export interface InputProps extends Omit<
+  ComponentPropsWithRef<"input">,
+  "className"
+> {
   formControlClassName?: string;
   inputClassName?: string;
   leftIcon?: JSX.Element;
@@ -30,13 +32,13 @@ export const Input = forwardRef(
       onClickLeftIcon,
       ...restProps
     }: InputProps,
-    ref?: any
+    ref?: any,
   ) => {
     return (
       <div
         className={twMerge(
           "flex flex-col w-full relative",
-          formControlClassName
+          formControlClassName,
         )}
       >
         {label && (
@@ -48,7 +50,7 @@ export const Input = forwardRef(
           <Slot
             role={onClickLeftIcon ? "button" : undefined}
             onClick={onClickLeftIcon}
-            className="absolute left-2 top-10 h-4 w-4 text-muted-foreground"
+            className="absolute left-2 top-10 size-4 text-muted-foreground"
           >
             {leftIcon}
           </Slot>
@@ -58,8 +60,8 @@ export const Input = forwardRef(
             role={onClickRightIcon ? "button" : undefined}
             onClick={onClickRightIcon}
             className={twMerge(
-              "absolute right-2 top-10 h-4 w-4 text-muted-foreground",
-              onClickRightIcon && "cursor-pointer"
+              "absolute right-2 top-10 size-4 text-muted-foreground",
+              onClickRightIcon && "cursor-pointer",
             )}
           >
             {rightIcon}
@@ -90,12 +92,12 @@ export const Input = forwardRef(
               "border-danger/60 focus-visible:border-danger focus-visible:ring-danger/40",
             leftIcon && "pl-8",
             rightIcon && "pr-8",
-            inputClassName
+            inputClassName,
           )}
           {...restProps}
         />
         {error && <FormHelperText>{error}</FormHelperText>}
       </div>
     );
-  }
+  },
 );

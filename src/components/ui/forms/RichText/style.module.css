@@ -1,0 +1,68 @@
+.editor {
+  cursor: text;
+  min-height: 18rem;
+  background: var(--background);
+
+  :global(.ProseMirror) {
+    outline: none !important;
+    padding-inline: 1rem;
+    padding-top: 0.5rem;
+  }
+  h1:global(.tiptap-heading) {
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 700;
+  }
+
+  h2:global(.tiptap-heading) {
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+  }
+
+  h3:global(.tiptap-heading) {
+    margin-bottom: 0.75rem;
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+  }
+
+  h1:global(.tiptap-heading):first-child,
+  h2:global(.tiptap-heading):first-child,
+  h3:global(.tiptap-heading):first-child {
+    margin-top: 0;
+  }
+
+  h1:global(.tiptap-heading) + h2:global(.tiptap-heading),
+  h1:global(.tiptap-heading) + h3:global(.tiptap-heading),
+  h2:global(.tiptap-heading) + h1:global(.tiptap-heading),
+  h2:global(.tiptap-heading) + h3:global(.tiptap-heading),
+  h3:global(.tiptap-heading) + h1:global(.tiptap-heading),
+  h3:global(.tiptap-heading) + h2:global(.tiptap-heading) {
+    margin-top: 0;
+  }
+
+  :global(.tiptap) p:global(.is-editor-empty):first-child::before {
+    pointer-events: none;
+    float: left;
+    height: 0;
+    color: var(--accent-foreground);
+    content: attr(data-placeholder);
+  }
+
+  :global(.tiptap) ul,
+  :global(.tiptap) ol {
+    padding: 0 1rem;
+  }
+
+  :global(.tiptap) blockquote {
+    border-left: 3px solid gray;
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
+}

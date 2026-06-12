@@ -81,7 +81,7 @@ const DialogContent = (
           "data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
         )}
       >
-        <FaTimes className="h-4 w-4" />
+        <FaTimes className="size-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>

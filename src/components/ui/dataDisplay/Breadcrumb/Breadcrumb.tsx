@@ -93,7 +93,7 @@ const BreadcrumbEllipsis = ({
     className={twMerge("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    <MdOutlineMoreHoriz className="h-4 w-4" />
+    <MdOutlineMoreHoriz className="size-4" />
     <span className="sr-only">More</span>
   </span>
 );

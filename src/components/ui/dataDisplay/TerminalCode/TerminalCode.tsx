@@ -1,5 +1,5 @@
-import { twMerge } from "tailwind-merge";
 import { useTypeWriterText } from "@/hooks/useTypeWriterText";
+import { cn } from "@/utils/cn";
 
 interface TerminalCodeProps {
   className?: string;
@@ -14,9 +14,9 @@ export function TerminalCode({ className, content = "" }: TerminalCodeProps) {
 
   return (
     <code
-      className={twMerge(
+      className={cn(
         "bg-muted text-sm p-3 rounded-lg min-h-11 overflow-auto",
-        className
+        className,
       )}
       dangerouslySetInnerHTML={{
         __html: typeWriterText,

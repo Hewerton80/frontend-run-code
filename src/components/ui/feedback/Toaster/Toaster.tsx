@@ -140,7 +140,7 @@ const ToastClose = (
     toast-close=""
     {...props}
   >
-    <LuX className="h-4 w-4" />
+    <LuX className="size-4" />
   </ToastPrimitives.Close>
 );
 ToastClose.displayName = ToastPrimitives.Close.displayName;

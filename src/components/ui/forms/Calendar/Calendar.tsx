@@ -62,8 +62,8 @@ export function Calendar({
       }}
       components={
         {
-          // IconLeft: ({ ...props }) => <BsChevronLeft className="h-4 w-4" />,
-          // IconRight: ({ ...props }) => <BsChevronRight className="h-4 w-4" />,
+          // IconLeft: ({ ...props }) => <BsChevronLeft className="size-4" />,
+          // IconRight: ({ ...props }) => <BsChevronRight className="size-4" />,
         }
       }
       {...restProps}

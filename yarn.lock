@@ -2636,6 +2636,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-code/-/extension-code-3.26.1.tgz#d680a3c13d5d885910c84e11c36707a717cba2da"
   integrity sha512-t9/VR5k3rGPyhcGau9YvVgaAQ+nP9R9WzS996bQQ7GIrMOTSXb0FWwoQFBiYl83V6VA16Tlj/oScC7SFlA8lvA==
 
+"@tiptap/extension-color@^3.26.1":
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-color/-/extension-color-3.26.1.tgz#658c561102a8548c601517fc3d9f66cae85b41c4"
+  integrity sha512-f8yy+CBRDqMeaIaQ0UHDbGUqjfGka5O16ja47shatXm49lqLcL06js9tGoiZFVzp9/lcKOLSXjuzxNf0OZ9SbA==
+
 "@tiptap/extension-document@^3.26.1":
   version "3.26.1"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-document/-/extension-document-3.26.1.tgz#6e4bed230ec6081dc2904b94b72fe4a5d4bd168f"
@@ -2665,6 +2670,11 @@
   version "3.26.1"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-heading/-/extension-heading-3.26.1.tgz#63d8243b2c0028dace7084633841f412772d24a1"
   integrity sha512-eRlv9XxzUL8FobKAiF1WjP35CT2QpbcxxeyYFF7BmGEONvKI7r5g7JGwyGli4Cvclh70h8w6JuoXSmGUVEU65A==
+
+"@tiptap/extension-highlight@^3.26.1":
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-highlight/-/extension-highlight-3.26.1.tgz#133e3a7548ac9b0f2f48d38986abba220250f953"
+  integrity sha512-qgx4Eetqkogh3OyomZO0yIMQGHhjatCDAtELkC7NQxnmPsp2c9i6ck/hh7mP5We5ccBwUoYRuNGC9lkflCx75g==
 
 "@tiptap/extension-horizontal-rule@^3.26.1":
   version "3.26.1"
@@ -2712,6 +2722,16 @@
   version "3.26.1"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-strike/-/extension-strike-3.26.1.tgz#b35b774fb798005d5ab2c67f64aad12ae80bc25d"
   integrity sha512-7hmQ2mBsA+75GRrJIKYxb+10H23mblEQSGGsv9Ptl7JLaGmj+8sv2HGQGSUT9QBiBVprxaYTqyWFXQC9akfLWg==
+
+"@tiptap/extension-text-align@^3.26.1":
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-text-align/-/extension-text-align-3.26.1.tgz#c1e8ad9d354ae631475201cff6e1943e71ed826a"
+  integrity sha512-Ptbu1FyASFqIrbw/p9D6zLt8G7seDh4X408qU9FIrun7PE79o+amB5LWI/SzHFuVk3OMI+g7jE/mMDhNUYsqVA==
+
+"@tiptap/extension-text-style@^3.26.1":
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-text-style/-/extension-text-style-3.26.1.tgz#7183b11849ae94d448224b942686832f99e1cb8a"
+  integrity sha512-V8t7qOyLH7IBR2HjjJVZ9rUHTnuFToJx07L9PN9PpgQLhz9q8Jah4gAwmjLBXDRG2YaXImGK0RwKKCU/yHhwOg==
 
 "@tiptap/extension-text@^3.26.1":
   version "3.26.1"

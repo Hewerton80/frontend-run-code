@@ -38,7 +38,7 @@ export function DateRangePicker({
           <Button
             id="date"
             variantStyle="outline"
-            leftIcon={<CiCalendar className="h-4 w-4" />}
+            leftIcon={<CiCalendar className="size-4" />}
             className={twMerge(
               "max-w-[300px] justify-start text-left font-normal",
               !rangeDate && "text-muted-foreground",

@@ -30,11 +30,11 @@ export const DatePicker = forwardRef(
           <Popover.Trigger asChild>
             <Button
               variantStyle="outline"
-              leftIcon={<CiCalendar className="h-4 w-4" />}
+              leftIcon={<CiCalendar className="size-4" />}
               className={twMerge(
                 "max-w-[280px] justify-start text-left font-normal",
                 !date && "text-muted-foreground",
-                error && "border-danger"
+                error && "border-danger",
               )}
             >
               {date ? format(date, "PPP") : "Pick a date"}
@@ -47,5 +47,5 @@ export const DatePicker = forwardRef(
         {error && <FormHelperText>{error}</FormHelperText>}
       </div>
     );
-  }
+  },
 );
