@@ -14,6 +14,8 @@ export function menuBarStateSelector(ctx: EditorStateSnapshot<Editor>) {
     canClearMarks: ctx.editor.can().chain().unsetAllMarks().run() ?? false,
     isUnderline: ctx.editor.isActive("underline") ?? false,
     canUnderline: ctx.editor.can().chain().toggleUnderline().run() ?? false,
+    isLink: ctx.editor.isActive("link") ?? false,
+    canLink: ctx.editor.can().chain().toggleLink({ href: "" }).run() ?? false,
 
     // Block types
     isParagraph: ctx.editor.isActive("paragraph") ?? false,

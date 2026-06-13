@@ -15,6 +15,7 @@ import { CodeBlockToolBar } from "./CodeBlockToolBar";
 import { HorizontalRuleToolBar } from "./HorizontalRuleToolBar";
 import { BlockquoteToolBar } from "./BlockquoteToolBar";
 import { HardBreakToolBar } from "./HardBreakToolBar";
+import { LinkToolbar } from "./LinkTollBar";
 
 interface ToolBarProps {
   editor: Editor;
@@ -36,6 +37,7 @@ export const ToolBar = memo(({ editor }: ToolBarProps) => {
           <ItalicToolBar />
           <StrikeToolBar />
           <UnderlineToolBar />
+          <LinkToolbar />
           <Separator orientation="vertical" className="h-7" />
           <BulletListToolBar />
           <OrderedListToolBar />

@@ -9,6 +9,7 @@ interface ToolBarButtonProps {
   disabled?: boolean;
   tooltipTextContent: ReactNode;
   isActive?: boolean;
+  className?: string;
 }
 
 export const ToolBarButton = memo(
@@ -20,6 +21,7 @@ export const ToolBarButton = memo(
         disabled,
         isActive,
         tooltipTextContent,
+        className,
       }: ToolBarButtonProps,
       ref?: any,
     ) => {
@@ -31,6 +33,7 @@ export const ToolBarButton = memo(
             className={cn(
               "size-8 min-h-8 min-w-8 max-w-8 max-h-8 px-0! py-0! p-0.5! ",
               isActive && "bg-accent text-accent-foreground",
+              className,
             )}
             onClick={onClick}
             disabled={disabled}
