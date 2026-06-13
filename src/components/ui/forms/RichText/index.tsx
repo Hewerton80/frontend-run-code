@@ -4,7 +4,8 @@ import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
-
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
 import { ToolBar } from "./ToolBar";
 import style from "./style.module.css";
 
@@ -25,11 +26,11 @@ const extensions = [
     },
   }),
   TextAlign.configure({ types: ["heading", "paragraph"] }),
+  Highlight.configure({ multicolor: true }),
   TextStyle,
   Color,
-  Highlight.configure({
-    multicolor: true,
-  }),
+  Underline,
+  Link,
 ];
 
 const content = `

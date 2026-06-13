@@ -25,6 +25,7 @@ export default defineConfig([
       "@typescript-eslint/no-unused-vars": "warn",
       "react-hooks/exhaustive-deps": "warn",
       "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+      "react-refresh/only-export-components": "off",
     },
   },
 ]);
