@@ -131,4 +131,53 @@
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
+
+  /* Resizable image — corner handles */
+  :global(.image-resize-handle) {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary);
+    border: 2px solid var(--background);
+    border-radius: 2px;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  :global(.group:hover .image-resize-handle) {
+    opacity: 1;
+  }
+
+  :global(.image-resize-handle-top-left) {
+    top: -5px;
+    left: -5px;
+    cursor: nwse-resize;
+  }
+
+  :global(.image-resize-handle-top-right) {
+    top: -5px;
+    right: -5px;
+    cursor: nesw-resize;
+  }
+
+  :global(.image-resize-handle-bottom-left) {
+    bottom: -5px;
+    left: -5px;
+    cursor: nesw-resize;
+  }
+
+  :global(.image-resize-handle-bottom-right) {
+    bottom: -5px;
+    right: -5px;
+    cursor: nwse-resize;
+  }
+
+  :global(.select-none) {
+    user-select: none;
+  }
+
+  :global(.select-none) img {
+    pointer-events: none;
+  }
 }

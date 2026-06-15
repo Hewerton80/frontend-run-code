@@ -15,6 +15,7 @@ import { CodeBlockToolBar } from "./CodeBlockToolBar";
 import { HorizontalRuleToolBar } from "./HorizontalRuleToolBar";
 import { BlockquoteToolBar } from "./BlockquoteToolBar";
 import { HardBreakToolBar } from "./HardBreakToolBar";
+import { ImageToolBar } from "./ImageToolbar";
 import { LinkToolbar } from "./LinkTollBar";
 import { HeadingsToolBar } from "./HeadingsToolBar";
 import { AlignmentToolbar } from "./AlignmentTooolbar";
@@ -57,6 +58,7 @@ export const ToolBar = memo(({ editor }: ToolBarProps) => {
           <HorizontalRuleToolBar />
           <BlockquoteToolBar />
           <HardBreakToolBar />
+          <ImageToolBar />
           {separator}
         </ToolbarProvider>
       </div>

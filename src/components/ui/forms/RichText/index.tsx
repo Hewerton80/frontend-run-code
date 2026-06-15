@@ -9,6 +9,7 @@ import Link from "@tiptap/extension-link";
 import { ToolBar } from "./ToolBar";
 import style from "./style.module.css";
 import { HEADING_LEVELS } from "@/utils/tiptapHelpers";
+import { ResizableImageExtension } from "./CustomExtensions/ResizableImageExtension";
 
 const extensions = [
   StarterKit.configure({
@@ -32,6 +33,7 @@ const extensions = [
   Color,
   Underline,
   Link,
+  ResizableImageExtension,
 ];
 
 const content = `

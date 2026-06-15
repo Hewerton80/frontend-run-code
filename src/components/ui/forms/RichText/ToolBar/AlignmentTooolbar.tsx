@@ -3,7 +3,6 @@ import {
   AlignJustify,
   AlignLeft,
   AlignRight,
-  Check,
   ChevronDown,
 } from "lucide-react";
 import { memo, ReactNode, useCallback, useMemo } from "react";
