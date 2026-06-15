@@ -1,1 +1,1 @@
-export * from './TypeWriterText'
+export * from "./TypeWriterText";
