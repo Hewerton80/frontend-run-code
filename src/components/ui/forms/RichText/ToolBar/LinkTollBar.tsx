@@ -32,7 +32,7 @@ const LinkToolbar = memo(() => {
           className="min-w-fit max-w-fit p-2!"
           tooltipTextContent="Link"
           isActive={editorState?.isLink}
-          icon={<Link className="h-4 w-4" />}
+          icon={<Link className="size-4" />}
           disabled={!editorState.canLink}
         />
       </Popover.Trigger>

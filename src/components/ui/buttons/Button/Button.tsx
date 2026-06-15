@@ -121,8 +121,8 @@ const getButtonVariantStyle = (variant: ButtonVariantStyle) => {
 export interface ButtonProps extends ComponentPropsWithRef<"button"> {
   variantStyle?: ButtonVariantStyle;
   isLoading?: boolean;
-  leftIcon?: JSX.Element;
-  rightIcon?: JSX.Element;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   fullWidth?: boolean;
   asChild?: boolean;
 }
@@ -138,7 +138,6 @@ export const Button = forwardRef(
       className,
       leftIcon,
       rightIcon,
-      formTarget,
       fullWidth,
       asChild,
       ...restProps
@@ -160,9 +159,17 @@ export const Button = forwardRef(
           childrenIsHtmlTag ? ChildrenComp?.type : Fragment,
           ChildrenComp?.props || {},
           <>
-            {leftIcon && <span className="mr-3">{leftIcon}</span>}
+            {leftIcon && (
+              <span role="img" className="mr-3">
+                {leftIcon}
+              </span>
+            )}
             {ChildrenComp?.props?.children || children}
-            {rightIcon && <span className="ml-3">{rightIcon}</span>}
+            {rightIcon && (
+              <span role="img" className="ml-3">
+                {rightIcon}
+              </span>
+            )}
           </>,
         );
       }

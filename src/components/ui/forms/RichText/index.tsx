@@ -8,6 +8,7 @@ import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import { ToolBar } from "./ToolBar";
 import style from "./style.module.css";
+import { HEADING_LEVELS } from "@/utils/tiptapHelpers";
 
 const extensions = [
   StarterKit.configure({
@@ -21,7 +22,7 @@ const extensions = [
       },
     },
     heading: {
-      levels: [1, 2, 3, 4],
+      levels: HEADING_LEVELS,
       HTMLAttributes: { class: "tiptap-heading" },
     },
   }),

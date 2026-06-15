@@ -1,3 +1,4 @@
+import { Alignment } from "@/utils/tiptapHelpers";
 import { Editor, EditorStateSnapshot } from "@tiptap/react";
 
 export function menuBarStateSelector(ctx: EditorStateSnapshot<Editor>) {
@@ -19,12 +20,19 @@ export function menuBarStateSelector(ctx: EditorStateSnapshot<Editor>) {
 
     // Block types
     isParagraph: ctx.editor.isActive("paragraph") ?? false,
+    isHeading: (level: number) =>
+      ctx.editor.isActive("heading", { level }) ?? false,
     isHeading1: ctx.editor.isActive("heading", { level: 1 }) ?? false,
     isHeading2: ctx.editor.isActive("heading", { level: 2 }) ?? false,
     isHeading3: ctx.editor.isActive("heading", { level: 3 }) ?? false,
     isHeading4: ctx.editor.isActive("heading", { level: 4 }) ?? false,
     isHeading5: ctx.editor.isActive("heading", { level: 5 }) ?? false,
     isHeading6: ctx.editor.isActive("heading", { level: 6 }) ?? false,
+
+    //text-aligne
+    isTextAlign(alignment: Alignment) {
+      return ctx.editor.isActive({ textAlign: alignment }) ?? false;
+    },
 
     // Lists and blocks
     isBulletList: ctx.editor.isActive("bulletList") ?? false,
@@ -41,6 +49,8 @@ export function menuBarStateSelector(ctx: EditorStateSnapshot<Editor>) {
     // History
     canUndo: ctx.editor.can().chain().undo().run() ?? false,
     canRedo: ctx.editor.can().chain().redo().run() ?? false,
+    //  image
+    isImagePlaceholder: ctx.editor.isActive("image-placeholder") ?? false,
   };
 }
 

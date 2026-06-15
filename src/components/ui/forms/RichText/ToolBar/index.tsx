@@ -16,15 +16,20 @@ import { HorizontalRuleToolBar } from "./HorizontalRuleToolBar";
 import { BlockquoteToolBar } from "./BlockquoteToolBar";
 import { HardBreakToolBar } from "./HardBreakToolBar";
 import { LinkToolbar } from "./LinkTollBar";
+import { HeadingsToolBar } from "./HeadingsToolBar";
+import { AlignmentToolbar } from "./AlignmentTooolbar";
 
 interface ToolBarProps {
   editor: Editor;
 }
 
+// TODO adicionar images, tables, etc
+// https://tiptap.dev/docs/editor/extensions/nodes/mathematics
 export const ToolBar = memo(({ editor }: ToolBarProps) => {
   if (!editor) {
     return null;
   }
+  const separator = <Separator orientation="vertical" className="h-7" />;
 
   return (
     <div className="flex w-full items-center p-2 justify-between border-b sticky top-0 left-0 bg-background z-20">
@@ -32,23 +37,27 @@ export const ToolBar = memo(({ editor }: ToolBarProps) => {
         <ToolbarProvider editor={editor}>
           <UndoToolBar />
           <RedoToolBar />
-          <Separator orientation="vertical" className="h-7" />
+          {separator}
           <BoldToolBar />
           <ItalicToolBar />
           <StrikeToolBar />
           <UnderlineToolBar />
           <LinkToolbar />
-          <Separator orientation="vertical" className="h-7" />
+          {separator}
+          <HeadingsToolBar />
+          {separator}
+          <AlignmentToolbar />
+          {separator}
           <BulletListToolBar />
           <OrderedListToolBar />
-          <Separator orientation="vertical" className="h-7" />
+          {separator}
           <CodeToolBar />
           <CodeBlockToolBar />
-          <Separator orientation="vertical" className="h-7" />
+          {separator}
           <HorizontalRuleToolBar />
           <BlockquoteToolBar />
           <HardBreakToolBar />
-          <Separator orientation="vertical" className="h-7" />
+          {separator}
         </ToolbarProvider>
       </div>
     </div>
