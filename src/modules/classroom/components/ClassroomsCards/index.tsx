@@ -156,7 +156,7 @@ export const ClassRoomsCards = () => {
         ))}
       </div>
       <div className="flex">
-        <RichText />
+        <RichText label="Descrição" error="ola" />
       </div>
       <ClassroomFormDialog
         isOpen={openDialog}

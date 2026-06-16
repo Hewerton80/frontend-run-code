@@ -16,7 +16,7 @@ export const exerciseFormSchema = z.object({
         input: z.array(z.string()).min(1, VALIDATION.REQUIRED_FIELD),
         expectedOutput: z.string().min(1, VALIDATION.REQUIRED_FIELD),
         isPublic: z.boolean(),
-      })
+      }),
     )
     .min(3, "Deve conter ao menos 3 casos de teste")
     .refine(
@@ -29,7 +29,7 @@ export const exerciseFormSchema = z.object({
       },
       {
         message: "Deve conter ao menos um caso de teste público e um privado",
-      }
+      },
     ),
 });
 
@@ -44,7 +44,7 @@ export const useExerciseFormSchema = () => {
       // difficulty: "",
       testCases: [{ input: [], expectedOutput: "", isPublic: true }],
     }),
-    []
+    [],
   );
 
   const exerciseFormSchemaMethods = useForm<ExerciseFormSchema>({

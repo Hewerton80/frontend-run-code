@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { useCraeteExercise } from "../../hooks/useCreateExercise";
+import { useCreateExercise } from "../../hooks/useCreateExercise";
 import {
   ExerciseFormSchema,
   useExerciseFormSchema,
@@ -16,12 +16,12 @@ export const useExerciseForm = () => {
     trigger: triggerExerciseFormErros,
   } = useMemo(() => exerciseFormSchemaMethods, [exerciseFormSchemaMethods]);
 
-  const { createExercise, isCreatingExercise } = useCraeteExercise();
+  const { createExercise, isCreatingExercise } = useCreateExercise();
 
   const isSubmittingExercise = useMemo(
     () =>
       isCreatingExercise || formState.isValidating || formState.isSubmitting,
-    [isCreatingExercise, formState.isValidating, formState.isSubmitting]
+    [isCreatingExercise, formState.isValidating, formState.isSubmitting],
   );
 
   useEffect(() => {

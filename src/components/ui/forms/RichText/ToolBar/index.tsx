@@ -25,8 +25,7 @@ interface ToolBarProps {
   editor: Editor;
 }
 
-// TODO adicionar images, tables, etc
-// https://tiptap.dev/docs/editor/extensions/nodes/mathematics
+// TODO adicionar tables, etc
 export const ToolBar = memo(({ editor }: ToolBarProps) => {
   if (!editor) {
     return null;
@@ -35,7 +34,7 @@ export const ToolBar = memo(({ editor }: ToolBarProps) => {
 
   return (
     <div className="flex w-full items-center p-2 justify-between border-b sticky top-0 left-0 bg-background z-20">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
         <ToolbarProvider editor={editor}>
           <UndoToolBar />
           <RedoToolBar />

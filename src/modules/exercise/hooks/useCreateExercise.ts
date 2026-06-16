@@ -32,9 +32,3 @@ export const useCreateExercise = () => {
 
   return { createExercise, isCreatingExercise };
 };
-
-/**
- * @deprecated Use `useCreateExercise` diretamente.
- * Alias para compatibilidade retroativa (typo corrigido: useCraeteExercise → useCreateExercise).
- */
-export const useCraeteExercise = useCreateExercise;

@@ -113,7 +113,7 @@ function CustomComboboxComponent<TItem>({
             "focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary",
             disabled && "border-foreground-subtle opacity-80",
             !!error &&
-              "border-destructive focus-within:ring-destructive/30 focus-within:border-destructive",
+              "border-danger focus-within:ring-danger/30 focus-within:border-danger",
           )}
         >
           <Combobox.Chips className="flex flex-wrap items-center gap-1 flex-1 min-w-0">

@@ -1,5 +1,3 @@
-@reference '../../../../index.css';
-
 @keyframes dot {
   0% {
     background-color: var(--color-gray-400);
@@ -16,7 +14,10 @@
 }
 
 .root {
-  @apply h-fit flex w-full gap-2.5;
+  height: fit-content;
+  display: flex;
+  width: auto;
+  gap: 0.625rem;
 }
 
 .root .dot {

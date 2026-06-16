@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { Input } from "@/components/ui/forms/inputs/Input";
-import { EnterMultSelect } from "@/components/ui/forms/selects";
+import { EnterMultSelect } from "@/components/ui/forms/selects/EnterMultSelect";
 import { Switch } from "@/components/ui/forms/Switch";
 import { Textarea } from "@/components/ui/forms/Textarea";
 import { BackLink } from "@/components/ui/navigation/BackLink";
@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";
+import { RichText } from "@/components/ui/forms/RichText";
 import { ROUTES } from "@/routes/routes";
 
 export const ExerciseForm = () => {
@@ -110,13 +111,26 @@ export const ExerciseForm = () => {
                 placeholder="Digite o título do exercício"
                 error={formState.errors.title?.message}
               />
-              <Textarea
-                {...register("description")}
-                id={register("description").name}
-                required
-                label="Descrição"
-                placeholder="Digite a descrição do exercício"
-                error={formState.errors.description?.message}
+              <Controller
+                control={control}
+                name="description"
+                render={({
+                  field: { value, onChange, ...field },
+                  fieldState,
+                }) => (
+                  <>
+                    <RichText
+                      {...field}
+                      id={field.name}
+                      html={value}
+                      onChange={(val) => onChange(val.html)}
+                      label="Descrição"
+                      // placeholder="Digite a descrição do exercício"
+                      required
+                      error={fieldState.error?.message}
+                    />
+                  </>
+                )}
               />
               <div className="flex flex-col">
                 <DivTable.Container
@@ -141,11 +155,20 @@ export const ExerciseForm = () => {
                             <Controller
                               name={`testCases.${index}.input`}
                               control={control}
-                              render={({ field, fieldState }) => (
+                              render={({
+                                field: { value, onChange, ...field },
+                                fieldState,
+                              }) => (
                                 <EnterMultSelect
                                   {...field}
-                                  autoFocus={false}
                                   id={field.name}
+                                  value={value.map((v: string) => ({
+                                    label: v,
+                                    value: v,
+                                  }))}
+                                  onChange={(options) =>
+                                    onChange(options.map((o) => o.label))
+                                  }
                                   placeholder={`Entrada de Teste (${
                                     index + 1
                                   })`}

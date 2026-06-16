@@ -109,7 +109,9 @@ h3.tiptap-heading + h1.tiptap-heading,
 h3.tiptap-heading + h2.tiptap-heading {
   margin-top: 0;
 }
-
+.tiptap p {
+  font-size: 0.875rem;
+}
 .tiptap p.is-editor-empty:first-child::before {
   pointer-events: none;
   float: left;
