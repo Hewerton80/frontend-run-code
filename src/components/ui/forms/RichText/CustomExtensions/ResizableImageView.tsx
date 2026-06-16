@@ -7,7 +7,11 @@ import { ToolBarButton } from "../ToolBar/ToolBarButton";
 const MIN_WIDTH = 50;
 
 type AlignValue = "left" | "center" | "right";
-type CornerDirection = "top-left" | "top-right" | "bottom-left" | "bottom-right";
+type CornerDirection =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
 
 const CORNERS: CornerDirection[] = [
   "top-left",
@@ -38,7 +42,8 @@ export function ResizableImageView({
   const nodeRef = useRef<HTMLDivElement | null>(null);
 
   const [resizing, setResizing] = useState(false);
-  const [activeCorner, setActiveCorner] = useState<CornerDirection>("bottom-right");
+  const [activeCorner, setActiveCorner] =
+    useState<CornerDirection>("bottom-right");
   const [resizeInitialWidth, setResizeInitialWidth] = useState(0);
   const [resizeInitialMouseX, setResizeInitialMouseX] = useState(0);
 
@@ -92,13 +97,20 @@ export function ResizableImageView({
       const delta = isLeftCorner ? -dx : dx;
 
       const newWidth = Math.max(MIN_WIDTH, resizeInitialWidth + delta);
-      const parentWidth = nodeRef.current?.parentElement?.offsetWidth ?? Infinity;
+      const parentWidth =
+        nodeRef.current?.parentElement?.offsetWidth ?? Infinity;
 
       if (newWidth <= parentWidth) {
         updateAttributes({ width: newWidth });
       }
     },
-    [resizing, resizeInitialMouseX, activeCorner, resizeInitialWidth, updateAttributes],
+    [
+      resizing,
+      resizeInitialMouseX,
+      activeCorner,
+      resizeInitialWidth,
+      updateAttributes,
+    ],
   );
 
   const handleTouchMove = useCallback(
@@ -111,13 +123,20 @@ export function ResizableImageView({
       const delta = isLeftCorner ? -dx : dx;
 
       const newWidth = Math.max(MIN_WIDTH, resizeInitialWidth + delta);
-      const parentWidth = nodeRef.current?.parentElement?.offsetWidth ?? Infinity;
+      const parentWidth =
+        nodeRef.current?.parentElement?.offsetWidth ?? Infinity;
 
       if (newWidth <= parentWidth) {
         updateAttributes({ width: newWidth });
       }
     },
-    [resizing, resizeInitialMouseX, activeCorner, resizeInitialWidth, updateAttributes],
+    [
+      resizing,
+      resizeInitialMouseX,
+      activeCorner,
+      resizeInitialWidth,
+      updateAttributes,
+    ],
   );
 
   const endResize = useCallback(() => {

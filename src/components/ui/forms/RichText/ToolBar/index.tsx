@@ -19,6 +19,7 @@ import { ImageToolBar } from "./ImageToolbar";
 import { LinkToolbar } from "./LinkTollBar";
 import { HeadingsToolBar } from "./HeadingsToolBar";
 import { AlignmentToolbar } from "./AlignmentTooolbar";
+import { MathToolBar } from "./MathToolbar";
 
 interface ToolBarProps {
   editor: Editor;
@@ -58,8 +59,10 @@ export const ToolBar = memo(({ editor }: ToolBarProps) => {
           <HorizontalRuleToolBar />
           <BlockquoteToolBar />
           <HardBreakToolBar />
+          {separator}
           <ImageToolBar />
           {separator}
+          <MathToolBar />
         </ToolbarProvider>
       </div>
     </div>

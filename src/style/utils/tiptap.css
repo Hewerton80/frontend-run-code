@@ -177,3 +177,36 @@ h3.tiptap-heading + h2.tiptap-heading {
 .select-none img {
   pointer-events: none;
 }
+
+/* ─── Mathematics nodes ─────────────────────────────────────────────────────── */
+
+.tiptap-mathematics-render {
+  cursor: pointer;
+  padding: 0 0.2em;
+  border-radius: 3px;
+  transition:
+    outline 120ms ease,
+    background-color 120ms ease;
+}
+
+.tiptap-mathematics-render:hover {
+  outline: 2px solid var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.tiptap-mathematics-render--editable:hover {
+  outline: 2px solid var(--primary);
+  border-radius: 4px;
+}
+
+.tiptap-mathematics-render[data-type="block-math"] {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 0;
+  margin: 0.5rem 0;
+}
+
+/* KaTeX inline/block sizing */
+.tiptap-mathematics-render .katex-display {
+  margin: 0;
+}

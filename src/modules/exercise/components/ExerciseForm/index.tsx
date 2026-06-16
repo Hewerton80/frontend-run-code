@@ -6,7 +6,7 @@ import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { EnterMultSelect } from "@/components/ui/forms/selects";
 import { Switch } from "@/components/ui/forms/Switch";
-import { Textarea } from "@/components/ui/forms/Textarea/Textarea";
+import { Textarea } from "@/components/ui/forms/Textarea";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { IDE } from "@/modules/submission/components/IDE";
@@ -80,7 +80,7 @@ export const ExerciseForm = () => {
         </div>
         <Resizable.Group
           className={twMerge(
-            "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
+            "flex size-full min-h-117 rounded-lg overflow-hidden border",
             "border-l-3 border-l-info rounded-l-none",
           )}
         >

@@ -11,6 +11,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
+import { Mathematics } from "@tiptap/extension-mathematics";
 import { ToolBar } from "./ToolBar";
 import { HEADING_LEVELS } from "@/utils/tiptapHelpers";
 import { ResizableImageExtension } from "./CustomExtensions/ResizableImageExtension";
@@ -39,11 +40,10 @@ const extensions = [
   Underline,
   Link,
   ResizableImageExtension,
+  Mathematics.configure({
+    katexOptions: { throwOnError: false },
+  }),
 ];
-
-const content = `
-<h2 class="tiptap-heading" style="text-align: center">Hello world 🌍</h2>
-`;
 
 interface RichTextValue {
   html: string;
@@ -84,7 +84,7 @@ const RichText = memo(
         <ToolBar editor={editor} />
         <div
           onClick={() => editor?.chain().focus().run()}
-          className="cursor-text min-h-[18rem] w-full bg-transparent"
+          className="cursor-text min-h-72 w-full bg-transparent"
         >
           <EditorContent ref={ref} className="outline-none" editor={editor} />
         </div>
