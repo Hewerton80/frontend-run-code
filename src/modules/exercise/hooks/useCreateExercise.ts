@@ -2,7 +2,7 @@ import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 
 interface ICreateExerciseTestCaseBody {
-  input: string[];
+  input: string;
   expectedOutput: string;
   isPublic: boolean;
 }
@@ -12,7 +12,7 @@ export interface ICreateExerciseBody {
   description: string;
   difficulty: number;
   testCases: ICreateExerciseTestCaseBody[];
-  categoryId: string;
+  // categoryId: string;
 }
 
 /**
@@ -25,7 +25,7 @@ export const useCreateExercise = () => {
   const { mutate: createExercise, isPending: isCreatingExercise } = useMutation(
     {
       mutationFn: (body: ICreateExerciseBody) =>
-        apiBase.post("/exercises", body),
+        apiBase.post("/exercise", body),
       retry: 0,
     },
   );

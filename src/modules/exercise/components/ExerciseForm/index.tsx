@@ -94,15 +94,6 @@ export const ExerciseForm = () => {
               className="flex flex-col gap-4 p-4"
               onSubmit={(e) => e.preventDefault()}
             >
-              {/* <Input
-                  {...registerClassroomForm("name")}
-                  id={registerClassroomForm("name").name}
-                  label="Nome"
-                  placeholder="EX: Turma de lógica 2025.2"
-                  required
-                  error={classroomFormState.errors.name?.message}
-                  disabled={!canEditClassroom}
-                /> */}
               <Input
                 {...register("title")}
                 id={register("title").name}
@@ -133,6 +124,8 @@ export const ExerciseForm = () => {
                 )}
               />
               <div className="flex flex-col">
+                <p className="mb-2 text-sm">Casos de teste:</p>
+
                 <DivTable.Container
                   className={twMerge(testCasesError && "border-danger")}
                 >
@@ -142,7 +135,6 @@ export const ExerciseForm = () => {
                     <DivTable.Data>Público</DivTable.Data>
                     {/* <DivTable.Data></DivTable.Data> */}
                   </DivTable.Row>
-
                   {testCases.map((_, index) => {
                     const isFirst = index === 0;
                     return (
@@ -155,24 +147,14 @@ export const ExerciseForm = () => {
                             <Controller
                               name={`testCases.${index}.input`}
                               control={control}
-                              render={({
-                                field: { value, onChange, ...field },
-                                fieldState,
-                              }) => (
-                                <EnterMultSelect
+                              render={({ field, fieldState }) => (
+                                <Textarea
                                   {...field}
                                   id={field.name}
-                                  value={value.map((v: string) => ({
-                                    label: v,
-                                    value: v,
-                                  }))}
-                                  onChange={(options) =>
-                                    onChange(options.map((o) => o.label))
-                                  }
-                                  placeholder={`Entrada de Teste (${
-                                    index + 1
-                                  })`}
+                                  rows={8}
+                                  placeholder={`Input (${index + 1})`}
                                   error={fieldState.error?.message}
+                                  required
                                 />
                               )}
                             />
@@ -186,19 +168,11 @@ export const ExerciseForm = () => {
                               <Textarea
                                 {...field}
                                 id={field.name}
-                                placeholder={`Entrada de Teste (${index + 1})`}
+                                rows={8}
+                                placeholder={`Output (${index + 1})`}
                                 error={fieldState.error?.message}
                                 required
                               />
-                              // <EnterMultSelect
-                              //   {...field}
-                              //   autoFocus={false}
-                              //   id={field.name}
-                              //   placeholder={`Entrada de Teste (${
-                              //     index + 1
-                              //   })`}
-                              //   error={fieldState.error?.message}
-                              // />
                             )}
                           />
                         </DivTable.Data>
@@ -243,7 +217,7 @@ export const ExerciseForm = () => {
                         <Button
                           onClick={() =>
                             addTestCase({
-                              input: [],
+                              input: "",
                               expectedOutput: "",
                               isPublic: false,
                             })

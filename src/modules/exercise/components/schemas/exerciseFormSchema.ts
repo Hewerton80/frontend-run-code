@@ -13,7 +13,7 @@ export const exerciseFormSchema = z.object({
   testCases: z
     .array(
       z.object({
-        input: z.array(z.string()).min(1, VALIDATION.REQUIRED_FIELD),
+        input: z.string().min(1, VALIDATION.REQUIRED_FIELD),
         expectedOutput: z.string().min(1, VALIDATION.REQUIRED_FIELD),
         isPublic: z.boolean(),
       }),
@@ -42,7 +42,7 @@ export const useExerciseFormSchema = () => {
       description: "",
       // categoryId: "",
       // difficulty: "",
-      testCases: [{ input: [], expectedOutput: "", isPublic: true }],
+      testCases: [{ input: "", expectedOutput: "", isPublic: true }],
     }),
     [],
   );

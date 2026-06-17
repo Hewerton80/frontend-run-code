@@ -33,7 +33,7 @@ export const ExerciseDescription = ({
           <h3 className="text-lg">{exercise?.title}</h3>
         </div>
         <div
-          className="text-sm"
+          className="tiptap"
           dangerouslySetInnerHTML={{ __html: exercise?.description || "" }}
         />
       </div>
@@ -45,12 +45,10 @@ export const ExerciseDescription = ({
           renderItem={({ item }) => (
             <Table.Row>
               <Table.Data>
-                <Code htmlContent={parseStringToHtmlFormat(item?.input)} />
+                <Code htmlContent={item?.input} />
               </Table.Data>
               <Table.Data>
-                <Code
-                  htmlContent={parseStringToHtmlFormat(item?.expectedOutput)}
-                />
+                <Code htmlContent={item?.expectedOutput} />
               </Table.Data>
             </Table.Row>
           )}

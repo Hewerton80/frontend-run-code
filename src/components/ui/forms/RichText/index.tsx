@@ -22,30 +22,27 @@ import { cn } from "@/utils/cn";
 
 const extensions = [
   StarterKit.configure({
-    orderedList: { HTMLAttributes: { class: "list-decimal" } },
-    bulletList: { HTMLAttributes: { class: "list-disc" } },
-    code: { HTMLAttributes: { class: "bg-accent rounded-md p-1" } },
-    horizontalRule: { HTMLAttributes: { class: "my-2" } },
-    codeBlock: {
-      HTMLAttributes: {
-        class: "bg-muted p-3 text-sm rounded-lg",
-      },
+    orderedList: {
+      HTMLAttributes: { class: "tiptap-list tiptap-list-decimal" },
     },
+    bulletList: { HTMLAttributes: { class: "tiptap-list tiptap-list-disc" } },
+    code: { HTMLAttributes: { class: "tiptap-code" } },
+    horizontalRule: { HTMLAttributes: { class: "my-2" } },
+    codeBlock: { HTMLAttributes: { class: "tiptap-code-block " } },
     heading: {
       levels: HEADING_LEVELS,
       HTMLAttributes: { class: "tiptap-heading" },
     },
+    paragraph: { HTMLAttributes: { class: "tiptap-paragraph" } },
   }),
   TextAlign.configure({ types: ["heading", "paragraph"] }),
   Highlight.configure({ multicolor: true }),
   TextStyle,
   Color,
   Underline,
-  Link,
+  Link.configure({ HTMLAttributes: { class: "tiptap-link" } }),
   ResizableImageExtension,
-  Mathematics.configure({
-    katexOptions: { throwOnError: false },
-  }),
+  Mathematics.configure({ katexOptions: { throwOnError: false } }),
 ];
 
 interface RichTextValue {
@@ -97,6 +94,9 @@ const RichText = memo(
               {label}
             </FormLabel>
           )}
+          <a className="tiptap-link" href="http://">
+            apenas um teste
+          </a>
           <div
             className={cn(
               "border w-full relative rounded-md overflow-hidden pb-3",

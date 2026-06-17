@@ -60,7 +60,19 @@
   padding-inline: 1rem;
   padding-top: 0.5rem;
 }
-.ProseMirror a {
+// TODO mudar para font-family de código
+.tiptap-code {
+  background-color: var(--accent);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+.tiptap-code-block {
+  background-color: var(--muted);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+.tiptap-link {
   color: var(--editor-text-blue);
   cursor: pointer;
   text-decoration: underline;
@@ -68,7 +80,7 @@
   text-underline-offset: 0.2em;
   transition: all ease-in-out 150ms;
 }
-.ProseMirror a:hover {
+.tiptap-link:hover {
   text-decoration-thickness: 0.15em;
 }
 h1.tiptap-heading {
@@ -109,10 +121,10 @@ h3.tiptap-heading + h1.tiptap-heading,
 h3.tiptap-heading + h2.tiptap-heading {
   margin-top: 0;
 }
-.tiptap p {
+.tiptap-paragraph {
   font-size: 0.875rem;
 }
-.tiptap p.is-editor-empty:first-child::before {
+.tiptap-paragraph.is-editor-empty:first-child::before {
   pointer-events: none;
   float: left;
   height: 0;
@@ -120,11 +132,18 @@ h3.tiptap-heading + h2.tiptap-heading {
   content: attr(data-placeholder);
 }
 
-.tiptap ul,
-.tiptap ol {
+.tiptap-list {
   padding: 0 1rem;
 }
-
+.tiptap-list li::marker {
+  font-size: 0.875rem;
+}
+.tiptap-list-decimal {
+  list-style-type: decimal;
+}
+.tiptap-list-disc {
+  list-style-type: disc;
+}
 .tiptap blockquote {
   border-left: 3px solid var(--color-gray-500);
   margin: 1.5rem 0;
