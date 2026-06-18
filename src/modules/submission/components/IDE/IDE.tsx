@@ -45,34 +45,11 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
     [avaliablesLanguagesConfig, languageMode],
   );
 
-  // useEffect(() => {
-  //   if (!Array.isArray(avaliableLanguages) || !avaliableLanguages?.length)
-  //     return;
-  //   changeLanguageMode(avaliableLanguages[0]);
-  // }, [changeLanguageMode, avaliableLanguages]);
-
-  // const modeOptions = useMemo(() => {
-  //   return Object.keys(avaliablesLanguagesConfig).map((key) => ({
-  //     label: (
-  //       <span className="flex items-center gap-2">
-  //         <img
-  //           src={avaliablesLanguagesConfig[key as LanguageNames].url}
-  //           alt={key}
-  //           width={14}
-  //           height={14}
-  //         />
-  //         {key}
-  //       </span>
-  //     ),
-  //     value: key,
-  //   }));
-  // }, [avaliablesLanguagesConfig]);
-
   return (
     <>
       <div className="flex flex-col h-full w-full gap-4">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex max-w-[13.625rem] w-full">
+          <div className="flex max-w-54.5 w-full">
             <CustomSelect
               items={LIST_OF_LANGUAGES}
               value={languageMode}
@@ -113,7 +90,7 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
       >
         <Modal.Title>Script Example</Modal.Title>
         <Modal.Body>
-          <div className="h-[524px]">
+          <div className="h-131">
             <CodeEditor
               mode={currentSelectLanguage?.editorName}
               readOnly

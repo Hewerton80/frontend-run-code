@@ -7,10 +7,12 @@ interface CodeProps {
 }
 export const Code = memo(({ className, htmlContent = "" }: CodeProps) => {
   return (
-    <code
-      className={cn("font-[monospace] whitespace-pre", className)}
-      dangerouslySetInnerHTML={{ __html: htmlContent }}
-    />
+    <pre className={className}>
+      <code
+        className={cn("font-code text-sm whitespace-pre")}
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
+    </pre>
   );
 });
 

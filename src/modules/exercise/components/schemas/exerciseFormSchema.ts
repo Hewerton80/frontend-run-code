@@ -40,8 +40,6 @@ export const useExerciseFormSchema = () => {
     () => ({
       title: "",
       description: "",
-      // categoryId: "",
-      // difficulty: "",
       testCases: [{ input: "", expectedOutput: "", isPublic: true }],
     }),
     [],

@@ -11,6 +11,7 @@ import "ace-builds/src-noconflict/theme-github_dark";
 import "ace-builds/src-noconflict/theme-terminal";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
+import { cn } from "@/utils/cn";
 
 export type CodeEditorMode =
   | "java"
@@ -28,35 +29,46 @@ type CodeEditorProps = Omit<
   theme?: "monokai" | "github_dark" | "terminal" | (string & {});
 };
 
-export function CodeEditor({ ...props }: CodeEditorProps) {
+export function CodeEditor({
+  className,
+  style,
+  setOptions,
+  readOnly,
+  ...props
+}: CodeEditorProps) {
   const UNIQUE_ID_OF_DIV = useId();
 
   return (
     <AceEditor
       name={UNIQUE_ID_OF_DIV}
-      fontSize={16}
-      className="rounded-2xl"
+      fontSize="1rem"
+      className={cn("rounded-2xl", className)}
       theme="monokai"
+      readOnly={readOnly}
       style={{
-        height: "100%",
-        minHeight: 400,
+        // height: "100%",
+        // minHeight: 400,
         width: "100%",
         zIndex: 0,
+        ...(style || {}),
       }}
       showPrintMargin={false}
-      highlightActiveLine={true}
+      highlightActiveLine={readOnly ? false : true}
       showGutter={true}
       editorProps={{ $blockScrolling: true }}
       setOptions={{
         enableSnippets: true,
         enableMobileMenu: true,
         showLineNumbers: true,
+        enableBasicAutocompletion: true,
         displayIndentGuides: true,
         enableEmmet: true,
         spellcheck: true,
         tooltipFollowsMouse: true,
         tabSize: 2,
+        wrap: true,
         showFoldWidgets: true,
+        ...(setOptions || {}),
       }}
       {...props}
     />

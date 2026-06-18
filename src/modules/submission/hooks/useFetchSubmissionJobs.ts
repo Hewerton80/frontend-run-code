@@ -9,7 +9,7 @@ export interface SubmissionTestCaseResult {
   runtime: number;
   memory: number;
   status: null | SubmissionStatus;
-  inputs: string[];
+  input: string;
   expectedOutput: string;
 }
 

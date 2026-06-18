@@ -5,6 +5,7 @@ import { Code } from "@/components/ui/dataDisplay/Code";
 import { cn } from "@/utils/cn";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { Table } from "@/components/ui/dataDisplay/Table";
+import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 
 interface ExerciseDescriptionProps {
   exercise: IExercise;

@@ -1,15 +1,10 @@
-import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { useEffect, useState } from "react";
 
 interface UseTypeWriterTextProps {
   text: string;
-  parseTextToHtmlFormat?: boolean;
 }
 
-export const useTypeWriterText = ({
-  text,
-  parseTextToHtmlFormat = false,
-}: UseTypeWriterTextProps) => {
+export const useTypeWriterText = ({ text }: UseTypeWriterTextProps) => {
   const [typeWriterText, setTypeWriterText] = useState("");
 
   useEffect(() => {
@@ -22,14 +17,10 @@ export const useTypeWriterText = ({
       }
       setTypeWriterText((prevText) => prevText + nextChar);
       currentIndex++;
-    }, 50); // Ajuste o intervalo conforme necessário para a velocidade desejada
+    }, 15); // Ajuste o intervalo conforme necessário para a velocidade desejada
 
     return () => clearInterval(intervalId);
   }, [text]);
 
-  return {
-    typeWriterText: parseTextToHtmlFormat
-      ? parseStringToHtmlFormat(typeWriterText)
-      : typeWriterText,
-  };
+  return { typeWriterText };
 };
