@@ -7,6 +7,7 @@ import {
   LuBan,
   LuBadgeCheck,
 } from "react-icons/lu";
+import { cn } from "@/utils/cn";
 
 const alertVariants = {
   default: {
@@ -35,6 +36,7 @@ interface AlertRootProps {
   className?: string;
   children?: ReactNode;
   variant?: keyof typeof alertVariants;
+  hideIcon?: boolean;
 }
 
 interface AlertTitleProps {
@@ -47,18 +49,27 @@ interface AlertDescriptionProps {
   children?: ReactNode;
 }
 
-const Root = ({ variant = "default", className, children }: AlertRootProps) => {
+const Root = ({
+  variant = "default",
+  hideIcon,
+  className,
+  children,
+}: AlertRootProps) => {
   return (
     <div
       role="alert"
-      className={twMerge(
+      className={cn(
         "relative w-full rounded-lg px-4 py-3 text-sm",
-        "[&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
+        !hideIcon &&
+          cn(
+            "[&>svg]:absolute [&>svg]:left-4 [&>svg]:top-1/2 [&>svg]:-translate-y-1/2 [&>svg]:text-foreground",
+            "**:[[role=alert-title]]:pl-7 **:[[role=alert-description]]:pl-7",
+          ),
         alertVariants[variant].className,
         className,
       )}
     >
-      {alertVariants[variant].icon}
+      {!hideIcon && alertVariants[variant].icon}
       {children}
     </div>
   );
@@ -67,10 +78,8 @@ const Root = ({ variant = "default", className, children }: AlertRootProps) => {
 const Title = ({ className, children }: AlertTitleProps) => {
   return (
     <h5
-      className={twMerge(
-        "pl-7 font-bold leading-none tracking-tight",
-        className,
-      )}
+      role="alert-title"
+      className={cn("font-bold leading-none tracking-tight", className)}
     >
       {children}
     </h5>
@@ -79,12 +88,7 @@ const Title = ({ className, children }: AlertTitleProps) => {
 
 const Description = ({ className, children }: AlertDescriptionProps) => {
   return (
-    <div
-      className={twMerge(
-        "text-sm pl-7 pt-1 [&_p]:leading-relaxed translate-y-[-3px]",
-        className,
-      )}
-    >
+    <div role="alert-description" className={cn("text-sm mt-1", className)}>
       {children}
     </div>
   );

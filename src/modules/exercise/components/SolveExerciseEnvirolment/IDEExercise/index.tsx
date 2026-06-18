@@ -15,6 +15,11 @@ import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { Code } from "@/components/ui/dataDisplay/Code";
 import { Table } from "@/components/ui/dataDisplay/Table";
 import { CodeEditor } from "@/components/ui/forms/inputs/CodeEditor";
+import { Tabs } from "@/components/ui/navigation/Tabs";
+import { TabsContent } from "@radix-ui/react-tabs";
+import { useMemo } from "react";
+import { Alert } from "@/components/ui/feedback/Alert";
+import { Tooltip } from "@/components/ui/overlay/Tooltip";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -50,15 +55,20 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
 
   // const responseRows
 
+  const testCasesResults = useMemo(
+    () => submissionsResult?.testCasesResults,
+    [submissionsResult],
+  );
+
   return (
     <>
-      <div className="flex flex-col w-full col-span-8 h-full p-4">
+      <div className="flex flex-col w-full col-span-8 h-full p-4 gap-4">
         <IDE
           value={sourceCode}
           avaliableLanguages={avaliableLanguages}
           onChange={changeSourceCode}
         />
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end ">
           {/* <ButtonGroup> */}
           <Button
             variantStyle="info"
@@ -71,98 +81,105 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         </div>
         {/* <Button variantStyle="success">Submit</Button> */}
         {/* </ButtonGroup> */}
-        {isSubmitting && (
-          <div className="mt-4">
-            <ThreeDotsLoading />
-          </div>
-        )}
+        {isSubmitting && <ThreeDotsLoading />}
         {submitError && (
-          <div className="mt-4">
-            <TerminalCode content={submitError?.description || ""} />
-          </div>
+          <TerminalCode content={submitError?.description || ""} />
         )}
-        {submissionsResult?.testCasesResults && (
-          <div className="mt-4">
+        {submissionsResult?.score === 1 && (
+          <Alert.Root variant="success" hideIcon>
+            <Alert.Title>Parabéns! 🎉</Alert.Title>
+            <Alert.Description>
+              Você resolveu o exercício com sucesso!
+            </Alert.Description>
+          </Alert.Root>
+        )}
+        {/* TODO omitir casos de testes públicos */}
+        {testCasesResults && (
+          <div>
             {submissionsResult?.status ===
             SubmissionStatus.COMPILATION_ERROR ? (
-              <>
-                <TerminalCode
-                  content={
-                    submissionsResult?.testCasesResults?.[0]?.output || ""
-                  }
-                />
-                {/* <CodeEditor
-                  mode="c_cpp"
-                  theme="terminal"
-                  readOnly
-                  value={submissionsResult?.testCasesResults?.[0]?.output || ""}
-                /> */}
-              </>
+              <TerminalCode content={testCasesResults?.[0]?.output || ""} />
             ) : (
-              <div className="grid grid-cols-1 gap-4">
-                {submissionsResult?.testCasesResults?.map(
-                  ({ status }, index) => (
-                    <div
+              <>
+                <Tabs.Root defaultValue="1">
+                  <Tabs.List>
+                    {testCasesResults?.map((testCaseResult, index) => {
+                      const emoji =
+                        SubmissionStatusLabels?.[testCaseResult?.status!]
+                          ?.emoji;
+                      const label =
+                        SubmissionStatusLabels?.[testCaseResult?.status!]
+                          ?.label;
+                      return (
+                        <Tabs.Trigger
+                          key={`trigger-${index}`}
+                          value={(index + 1).toString()}
+                        >
+                          <span>
+                            <Tooltip
+                              align="center"
+                              className="gap-2"
+                              textContent={`${label} ${emoji}`}
+                            >
+                              <span>
+                                Teste {index + 1}: {emoji}
+                              </span>
+                            </Tooltip>
+                          </span>
+                        </Tabs.Trigger>
+                      );
+                    })}
+                  </Tabs.List>
+                  {testCasesResults?.map((testCaseResult, index) => (
+                    <Tabs.Content
                       key={`response-${index}`}
-                      className="flex flex-col gap-2 col-span-1"
+                      value={(index + 1).toString()}
                     >
-                      <div className="flex items-center gap-2">
-                        <p>
-                          <span className="text-xs">Caso {index + 1}:</span>{" "}
-                          <Badge
-                            variant="info"
-                            style={
-                              status
-                                ? {
-                                    backgroundColor:
-                                      SubmissionStatusLabels?.[status]?.color,
-                                    color: getContrastColor(
-                                      SubmissionStatusLabels?.[status]?.color,
-                                    ),
-                                  }
-                                : undefined
-                            }
+                      <div className="flex flex-col gap-0.5">
+                        {[
+                          {
+                            label: "Resultado:",
+                            content:
+                              [
+                                SubmissionStatusLabels?.[
+                                  testCaseResult?.status!
+                                ]?.label || "",
+                                SubmissionStatusLabels?.[
+                                  testCaseResult?.status!
+                                ]?.emoji || "",
+                              ].join(" ") || "",
+                          },
+                          {
+                            label: "Entrada (input):",
+                            content: testCaseResult?.input || "",
+                          },
+                          {
+                            label: "Saída do seu código:",
+                            content: testCaseResult?.output || "",
+                          },
+                          {
+                            label: "Saída Esperada:",
+                            content: testCaseResult?.expectedOutput || "",
+                          },
+                        ].map((item, idx) => (
+                          <div
+                            key={`item-${index}-${idx}`}
+                            className="flex flex-col gap-0.5"
                           >
-                            {SubmissionStatusLabels?.[status!]?.label}{" "}
-                            {SubmissionStatusLabels?.[status!]?.emoji}
-                          </Badge>
-                        </p>
+                            <p className="text-sm text-muted-foreground">
+                              {item.label}
+                            </p>
+                            <TerminalCode
+                              animation={false}
+                              content={item.content}
+                            />
+                          </div>
+                        ))}
                       </div>
-                      <div
-                        className="border rounded-md"
-                        style={{
-                          borderColor: SubmissionStatusLabels?.[status!]?.color,
-                        }}
-                      >
-                        <CustomDataTable
-                          columns={[
-                            "Entrada(s)",
-                            "Saída esperada",
-                            "Saída do seu código",
-                          ]}
-                          data={[submissionsResult?.testCasesResults[index]]}
-                          idExtractor={() => `response-${index}`}
-                          renderItem={({ item }) => (
-                            <Table.Row>
-                              <Table.Data>
-                                <Code htmlContent={item?.input || ""} />
-                              </Table.Data>
-                              <Table.Data>
-                                <Code
-                                  htmlContent={item?.expectedOutput || ""}
-                                />
-                              </Table.Data>
-                              <Table.Data>
-                                <Code htmlContent={item?.output || ""} />
-                              </Table.Data>
-                            </Table.Row>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  ),
-                )}
-              </div>
+                    </Tabs.Content>
+                  ))}
+                </Tabs.Root>
+              </>
             )}
           </div>
         )}
