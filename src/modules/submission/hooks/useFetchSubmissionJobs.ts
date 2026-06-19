@@ -4,13 +4,14 @@ import { SubmissionStatus } from "../submissionType";
 import { submissionQueryKeyFactory } from "@/modules/submission/utils/submissionQueryKeyFactory";
 
 export interface SubmissionTestCaseResult {
+  input: string | null;
+  output: string | null;
+  expectedOutput: string | null;
   match: boolean;
-  output: string;
   runtime: number;
   memory: number;
+  isPublic: boolean;
   status: null | SubmissionStatus;
-  input: string;
-  expectedOutput: string;
 }
 
 export interface SubmissionResultSummary {

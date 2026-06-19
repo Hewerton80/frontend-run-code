@@ -131,6 +131,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                       );
                     })}
                   </Tabs.List>
+                  {/* TODO analizar a possibilidade de adicionar memória e runtime aqui */}
                   {testCasesResults?.map((testCaseResult, index) => (
                     <Tabs.Content
                       key={`response-${index}`}
@@ -150,18 +151,22 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                                 ]?.emoji || "",
                               ].join(" ") || "",
                           },
-                          {
-                            label: "Entrada (input):",
-                            content: testCaseResult?.input || "",
-                          },
-                          {
-                            label: "Saída do seu código:",
-                            content: testCaseResult?.output || "",
-                          },
-                          {
-                            label: "Saída Esperada:",
-                            content: testCaseResult?.expectedOutput || "",
-                          },
+                          ...(testCaseResult?.isPublic
+                            ? [
+                                {
+                                  label: "Entrada (input):",
+                                  content: testCaseResult?.input || "",
+                                },
+                                {
+                                  label: "Saída do seu código:",
+                                  content: testCaseResult?.output || "",
+                                },
+                                {
+                                  label: "Saída Esperada:",
+                                  content: testCaseResult?.expectedOutput || "",
+                                },
+                              ]
+                            : []),
                         ].map((item, idx) => (
                           <div
                             key={`item-${index}-${idx}`}
@@ -176,6 +181,11 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                             />
                           </div>
                         ))}
+                        {!testCaseResult?.isPublic && (
+                          <Badge variant="dark" className="mt-2">
+                            Informações de caso de teste privado 🔒
+                          </Badge>
+                        )}
                       </div>
                     </Tabs.Content>
                   ))}
