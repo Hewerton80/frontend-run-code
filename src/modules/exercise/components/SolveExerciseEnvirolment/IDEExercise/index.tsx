@@ -90,6 +90,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
             <Alert.Title>Parabéns! 🎉</Alert.Title>
             <Alert.Description>
               Você resolveu o exercício com sucesso!
+              {/* TODO adicionar botao de ir para o próximo exercício, para isso deve verificar se tenho o ids do exercícios no cache da lista */}
             </Alert.Description>
           </Alert.Root>
         )}

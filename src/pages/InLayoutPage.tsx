@@ -9,6 +9,7 @@ import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUser } from "@/modules/user/userTypets";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useFetchPoolingSubmissionsResult } from "@/modules/submission/hooks/useFetchPoolingSubmissionsResult";
 
 export default function InLayoutPage() {
   const { logout } = useLogout();
@@ -16,6 +17,8 @@ export default function InLayoutPage() {
   const { loggedUser } = useLoggedUser();
 
   const { fetchMe, errorUser, isErrorUser } = useAuth();
+
+  useFetchPoolingSubmissionsResult();
 
   useEffect(() => {
     if (loggedUser) return;

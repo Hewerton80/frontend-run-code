@@ -34,7 +34,7 @@ export const ExerciseDescription = ({
           <h3 className="text-lg">{exercise?.title}</h3>
         </div>
         <div
-          className="tiptap"
+          className="text-sm"
           dangerouslySetInnerHTML={{ __html: exercise?.description || "" }}
         />
       </div>

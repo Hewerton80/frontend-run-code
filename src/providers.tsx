@@ -5,7 +5,6 @@ import { Outlet } from "react-router-dom";
 import { NuqsAdapter } from "nuqs/adapters/react";
 import { AblyProvider } from "ably/react";
 import { realtimeClient } from "./utils/realtimeClient";
-import { GlobalWrapper } from "./components/templates/GlobalWrapper";
 
 export function Providers() {
   return (
@@ -13,9 +12,7 @@ export function Providers() {
       <QueryClientProvider client={queryClient}>
         <NuqsAdapter>
           <ToastProvider>
-            <GlobalWrapper>
-              <Outlet />
-            </GlobalWrapper>
+            <Outlet />
             <Toaster />
           </ToastProvider>
         </NuqsAdapter>
