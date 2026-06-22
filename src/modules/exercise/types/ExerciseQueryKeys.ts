@@ -8,6 +8,7 @@ export enum ExerciseQueryKeys {
   Exercises = "exercises",
   /** Detalhe de um exercício por ID */
   Exercise = "exercise",
+  Row = "exerciseRow",
   /** Exercícios de uma lista de uma turma */
   ExercisesByClassroom = "exercisesByClassroom",
   /** Exercício individual dentro de uma lista */

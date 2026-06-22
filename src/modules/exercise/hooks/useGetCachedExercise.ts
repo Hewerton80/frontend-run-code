@@ -9,7 +9,7 @@ import { IExercise } from "../exerciseTypes";
  */
 export const useGetCachedExercise = (exerciseUuid: string) => {
   const { data: cachedExercise } = useQuery<IExercise | null>({
-    queryKey: exerciseQueryKeyFactory.detail(exerciseUuid),
+    queryKey: exerciseQueryKeyFactory.row(exerciseUuid),
     queryFn: () => null,
     staleTime: Infinity,
     gcTime: Infinity,

@@ -38,7 +38,7 @@ export const useFetchExercises = (params?: IFetchExercisesParams) => {
       response?.data?.forEach((exercise) => {
         if (exercise.uuid) {
           setItemInCache<IExercise>(
-            exerciseQueryKeyFactory.detail(exercise.uuid),
+            exerciseQueryKeyFactory.row(exercise.uuid),
             exercise,
           );
         }

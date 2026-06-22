@@ -81,7 +81,7 @@ export const SolveExerciseEnvirolment = () => {
         </BackLink>
         <Resizable.Group
           className={twMerge(
-            "flex size-full min-h-[468px] rounded-lg overflow-hidden border",
+            "flex size-full min-h-117 rounded-lg overflow-hidden border",
             "border-l-3 border-l-info rounded-l-none",
           )}
         >

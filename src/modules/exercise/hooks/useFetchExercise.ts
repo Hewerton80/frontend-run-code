@@ -38,10 +38,7 @@ export const useFetchExercise = ({
       }
       return apiBase.get<IExercise>(url, { signal }).then((res) => res.data);
     },
-    initialData: () =>
-      getItemFromQueryCache<IExercise>(
-        exerciseQueryKeyFactory.detail(exerciseId, classroomId, listId),
-      ),
+
     enabled: !!exerciseId,
     staleTime: Infinity,
     gcTime: Infinity,

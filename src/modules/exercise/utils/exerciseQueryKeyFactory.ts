@@ -17,12 +17,12 @@ export const exerciseQueryKeyFactory = {
 
   /** Lista paginada de exercícios com params normalizados */
   pages: (params?: object) =>
-    [...exerciseQueryKeyFactory.all(), params] as const,
+    [...exerciseQueryKeyFactory.all(), ...(params ? [params] : [])] as const,
 
   /** Detalhe de um exercício (com contexto opcional de turma/lista) */
   detail: (exerciseId: string, classroomId?: string, listId?: string) =>
     [ExerciseQueryKeys.Exercise, exerciseId, classroomId, listId] as const,
-
+  row: (exerciseId: string) => [ExerciseQueryKeys.Row, exerciseId] as const,
   /** Exercícios de uma lista dentro de uma turma (semeados por useFetchList) */
   byClassroom: (listId: string, classroomId: string) =>
     [ExerciseQueryKeys.ExercisesByClassroom, listId, classroomId] as const,

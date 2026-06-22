@@ -27,7 +27,7 @@ export const useCreateExercise = () => {
   const { mutate: createExercise, isPending: isCreatingExercise } = useMutation(
     {
       mutationFn: (body: ICreateExerciseBody) =>
-        apiBase.post("/exercise", body),
+        apiBase.post<{ id: string }>("/exercise", body).then((res) => res.data),
       retry: 0,
     },
   );

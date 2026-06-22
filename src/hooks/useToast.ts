@@ -40,6 +40,7 @@ export const useToastStore = create<State & Actions>((set) => ({
   },
 }));
 
+//TODO mudar toast para usar igual ao toast do odisseia
 export function useToast() {
   const { toast } = useToastStore();
   return { toast };

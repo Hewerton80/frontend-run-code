@@ -13,6 +13,7 @@ export interface IExerciseTest {
   id: string;
   input: string;
   expectedOutput: string;
+  isPublic: boolean;
 }
 
 export interface IExercise {

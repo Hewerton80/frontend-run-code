@@ -69,28 +69,32 @@ const RichText = memo(
     ) => {
       const reactId = useId();
       const htmlFor = id || reactId;
-      // console.log("Rendering RichText with html:", html);
+
       const editor = useEditor({
         extensions: extensions as Extension[],
         content: html,
         onUpdate: ({ editor: _editor }) => {
-          const html = _editor.getHTML();
+          const updatedHtml = _editor.getHTML();
           const text = _editor.getText();
           const json = _editor.getJSON();
-          onChange?.({ html, text, json });
-          console.log({ html, text, json });
+          onChange?.({ html: updatedHtml, text, json });
         },
         immediatelyRender: false,
         ...props,
       });
+
+      // Sincroniza o conteúdo quando o valor externo muda (ex: reset do formulário)
       useEffect(() => {
         if (!editor) return;
-        editor.commands.setContent(html || "");
+        const currentHtml = editor.getHTML();
+        const incomingHtml = html ?? "";
+        if (currentHtml === incomingHtml) return;
+        // emitUpdate: false → não dispara onUpdate, evitando loop
+        editor.commands.setContent(incomingHtml, { emitUpdate: false });
       }, [editor, html]);
 
-      if (!editor) {
-        return null;
-      }
+      if (!editor) return null;
+
       return (
         <div className="flex flex-col">
           {label && (
