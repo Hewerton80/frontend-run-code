@@ -1,5 +1,6 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
+import { ExerciseStatus } from "../exerciseTypes";
 
 interface ICreateExerciseTestCaseBody {
   input: string;
@@ -11,6 +12,7 @@ export interface ICreateExerciseBody {
   title: string;
   description: string;
   difficulty: number;
+  status: ExerciseStatus;
   testCases: ICreateExerciseTestCaseBody[];
   // categoryId: string;
 }

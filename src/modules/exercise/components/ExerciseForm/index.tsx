@@ -4,7 +4,6 @@ import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { Input } from "@/components/ui/forms/inputs/Input";
-import { EnterMultSelect } from "@/components/ui/forms/selects/EnterMultSelect";
 import { Switch } from "@/components/ui/forms/Switch";
 import { Textarea } from "@/components/ui/forms/Textarea";
 import { BackLink } from "@/components/ui/navigation/BackLink";
@@ -19,15 +18,17 @@ import { Alert } from "@/components/ui/feedback/Alert";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";
 import { RichText } from "@/components/ui/forms/RichText";
 import { ROUTES } from "@/routes/routes";
+import { ExerciseStatus } from "../../exerciseTypes";
 
 export const ExerciseForm = () => {
   const {
     exerciseFormSchemaMethods,
     handleSubmitExercise,
+    handleResetExercisesForm,
     isSubmittingExercise,
   } = useExerciseForm();
 
-  const { control, register, formState } = useMemo(
+  const { control, formState } = useMemo(
     () => exerciseFormSchemaMethods,
     [exerciseFormSchemaMethods],
   );
@@ -66,16 +67,16 @@ export const ExerciseForm = () => {
             <Button
               variantStyle="secondary"
               disabled={isSubmittingExercise || !formState.isDirty}
-              // onClick={handleResetExercisesForm}
+              onClick={handleResetExercisesForm}
             >
               Desfazer alterações
             </Button>
             <Button
               disabled={!formState.isDirty}
-              onClick={handleSubmitExercise}
+              onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}
               isLoading={isSubmittingExercise}
             >
-              Salvar
+              Salvar e Publicar
             </Button>
           </div>
         </div>
@@ -94,14 +95,21 @@ export const ExerciseForm = () => {
               className="flex flex-col gap-4 p-4"
               onSubmit={(e) => e.preventDefault()}
             >
-              <Input
-                {...register("title")}
-                id={register("title").name}
-                required
-                label="Título"
-                placeholder="Digite o título do exercício"
-                error={formState.errors.title?.message}
+              <Controller
+                control={control}
+                name="title"
+                render={({ field, fieldState }) => (
+                  <Input
+                    {...field}
+                    id={field.name}
+                    required
+                    label="Título"
+                    placeholder="Digite o título do exercício"
+                    error={fieldState.error?.message}
+                  />
+                )}
               />
+
               <Controller
                 control={control}
                 name="description"

@@ -94,7 +94,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
             </Alert.Description>
           </Alert.Root>
         )}
-        {/* TODO omitir casos de testes públicos */}
         {testCasesResults && (
           <div>
             {submissionsResult?.status ===

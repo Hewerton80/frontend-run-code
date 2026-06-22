@@ -13,6 +13,7 @@ export const ROUTE_PATTERNS = {
   // Exercises
   EXERCISES: "/exercises",
   EXERCISES_CREATE: "/exercises/create",
+  EXERCISES_EDIT: "/exercises/:exerciseId/edit",
   EXERCISE_DETAIL: "/exercises/:exerciseId/info",
 
   // Admin
@@ -48,8 +49,8 @@ export const ROUTES = {
   // Exercises
   EXERCISES: ROUTE_PATTERNS.EXERCISES,
   EXERCISES_CREATE: ROUTE_PATTERNS.EXERCISES_CREATE,
-  EXERCISE_DETAIL: (exerciseId: string | number) =>
-    `/exercises/${exerciseId}/info`,
+  EXERCISES_EDIT: (exerciseId: string) => `/exercises/${exerciseId}/edit`,
+  EXERCISE_DETAIL: (exerciseId: string) => `/exercises/${exerciseId}/info`,
 
   // Admin
   USERS: ROUTE_PATTERNS.USERS,
@@ -57,11 +58,9 @@ export const ROUTES = {
   LISTS: ROUTE_PATTERNS.LISTS,
 
   // Classroom — funções geram URLs absolutas para navegação
-  CLASSROOM: (classroomId: string | number) => `/classroom/${classroomId}`,
-  CLASSROOM_LISTS: (classroomId: string | number) =>
-    `/classroom/${classroomId}/lists`,
-  CLASSROOM_USERS: (classroomId: string | number) =>
-    `/classroom/${classroomId}/users`,
+  CLASSROOM: (classroomId: string) => `/classroom/${classroomId}`,
+  CLASSROOM_LISTS: (classroomId: string) => `/classroom/${classroomId}/lists`,
+  CLASSROOM_USERS: (classroomId: string) => `/classroom/${classroomId}/users`,
   CLASSROOM_LIST_EXERCISE: (
     classroomId: string,
     listId: number,

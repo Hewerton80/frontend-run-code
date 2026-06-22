@@ -1,11 +1,9 @@
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { FaCode } from "react-icons/fa";
-import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { Code } from "@/components/ui/dataDisplay/Code";
 import { cn } from "@/utils/cn";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { Table } from "@/components/ui/dataDisplay/Table";
-import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 
 interface ExerciseDescriptionProps {
   exercise: IExercise;

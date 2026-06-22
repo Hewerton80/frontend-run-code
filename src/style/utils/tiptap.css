@@ -1,5 +1,3 @@
-/* TODO dar um jeito de jogar isss para o index.css */
-
 :root {
   /* Color System */
   --editor-text-default: hsl(240 10% 3.9%);
@@ -60,7 +58,6 @@
   padding-inline: 1rem;
   padding-top: 0.5rem;
 }
-// TODO mudar para font-family de código
 .tiptap-code {
   font-family: var(--font-code);
   background-color: var(--accent);

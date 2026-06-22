@@ -3,6 +3,12 @@ import { IList } from "../list/listTypes";
 import { ISubmission, SubmissionStatus } from "../submission/submissionType";
 import { IUser } from "../user/userTypets";
 
+export enum ExerciseStatus {
+  DRAFT = 1,
+  PUBLISHED = 2,
+  HIDDEN = 3,
+}
+
 export interface IExerciseTest {
   id: string;
   input: string;
@@ -18,6 +24,7 @@ export interface IExercise {
   testCases?: IExerciseTest[];
   difficulty?: string;
   classroom?: IClassroom;
+  status: ExerciseStatus;
   listExercise?: IList;
   classroomId?: string;
   listId?: string;

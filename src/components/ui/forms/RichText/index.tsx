@@ -15,7 +15,7 @@ import { Mathematics } from "@tiptap/extension-mathematics";
 import { ToolBar } from "./ToolBar";
 import { HEADING_LEVELS } from "@/utils/tiptapHelpers";
 import { ResizableImageExtension } from "./CustomExtensions/ResizableImageExtension";
-import { forwardRef, memo, useId } from "react";
+import { forwardRef, memo, useEffect, useId } from "react";
 import { FormLabel } from "../FormLabel";
 import { FormHelperText } from "../FormHelperText";
 import { cn } from "@/utils/cn";
@@ -69,20 +69,24 @@ const RichText = memo(
     ) => {
       const reactId = useId();
       const htmlFor = id || reactId;
-
+      // console.log("Rendering RichText with html:", html);
       const editor = useEditor({
         extensions: extensions as Extension[],
         content: html,
-        onUpdate: ({ editor }) => {
-          const html = editor.getHTML();
-          const text = editor.getText();
-          const json = editor.getJSON();
+        onUpdate: ({ editor: _editor }) => {
+          const html = _editor.getHTML();
+          const text = _editor.getText();
+          const json = _editor.getJSON();
           onChange?.({ html, text, json });
           console.log({ html, text, json });
         },
         immediatelyRender: false,
         ...props,
       });
+      useEffect(() => {
+        if (!editor) return;
+        editor.commands.setContent(html || "");
+      }, [editor, html]);
 
       if (!editor) {
         return null;
@@ -94,9 +98,6 @@ const RichText = memo(
               {label}
             </FormLabel>
           )}
-          <a className="tiptap-link" href="http://">
-            apenas um teste
-          </a>
           <div
             className={cn(
               "border w-full relative rounded-md overflow-hidden pb-3",

@@ -32,6 +32,11 @@ const CreateExercisePage = lazy(() =>
     default: m.CreateExercisePage,
   })),
 );
+const EditExercisePage = lazy(() =>
+  import("@/pages/EditExercisePage").then((m) => ({
+    default: m.EditExercisePage,
+  })),
+);
 
 // ── Admin ─────────────────────────────────────────────────────────────────
 const UsersPage = lazy(() => import("@/pages/UsersPage"));
@@ -121,6 +126,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTE_PATTERNS.EXERCISES_CREATE,
                 element: <SuspenseWrapper element={<CreateExercisePage />} />,
+              },
+              {
+                path: ROUTE_PATTERNS.EXERCISES_EDIT,
+                element: <SuspenseWrapper element={<EditExercisePage />} />,
               },
             ],
           },
