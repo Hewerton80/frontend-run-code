@@ -1,6 +1,6 @@
 import { Table } from "@/components/ui/dataDisplay/Table";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
-import { useGetCachedExercise } from "@/modules/exercise/hooks/useGetCachedExercise";
+import { useGetCachedExerciseRow } from "@/modules/exercise/hooks/useGetCachedExerciseRow";
 import { ExerciseTableActions } from "@/modules/exercise/components/ExerciseTableActions";
 import { memo } from "react";
 
@@ -10,7 +10,7 @@ interface IExerciseTableRowProps {
 
 export const ExerciseTableRow = memo(
   ({ exerciseUuid }: IExerciseTableRowProps) => {
-    const { cachedExercise: exercise } = useGetCachedExercise(exerciseUuid);
+    const { cachedExercise: exercise } = useGetCachedExerciseRow(exerciseUuid);
 
     return (
       <Table.Row>

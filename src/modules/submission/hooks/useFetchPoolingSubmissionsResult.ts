@@ -20,19 +20,16 @@ export const useFetchPoolingSubmissionsResult = () => {
     if (submissionJobs && submissionJobs.length > 0) {
       submissionJobs
         .filter((job) => !!job?.listId)
-        .forEach((job, index) => {
-          console.log(index, { job });
+        .forEach((job) => {
           const result = job.result;
           updateCachedExerciseOfList(
             job.exerciseUuId!,
             job.listId!,
 
             (prevExerciseData) => {
-              console.log({ prevExerciseData });
               if (!prevExerciseData) return prevExerciseData;
-              if (
-                prevExerciseData?.submissionStatus === SubmissionStatus.ACCEPTED
-              ) {
+              const prevSubmissionStatus = prevExerciseData?.submissionStatus;
+              if (prevSubmissionStatus === SubmissionStatus.ACCEPTED) {
                 return prevExerciseData;
               }
               return { ...prevExerciseData, submissionStatus: result?.status };

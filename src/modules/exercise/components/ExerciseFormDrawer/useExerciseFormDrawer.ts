@@ -6,8 +6,6 @@ import {
   handleCreateExeciseBody,
   handleUpdateExerciseBody,
 } from "../../utils/handleExerciseBody";
-import { useNavigate, useParams } from "react-router-dom";
-import { ROUTES } from "@/routes/routes";
 import { ExerciseStatus, IExercise } from "../../exerciseTypes";
 import { useFetchExercise } from "../../hooks/useFetchExercise";
 import { useUpdateExercise } from "../../hooks/useUpdateExercise";
@@ -15,11 +13,12 @@ import { forceRefetchExercises } from "../../utils/forceRefetchExercises";
 import { getOnlyDirtyFields } from "@/utils/hookFormHelpers";
 import { updateCachedExerciseRow } from "../../utils/updateCachedExerciseRow";
 import { updateCachedExerciseDetail } from "../../utils/updateCachedExerciseDetail";
+import { useTriggerExerciseFormDrawer } from "./useTriggerExerciseFormDrawer";
 
-export const useExerciseForm = () => {
+export const useExerciseFormDrawer = () => {
   const { exerciseFormSchemaMethods, exerciseFormSchemaDefaultValues } =
     useExerciseFormSchema();
-  const navigate = useNavigate();
+
   const {
     control,
     register,
@@ -28,21 +27,22 @@ export const useExerciseForm = () => {
     formState,
     trigger: triggerExerciseFormErros,
   } = useMemo(() => exerciseFormSchemaMethods, [exerciseFormSchemaMethods]);
-  const params = useParams<{ exerciseId?: string }>();
 
-  const isEditMode = useMemo(() => !!params?.exerciseId, [params?.exerciseId]);
+  const { exerciseIdToEdit, closeExerciseFormDrawer, showExerciseFormDrawer } =
+    useTriggerExerciseFormDrawer();
+
+  const isEditMode = useMemo(() => !!exerciseIdToEdit, [exerciseIdToEdit]);
 
   const { exercise: currentExercise, isFetchingExercise } = useFetchExercise({
-    exerciseId: params?.exerciseId || "",
+    exerciseId: exerciseIdToEdit || "",
   });
 
-  // TODO adicionar um from, para saber de onde o usuário está vindo, para retornar de onde ele veio
   const { toast } = useToast();
 
   const { createExercise, isCreatingExercise } = useCreateExercise();
 
   const { updateExercise, isUpdatingExercise } = useUpdateExercise(
-    params?.exerciseId || "",
+    exerciseIdToEdit || "",
   );
 
   const isSubmittingExercise = useMemo(
@@ -107,6 +107,11 @@ export const useExerciseForm = () => {
     formState.dirtyFields,
   );
 
+  const handleCloseExerciseFormDrawer = useCallback(() => {
+    closeExerciseFormDrawer();
+    handleResetExercisesForm();
+  }, [closeExerciseFormDrawer, handleResetExercisesForm]);
+
   const handleSubmitExercise = useCallback(
     async (status: ExerciseStatus) => {
       const isValid = await triggerExerciseFormErros();
@@ -129,19 +134,19 @@ export const useExerciseForm = () => {
               variant: "success",
               title: "Exercício atualizado com sucesso!",
             });
-            resetExerciseForm(exerciseFormData);
+            handleCloseExerciseFormDrawer();
             const updatedExercise: Partial<IExercise> = {
               title: exerciseFormData.title,
               description: exerciseFormData.description,
               testCases: exerciseFormData.testCases,
               status: status,
             };
-            updateCachedExerciseRow(
-              params?.exerciseId || "",
-              (oldExercise) => ({ ...(oldExercise || {}), ...updatedExercise }),
-            );
+            updateCachedExerciseRow(exerciseIdToEdit || "", (oldExercise) => ({
+              ...(oldExercise || {}),
+              ...updatedExercise,
+            }));
             updateCachedExerciseDetail(
-              params?.exerciseId || "",
+              exerciseIdToEdit || "",
               (oldExercise) => ({ ...(oldExercise || {}), ...updatedExercise }),
             );
           },
@@ -164,13 +169,13 @@ export const useExerciseForm = () => {
         status,
       );
       createExercise(handledExerciseBody, {
-        onSuccess: (data) => {
+        onSuccess: () => {
           toast({
             variant: "success",
             title: "Exercício criado com sucesso!",
           });
+          handleCloseExerciseFormDrawer();
           forceRefetchExercises();
-          navigate(ROUTES.EXERCISES_EDIT(data.id));
         },
         onError: (error) => {
           const errorMessage =
@@ -188,11 +193,10 @@ export const useExerciseForm = () => {
     [
       isEditMode,
       formState.dirtyFields,
-      params?.exerciseId,
-      resetExerciseForm,
+      exerciseIdToEdit,
+      handleCloseExerciseFormDrawer,
       updateExercise,
       createExercise,
-      navigate,
       getExerciseFormData,
       triggerExerciseFormErros,
       toast,
@@ -201,10 +205,10 @@ export const useExerciseForm = () => {
 
   return {
     exerciseFormSchemaMethods: { control, register, formState },
-    isFetchingExercise,
-    isEditMode,
+    showExerciseFormDrawer,
+    handleCloseExerciseFormDrawer,
     handleSubmitExercise,
     isSubmittingExercise,
-    handleResetExercisesForm,
+    isFetchingExercise,
   };
 };

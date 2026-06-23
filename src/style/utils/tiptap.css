@@ -58,6 +58,9 @@
   padding-inline: 1rem;
   padding-top: 0.5rem;
 }
+/* .ProseMirror-trailingBreak {
+  display: none;
+} */
 .tiptap-code {
   font-family: var(--font-code);
   background-color: var(--accent);

@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from "react";
-import { twMerge } from "tailwind-merge";
 import { FaTimes } from "react-icons/fa";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { cn } from "@/utils/cn";
 
 const sizes = {
   xs: "max-w-[444px]",
@@ -12,8 +12,6 @@ const sizes = {
 };
 
 const Root = DialogPrimitive.Root;
-
-const DialogTrigger = DialogPrimitive.Trigger;
 
 const DialogPortal = DialogPrimitive.Portal;
 
@@ -28,7 +26,7 @@ const DialogOverlay = (
 ) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={twMerge(
+    className={cn(
       "fixed inset-0 z-50 bg-black/80",
       "data-[state=open]:animate-in data-[state=closed]:animate-out",
       "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -37,7 +35,7 @@ const DialogOverlay = (
     {...props}
   />
 );
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
+DialogOverlay.displayName = "DialogOverlay";
 
 interface DialogContentProps extends ComponentPropsWithoutRef<
   typeof DialogPrimitive.Content
@@ -61,12 +59,12 @@ const DialogContent = (
         return false;
       }}
       ref={ref}
-      className={twMerge(
+      className={cn(
         "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg translate-x-[-50%] sm:rounded-lg",
         "translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+        "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 ",
+        "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 ",
         sizes[size],
         className,
       )}
@@ -74,7 +72,7 @@ const DialogContent = (
     >
       {children}
       <DialogPrimitive.Close
-        className={twMerge(
+        className={cn(
           "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background cursor-pointer",
           "transition-opacity hover:opacity-100 focus:outline-none focus:ring-2",
           "focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none",
@@ -87,14 +85,14 @@ const DialogContent = (
     </DialogPrimitive.Content>
   </DialogPortal>
 );
-DialogContent.displayName = DialogPrimitive.Content.displayName;
+DialogContent.displayName = "DialogContent";
 
 const DialogHeader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={twMerge(
+    className={cn(
       "flex flex-col space-y-1.5 text-center sm:text-left",
       className,
     )}
@@ -108,7 +106,7 @@ const DialogFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={twMerge(
+    className={cn(
       "flex sm:items-center flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       className,
     )}
@@ -127,7 +125,7 @@ const DialogTitle = (
 ) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={twMerge(
+    className={cn(
       "text-lg font-semibold leading-none tracking-tight",
       className,
     )}
@@ -136,7 +134,7 @@ const DialogTitle = (
     {children}
   </DialogPrimitive.Title>
 );
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
+DialogTitle.displayName = "DialogTitle";
 
 const DialogDescription = (
   {
@@ -147,17 +145,14 @@ const DialogDescription = (
 ) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={twMerge("text-sm text-muted-foreground", className)}
+    className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 );
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
+DialogDescription.displayName = "DialogDescription";
 
 const Dialog = {
   Root,
-  Trigger: DialogTrigger,
-  Portal: DialogPortal,
-  Overlay: DialogOverlay,
   Content: DialogContent,
   Header: DialogHeader,
   Footer: DialogFooter,
@@ -166,16 +161,3 @@ const Dialog = {
   Close: DialogClose,
 };
 export { Dialog };
-
-// export {
-//   Dialog,
-//   DialogPortal,
-//   DialogOverlay,
-//   DialogTrigger,
-//   DialogClose,
-//   DialogContent,
-//   DialogHeader,
-//   DialogFooter,
-//   DialogTitle,
-//   DialogDescription,
-// };

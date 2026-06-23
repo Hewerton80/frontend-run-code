@@ -21,6 +21,7 @@ export const SolveExerciseEnvirolment = () => {
   const { cachedClassroom: classroom } = useGetCachedClassrom(
     params?.classroomId!,
   );
+  // TODO adicionar um todo para saber de qual url ele veio
 
   const { isFetchingExercise, exercise, exerciseError, refetchExercise } =
     useFetchExercise({
@@ -35,7 +36,7 @@ export const SolveExerciseEnvirolment = () => {
 
   const skeleton = (
     <div className="p-4">
-      <Skeleton className="size-full min-h-[468px]" />
+      <Skeleton className="size-full min-h-117" />
     </div>
   );
 

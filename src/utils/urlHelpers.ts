@@ -30,3 +30,11 @@ export function assertRouteId(
 export function isAbsolutePath(path: string): boolean {
   return path.startsWith("/");
 }
+
+export const parseUrl = (
+  url: string,
+  queryParams: Record<string, string | number> = {},
+) => {
+  if (!Object.keys(queryParams).length) return url;
+  return `${url}?${new URLSearchParams(queryParams as Record<string, string>).toString()}`;
+};

@@ -7,6 +7,7 @@ import { RoleUser } from "@/modules/user/userTypets";
 // TODO Mudar layout da tela de login
 // TODO adicionar refresh token
 // TODO migrar para toast com zustand
+// TODO mudar todas as tipaggens para que fiquem iguais aos retornos da API
 export default function HomePage() {
   const { loggedUser } = useLoggedUser();
 

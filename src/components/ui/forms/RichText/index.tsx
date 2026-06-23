@@ -111,7 +111,7 @@ const RichText = memo(
             <ToolBar editor={editor} />
             <div
               onClick={() => editor?.chain().focus().run()}
-              className="cursor-text min-h-72 w-full bg-transparent"
+              className="cursor-text min-h-40 w-full bg-transparent"
             >
               <EditorContent
                 ref={ref}

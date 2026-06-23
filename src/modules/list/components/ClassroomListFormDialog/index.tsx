@@ -148,3 +148,4 @@ const ClassroomListForm = {
 export { ClassroomListForm };
 
 ClassroomListForm.Dialog.displayName = "ClassroomListFormDialog";
+ClassroomListForm.TriggerButton.displayName = "ClassroomListFormTriggerButton";

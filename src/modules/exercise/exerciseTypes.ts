@@ -9,8 +9,7 @@ export enum ExerciseStatus {
   HIDDEN = 3,
 }
 
-export interface IExerciseTest {
-  id: string;
+export interface IExerciseTestCase {
   input: string;
   expectedOutput: string;
   isPublic: boolean;
@@ -22,7 +21,7 @@ export interface IExercise {
   title?: string;
   category?: { id: string; name: string };
   description?: string;
-  testCases?: IExerciseTest[];
+  testCases?: IExerciseTestCase[];
   difficulty?: string;
   classroom?: IClassroom;
   status: ExerciseStatus;

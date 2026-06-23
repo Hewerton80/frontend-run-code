@@ -1,17 +1,41 @@
-import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs";
+import { create } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 import { useCallback } from "react";
 
+interface State {
+  showClassroomListFormDialog: boolean;
+  listIdToEdit: number;
+}
+
+interface Actions {
+  setShowClassroomListFormDialog: (value: boolean | null) => void;
+  setListIdToEdit: (value: number | null) => void;
+}
+
+const useClassroomListFormDialogStore = create<State & Actions>((set) => ({
+  showClassroomListFormDialog: false,
+  listIdToEdit: 0,
+  setShowClassroomListFormDialog: (value) =>
+    set(() => ({ showClassroomListFormDialog: value ?? false })),
+  setListIdToEdit: (value) => set(() => ({ listIdToEdit: value ?? 0 })),
+}));
+
 export const useTriggerClassroomListFormDialog = () => {
-  const SHOW_PARAM_NAME = "showClassroomListFormDialog";
-  const LIST_ID_PARAM_NAME = "listIdToEdit";
+  const { showClassroomListFormDialog, listIdToEdit } =
+    useClassroomListFormDialogStore(
+      useShallow((s) => ({
+        showClassroomListFormDialog: s.showClassroomListFormDialog,
+        listIdToEdit: s.listIdToEdit,
+      })),
+    );
 
-  const [showClassroomListFormDialog, setShowClassroomListFormDialog] =
-    useQueryState(SHOW_PARAM_NAME, parseAsBoolean.withDefault(false));
-
-  const [listIdToEdit, setListIdToEdit] = useQueryState(
-    LIST_ID_PARAM_NAME,
-    parseAsInteger.withDefault(0),
-  );
+  const { setShowClassroomListFormDialog, setListIdToEdit } =
+    useClassroomListFormDialogStore(
+      useShallow((s) => ({
+        setShowClassroomListFormDialog: s.setShowClassroomListFormDialog,
+        setListIdToEdit: s.setListIdToEdit,
+      })),
+    );
 
   const closeClassroomListFormDialog = useCallback(() => {
     setShowClassroomListFormDialog(null);

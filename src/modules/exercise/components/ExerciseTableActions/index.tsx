@@ -1,6 +1,7 @@
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { ROUTES } from "@/routes/routes";
+import { useLocation } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -9,6 +10,7 @@ import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { JSX, useMemo } from "react";
+import { ExerciseForm } from "../ExerciseFormDrawer";
 
 interface ExerciseTableActionsProps {
   exercise: IExercise;
@@ -17,22 +19,35 @@ interface ExerciseTableActionsProps {
 export const ExerciseTableActions = ({
   exercise,
 }: ExerciseTableActionsProps) => {
+  const location = useLocation();
+
+  console.log("ExerciseTableActions location:", location);
   const { loggedUser } = useLoggedUser();
+
+  // const editExerciseUrl = useMemo(
+  //   () =>
+  //     parseUrl(ROUTES.EXERCISES_EDIT(exercise.uuid), {
+  //       from: location.pathname,
+  //     }),
+  //   [exercise.uuid, location.pathname],
+  // );
 
   const dropdownItems = useMemo(() => {
     const items: JSX.Element[] = [];
     if (loggedUser?.uuid === exercise.author?.uuid) {
       items.push(
-        <Dropdown.Item className="gap-2" asChild>
-          <Link to={ROUTES.EXERCISES_EDIT(exercise.uuid)}>
+        <ExerciseForm.Trigger exerciseUuid={exercise.uuid}>
+          <Dropdown.Item className="gap-2">
+            {/* <Link to={editExerciseUrl}> */}
             <FaPen />
             Editar
-          </Link>
-        </Dropdown.Item>,
+            {/* </Link> */}
+          </Dropdown.Item>
+        </ExerciseForm.Trigger>,
       );
     }
     return items;
-  }, [loggedUser, exercise.author, exercise.uuid]);
+  }, [loggedUser, exercise]);
 
   return (
     <div className="flex items-center gap-0.5">

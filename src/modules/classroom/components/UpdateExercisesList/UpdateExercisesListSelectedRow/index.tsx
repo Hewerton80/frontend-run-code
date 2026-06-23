@@ -1,7 +1,7 @@
 import { Table } from "@/components/ui/dataDisplay/Table";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { IconButton } from "@/components/ui/buttons/IconButton";
-import { useGetCachedExercise } from "@/modules/exercise/hooks/useGetCachedExercise";
+import { useGetCachedExerciseRow } from "@/modules/exercise/hooks/useGetCachedExerciseRow";
 import { DateTime } from "@/utils/dateTime";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { twMerge } from "tailwind-merge";
@@ -26,7 +26,7 @@ export const UpdateExercisesListSelectedRow = memo(
     unDoRemoveExerciseToList,
     openExerciseDetailsDialog,
   }: IUpdateExercisesListSelectedRowProps) => {
-    const { cachedExercise: exercise } = useGetCachedExercise(exerciseUuid);
+    const { cachedExercise: exercise } = useGetCachedExerciseRow(exerciseUuid);
 
     return (
       <Table.Row>

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/buttons/Button";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IDE } from "@/modules/submission/components/IDE";
 import { useIDEExercise } from "./useIDEExercises";
-import { parseStringToHtmlFormat } from "@/utils/parseStringToHtmlFormat";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 import {
@@ -10,13 +9,7 @@ import {
   SubmissionStatusLabels,
 } from "@/modules/submission/submissionType";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
-import { getContrastColor } from "@/utils/colors";
-import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
-import { Code } from "@/components/ui/dataDisplay/Code";
-import { Table } from "@/components/ui/dataDisplay/Table";
-import { CodeEditor } from "@/components/ui/forms/inputs/CodeEditor";
 import { Tabs } from "@/components/ui/navigation/Tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
 import { useMemo } from "react";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";

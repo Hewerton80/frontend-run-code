@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/buttons/Button";
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
-import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { Input } from "@/components/ui/forms/inputs/Input";
 import { Switch } from "@/components/ui/forms/Switch";
 import { Textarea } from "@/components/ui/forms/Textarea";
