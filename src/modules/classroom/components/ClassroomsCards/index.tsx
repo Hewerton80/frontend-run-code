@@ -18,6 +18,7 @@ import { ClasrromActionsTriggerButton } from "../ClasrromActionsTriggerButton";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
 import { RichText } from "@/components/ui/forms/RichText";
+import { toast } from "@/hooks/useToast";
 
 interface IClassRoomCardProps {
   classroom: IClassroom;
@@ -155,9 +156,9 @@ export const ClassRoomsCards = () => {
           />
         ))}
       </div>
-      <div className="flex">
-        <RichText label="Descrição" error="ola" />
-      </div>
+      <Button onClick={() => toast.success("This is a success message!")}>
+        Toast
+      </Button>
       <ClassroomFormDialog
         isOpen={openDialog}
         classroomId={classroomIdToEdit}

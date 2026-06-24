@@ -1,0 +1,20 @@
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+}
+
+/**
+ * Classe aplicada ao toast quando isExiting=true.
+ * `forwards` garante que o elemento permanece no estado final da animação
+ * (opacidade 0, fora da tela) até o React remover o nó do DOM via onAnimationEnd.
+ * Isso elimina o flash de reapresentação causado pela race condition do setTimeout.
+ */
+.toastExit {
+  animation: toast-slide-out 300ms ease-in forwards;
+}

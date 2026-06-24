@@ -6,13 +6,13 @@ import {
 } from "@/modules/language/utils/languagesConfig";
 import { LanguageNames } from "@/modules/language/types/languagesName";
 import { FaRegCircleQuestion } from "react-icons/fa6";
-import { Modal } from "../../../../components/ui/overlay/Modal";
-import { IconButton } from "../../../../components/ui/buttons/IconButton";
-import { Tooltip } from "../../../../components/ui/overlay/Tooltip";
+import { IconButton } from "@/components/ui/buttons/IconButton";
+import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import { CodeEditor } from "../../../../components/ui/forms/inputs/CodeEditor";
+import { CodeEditor } from "@/components/ui/forms/inputs/CodeEditor";
 import { CustomSelect } from "@/components/ui/forms/selects/CustomSelect";
 import { LanguageOptionDisplay } from "@/modules/language/components/LanguangeOptionDisplay";
+import { Dialog } from "@/components/ui/overlay/Dialog";
 
 interface IdeProps {
   value?: string;
@@ -83,13 +83,15 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
           placeholder="Type your code here..."
         />
       </div>
-      <Modal.Root
-        show={showScriptCodeExample}
-        onClose={() => setShowScriptCodeExample(false)}
-        size="md"
+      <Dialog.Root
+        open={showScriptCodeExample}
+        onOpenChange={(open) => setShowScriptCodeExample(open)}
+        // ="md"
       >
-        <Modal.Title>Script Example</Modal.Title>
-        <Modal.Body>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Script Example</Dialog.Title>
+          </Dialog.Header>
           <div className="h-131">
             <CodeEditor
               mode={currentSelectLanguage?.editorName}
@@ -98,8 +100,8 @@ export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
               focus={false}
             />
           </div>
-        </Modal.Body>
-      </Modal.Root>
+        </Dialog.Content>
+      </Dialog.Root>
     </>
   );
 }
