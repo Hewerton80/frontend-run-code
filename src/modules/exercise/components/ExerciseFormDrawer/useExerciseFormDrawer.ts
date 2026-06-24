@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useCreateExercise } from "../../hooks/useCreateExercise";
 import { useExerciseFormSchema } from "../schemas/exerciseFormSchema";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/hooks/useToast";
 import {
   handleCreateExeciseBody,
   handleUpdateExerciseBody,
@@ -36,8 +36,6 @@ export const useExerciseFormDrawer = () => {
   const { exercise: currentExercise, isFetchingExercise } = useFetchExercise({
     exerciseId: exerciseIdToEdit || "",
   });
-
-  const { toast } = useToast();
 
   const { createExercise, isCreatingExercise } = useCreateExercise();
 
@@ -130,10 +128,7 @@ export const useExerciseFormDrawer = () => {
         );
         updateExercise(handledUpdateExerciseBody, {
           onSuccess: () => {
-            toast({
-              variant: "success",
-              title: "Exercício atualizado com sucesso!",
-            });
+            toast.success("Exercício atualizado com sucesso!");
             handleCloseExerciseFormDrawer();
             const updatedExercise: Partial<IExercise> = {
               title: exerciseFormData.title,
@@ -155,11 +150,7 @@ export const useExerciseFormDrawer = () => {
             const errorMessage =
               (error as any)?.response?.data?.message ||
               "Erro ao atualizar exercício";
-            toast({
-              variant: "danger",
-              title: "Erro ao atualizar exercício",
-              description: errorMessage,
-            });
+            toast.error(errorMessage);
           },
         });
         return;
@@ -170,10 +161,7 @@ export const useExerciseFormDrawer = () => {
       );
       createExercise(handledExerciseBody, {
         onSuccess: () => {
-          toast({
-            variant: "success",
-            title: "Exercício criado com sucesso!",
-          });
+          toast.success("Exercício criado com sucesso!");
           handleCloseExerciseFormDrawer();
           forceRefetchExercises();
         },
@@ -182,11 +170,7 @@ export const useExerciseFormDrawer = () => {
             (error as any)?.response?.data?.message ||
             "Erro ao criar exercício";
           console.error("Error creating exercise:", error);
-          toast({
-            variant: "danger",
-            title: "Erro ao criar exercício",
-            description: errorMessage,
-          });
+          toast.error(errorMessage);
         },
       });
     },
@@ -199,7 +183,6 @@ export const useExerciseFormDrawer = () => {
       createExercise,
       getExerciseFormData,
       triggerExerciseFormErros,
-      toast,
     ],
   );
 

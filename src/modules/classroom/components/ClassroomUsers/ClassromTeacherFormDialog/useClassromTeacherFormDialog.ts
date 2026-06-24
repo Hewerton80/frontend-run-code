@@ -9,7 +9,6 @@ import {
   type IAddTeacherToClassroomBody as AddTeacherToClassroomBody,
   useAddTeacherToClassroom,
 } from "../../../hooks/useAddTeacherToClassroom";
-import { useToast } from "@/hooks/useToast";
 import { useFetchClassroomUserById } from "../../../hooks/useFetchClassroomUserById";
 import {
   type IUpdateTeacherInClassroomBody as UpdateTeacherInClassroomBody,
@@ -20,6 +19,7 @@ import { useTriggerClassroomTeacherFormDialog } from "./useTriggerClassroomTeach
 import { forceRefetchMyClassroomUsers } from "@/modules/classroom/utils/forceRefetchMyClassroomUsers";
 import { updateCachedClassroomUserDetail } from "@/modules/classroom/utils/updateCachedClassroomUserDatail";
 import { usePagination } from "@/hooks/usePagination";
+import { toast } from "@/hooks/useToast";
 
 export const useClassromTeacherFormDialog = () => {
   const {
@@ -32,7 +32,6 @@ export const useClassromTeacherFormDialog = () => {
   const params = useParams<{ classroomId: string }>();
   const { goToPage } = usePagination();
 
-  const { toast } = useToast();
   const { loggedUser } = useLoggedUser();
 
   const { cachedClassroom: classroom } = useGetCachedClassrom(
@@ -121,12 +120,9 @@ export const useClassromTeacherFormDialog = () => {
       const onSuccess = () => {
         clearClassroomTeacherStates();
         handleClose();
-        toast({
-          title: `Professor(a) ${
-            isEdit ? "editado(a)" : "adicionado(a)"
-          } com sucesso`,
-          variant: "success",
-        });
+        toast.success(
+          `Professor(a) ${isEdit ? "editado(a)" : "adicionado(a)"} com sucesso!`,
+        );
         if (isEdit) {
           updateCachedClassroomUserDetail(teacherId!, (oldData) => ({
             ...(oldData || {}),
@@ -152,11 +148,9 @@ export const useClassromTeacherFormDialog = () => {
               "Professor(a) já está vinculado(a) a turma",
           });
         }
-        toast({
-          title: `Erro ao ${isEdit ? "atualizar" : "adicionar"} professor(a)`,
-          variant: "danger",
-          direction: "bottom-right",
-        });
+        toast.error(
+          `Erro ao ${isEdit ? "atualizar" : "adicionar"} professor(a)`,
+        );
       };
       if (isEdit) {
         updateTeacherInClassroom(handledTeacherBody, {
@@ -173,7 +167,6 @@ export const useClassromTeacherFormDialog = () => {
       teacherId,
       setClassroomTeacherFormError,
       updateTeacherInClassroom,
-      toast,
       handleClose,
       clearClassroomTeacherStates,
       getHandledTeacherBody,

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useCreateExercise } from "../../hooks/useCreateExercise";
 import { useExerciseFormSchema } from "../schemas/exerciseFormSchema";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/hooks/useToast";
 import {
   handleCreateExeciseBody,
   handleUpdateExerciseBody,
@@ -37,7 +37,6 @@ export const useExerciseForm = () => {
   });
 
   // TODO adicionar um from, para saber de onde o usuário está vindo, para retornar de onde ele veio
-  const { toast } = useToast();
 
   const { createExercise, isCreatingExercise } = useCreateExercise();
 
@@ -125,10 +124,7 @@ export const useExerciseForm = () => {
         );
         updateExercise(handledUpdateExerciseBody, {
           onSuccess: () => {
-            toast({
-              variant: "success",
-              title: "Exercício atualizado com sucesso!",
-            });
+            toast.success("Exercício atualizado com sucesso!");
             resetExerciseForm(exerciseFormData);
             const updatedExercise: Partial<IExercise> = {
               title: exerciseFormData.title,
@@ -150,11 +146,7 @@ export const useExerciseForm = () => {
             const errorMessage =
               (error as any)?.response?.data?.message ||
               "Erro ao atualizar exercício";
-            toast({
-              variant: "danger",
-              title: "Erro ao atualizar exercício",
-              description: errorMessage,
-            });
+            toast.error(errorMessage);
           },
         });
         return;
@@ -165,10 +157,7 @@ export const useExerciseForm = () => {
       );
       createExercise(handledExerciseBody, {
         onSuccess: (data) => {
-          toast({
-            variant: "success",
-            title: "Exercício criado com sucesso!",
-          });
+          toast.success("Exercício criado com sucesso!");
           forceRefetchExercises();
           navigate(ROUTES.EXERCISES_EDIT(data.id));
         },
@@ -177,11 +166,7 @@ export const useExerciseForm = () => {
             (error as any)?.response?.data?.message ||
             "Erro ao criar exercício";
           console.error("Error creating exercise:", error);
-          toast({
-            variant: "danger",
-            title: "Erro ao criar exercício",
-            description: errorMessage,
-          });
+          toast.error(errorMessage);
         },
       });
     },
@@ -195,7 +180,6 @@ export const useExerciseForm = () => {
       navigate,
       getExerciseFormData,
       triggerExerciseFormErros,
-      toast,
     ],
   );
 

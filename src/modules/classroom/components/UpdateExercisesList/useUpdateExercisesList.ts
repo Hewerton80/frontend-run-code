@@ -9,13 +9,13 @@ import {
 import { useUdateClassroomExercisesFromListsSchema } from "../../schemas/updateClassroomExercisesFromLists";
 import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useUpdateClassroomExercisesFromList } from "../../hooks/useUpdateClassroomExercisesFromList";
-import { useToast } from "@/hooks/useToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
 import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
 import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
 import { PaginationBarProps } from "@/components/ui/navigation/PaginationBar";
 import { forceRefetchExercisesOfList } from "@/modules/list/utils/forceRefetchExercisesOfList";
+import { toast } from "@/hooks/useToast";
 
 export type UpdateExercises = IExercise & { removed?: boolean };
 type ExercisesRecord = Record<string, UpdateExercises>;
@@ -27,7 +27,6 @@ export type UpdateExercisesListSelectedItem = {
 
 export const useUpdateExercisesList = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const params = useParams<{ classroomId: string; listId: string }>();
   const { cachedClassroom: classroom } = useGetCachedClassrom(
@@ -113,7 +112,10 @@ export const useUpdateExercisesList = () => {
   const exercisesToAddRecords = useMemo<ExercisesRecord>(() => {
     const result = {} as ExercisesRecord;
     exercisesToAdd?.forEach((exercise) => {
-      result[exercise?.uuid!] = exercise as UpdateExercises;
+      if (exercise?.uuid) {
+        // TODO verificar se o type de exerciseToAdd é compatível com IExercise, caso contrário, pode causar problemas de tipagem.
+        result[exercise?.uuid!] = exercise as any;
+      }
     });
     return result;
   }, [exercisesToAdd]);
@@ -254,10 +256,7 @@ export const useUpdateExercisesList = () => {
 
     const onSuccess = () => {
       navigate(ROUTES.CLASSROOM_LISTS(classroom?.uuid!));
-      toast({
-        title: "Exercícios atualizados com sucesso!",
-        variant: "success",
-      });
+      toast.success("Exercícios atualizados com sucesso!");
       updateCachedListOfClassroom(list?.id!, (prevData) => {
         if (!prevData) return prevData;
         return { ...prevData, totalExercises: handledData?.length };
@@ -265,12 +264,7 @@ export const useUpdateExercisesList = () => {
       forceRefetchExercisesOfList(list?.id!);
     };
     const onError = () => {
-      toast({
-        title: "Erro",
-        description: "Erro ao atualizar exercícios",
-        variant: "danger",
-        direction: "bottom-right",
-      });
+      toast.error("Erro ao atualizar exercícios");
     };
     updateClassroomExercisesFromList(handledData, {
       onSuccess,
@@ -279,7 +273,6 @@ export const useUpdateExercisesList = () => {
   }, [
     getValuesExercisesForm,
     updateClassroomExercisesFromList,
-    toast,
     formStateExercisesForm.isDirty,
     navigate,
     classroom,

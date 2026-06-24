@@ -135,14 +135,10 @@ const DrawerFooter = ({
 DrawerFooter.displayName = "DrawerFooter";
 
 const DrawerBody = (
-  {
-    className,
-    children,
-    ...props
-  }: ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>,
+  { className, children, ...props }: React.HTMLAttributes<HTMLDivElement>,
   ref?: any,
 ) => (
-  <DrawerPrimitive.Description
+  <div
     ref={ref}
     data-slot="drawer-body"
     className={cn("flex flex-col flex-1 p-5 overflow-auto", className)}
@@ -150,7 +146,7 @@ const DrawerBody = (
     {...props}
   >
     {children}
-  </DrawerPrimitive.Description>
+  </div>
 );
 DrawerBody.displayName = "DrawerBody";
 

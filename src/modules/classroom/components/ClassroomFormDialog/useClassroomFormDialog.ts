@@ -9,16 +9,15 @@ import {
   useCreateClassroom,
 } from "../../hooks/useCreateClassroom";
 import { useUpdateClassroom } from "../../hooks/useUpdateClassroom";
-import { useToast } from "@/hooks/useToast";
 import { updateCachedClassroom } from "../../utils/updateCachedClassroom";
 import { forceRefetchMyClassrooms } from "../../utils/forceRefetchMyClassrooms";
+import { toast } from "@/hooks/useToast";
 
 export const useClassroomFormDialog = (
   classroomId?: string | null,
   onSuccessSubmitted?: () => void,
 ) => {
   const isEditClassroom = useMemo(() => !!classroomId, [classroomId]);
-  const { toast } = useToast();
 
   const { createClassroom, isCreatingClassroom } = useCreateClassroom();
   const { updateClassroom, isUpdatingClassroom } = useUpdateClassroom(
@@ -96,10 +95,9 @@ export const useClassroomFormDialog = (
       const onSuccess = () => {
         onSuccessSubmitted?.();
         clearClassroomFormStates();
-        toast({
-          title: `Turma ${isEditClassroom ? "editada" : "criada"} com sucesso!`,
-          variant: "success",
-        });
+        toast.success(
+          `Turma ${isEditClassroom ? "editada" : "criada"} com sucesso!`,
+        );
         if (isEditClassroom) {
           const newClassroomValues = {
             name: handleClassroomFormBody.name,
@@ -114,13 +112,9 @@ export const useClassroomFormDialog = (
         }
         forceRefetchMyClassrooms();
       };
-      const onError = () => {
-        toast({
-          title: `Erro ao ${isEditClassroom ? "editar" : "criar"} turma`,
-          variant: "danger",
-          direction: "bottom-right",
-        });
-      };
+      const onError = () =>
+        toast.error(`Erro ao ${isEditClassroom ? "editar" : "criar"} turma`);
+
       if (isEditClassroom) {
         updateClassroom(handleClassroomFormBody, {
           onSuccess,
@@ -139,7 +133,6 @@ export const useClassroomFormDialog = (
       clearClassroomFormStates,
       onSuccessSubmitted,
       updateClassroom,
-      toast,
       getHandleClassroomFormBody,
       createClassroom,
     ],

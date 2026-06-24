@@ -19,6 +19,8 @@ export const HeadingsToolBar = memo(() => {
   }, [editorState]);
 
   return (
+    //TODO Mudar para Select
+
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
         <Button

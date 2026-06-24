@@ -32,7 +32,7 @@ export const ExerciseDescription = ({
           <h3 className="text-lg">{exercise?.title}</h3>
         </div>
         <div
-          className="text-sm"
+          className="text-sm tiptap"
           dangerouslySetInnerHTML={{ __html: exercise?.description || "" }}
         />
       </div>
@@ -40,7 +40,7 @@ export const ExerciseDescription = ({
         <CustomDataTable
           columns={["Entrada(s)", "Saída esperada"]}
           data={exercise?.testCases || []}
-          idExtractor={(item) => `${item?.id}-${exercise?.id}`}
+          idExtractor={(item) => `${item?.input}-${exercise?.id}`}
           renderItem={({ item }) => (
             <Table.Row>
               <Table.Data>

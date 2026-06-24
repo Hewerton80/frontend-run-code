@@ -5,7 +5,7 @@ import {
 } from "../../schemas/classroomListFormSchema";
 import { useCallback, useEffect, useMemo } from "react";
 import { DateTime } from "@/utils/dateTime";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/hooks/useToast";
 import { useCreateClassroomList } from "@/modules/classroom/hooks/useCreateClassroomList";
 import { handleClassroomListFormBody } from "../../utils/handleClassroomListFormBody";
 import { updateCachedListOfClassroom } from "../../utils/updateCachedListOfClassroom";
@@ -45,8 +45,6 @@ export const useClassroomListFormDialog = () => {
     clearClassroomListFormStates,
     watchClassroomListForm,
   } = useClassroomListFormSchema();
-
-  const { toast } = useToast();
 
   const { createClassroomList, isCreatingClassroomList } =
     useCreateClassroomList();
@@ -105,19 +103,13 @@ export const useClassroomListFormDialog = () => {
         updateClassroomListForm,
       );
       const onSuccess = () => {
-        toast({
-          title: `Lista ${isEditing ? "atualizada" : "criada"} com sucesso!`,
-          variant: "success",
-        });
+        toast.success(
+          `Lista ${isEditing ? "atualizada" : "criada"} com sucesso!`,
+        );
         handleClose();
       };
       const onError = () => {
-        toast({
-          title: "Erro",
-          description: `Erro ao ${isEditing ? "atualizar" : "criar"} lista`,
-          variant: "danger",
-          direction: "bottom-right",
-        });
+        toast.error(`Erro ao ${isEditing ? "atualizar" : "criar"} lista`);
       };
       console.log("handledClassroomListFormBody", handledClassroomListFormBody);
       if (isEditing) {
@@ -164,7 +156,6 @@ export const useClassroomListFormDialog = () => {
       loggedUser,
       isEditing,
       createClassroomList,
-      toast,
       updateClassroomList,
       currentListToEdit?.id,
       handleClose,

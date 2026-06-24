@@ -52,7 +52,8 @@ export const AlignmentToolbar = memo(() => {
   );
 
   return (
-    <Dropdown.Root>
+    //TODO Mudar para Select
+    <Dropdown.Root modal={true}>
       <Dropdown.Trigger asChild>
         <Button
           className={cn("text-xs! min-h-8 max-h-8 min-w-fit max-w-fit px-2!")}

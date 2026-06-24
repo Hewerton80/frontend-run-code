@@ -1,7 +1,6 @@
 import { ToastArgs, useToast } from "@/hooks/useToast";
 import { memo, useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
-import style from "./style.module.css";
 import {
   LuInfo,
   LuTriangleAlert,
@@ -91,6 +90,7 @@ const ToastInner = memo(
         }
         aria-atomic="true"
         onAnimationEnd={() => {
+          console.log("onAnimationEnd", toast.id, toast.isExiting);
           // Só finaliza a remoção quando a animação de SAÍDA terminar.
           // A animação de entrada também dispara onAnimationEnd — ignoramos ela.
           if (toast.isExiting) {
@@ -102,11 +102,13 @@ const ToastInner = memo(
           "group pointer-events-auto relative flex w-full items-center justify-between",
           "space-x-2 overflow-hidden rounded-md p-4 pr-6 shadow-lg transition-all",
           // tailwindcss-animate — apenas entrada (data-state="open")
-          "data-[state=open]:animate-in",
-          "data-[state=open]:slide-in-from-top-full",
-          "duration-300",
+          "data-[state=open]:animate-in animate-",
+          "data-[state=open]:fade-in-80 data-[state=open]:slide-in-from-top-full",
+          "data-[state=closed]:animate-out",
+          "data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full",
+          "duration-1000",
           // CSS module — saída com fill-mode: forwards (sem flash)
-          toast.isExiting && style.toastExit,
+          // toast.isExiting && style.toastExit,
           // Colour variant
           toastVariants[toast.type],
         )}
@@ -134,7 +136,10 @@ const ToastInner = memo(
             // "group-hover:opacity-100",
           )}
         >
-          <LuX className="size-4" aria-hidden="true" />
+          <LuX
+            className="size-4 stroke-success-foreground"
+            aria-hidden="true"
+          />
         </button>
 
         {/* Progress bar */}

@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithRef, forwardRef } from "react";
 import * as PrimitiveDropdown from "@radix-ui/react-dropdown-menu";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/utils/cn";
 
 export type DropdownProps = ComponentPropsWithRef<
   typeof PrimitiveDropdown.Root
@@ -34,8 +34,8 @@ export type DropdowSeparatorProps = ComponentPropsWithRef<
   typeof PrimitiveDropdown.Separator
 >;
 
-const contentClasses = twMerge(
-  "flex flex-col z-50 min-w-[8rem] overflow-hidden rounded-md border ",
+const contentClasses = cn(
+  "flex flex-col z-9999 min-w-[8rem] overflow-hidden rounded-md border ",
   "bg-popover p-1 text-popover-foreground data-[state=open]:animate-in",
   "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
   "data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 ",
@@ -46,7 +46,9 @@ const contentClasses = twMerge(
 
 const Root = ({ children }: DropdownProps) => {
   return (
-    <PrimitiveDropdown.Root modal={false}>{children}</PrimitiveDropdown.Root>
+    <PrimitiveDropdown.Root data-slot="dropdown-root" modal={false}>
+      {children}
+    </PrimitiveDropdown.Root>
   );
 };
 
@@ -55,7 +57,11 @@ const Trigger = (
   ref?: any,
 ) => {
   return (
-    <PrimitiveDropdown.Trigger ref={ref} {...restProps}>
+    <PrimitiveDropdown.Trigger
+      data-slot="dropdown-trigger"
+      ref={ref}
+      {...restProps}
+    >
       {children}
     </PrimitiveDropdown.Trigger>
   );
@@ -67,7 +73,7 @@ const SubTrigger = (
 ) => {
   return (
     <PrimitiveDropdown.SubTrigger
-      className={twMerge(
+      className={cn(
         "flex cursor-default select-none items-center rounded-md px-2 py-1.5 text-sm",
         "outline-hidden focus:bg-accent data-[state=open]:bg-accent",
         className,
@@ -93,8 +99,9 @@ const Content = (
   return (
     <PrimitiveDropdown.Portal>
       <PrimitiveDropdown.Content
+        data-slot="dropdown-content"
         ref={ref}
-        className={twMerge(contentClasses, "shadow-lg", className)}
+        className={cn(contentClasses, "shadow-lg", className)}
         sideOffset={sideOffset}
         align={align}
         {...restProps}
@@ -112,9 +119,10 @@ const SubContent = (
   return (
     <PrimitiveDropdown.Portal>
       <PrimitiveDropdown.SubContent
+        data-slot="dropdown-sub-content"
         ref={ref}
         sideOffset={sideOffset}
-        className={twMerge(contentClasses, "shadow-md", className)}
+        className={cn(contentClasses, "shadow-md", className)}
         {...restProps}
       >
         {children}
@@ -129,8 +137,9 @@ const Item = (
 ) => {
   return (
     <PrimitiveDropdown.Item
+      data-slot="dropdown-item"
       ref={ref}
-      className={twMerge(
+      className={cn(
         "relative flex cursor-default select-none items-center rounded-md",
         "px-2 py-1.5 text-sm outline-hidden transition-colors focus:bg-accent",
         "focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
@@ -149,8 +158,9 @@ const Label = (
 ) => {
   return (
     <PrimitiveDropdown.Label
+      data-slot="dropdown-label"
       ref={ref}
-      className={twMerge("px-2 py-1.5 text-sm font-semibold", className)}
+      className={cn("px-2 py-1.5 text-sm font-semibold", className)}
       {...restProps}
     >
       {children}
@@ -164,8 +174,9 @@ const Separator = (
 ) => {
   return (
     <PrimitiveDropdown.Separator
+      data-slot="dropdown-separator"
       ref={ref}
-      className={twMerge("-mx-1 my-1 h-px bg-muted", className)}
+      className={cn("-mx-1 my-1 h-px bg-muted", className)}
       {...restProps}
     />
   );

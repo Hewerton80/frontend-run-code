@@ -13,9 +13,9 @@ export const TableRowsSkeleton = memo(
   ({ numberOfRows, numberOfColumns }: TableRowsSkeletonProps): ReactElement => {
     return (
       <>
-        {getRange(numberOfRows).map((i) => (
+        {getRange(0, numberOfRows).map((i) => (
           <Table.Row key={`table-skeleton-row-${i}`}>
-            {getRange(numberOfColumns).map((j) => (
+            {getRange(0, numberOfColumns).map((j) => (
               <Table.Data key={`table-skeleton-row-${i}-col-${j}`}>
                 <Skeleton
                   className={twMerge(

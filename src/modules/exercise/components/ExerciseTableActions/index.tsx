@@ -36,7 +36,7 @@ export const ExerciseTableActions = ({
     const items: JSX.Element[] = [];
     if (loggedUser?.uuid === exercise.author?.uuid) {
       items.push(
-        <ExerciseForm.Trigger exerciseUuid={exercise.uuid}>
+        <ExerciseForm.Trigger exerciseUuid={exercise.uuid} key="edit-exercise">
           <Dropdown.Item className="gap-2">
             {/* <Link to={editExerciseUrl}> */}
             <FaPen />
