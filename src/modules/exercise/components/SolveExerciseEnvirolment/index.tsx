@@ -10,6 +10,8 @@ import { useFetchExercise } from "../../hooks/useFetchExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { ExerciseForm } from "../ExerciseFormDrawer";
+import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
 
 export const SolveExerciseEnvirolment = () => {
   const params = useParams<{
@@ -71,15 +73,21 @@ export const SolveExerciseEnvirolment = () => {
           isLoading={isFetchingExercise}
           items={getBreadcrumbsItems()}
         />
-        <BackLink
-          to={
-            params?.classroomId && params?.listId
-              ? `/classroom/${classroom?.uuid}/lists`
-              : "/exercises"
-          }
-        >
-          Voltar para listas da turma
-        </BackLink>
+        {/* TODO colocar de onde ele esta vindo (from) para porder voltar  */}
+        <div className="flex items-center">
+          <BackLink
+            to={
+              params?.classroomId && params?.listId
+                ? `/classroom/${classroom?.uuid}/lists`
+                : "/exercises"
+            }
+          >
+            Voltar para listas da turma
+          </BackLink>
+          <div className="ml-auto">
+            <SolveExerciseEnvirolmentActions exercise={exercise} />
+          </div>
+        </div>
         <Resizable.Group
           className={twMerge(
             "flex size-full min-h-117 rounded-lg overflow-hidden border",
@@ -117,6 +125,7 @@ export const SolveExerciseEnvirolment = () => {
           </Resizable.Panel>
         </Resizable.Group>
       </div>
+      <ExerciseForm.Drawer />
     </>
   );
 };

@@ -5,7 +5,6 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import katex from "katex";
 // Import Mathematics to ensure command type augmentation is in scope
-import "@tiptap/extension-mathematics";
 import { Dialog } from "@/components/ui/overlay/Dialog/Dialog";
 import { Button } from "@/components/ui/buttons/Button/Button";
 import { Textarea } from "@/components/ui/forms/Textarea";

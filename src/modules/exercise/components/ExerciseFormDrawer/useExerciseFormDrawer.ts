@@ -98,12 +98,12 @@ export const useExerciseFormDrawer = () => {
     });
   }, [formState.errors]);
 
-  console.log(
-    "formState.isDirty",
-    formState.isDirty,
-    "formState.dirtyFields",
-    formState.dirtyFields,
-  );
+  // console.log(
+  //   "formState.isDirty",
+  //   formState.isDirty,
+  //   "formState.dirtyFields",
+  //   formState.dirtyFields,
+  // );
 
   const handleCloseExerciseFormDrawer = useCallback(() => {
     closeExerciseFormDrawer();

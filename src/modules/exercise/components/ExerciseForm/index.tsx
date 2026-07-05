@@ -24,10 +24,7 @@ export const ExerciseForm = () => {
   const {
     exerciseFormSchemaMethods,
     handleSubmitExercise,
-    handleResetExercisesForm,
     isSubmittingExercise,
-    isEditMode,
-    isFetchingExercise,
   } = useExerciseForm();
 
   const { control, formState } = useMemo(
@@ -53,10 +50,9 @@ export const ExerciseForm = () => {
     <>
       <div className="flex flex-col w-full gap-4 p-8">
         <Breadcrumbs
-          isLoading={isFetchingExercise}
           items={[
             { label: "🧩 Exercícios", href: ROUTES.EXERCISES },
-            { label: ` ${isEditMode ? "Editar" : "Criar"} Exercício` },
+            { label: "Criar Exercício" },
           ]}
         />
         <div className="flex justify-between items-end">
@@ -64,86 +60,82 @@ export const ExerciseForm = () => {
             Voltar para lista de exercícios
           </BackLink>
           <div className="flex gap-4">
-            <Button
+            {/* <Button
               variantStyle="secondary"
               disabled={isSubmittingExercise || !formState.isDirty}
               onClick={handleResetExercisesForm}
             >
               Desfazer alterações
-            </Button>
+            </Button> */}
             <Button
               disabled={!formState.isDirty}
               onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}
               isLoading={isSubmittingExercise}
             >
-              {isEditMode ? "Salvar alterações" : "Salvar e Publicar"}
+              Salvar e Publicar
             </Button>
           </div>
         </div>
-        {isFetchingExercise ? (
-          <div className="flex items-center justify-center w-full h-full">
-            <Spinner size={64} />
-          </div>
-        ) : (
-          <div
-            className={twMerge(
-              "flex size-full min-h-117 rounded-lg overflow-hidden border p-4",
-              "border-l-3 border-l-info rounded-l-none grid grid-cols-2 gap-4",
-            )}
+
+        <div
+          className={twMerge(
+            "flex size-full min-h-117 rounded-lg overflow-hidden border p-4",
+            "border-l-3 border-l-info rounded-l-none grid grid-cols-2 gap-4",
+          )}
+        >
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={(e) => e.preventDefault()}
           >
-            <form
-              className="flex flex-col gap-4"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <Controller
-                control={control}
-                name="title"
-                render={({ field, fieldState }) => (
-                  <Input
+            <Controller
+              control={control}
+              name="title"
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  id={field.name}
+                  required
+                  label="Título"
+                  placeholder="Digite o título do exercício"
+                  error={fieldState.error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="description"
+              render={({
+                field: { value, onChange, ...field },
+                fieldState,
+              }) => (
+                <>
+                  <RichText
                     {...field}
                     id={field.name}
+                    html={value}
+                    onChange={(val) => onChange(val.html)}
+                    label="Descrição"
+                    // placeholder="Digite a descrição do exercício"
                     required
-                    label="Título"
-                    placeholder="Digite o título do exercício"
                     error={fieldState.error?.message}
                   />
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="description"
-                render={({
-                  field: { value, onChange, ...field },
-                  fieldState,
-                }) => (
-                  <>
-                    <RichText
-                      {...field}
-                      id={field.name}
-                      html={value}
-                      onChange={(val) => onChange(val.html)}
-                      label="Descrição"
-                      // placeholder="Digite a descrição do exercício"
-                      required
-                      error={fieldState.error?.message}
-                    />
-                  </>
-                )}
-              />
-              <div className="flex flex-col gap-4">
-                <IDE />
-                <div className="flex justify-end">
-                  <Button
-                    variantStyle="outline"
-                    // isLoading={isRunningCode} onClick={handleSubmit}
-                  >
-                    Testar
-                  </Button>
-                </div>
+                </>
+              )}
+            />
+            <div className="flex flex-col gap-4">
+              <IDE />
+              <div className="flex justify-end">
+                <Button
+                  variantStyle="outline"
+                  // isLoading={isRunningCode} onClick={handleSubmit}
+                >
+                  Testar
+                </Button>
               </div>
+            </div>
 
-              {/*  <div className="flex flex-col h-full gap-4">
+            {/*  <div className="flex flex-col h-full gap-4">
                 <p>Output:</p>
              {isRunningCode && <ThreeDotsLoading />}
                 {runCodeResponse && (
@@ -153,126 +145,126 @@ export const ExerciseForm = () => {
                   <TerminalCode content={runCodeError?.description || ""} />
                 )}
               </div> */}
-            </form>
-            <div className="flex flex-col">
-              <p className="mb-2 text-sm">Casos de teste:</p>
+          </form>
+          <div className="flex flex-col">
+            <p className="mb-2 text-sm">Casos de teste:</p>
 
-              <DivTable.Container
-                className={twMerge(testCasesError && "border-danger")}
-              >
-                <DivTable.Row header>
-                  <DivTable.Data>Entradas de Teste (inputs)</DivTable.Data>
-                  <DivTable.Data>Saídas Esperadas (outputs)</DivTable.Data>
-                  <DivTable.Data>Público</DivTable.Data>
-                  {/* <DivTable.Data></DivTable.Data> */}
-                </DivTable.Row>
-                {testCases.map((_, index) => {
-                  const isFirst = index === 0;
-                  return (
-                    <DivTable.Row
-                      disableAccordion
-                      key={`test-case-row-${index}-list`}
-                    >
-                      <DivTable.Data>
-                        <div className="w-full">
-                          <Controller
-                            name={`testCases.${index}.input`}
-                            control={control}
-                            render={({ field, fieldState }) => (
-                              <Textarea
-                                {...field}
-                                textareaClassName="field-sizing-content resize-none"
-                                id={field.name}
-                                placeholder={`Input (${index + 1})`}
-                                error={fieldState.error?.message}
-                                required
-                              />
-                            )}
-                          />
-                        </div>
-                      </DivTable.Data>
-                      <DivTable.Data>
+            <DivTable.Container
+              className={twMerge(testCasesError && "border-danger")}
+            >
+              <DivTable.Row header>
+                <DivTable.Data>Entradas de Teste (inputs)</DivTable.Data>
+                <DivTable.Data>Saídas Esperadas (outputs)</DivTable.Data>
+                <DivTable.Data>Público</DivTable.Data>
+                {/* <DivTable.Data></DivTable.Data> */}
+              </DivTable.Row>
+              {testCases.map((_, index) => {
+                const isFirst = index === 0;
+                return (
+                  <DivTable.Row
+                    disableAccordion
+                    key={`test-case-row-${index}-list`}
+                  >
+                    <DivTable.Data>
+                      <div className="w-full">
                         <Controller
-                          name={`testCases.${index}.expectedOutput`}
+                          name={`testCases.${index}.input`}
                           control={control}
                           render={({ field, fieldState }) => (
                             <Textarea
                               {...field}
                               textareaClassName="field-sizing-content resize-none"
                               id={field.name}
-                              placeholder={`Output (${index + 1})`}
+                              placeholder={`Input (${index + 1})`}
                               error={fieldState.error?.message}
                               required
                             />
                           )}
                         />
-                      </DivTable.Data>
-                      <DivTable.Data className="gap-8 justify-between">
-                        <Controller
-                          name={`testCases.${index}.isPublic`}
-                          control={control}
-                          render={({
-                            field: { onChange, value, ...restField },
-                          }) => (
-                            <Switch
-                              {...restField}
-                              name={restField.name}
-                              id={restField.name}
-                              checked={value}
-                              onCheckedChange={onChange}
-                            />
-                          )}
-                        />
-                        {!isFirst && (
-                          <Tooltip textContent="Remover caso de teste">
-                            <IconButton
-                              variantStyle="danger"
-                              icon={<BsTrash />}
-                              onClick={() => removeTestCase(index)}
-                            />
-                          </Tooltip>
+                      </div>
+                    </DivTable.Data>
+                    <DivTable.Data>
+                      <Controller
+                        name={`testCases.${index}.expectedOutput`}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <Textarea
+                            {...field}
+                            textareaClassName="field-sizing-content resize-none"
+                            id={field.name}
+                            placeholder={`Output (${index + 1})`}
+                            error={fieldState.error?.message}
+                            required
+                          />
                         )}
-                      </DivTable.Data>
-                      {/* <DivTable.Data>
+                      />
+                    </DivTable.Data>
+                    <DivTable.Data className="gap-8 justify-between">
+                      <Controller
+                        name={`testCases.${index}.isPublic`}
+                        control={control}
+                        render={({
+                          field: { onChange, value, ...restField },
+                        }) => (
+                          <Switch
+                            {...restField}
+                            name={restField.name}
+                            id={restField.name}
+                            checked={value}
+                            onCheckedChange={onChange}
+                          />
+                        )}
+                      />
+                      {!isFirst && (
+                        <Tooltip textContent="Remover caso de teste">
+                          <IconButton
+                            variantStyle="danger"
+                            icon={<BsTrash />}
+                            onClick={() => removeTestCase(index)}
+                          />
+                        </Tooltip>
+                      )}
+                    </DivTable.Data>
+                    {/* <DivTable.Data>
                       
                     </DivTable.Data> */}
-                    </DivTable.Row>
-                  );
-                })}
-                <DivTable.Row disableAccordion className="border-t-transparent">
-                  <DivTable.Data className="flex flex-col items-end gap-4">
-                    <Tooltip textContent="Adicionar novo caso de teste">
-                      <Button
-                        onClick={() =>
-                          addTestCase({
-                            input: "",
-                            expectedOutput: "",
-                            isPublic: false,
-                          })
-                        }
-                        variantStyle="outline"
-                      >
-                        Adicionar
-                      </Button>
-                    </Tooltip>
-                    <Alert.Root variant="info">
-                      <Alert.Title>Critérios para Casos de testes</Alert.Title>
-                      <Alert.Description>
-                        ▶️ Deve conter ao menos 3 casos de teste;
-                        <br />
-                        ▶️ Deve conter ao menos um caso de teste público e um
-                        privado;
-                      </Alert.Description>
-                    </Alert.Root>
-                  </DivTable.Data>
-                </DivTable.Row>
-              </DivTable.Container>
-              {testCasesError && (
-                <FormHelperText>{testCasesError}</FormHelperText>
-              )}
-            </div>
-            {/* <Resizable.Handle withHandle /> */}
-            {/* <div className="flex w-full flex-col h-full gap-4">
+                  </DivTable.Row>
+                );
+              })}
+              <DivTable.Row disableAccordion className="border-t-transparent">
+                <DivTable.Data className="flex flex-col items-end gap-4">
+                  <Tooltip textContent="Adicionar novo caso de teste">
+                    <Button
+                      onClick={() =>
+                        addTestCase({
+                          input: "",
+                          expectedOutput: "",
+                          isPublic: false,
+                        })
+                      }
+                      variantStyle="outline"
+                    >
+                      Adicionar
+                    </Button>
+                  </Tooltip>
+                  <Alert.Root variant="info">
+                    <Alert.Title>Critérios para Casos de testes</Alert.Title>
+                    <Alert.Description>
+                      ▶️ Deve conter ao menos 3 casos de teste;
+                      <br />
+                      ▶️ Deve conter ao menos um caso de teste público e um
+                      privado;
+                    </Alert.Description>
+                  </Alert.Root>
+                </DivTable.Data>
+              </DivTable.Row>
+            </DivTable.Container>
+            {testCasesError && (
+              <FormHelperText>{testCasesError}</FormHelperText>
+            )}
+          </div>
+          {/* <Resizable.Handle withHandle /> */}
+          {/* <div className="flex w-full flex-col h-full gap-4">
             <div className="flex flex-col gap-4 p-4">
               <IDE />
               <div className="flex justify-end">
@@ -285,8 +277,7 @@ export const ExerciseForm = () => {
               </div>
             </div>
           </div> */}
-          </div>
-        )}
+        </div>
       </div>
     </>
   );

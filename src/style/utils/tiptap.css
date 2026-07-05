@@ -86,42 +86,26 @@
   text-decoration-thickness: 0.15em;
 }
 h1.tiptap-heading {
-  margin-bottom: 1.5rem;
-  margin-top: 2rem;
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 700;
 }
 
 h2.tiptap-heading {
-  margin-bottom: 1rem;
-  margin-top: 1.5rem;
   font-size: 1.875rem;
   line-height: 2.25rem;
   font-weight: 700;
 }
 
 h3.tiptap-heading {
-  margin-bottom: 0.75rem;
-  margin-top: 1rem;
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: 700;
 }
-
-h1.tiptap-heading:first-child,
-h2.tiptap-heading:first-child,
-h3.tiptap-heading:first-child {
-  margin-top: 0;
-}
-
-h1.tiptap-heading + h2.tiptap-heading,
-h1.tiptap-heading + h3.tiptap-heading,
-h2.tiptap-heading + h1.tiptap-heading,
-h2.tiptap-heading + h3.tiptap-heading,
-h3.tiptap-heading + h1.tiptap-heading,
-h3.tiptap-heading + h2.tiptap-heading {
-  margin-top: 0;
+h4.tiptap-heading {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 700;
 }
 .tiptap-paragraph {
   font-size: 0.875rem;
@@ -232,4 +216,27 @@ h3.tiptap-heading + h2.tiptap-heading {
 /* KaTeX inline/block sizing */
 .tiptap-mathematics-render .katex-display {
   margin: 0;
+}
+
+/* ─── Alinhamento de imagens fora do editor ──────────────────────────────────
+   O Tiptap serializa o alinhamento como atributo HTML `align` no <img>.
+   Dentro do editor o NodeView React aplica as classes Tailwind (mr-auto, etc).
+   Fora do editor (dangerouslySetInnerHTML) estas regras CSS replicam o mesmo
+   comportamento visual.
+────────────────────────────────────────────────────────────────────────────── */
+
+.tiptap img[align="left"] {
+  display: block;
+  margin-right: auto;
+}
+
+.tiptap img[align="center"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tiptap img[align="right"] {
+  display: block;
+  margin-left: auto;
 }

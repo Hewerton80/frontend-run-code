@@ -4,6 +4,7 @@ import { Code } from "@/components/ui/dataDisplay/Code";
 import { cn } from "@/utils/cn";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { Table } from "@/components/ui/dataDisplay/Table";
+import { renderTiptapHtml } from "@/utils/tiptapHelpers";
 
 interface ExerciseDescriptionProps {
   exercise: IExercise;
@@ -27,13 +28,13 @@ export const ExerciseDescription = ({
           orientation === "horizontal" && "col-span-8",
         )}
       >
-        <div className="flex items-center gap-2">
-          <FaCode className="text-info" />{" "}
-          <h3 className="text-lg">{exercise?.title}</h3>
-        </div>
+        <h3 className="text-lg leading-5">{exercise?.title}</h3>
+
         <div
           className="text-sm tiptap"
-          dangerouslySetInnerHTML={{ __html: exercise?.description || "" }}
+          dangerouslySetInnerHTML={{
+            __html: renderTiptapHtml(exercise?.description || ""),
+          }}
         />
       </div>
       <div className={orientation === "horizontal" ? "col-span-4" : ""}>

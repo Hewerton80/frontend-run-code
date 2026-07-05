@@ -22,8 +22,6 @@ export const ExercisesTable = () => {
     refetchExercises,
   } = useExercissesTable();
 
-  const [openDrawer, setOpenDrawer] = useState(false);
-
   return (
     <>
       <div className="flex flex-col gap-4 w-full p-8">
@@ -54,25 +52,8 @@ export const ExercisesTable = () => {
             <ExerciseTableRow exerciseUuid={uuid} />
           )}
         />
-        <Button onClick={() => setOpenDrawer(true)}>Abrir Drawer</Button>
       </div>
       <ExerciseForm.Drawer />
-      {/* <Drawer.Root open={openDrawer} onOpenChange={setOpenDrawer}>
-        <Drawer.Content>
-          <Drawer.Header>
-            <Drawer.Title>Exercício</Drawer.Title>
-          </Drawer.Header>
-          <p>dsadasd</p>
-          <Drawer.Footer>
-            <Button
-              variantStyle="secondary"
-              onClick={() => setOpenDrawer(false)}
-            >
-              Fechar
-            </Button>
-          </Drawer.Footer>
-        </Drawer.Content>
-      </Drawer.Root> */}
     </>
   );
 };

@@ -50,6 +50,7 @@ export const HeadingsToolBar = memo(() => {
 
   const handleChangeValue = useCallback(
     (level: string | EditorLevel | null) => {
+      console.log("handleChangeValue", level);
       if (level === PARAGRAPH) {
         editor?.chain().focus().setParagraph().run();
       } else if (typeof level === "number") {
