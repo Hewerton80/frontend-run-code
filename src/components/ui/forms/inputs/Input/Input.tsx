@@ -4,6 +4,7 @@ import { FormLabel } from "@/components/ui/forms/FormLabel";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";
 import { Slot } from "@radix-ui/react-slot";
 
+// TODO perguntar a IA porque toda vez que o estado externo muda, calsa rerender nesse componente
 export interface InputProps extends Omit<
   ComponentPropsWithRef<"input">,
   "className"

@@ -206,7 +206,7 @@ export const ClassroomListsTableRow = memo(
                   <Dropdown.Trigger asChild>
                     <IconButton
                       variantStyle="dark-ghost"
-                      icon={<BsThreeDots />}
+                      icon={<BsThreeDots className="text-muted-foreground" />}
                     />
                   </Dropdown.Trigger>
                 </PingWrapper>

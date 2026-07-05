@@ -1,8 +1,7 @@
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { ROUTES } from "@/routes/routes";
-import { useLocation } from "react-router-dom";
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IExercise } from "../../exerciseTypes";
@@ -11,6 +10,7 @@ import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { JSX, useMemo } from "react";
 import { ExerciseForm } from "../ExerciseFormDrawer";
+import { Separator } from "@/components/ui/separator";
 
 interface ExerciseTableActionsProps {
   exercise: IExercise;
@@ -19,9 +19,6 @@ interface ExerciseTableActionsProps {
 export const ExerciseTableActions = ({
   exercise,
 }: ExerciseTableActionsProps) => {
-  const location = useLocation();
-
-  console.log("ExerciseTableActions location:", location);
   const { loggedUser } = useLoggedUser();
 
   // const editExerciseUrl = useMemo(
@@ -62,10 +59,13 @@ export const ExerciseTableActions = ({
 
       {dropdownItems.length > 0 && (
         <>
-          <span className="text-border">|</span>
+          <Separator orientation="vertical" className="h-5 my-auto" />
           <Dropdown.Root>
             <Dropdown.Trigger asChild>
-              <IconButton variantStyle="dark-ghost" icon={<BsThreeDots />} />
+              <IconButton
+                variantStyle="dark-ghost"
+                icon={<BsThreeDotsVertical className="text-muted-foreground" />}
+              />
             </Dropdown.Trigger>
 
             <Dropdown.Content>{dropdownItems}</Dropdown.Content>

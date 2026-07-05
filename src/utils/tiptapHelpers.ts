@@ -1,6 +1,6 @@
 import { type Editor } from "@tiptap/core";
 
-type Level = 1 | 2 | 3 | 4;
+export type EditorLevel = 1 | 2 | 3 | 4;
 export type Alignment = "left" | "center" | "right" | "justify";
 
 export const NODE_HANDLES_SELECTED_STYLE_CLASSNAME =
@@ -8,7 +8,7 @@ export const NODE_HANDLES_SELECTED_STYLE_CLASSNAME =
 export function isValidUrl(url: string) {
   return /^https?:\/\/\S+$/.test(url);
 }
-export const HEADING_LEVELS = [1, 2, 3, 4] as Level[];
+export const HEADING_LEVELS = [1, 2, 3, 4] as EditorLevel[];
 
 export const duplicateContent = (editor: Editor) => {
   const { view } = editor;

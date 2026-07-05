@@ -14,6 +14,7 @@ import { Spinner } from "@/components/ui/feedback/Spinner";
 
 // ── Auth ──────────────────────────────────────────────────────────────────
 const AuthLoginPage = lazy(() => import("@/pages/AuthLoginPage"));
+const BgTestPage = lazy(() => import("@/pages/BgTestPage"));
 
 // ── Geral ─────────────────────────────────────────────────────────────────
 const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Navigate to={ROUTE_PATTERNS.LOGIN} replace />,
+      },
+      {
+        path: ROUTE_PATTERNS.BG_TESTE,
+        element: <SuspenseWrapper element={<BgTestPage />} />,
       },
       {
         path: ROUTE_PATTERNS.LOGIN,

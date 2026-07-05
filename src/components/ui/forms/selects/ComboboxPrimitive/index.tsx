@@ -12,7 +12,7 @@ const inputClassNameBuilder = ({
   isError?: boolean;
 }) =>
   cn(
-    "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
+    "inline-flex items-center h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
     "file:border-0 file:bg-transparent file:text-sm file:font-medium ease-linear duration-200",
     "placeholder:text-muted-foreground outline-hidden focus-visible:ring-2",
     "focus-visible:ring-primary/40 ",
@@ -63,22 +63,22 @@ const Input = ({
 
 const Icon = ({
   className,
-  children,
   ...rest
 }: ComponentPropsWithRef<typeof Combobox.Icon>) => {
   return (
     <Combobox.Icon
       className={cn("right-3 absolute z-2 top-1/2 -translate-y-1/2", className)}
+      render={() => (
+        <BsChevronDown
+          role="chevron"
+          className={cn(
+            "shrink-0 size-3 text-neutral-500 transition-transform duration-200",
+            "group-data-popup-open:rotate-180",
+          )}
+        />
+      )}
       {...rest}
-    >
-      {children}
-      <BsChevronDown
-        className={cn(
-          "shrink-0 size-3 text-neutral-500 transition-transform duration-200",
-          "group-data-popup-open:rotate-180",
-        )}
-      />
-    </Combobox.Icon>
+    />
   );
 };
 

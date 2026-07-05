@@ -61,6 +61,8 @@ interface RichTextProps extends Omit<
   required?: boolean;
   onChange?: (value: RichTextValue) => void;
 }
+
+// TODO perguntar a IA porque toda vez que o estado externo muda, calsa rerender nesse componente
 const RichText = memo(
   forwardRef(
     (

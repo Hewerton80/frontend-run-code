@@ -24,7 +24,10 @@ export const ClasrromActionsTriggerButton = ({
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <IconButton variantStyle={variantStyle} icon={<BsThreeDots />} />
+        <IconButton
+          variantStyle={variantStyle}
+          icon={<BsThreeDots className="text-muted-foreground" />}
+        />
       </Dropdown.Trigger>
 
       <Dropdown.Content>

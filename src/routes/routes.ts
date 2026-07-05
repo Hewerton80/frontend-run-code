@@ -1,6 +1,7 @@
 export const ROUTE_PATTERNS = {
   // Auth
   LOGIN: "/login",
+  BG_TESTE: "/bg-teste",
 
   // Geral
   TESTE: "/teste",
@@ -37,7 +38,7 @@ export const ROUTE_PATTERNS = {
 export const ROUTES = {
   // Auth
   LOGIN: ROUTE_PATTERNS.LOGIN,
-
+  BG_TESTE: ROUTE_PATTERNS.BG_TESTE,
   // Geral
   TESTE: ROUTE_PATTERNS.TESTE,
   HOME: ROUTE_PATTERNS.HOME,
