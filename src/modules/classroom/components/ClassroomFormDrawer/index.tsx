@@ -1,30 +1,22 @@
-import { useClassroomFormDialog } from "./useClassroomFormDialog";
-import { Dialog } from "@/components/ui/overlay/Dialog";
-import { Input } from "@/components/ui/forms/inputs/Input";
+import { forwardRef, memo, ReactNode } from "react";
+import { Drawer } from "@/components/ui/overlay/Drawer";
 import { Button } from "@/components/ui/buttons/Button";
-// import { MultSelect } from "@/components/ui/forms/selects";
+import { Input } from "@/components/ui/forms/inputs/Input";
 import { Controller } from "react-hook-form";
 import { Switch } from "@/components/ui/forms/Switch";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";
-import { twMerge } from "tailwind-merge";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { CustomCombobox } from "@/components/ui/forms/selects/CustomCombobox";
 import { LIST_OF_LANGUAGES } from "@/modules/language/utils/languagesConfig";
 import { LanguageOptionDisplay } from "@/modules/language/components/LanguangeOptionDisplay";
+import { Slot } from "@radix-ui/react-slot";
+import { useClassroomFormDrawer } from "./useClassroomFormDrawer";
+import { useTriggerClassroomFormDrawer } from "./useTriggerClassroomFormDrawer";
 
-interface ClassroomFormDialogProps {
-  classroomId?: string | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export const ClassroomFormDialog = ({
-  classroomId,
-  isOpen,
-  onClose,
-}: ClassroomFormDialogProps) => {
+const ClassroomFormDrawer = () => {
   const {
+    showDrawer,
     classroomFormState,
     classroomFormControl,
     isSubmittingClassroom,
@@ -35,23 +27,24 @@ export const ClassroomFormDialog = ({
     refetchClassroom,
     registerClassroomForm,
     submitClassroom,
-  } = useClassroomFormDialog(classroomId, onClose);
+    handleClose,
+  } = useClassroomFormDrawer();
 
   return (
-    <>
-      <Dialog.Root open={isOpen} onOpenChange={(value) => !value && onClose()}>
-        <Dialog.Content>
-          <Dialog.Header>
-            <Dialog.Title>
-              🏫 {isEditClassroom ? "Editar" : "Criar"} turma
-            </Dialog.Title>
-          </Dialog.Header>
+    <Drawer.Root
+      open={showDrawer}
+      onOpenChange={(value) => !value && handleClose()}
+    >
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>
+            🏫 {isEditClassroom ? "Editar" : "Criar"} turma
+          </Drawer.Title>
+        </Drawer.Header>
+
+        <Drawer.Body>
           {classroomError || isFetchingClassroom ? (
-            <div
-              className={twMerge(
-                "flex items-center justify-center w-full h-80",
-              )}
-            >
+            <div className="flex items-center justify-center w-full h-full">
               {classroomError && (
                 <FeedBackError onTryAgain={refetchClassroom} />
               )}
@@ -70,6 +63,7 @@ export const ClassroomFormDialog = ({
                   </Alert.Description>
                 </Alert.Root>
               )}
+
               <div className="flex flex-col">
                 <Input
                   {...registerClassroomForm("name")}
@@ -81,6 +75,7 @@ export const ClassroomFormDialog = ({
                   disabled={!canEditClassroom}
                 />
               </div>
+
               <div className="flex flex-col">
                 <Controller
                   name="languages"
@@ -89,28 +84,27 @@ export const ClassroomFormDialog = ({
                     field: { onChange, ...restField },
                     fieldState,
                   }) => (
-                    <>
-                      <CustomCombobox
-                        {...restField}
-                        name={restField.name}
-                        label="Linguagens"
-                        placeholder="Selecione as linguagens"
-                        items={LIST_OF_LANGUAGES}
-                        displayItem={(item) => (
-                          <LanguageOptionDisplay languageName={item.value} />
-                        )}
-                        onChangeValue={onChange}
-                        renderItem={(item) => (
-                          <LanguageOptionDisplay languageName={item.value} />
-                        )}
-                        valueExtractor={(item) => item.value}
-                        disabled={!canEditClassroom}
-                        error={fieldState.error?.message}
-                      />
-                    </>
+                    <CustomCombobox
+                      {...restField}
+                      name={restField.name}
+                      label="Linguagens"
+                      placeholder="Selecione as linguagens"
+                      items={LIST_OF_LANGUAGES}
+                      displayItem={(item) => (
+                        <LanguageOptionDisplay languageName={item.value} />
+                      )}
+                      onChangeValue={onChange}
+                      renderItem={(item) => (
+                        <LanguageOptionDisplay languageName={item.value} />
+                      )}
+                      valueExtractor={(item) => item.value}
+                      disabled={!canEditClassroom}
+                      error={fieldState.error?.message}
+                    />
                   )}
                 />
               </div>
+
               <div className="flex flex-col">
                 <Controller
                   name="isVisible"
@@ -127,32 +121,63 @@ export const ClassroomFormDialog = ({
                   )}
                 />
               </div>
-              <div>
-                <Dialog.Footer className="mt-16">
-                  {canEditClassroom && (
-                    <>
-                      <Button
-                        disabled={isSubmittingClassroom}
-                        variantStyle="secondary"
-                        onClick={onClose}
-                      >
-                        Cancelar
-                      </Button>
-                      <Button
-                        disabled={!classroomFormState.isDirty}
-                        isLoading={isSubmittingClassroom}
-                        type="submit"
-                      >
-                        Salvar
-                      </Button>
-                    </>
-                  )}
-                </Dialog.Footer>
-              </div>
             </form>
           )}
-        </Dialog.Content>
-      </Dialog.Root>
-    </>
+        </Drawer.Body>
+
+        {canEditClassroom && (
+          <Drawer.Footer className="gap-2">
+            <Button
+              variantStyle="secondary"
+              disabled={isSubmittingClassroom}
+              onClick={handleClose}
+            >
+              Cancelar
+            </Button>
+            <Button
+              disabled={!classroomFormState.isDirty}
+              isLoading={isSubmittingClassroom}
+              onClick={submitClassroom as any}
+            >
+              Salvar
+            </Button>
+          </Drawer.Footer>
+        )}
+      </Drawer.Content>
+    </Drawer.Root>
   );
 };
+
+interface ClassroomFormTriggerButtonProps {
+  children?: ReactNode;
+  classroomId?: string | null;
+}
+
+const ClassroomFormTriggerButton = (
+  { children, classroomId }: ClassroomFormTriggerButtonProps,
+  ref?: any,
+) => {
+  const { openDrawer } = useTriggerClassroomFormDrawer();
+
+  const Comp = Slot;
+
+  return (
+    <Comp
+      ref={ref}
+      onClick={() => openDrawer(classroomId)}
+      aria-label={classroomId ? "Editar turma" : "Criar turma"}
+    >
+      {children}
+    </Comp>
+  );
+};
+
+const ClassroomForm = {
+  Drawer: memo(ClassroomFormDrawer),
+  TriggerButton: memo(forwardRef(ClassroomFormTriggerButton)),
+};
+
+export { ClassroomForm };
+
+ClassroomForm.Drawer.displayName = "ClassroomFormDrawer";
+ClassroomForm.TriggerButton.displayName = "ClassroomFormTriggerButton";

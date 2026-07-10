@@ -11,26 +11,19 @@ import { IClassroom } from "../../classroomType";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { IUser, RoleUser } from "@/modules/user/userTypets";
 import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
-import { ClassroomFormDialog } from "../ClassroomFormDialog";
-import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { ClasrromActionsTriggerButton } from "../ClasrromActionsTriggerButton";
+import { ClassroomForm } from "../ClassroomFormDrawer";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
-import { RichText } from "@/components/ui/forms/RichText";
 import { toast } from "@/hooks/useToast";
 
 interface IClassRoomCardProps {
   classroom: IClassroom;
   loggedUser: IUser;
-  onClickToEdit?: (classroomId: string) => void;
 }
 
-const ClassRoomsCard = ({
-  classroom,
-  loggedUser,
-  onClickToEdit,
-}: IClassRoomCardProps) => {
+const ClassRoomsCard = ({ classroom, loggedUser }: IClassRoomCardProps) => {
   return (
     <Card.Root className="p-4">
       <div className="flex gap-1 group">
@@ -43,9 +36,7 @@ const ClassRoomsCard = ({
               <h4 className="line-clamp-1 w-fit">{classroom?.name}</h4>
             </Tooltip>
             <span className="ml-auto">
-              <ClasrromActionsTriggerButton
-                onClickToEditClassroom={() => onClickToEdit?.(classroom?.uuid!)}
-              />
+              <ClasrromActionsTriggerButton classroomId={classroom?.uuid} />
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -123,10 +114,6 @@ export const ClassRoomsCards = () => {
   } = useFetchMyClassrooms();
 
   const { loggedUser } = useLoggedUser();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [classroomIdToEdit, setClassroomIdToEdit] = useState<string | null>(
-    null,
-  );
 
   return (
     <>
@@ -134,7 +121,9 @@ export const ClassRoomsCards = () => {
       <div className="grid grid-cols-3 gap-4">
         {loggedUser?.role !== RoleUser.STUDENT && (
           <div className="flex justify-end col-span-3">
-            <Button onClick={() => setOpenDialog(true)}>Criar turma</Button>
+            <ClassroomForm.TriggerButton classroomId={null}>
+              <Button>Criar turma</Button>
+            </ClassroomForm.TriggerButton>
           </div>
         )}
         {isLoadingClassrooms &&
@@ -149,24 +138,13 @@ export const ClassRoomsCards = () => {
             loggedUser={loggedUser!}
             key={`classroom-${index}`}
             classroom={classroom}
-            onClickToEdit={(classroomId) => {
-              setOpenDialog(true);
-              setClassroomIdToEdit(classroomId);
-            }}
           />
         ))}
       </div>
       <Button onClick={() => toast.success("This is a success message!")}>
         Toast
       </Button>
-      <ClassroomFormDialog
-        isOpen={openDialog}
-        classroomId={classroomIdToEdit}
-        onClose={() => {
-          setOpenDialog(false);
-          setClassroomIdToEdit(null);
-        }}
-      />
+      <ClassroomForm.Drawer />
     </>
   );
 };

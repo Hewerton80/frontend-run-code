@@ -5,13 +5,14 @@ import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { ClassroomListsTableRow } from "./ClassroomListsTableRow";
 import { useClassroomListsTable } from "./useClassroomListsTable";
-import { ClassroomListForm } from "../ClassroomListFormDialog";
+import { ClassroomListForm } from "../ClassroomListFormDrawer";
 import { Button } from "@/components/ui/buttons/Button";
 import { Highlight } from "@/components/ui/feedback/Highlight";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { ClasrromActionsTriggerButton } from "@/modules/classroom/components/ClasrromActionsTriggerButton";
-import { ClassroomFormDialog } from "@/modules/classroom/components/ClassroomFormDialog";
+import { EditExercisesOfList } from "@/modules/list/components/EditExercisesOfListDrawer";
+import { ClassroomForm } from "@/modules/classroom/components/ClassroomFormDrawer";
 import { Card } from "@/components/ui/cards/Card";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { RoleUser } from "@/modules/user/userTypets";
@@ -19,12 +20,9 @@ import { ROUTES } from "@/routes/routes";
 
 export const ClassroomListsTable = () => {
   const {
-    openClassroomDialog,
-    closeClassroomDialog,
     listIdsOfClassroom,
     canCreateList,
     classroom,
-    isOpenClassroomFormDialog,
     loggedUser,
     isFetchingListsOfClassroom,
     listsOfClassroomError,
@@ -87,7 +85,7 @@ export const ClassroomListsTable = () => {
               </Tooltip>
               <ClasrromActionsTriggerButton
                 variantStyle="info"
-                onClickToEditClassroom={openClassroomDialog}
+                classroomId={classroom?.uuid}
               />
             </>
           )}
@@ -118,12 +116,9 @@ export const ClassroomListsTable = () => {
           </DivTable.Container>
         )}
       </div>
-      <ClassroomListForm.Dialog />
-      <ClassroomFormDialog
-        isOpen={isOpenClassroomFormDialog}
-        classroomId={classroom?.uuid}
-        onClose={closeClassroomDialog}
-      />
+      <ClassroomListForm.Drawer />
+      <EditExercisesOfList.Drawer />
+      <ClassroomForm.Drawer />
     </>
   );
 };

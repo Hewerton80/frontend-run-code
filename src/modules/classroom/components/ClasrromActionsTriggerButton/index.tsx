@@ -5,14 +5,15 @@ import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { RoleUser } from "@/modules/user/userTypets";
 import { BsThreeDots } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
+import { ClassroomForm } from "../ClassroomFormDrawer";
 
 interface ClassroomActionTriggerButtonProps {
-  onClickToEditClassroom?: () => void;
+  classroomId?: string | null;
   variantStyle?: ButtonVariantStyle;
 }
 
 export const ClasrromActionsTriggerButton = ({
-  onClickToEditClassroom,
+  classroomId,
   variantStyle = "dark-ghost",
 }: ClassroomActionTriggerButtonProps) => {
   const { loggedUser } = useLoggedUser();
@@ -31,11 +32,12 @@ export const ClasrromActionsTriggerButton = ({
       </Dropdown.Trigger>
 
       <Dropdown.Content>
-        <Dropdown.Item onClick={onClickToEditClassroom} className="gap-2">
-          {/* <ProgressLink href={`/update-classroom/${classroom?.uuid}`}> */}
-          <FaPen />
-          Visualizar Turma
-        </Dropdown.Item>
+        <ClassroomForm.TriggerButton classroomId={classroomId}>
+          <Dropdown.Item className="gap-2">
+            <FaPen />
+            Visualizar Turma
+          </Dropdown.Item>
+        </ClassroomForm.TriggerButton>
       </Dropdown.Content>
     </Dropdown.Root>
   );

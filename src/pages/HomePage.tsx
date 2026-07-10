@@ -7,6 +7,8 @@ import { RoleUser } from "@/modules/user/userTypets";
 // TODO Mudar layout da tela de login
 // TODO adicionar refresh token
 // TODO mudar todas as tipaggens para que fiquem iguais aos retornos da API
+// TODO mudar tudo para usar register ao inves de Controller
+
 export default function HomePage() {
   const { loggedUser } = useLoggedUser();
 

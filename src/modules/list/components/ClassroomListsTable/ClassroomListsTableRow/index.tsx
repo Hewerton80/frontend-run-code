@@ -16,11 +16,10 @@ import { ClasrromListStatus } from "../../ClasrromListStatus";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { Ping, PingWrapper } from "@/components/ui/feedback/Ping";
 import { RiArrowUpDownFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
 import { RoleUser } from "@/modules/user/userTypets";
-import { ROUTES } from "@/routes/routes";
 import { useGetCachedListOfClassroom } from "@/modules/list/hooks/useGetCachedListOfClassroom";
-import { ClassroomListForm } from "../../ClassroomListFormDialog";
+import { EditExercisesOfList } from "@/modules/list/components/EditExercisesOfListDrawer";
+import { ClassroomListForm } from "../../ClassroomListFormDrawer";
 import { IFetchListsByClassromUuidResponse } from "@/modules/list/hooks/useFetchListsByClassromUuid";
 
 interface ClassroomListsTableRowAccordionContentProps {
@@ -220,18 +219,16 @@ export const ClassroomListsTableRow = memo(
                       Visualizar Liata
                     </Dropdown.Item>
                   </ClassroomListForm.TriggerButton>
-                  <Dropdown.Item asChild className="gap-2">
-                    <Link
-                      to={ROUTES.CLASSROOM_LIST_UPDATE(
-                        cachedListOfClassroom?.classroom?.uuid!,
-                        cachedListOfClassroom?.id!,
-                      )}
-                    >
+                  <EditExercisesOfList.TriggerButton
+                    listId={cachedListOfClassroom?.id}
+                    classroomId={cachedListOfClassroom?.classroom?.uuid}
+                  >
+                    <Dropdown.Item className="gap-2">
                       <RiArrowUpDownFill />
                       {totalExercises === 0 ? "Adicionar" : "Editar"} exercícios
                       {totalExercises === 0 && <Ping />}
-                    </Link>
-                  </Dropdown.Item>
+                    </Dropdown.Item>
+                  </EditExercisesOfList.TriggerButton>
                 </Dropdown.Content>
               </Dropdown.Root>
             )}
