@@ -125,7 +125,7 @@ const DrawerFooter = ({
   <div
     data-slot="drawer-footer"
     className={cn(
-      "mt-auto flex gap-2 p-4 border-t bg-background z-40",
+      "mt-auto flex gap-2 p-4 border-t bg-background z-40 justify-end",
       className,
     )}
     style={{ height: FOOTER_HEIGHT }}

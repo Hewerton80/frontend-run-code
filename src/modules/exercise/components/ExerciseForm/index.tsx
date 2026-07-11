@@ -60,13 +60,13 @@ export const ExerciseForm = () => {
             Voltar para lista de exercícios
           </BackLink>
           <div className="flex gap-4">
-            {/* <Button
+            <Button
               variantStyle="secondary"
               disabled={isSubmittingExercise || !formState.isDirty}
-              onClick={handleResetExercisesForm}
+              onClick={() => handleSubmitExercise(ExerciseStatus.DRAFT)}
             >
-              Desfazer alterações
-            </Button> */}
+              Salvar como Rascunho
+            </Button>
             <Button
               disabled={!formState.isDirty}
               onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}

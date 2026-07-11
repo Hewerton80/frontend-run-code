@@ -113,7 +113,6 @@ export const useUpdateExercisesList = () => {
     const result = {} as ExercisesRecord;
     exercisesToAdd?.forEach((exercise) => {
       if (exercise?.uuid) {
-        // TODO verificar se o type de exerciseToAdd é compatível com IExercise, caso contrário, pode causar problemas de tipagem.
         result[exercise?.uuid!] = exercise as any;
       }
     });

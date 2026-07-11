@@ -27,6 +27,7 @@ const ExerciseFormDrawer = () => {
     handleSubmitExercise,
     isSubmittingExercise,
     isFetchingExercise,
+    currentExercise,
   } = useExerciseFormDrawer();
 
   const { control, formState } = useMemo(
@@ -226,14 +227,50 @@ const ExerciseFormDrawer = () => {
             )}
           </Drawer.Body>
           <Drawer.Footer>
-            <Button
-              fullWidth
-              disabled={!formState.isDirty}
-              onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}
-              isLoading={isSubmittingExercise}
-            >
-              Salvar alterações
-            </Button>
+            {currentExercise?.status === ExerciseStatus.HIDDEN && (
+              <Button
+                onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}
+                isLoading={isSubmittingExercise}
+              >
+                Salvar e publicar
+              </Button>
+            )}
+            {currentExercise?.status === ExerciseStatus.PUBLISHED && (
+              <>
+                <Button
+                  onClick={() => handleSubmitExercise(ExerciseStatus.HIDDEN)}
+                  variantStyle="secondary"
+                  isLoading={isSubmittingExercise}
+                >
+                  Salvar e ocultar
+                </Button>
+                <Button
+                  onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}
+                  disabled={isSubmittingExercise || !formState.isDirty}
+                  isLoading={isSubmittingExercise}
+                >
+                  Salvar alterações
+                </Button>
+              </>
+            )}
+            {currentExercise?.status === ExerciseStatus.DRAFT && (
+              <>
+                <Button
+                  variantStyle="secondary"
+                  onClick={() => handleSubmitExercise(ExerciseStatus.DRAFT)}
+                  disabled={isSubmittingExercise || !formState.isDirty}
+                  isLoading={isSubmittingExercise}
+                >
+                  Salvar rascunho
+                </Button>
+                <Button
+                  onClick={() => handleSubmitExercise(ExerciseStatus.PUBLISHED)}
+                  isLoading={isSubmittingExercise}
+                >
+                  Salvar e publicar
+                </Button>
+              </>
+            )}
           </Drawer.Footer>
         </Drawer.Content>
       </Drawer.Root>

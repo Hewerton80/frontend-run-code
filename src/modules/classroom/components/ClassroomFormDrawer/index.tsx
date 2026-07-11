@@ -137,7 +137,7 @@ const ClassroomFormDrawer = () => {
             <Button
               disabled={!classroomFormState.isDirty}
               isLoading={isSubmittingClassroom}
-              onClick={submitClassroom as any}
+              onClick={submitClassroom}
             >
               Salvar
             </Button>

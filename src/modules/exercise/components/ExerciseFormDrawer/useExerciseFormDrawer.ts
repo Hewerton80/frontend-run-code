@@ -188,6 +188,7 @@ export const useExerciseFormDrawer = () => {
 
   return {
     exerciseFormSchemaMethods: { control, register, formState },
+    currentExercise,
     showExerciseFormDrawer,
     handleCloseExerciseFormDrawer,
     handleSubmitExercise,

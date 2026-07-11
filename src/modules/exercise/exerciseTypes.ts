@@ -9,6 +9,12 @@ export enum ExerciseStatus {
   HIDDEN = 3,
 }
 
+export const ExerciseStatusNames: Record<ExerciseStatus | number, string> = {
+  [ExerciseStatus.DRAFT]: "Rascunho",
+  [ExerciseStatus.PUBLISHED]: "Pública",
+  [ExerciseStatus.HIDDEN]: "Oculta",
+};
+
 export interface IExerciseTestCase {
   input: string;
   expectedOutput: string;

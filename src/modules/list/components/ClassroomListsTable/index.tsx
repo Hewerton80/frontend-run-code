@@ -40,7 +40,7 @@ export const ClassroomListsTable = () => {
             <DivTable.Row key={`skeleton-row-${index}-list`}>
               {getRange(0, 3).map((index) => (
                 <DivTable.Data key={`skeleton-data-${index}-list`}>
-                  <Skeleton className="h-4 max-w-[146px] w-full" />
+                  <Skeleton className="h-4 max-w-36.5 w-full" />
                 </DivTable.Data>
               ))}
             </DivTable.Row>

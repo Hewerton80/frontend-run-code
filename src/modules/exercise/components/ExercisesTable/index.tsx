@@ -7,8 +7,6 @@ import { Card } from "@/components/ui/cards/Card";
 import { ROUTES } from "@/routes/routes";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { ExerciseTableRow } from "./ExerciseTableRow";
-import { Drawer } from "@/components/ui/overlay/Drawer";
-import { useState } from "react";
 import { ExerciseForm } from "../ExerciseFormDrawer";
 
 export const ExercisesTable = () => {
@@ -35,7 +33,14 @@ export const ExercisesTable = () => {
         </div>
 
         <CustomDataTable
-          columns={["Título", "Categoria", "Dificuldade", "Autor(a)", ""]}
+          columns={[
+            "Título",
+            "Categoria",
+            "Dificuldade",
+            ...(loggedUser?.role === RoleUser.TEACHER ? ["Visibilidade"] : []),
+            "Autor(a)",
+            "",
+          ]}
           data={exerciseUuids}
           idExtractor={(uuid) => uuid}
           isLoading={isFetchingExercises}
