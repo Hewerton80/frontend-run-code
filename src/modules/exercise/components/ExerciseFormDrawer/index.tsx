@@ -109,7 +109,7 @@ const ExerciseFormDrawer = () => {
                   <p className="mb-2 text-sm">Casos de teste:</p>
 
                   <DivTable.Container
-                    className={cn(testCasesError && "border-danger")}
+                    className={cn(testCasesError && "border-destructive")}
                   >
                     <DivTable.Row header>
                       <DivTable.Data>Entradas de Teste (inputs)</DivTable.Data>
@@ -176,7 +176,7 @@ const ExerciseFormDrawer = () => {
                             {!isFirst && (
                               <Tooltip textContent="Remover caso de teste">
                                 <IconButton
-                                  variantStyle="danger"
+                                  variantStyle="destructive"
                                   icon={<BsTrash />}
                                   onClick={() => removeTestCase(index)}
                                 />

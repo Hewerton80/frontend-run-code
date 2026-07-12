@@ -15,7 +15,7 @@
 //   success: { color: "text-success" },
 //   info: { color: "text-info" },
 //   warning: { color: "text-warning" },
-//   danger: { color: "text-danger" },
+//   destructive: { color: "text-destructive" },
 // };
 
 // type VariantType = keyof typeof variants;

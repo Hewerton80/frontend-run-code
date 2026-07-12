@@ -13,15 +13,15 @@ export default function HomePage() {
   const { loggedUser } = useLoggedUser();
 
   return (
-    <div className="flex flex-col w-full">
+    <main className="flex flex-col w-full px-6 pb-6">
       <HomeHeader />
-      <div className="flex flex-col gap-4 w-full p-8">
+      <div className="flex flex-col gap-4 w-full pt-6">
         {loggedUser?.role === RoleUser.SUPER_ADMIN ? (
           <SuperAdminHome />
         ) : (
           <ClassroomsHome />
         )}
       </div>
-    </div>
+    </main>
   );
 }

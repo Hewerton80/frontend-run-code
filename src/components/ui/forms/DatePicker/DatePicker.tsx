@@ -34,7 +34,7 @@ export const DatePicker = forwardRef(
               className={twMerge(
                 "max-w-[280px] justify-start text-left font-normal",
                 !date && "text-muted-foreground",
-                error && "border-danger",
+                error && "border-destructive",
               )}
             >
               {date ? format(date, "PPP") : "Pick a date"}

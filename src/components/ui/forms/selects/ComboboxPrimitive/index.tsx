@@ -18,7 +18,7 @@ const inputClassNameBuilder = ({
     "focus-visible:ring-primary/40 ",
     isDisabled && "disabled:cursor-not-allowed disabled:opacity-50",
     isError &&
-      "border-danger/60 focus-visible:border-danger focus-visible:ring-danger/40",
+      "border-destructive/60 focus-visible:border-destructive focus-visible:ring-destructive/40",
   );
 
 interface CommonProps {

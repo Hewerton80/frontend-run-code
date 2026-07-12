@@ -9,6 +9,8 @@ export interface IClassroom {
   uuid: string;
   languages: string;
   name: string;
+  color: string;
+  emoji: string;
   description: string;
   author: IUser;
   teachers?: ITeacher[];

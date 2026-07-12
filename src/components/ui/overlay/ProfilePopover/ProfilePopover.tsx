@@ -19,19 +19,17 @@ export function ProfilePopover() {
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <div className="flex gap-2 sm:gap-3 items-center cursor-pointer max-w-[220px]">
+        <div className="flex gap-2 sm:gap-3 items-center cursor-pointer max-w-55">
           {loggedUser && (
             <>
               <Avatar
                 src={
                   loggedUser?.avatarUrl
-                    ? `/avatar/${(loggedUser?.avatarUrl).padStart(2, "0")}.jpeg`
+                    ? `/avatar/${loggedUser.avatarUrl.padStart(2, "0")}.jpeg`
                     : ""
                 }
                 bgColor={loggedUser?.avatarBgColor}
-                color={loggedUser?.avatarFontColor}
                 name={loggedUser?.name}
-                size="md"
               />
               <div className="flex flex-col">
                 <strong className="text text-sm line-clamp-1">

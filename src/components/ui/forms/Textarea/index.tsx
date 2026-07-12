@@ -3,8 +3,10 @@ import { twMerge } from "tailwind-merge";
 import { FormLabel } from "@/components/ui/forms/FormLabel";
 import { FormHelperText } from "@/components/ui/forms/FormHelperText";
 
-interface TextareaProps
-  extends Omit<ComponentPropsWithRef<"textarea">, "className"> {
+interface TextareaProps extends Omit<
+  ComponentPropsWithRef<"textarea">,
+  "className"
+> {
   formControlClassName?: string;
   textareaClassName?: string;
   label?: string;
@@ -21,7 +23,7 @@ export const Textarea = forwardRef(
       required,
       ...restProps
     }: TextareaProps,
-    ref?: any
+    ref?: any,
   ) => {
     return (
       <div className={twMerge("flex flex-col w-full", formControlClassName)}>
@@ -39,13 +41,13 @@ export const Textarea = forwardRef(
             "placeholder:text-muted-foreground outline-hidden focus-visible:ring-2",
             "focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50",
             error &&
-              "border-danger/60 focus-visible:border-danger focus-visible:ring-danger/40",
-            textareaClassName
+              "border-destructive/60 focus-visible:border-destructive focus-visible:ring-destructive/40",
+            textareaClassName,
           )}
           {...restProps}
         />
         {error && <FormHelperText>{error}</FormHelperText>}
       </div>
     );
-  }
+  },
 );

@@ -54,7 +54,7 @@ function KatexPreview({
 
   if (error) {
     return (
-      <p className="text-sm text-danger wrap-break-word">
+      <p className="text-sm text-destructive wrap-break-word">
         <span className="font-semibold">Erro: </span>
         {error}
       </p>

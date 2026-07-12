@@ -106,7 +106,7 @@ const RichText = memo(
           <div
             className={cn(
               "border w-full relative rounded-md overflow-hidden pb-3",
-              error && "border-danger",
+              error && "border-destructive",
             )}
           >
             <ToolBar editor={editor} />

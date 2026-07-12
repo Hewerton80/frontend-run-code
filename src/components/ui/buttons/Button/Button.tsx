@@ -67,12 +67,12 @@ const buttonVariants = {
       focusRing: "focus:ring-warning/40",
       activeRing: "active:ring-warning/40",
     }),
-    danger: generateButtonStyles({
-      bg: "bg-danger hover:bg-danger/90",
-      border: "border-danger",
-      text: "text-danger-foreground",
-      focusRing: "focus:ring-danger/40",
-      activeRing: "active:ring-danger/40",
+    destructive: generateButtonStyles({
+      bg: "bg-destructive hover:bg-destructive/90",
+      border: "border-destructive",
+      text: "text-destructive-foreground",
+      focusRing: "focus:ring-destructive/40",
+      activeRing: "active:ring-destructive/40",
     }),
     secondary: generateButtonStyles({
       bg: "bg-secondary hover:bg-secondary/90",

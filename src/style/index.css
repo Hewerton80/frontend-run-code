@@ -5,60 +5,107 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@layer base {
-  * {
-    border-color: var(--border);
-    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
-  }
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    /* @apply bg-background text-foreground; */
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-inter);
-    font-synthesis-weight: none;
-    text-rendering: optimizeLegibility;
-  }
+@theme inline {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1440px;
 
-  :root {
-    --background: #ffffff;
-    --foreground: #0a0a0f;
-    --card: #ffffff;
-    --card-foreground: #0a0a0f;
-    --sidebar-background: #fafafa;
-    --popover: #ffffff;
-    --popover-foreground: #0a0a0f;
-    --primary: #2b7fff;
-    --primary-foreground: #f6f8fc;
-    --secondary: #ebedf6;
-    --secondary-foreground: #191c2d;
-    --info: #2b7fff;
-    --info-foreground: #f6faff;
-    --warning: #f97316;
-    --warning-foreground: #faf7f2;
-    --success: #16a34a;
-    --success-foreground: #fff5f5;
-    --danger: #d61e1e;
-    --danger-foreground: #fee6e6;
-    --dark: #1a1a26;
-    --dark-foreground: #fafafa;
-    --muted: #ebebf5;
-    --muted-foreground: #757587;
-    --accent: #ebebf5;
-    --accent-foreground: #1a1a26;
-    --border: #d9d9e6;
-    --input: #d9d9e6;
-    --ring: #1a1a26;
-    --chart-1: #e0452b;
-    --chart-2: #1b947d;
-    --chart-3: #1a405f;
-    --chart-4: #e3a31a;
-    --chart-5: #e66b17;
-  }
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
 
-  .dark {
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-code: "Source Code Pro", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-lang-js-background: var(--lang-js-background);
+  --color-lang-js-foreground: var(--lang-js-foreground);
+  --color-lang-py-background: var(--lang-py-background);
+  --color-lang-py-foreground: var(--lang-py-foreground);
+  --color-lang-cpp-background: var(--lang-cpp-background);
+  --color-lang-cpp-foreground: var(--lang-cpp-foreground);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Dark by default — Discord-inspired */
+  --background: oklch(0.14 0.02 275);
+  --foreground: oklch(0.985 0.005 275);
+  --surface: oklch(0.18 0.02 275);
+  --surface-2: oklch(0.22 0.025 275);
+  --card: oklch(0.18 0.02 275);
+  --card-foreground: oklch(0.985 0.005 275);
+  --popover: oklch(0.18 0.02 275);
+  --popover-foreground: oklch(0.985 0.005 275);
+  --primary: oklch(0.62 0.22 275); /* blurple */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.26 0.03 275);
+  --secondary-foreground: oklch(0.985 0.005 275);
+  --muted: oklch(0.24 0.02 275);
+  --muted-foreground: oklch(0.72 0.02 275);
+  --accent: oklch(0.32 0.05 275);
+  --accent-foreground: oklch(0.985 0.005 275);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success: oklch(0.68 0.17 150);
+  --success-foreground: oklch(0.12 0.02 150);
+  --warning: oklch(0.75 0.17 55);
+  --warning-foreground: oklch(0.15 0.02 55);
+  --info: oklch(0.68 0.17 250);
+  --info-foreground: oklch(0.12 0.02 250);
+  --border: oklch(0.28 0.02 275);
+  --input: oklch(0.26 0.02 275);
+  --ring: oklch(0.62 0.22 275);
+  --chart-1: #e0452b;
+  --chart-2: #1b947d;
+  --chart-3: #1a405f;
+  --chart-4: #e3a31a;
+  --chart-5: #e66b17;
+
+  /* Language accents */
+  --lang-js-background: oklch(0.82 0.17 90);
+  --lang-js-foreground: oklch(0.12 0.02 90);
+  --lang-py-background: oklch(0.5146 0.0924 245.65);
+  --lang-py-foreground: var(--color-red-white);
+  --lang-cpp-background: oklch(0.62 0.18 260);
+  --lang-cpp-foreground: var(--color-red-white);
+}
+
+/* .dark {
     --background: #0a0a0f;
     --foreground: #fafafa;
     --card: #0a0a0f;
@@ -76,8 +123,8 @@
     --info-foreground: #f6f8fc;
     --warning: #f97316;
     --warning-foreground: #faf7f2;
-    --danger: #d61e1e;
-    --danger-foreground: #fee6e6;
+    --destructive: #d61e1e;
+    --destructive-foreground: #fee6e6;
     --dark: #fafafa;
     --dark-foreground: #1a1a26;
     --muted: #27272a;
@@ -92,65 +139,51 @@
     --chart-3: #e69533;
     --chart-4: #a33fd9;
     --chart-5: #d93377;
+  } */
+
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-inter);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: oklch(0.62 0.22 275 / 0.35);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-2);
+    border-radius: 999px;
+    border: 2px solid var(--background);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
   }
 }
-
-@theme inline {
-  --breakpoint-*: initial;
-  --breakpoint-sm: 576px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 992px;
-  --breakpoint-xl: 1200px;
-  --breakpoint-2xl: 1440px;
-
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-
-  --color-info: var(--info);
-  --color-info-foreground: var(--info-foreground);
-
-  --color-danger: var(--danger);
-  --color-danger-foreground: var(--danger-foreground);
-
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-
-  --color-dark: var(--dark);
-  --color-dark-foreground: var(--dark-foreground);
-
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-
-  --color-sidebar-background: var(--sidebar-background);
-
-  --font-inter: "Inter", sans-serif;
-  --font-code: "Source Code Pro", monospace;
-}
-
+/* 
 @layer utilities {
   @media (min-width: --theme(--breakpoint-md)) {
-    /* scrollbar-width: none; */
     ::-webkit-scrollbar {
       height: 10px;
       width: 6px;
@@ -162,4 +195,33 @@
       background: var(--color-gray-600);
     }
   }
+} */
+
+@utility bg-gradient-hero {
+  background-image: linear-gradient(
+    135deg,
+    oklch(0.55 0.22 275) 0%,
+    oklch(0.6 0.2 260) 50%,
+    oklch(0.5 0.22 280) 100%
+  );
+}
+
+@utility bg-gradient-quest {
+  background-image: linear-gradient(
+    135deg,
+    oklch(0.6 0.22 275) 0%,
+    oklch(0.55 0.22 265) 100%
+  );
+}
+
+@utility shadow-glow {
+  box-shadow: 0 10px 40px -10px oklch(0.62 0.22 275 / 0.5);
+}
+
+@utility shadow-card {
+  box-shadow: 0 4px 20px -8px oklch(0 0 0 / 0.6);
+}
+
+@utility text-balance {
+  text-wrap: balance;
 }

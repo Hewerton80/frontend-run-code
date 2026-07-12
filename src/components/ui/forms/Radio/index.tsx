@@ -39,7 +39,7 @@ const Root = forwardRef(
           className={twMerge(
             "flex flex-wrap gap-2",
             orientation === "vertical" && "flex-col",
-            error && "[&_button]:border-danger",
+            error && "[&_button]:border-destructive",
           )}
           {...restProps}
         >

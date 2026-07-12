@@ -67,7 +67,7 @@ function DataTableComponent<TItem>({
       return (
         <Table.Row>
           <Table.Data colSpan={columns.length}>
-            <Alert.Root variant="danger">
+            <Alert.Root variant="destructive">
               <Alert.Title>{errorMessage}</Alert.Title>
               <Alert.Description>
                 <div className="flex flex-col pt-2">

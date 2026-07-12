@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { LanguageNames } from "../types/languagesName";
-import { LANGUAGES_CONFIG_MAP } from "../utils/languagesConfig";
+import { LanguageNames } from "../../types/languagesName";
+import { LANGUAGES_CONFIG_MAP } from "../../utils/languagesConfig";
 
 interface LanguageOptionDisplayProps {
   languageName: LanguageNames;

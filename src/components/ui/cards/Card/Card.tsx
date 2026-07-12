@@ -6,8 +6,8 @@ export interface CardProps extends ComponentPropsWithRef<"div"> {
   asChild?: boolean;
 }
 
-export interface CardHeaderProps extends ComponentPropsWithRef<"div"> {}
-export interface CardActionsProps extends ComponentPropsWithRef<"div"> {}
+export type CardHeaderProps = ComponentPropsWithRef<"div">;
+export type CardActionsProps = ComponentPropsWithRef<"div">;
 export interface CardBodyProps extends ComponentPropsWithRef<"div"> {
   asChild?: boolean;
 }
@@ -23,18 +23,18 @@ export const Root = forwardRef(
       <Comp
         ref={ref}
         className={twMerge(
-          "flex flex-col w-full rounded-lg overflow-hidden",
+          "flex flex-col w-full rounded-2xl overflow-hidden",
           "bg-card text-card-foreground",
           "border",
           "shadow-md md:shadow-xl",
-          className
+          className,
         )}
         {...restProps}
       >
         {children}
       </Comp>
     );
-  }
+  },
 );
 
 const Header = forwardRef(
@@ -43,15 +43,15 @@ const Header = forwardRef(
       <div
         ref={ref}
         className={twMerge(
-          "flex items-center justify-between px-4 sm:px-[1.875rem] pt-5 sm:pt-6",
-          className
+          "flex items-center justify-between px-5 sm:px-[1.875rem] pt-5 sm:pt-6",
+          className,
         )}
         {...restProps}
       >
         {children}
       </div>
     );
-  }
+  },
 );
 
 const Actions = forwardRef(
@@ -65,7 +65,7 @@ const Actions = forwardRef(
         {children}
       </div>
     );
-  }
+  },
 );
 
 export const Title = forwardRef(
@@ -81,7 +81,7 @@ export const Title = forwardRef(
         <h4 className="text-base sm:text-xl font-medium">{children}</h4>
       </Comp>
     );
-  }
+  },
 );
 
 const Body = forwardRef(
@@ -91,36 +91,36 @@ const Body = forwardRef(
     return (
       <Comp
         ref={ref}
-        className={twMerge("flex flex-col p-4 sm:p-[1.875rem]", className)}
+        className={twMerge("flex flex-col p-5 sm:p-[1.875rem]", className)}
         {...rest}
       >
         {children}
       </Comp>
     );
-  }
+  },
 );
 
 const Footer = forwardRef(
   (
     { children, className, orientation = "start", ...rest }: CardFooterProps,
-    ref?: any
+    ref?: any,
   ) => {
     return (
       <div
         ref={ref}
         className={twMerge(
-          "flex items-center mt-auto px-4 sm:px-[1.875rem] pb-5",
+          "flex items-center mt-auto px-5 sm:px-[1.875rem] pb-5",
           orientation === "start" && "justify-start",
           orientation === "center" && "justify-center",
           orientation === "end" && "justify-end",
-          className
+          className,
         )}
         {...rest}
       >
         {children}
       </div>
     );
-  }
+  },
 );
 const Card = { Root, Header, Title, Actions, Body, Footer };
 

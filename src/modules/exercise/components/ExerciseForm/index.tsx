@@ -150,7 +150,7 @@ export const ExerciseForm = () => {
             <p className="mb-2 text-sm">Casos de teste:</p>
 
             <DivTable.Container
-              className={twMerge(testCasesError && "border-danger")}
+              className={twMerge(testCasesError && "border-destructive")}
             >
               <DivTable.Row header>
                 <DivTable.Data>Entradas de Teste (inputs)</DivTable.Data>
@@ -218,7 +218,7 @@ export const ExerciseForm = () => {
                       {!isFirst && (
                         <Tooltip textContent="Remover caso de teste">
                           <IconButton
-                            variantStyle="danger"
+                            variantStyle="destructive"
                             icon={<BsTrash />}
                             onClick={() => removeTestCase(index)}
                           />

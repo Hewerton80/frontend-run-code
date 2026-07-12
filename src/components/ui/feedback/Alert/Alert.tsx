@@ -26,9 +26,9 @@ const alertVariants = {
     icon: <LuTriangleAlert className="stroke-warning-foreground" />,
     className: "bg-warning text-warning-foreground",
   },
-  danger: {
-    icon: <LuBan className="stroke-danger-foreground" />,
-    className: "bg-danger text-danger-foreground",
+  destructive: {
+    icon: <LuBan className="stroke-destructive-foreground" />,
+    className: "bg-destructive text-destructive-foreground",
   },
 };
 

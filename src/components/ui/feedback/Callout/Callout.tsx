@@ -26,8 +26,8 @@ export const alertVariants = {
     root: "bg-info",
     icon: <IoIosInformationCircleOutline />,
   },
-  danger: {
-    root: "bg-danger",
+  destructive: {
+    root: "bg-destructive",
     icon: <MdOutlineDangerous />,
   },
   warning: {
@@ -54,7 +54,7 @@ export function Callout({
         "flex items-center px-6 py-4 w-full border-1 rounded-[0.625rem]",
         "text-sm sm:text-base text-white gap-4",
         alertVariants[variant].root,
-        className
+        className,
       )}
       {...rest}
     >

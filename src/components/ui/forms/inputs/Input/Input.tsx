@@ -88,7 +88,7 @@ export const Input = forwardRef(
             "placeholder:text-muted-foreground outline-hidden focus-visible:ring-2",
             "focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50",
             error &&
-              "border-danger/60 focus-visible:border-danger focus-visible:ring-danger/40",
+              "border-destructive/60 focus-visible:border-destructive focus-visible:ring-destructive/40",
             leftIcon && "pl-8",
             rightIcon && "pr-8",
             inputClassName,

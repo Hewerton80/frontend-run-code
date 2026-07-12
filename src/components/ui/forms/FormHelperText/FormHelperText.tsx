@@ -10,7 +10,7 @@ export function FormHelperText({
 }: FormHelperTextProps) {
   return (
     <span
-      className={twMerge("text-danger text-xs font-bold mt-1", className)}
+      className={twMerge("text-destructive text-xs font-bold mt-1", className)}
       {...restProps}
     >
       {children}

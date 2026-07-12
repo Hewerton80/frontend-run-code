@@ -16,7 +16,7 @@ import {
 const toastVariants: Record<ToastArgs["type"], string> = {
   success: cn("bg-success text-success-foreground", "[&_.progress]:bg-white"),
   error: cn(
-    "border-danger bg-danger text-danger-foreground",
+    "border-destructive bg-destructive text-destructive-foreground",
     "[&_.progress]:bg-white",
   ),
   warning: cn("bg-warning text-warning-foreground", "[&_.progress]:bg-white"),

@@ -1,6 +1,6 @@
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
 import { IUser } from "../../userTypets";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/utils/cn";
 
 interface IGroupedUserInfoProps {
   user: IUser;
@@ -9,17 +9,16 @@ interface IGroupedUserInfoProps {
 
 export const GroupedUserInfo = ({ user, className }: IGroupedUserInfoProps) => {
   return (
-    <div className={twMerge("flex items-center gap-2 text-sm", className)}>
+    <div className={cn("flex items-center gap-2 text-sm", className)}>
       <Avatar
         src={
           user?.avatarUrl
-            ? `/avatar/${(user?.avatarUrl).padStart(2, "0")}.jpeg`
+            ? `/avatar/${user.avatarUrl.padStart(2, "0")}.jpeg`
             : undefined
         }
         bgColor={user?.avatarBgColor}
-        color={user?.avatarFontColor}
         name={user?.name}
-        size="sm"
+        size={32}
       />
       <div className="grid flex-1 text-left text-sm leading-tight">
         <span className="line-clamp-1 font-medium">
