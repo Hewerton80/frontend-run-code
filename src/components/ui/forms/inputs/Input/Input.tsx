@@ -49,7 +49,7 @@ export const Input = forwardRef(
           <Slot
             role={onClickLeftIcon ? "button" : undefined}
             onClick={onClickLeftIcon}
-            className="absolute left-2 top-10 size-4 text-muted-foreground"
+            className="absolute left-4 top-11.5 -translate-y-1/2 size-4 text-muted-foreground"
           >
             {leftIcon}
           </Slot>
@@ -59,7 +59,7 @@ export const Input = forwardRef(
             role={onClickRightIcon ? "button" : undefined}
             onClick={onClickRightIcon}
             className={twMerge(
-              "absolute right-2 top-10 size-4 text-muted-foreground",
+              "absolute right-4 top-11.5 -translate-y-1/2 size-4 text-muted-foreground",
               onClickRightIcon && "cursor-pointer",
             )}
           >
@@ -83,12 +83,17 @@ export const Input = forwardRef(
           ref={ref}
           required={required}
           className={twMerge(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-            "file:border-0 file:bg-transparent file:text-sm file:font-medium ease-linear duration-200",
-            "placeholder:text-muted-foreground outline-hidden focus-visible:ring-2",
-            "focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50",
+            // "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
+            // "file:border-0 file:bg-transparent file:text-sm file:font-medium ease-linear duration-200",
+            // "placeholder:text-muted-foreground outline-hidden focus-visible:ring-2",
+            // "focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-50",
+            "w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm",
+            "text-foreground placeholder:text-muted-foreground/70 outline-none transition",
+            "focus:border-primary focus:ring-2 focus:ring-primary/40",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             error &&
               "border-destructive/60 focus-visible:border-destructive focus-visible:ring-destructive/40",
+
             leftIcon && "pl-8",
             rightIcon && "pr-8",
             inputClassName,

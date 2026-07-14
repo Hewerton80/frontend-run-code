@@ -1,14 +1,11 @@
 import { Ref, forwardRef, useState } from "react";
-// import { EyeCloseIcon } from "@/components/icons/EyeCloseIcon";
-// import { EyeOpenIcon } from "@/components/icons/EyeOpenIcon";
 import { Input, InputProps } from "../Input";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Eye, EyeOff } from "lucide-react";
 
-interface PasswordInputProps
-  extends Omit<
-    InputProps,
-    "type" | "rightIcon" | "leftItcon" | "onClickRightIcon" | "onClickLeftIcon"
-  > {}
+type PasswordInputProps = Omit<
+  InputProps,
+  "type" | "rightIcon" | "leftItcon" | "onClickRightIcon" | "onClickLeftIcon"
+>;
 
 export const PasswordInput = forwardRef(
   (props: PasswordInputProps, ref?: Ref<HTMLInputElement>) => {
@@ -18,12 +15,12 @@ export const PasswordInput = forwardRef(
       <Input
         ref={ref}
         type={showPassword ? "text" : "password"}
-        rightIcon={showPassword ? <FaEye /> : <FaEyeSlash />}
+        rightIcon={showPassword ? <Eye /> : <EyeOff />}
         onClickRightIcon={() =>
           setShowPassword((currentState) => !currentState)
         }
         {...props}
       />
     );
-  }
+  },
 );

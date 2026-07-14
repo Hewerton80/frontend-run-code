@@ -12,10 +12,11 @@ const inputClassNameBuilder = ({
   isError?: boolean;
 }) =>
   cn(
-    "inline-flex items-center h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-    "file:border-0 file:bg-transparent file:text-sm file:font-medium ease-linear duration-200",
-    "placeholder:text-muted-foreground outline-hidden focus-visible:ring-2",
-    "focus-visible:ring-primary/40 ",
+    "inline-flex items-center",
+    "w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm",
+    "text-foreground placeholder:text-muted-foreground/70 outline-none transition",
+    "focus:border-primary focus:ring-2 focus:ring-primary/40",
+    "disabled:cursor-not-allowed disabled:opacity-50",
     isDisabled && "disabled:cursor-not-allowed disabled:opacity-50",
     isError &&
       "border-destructive/60 focus-visible:border-destructive focus-visible:ring-destructive/40",

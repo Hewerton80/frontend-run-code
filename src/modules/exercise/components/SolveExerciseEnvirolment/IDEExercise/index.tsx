@@ -31,22 +31,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     changeSourceCode,
   } = useIDEExercise(exercise);
 
-  // const showFeedbackDots = useMemo(() => {
-  //   if (isSubmitting) return true;
-  //   const submissionsStatus = exerciseSubmissionStatus?.get(exercise?.uuid!);
-  //   console.log("submissionsStatus", submissionsStatus);
-  //   if (!submissionsStatus) return false;
-  //   if (
-  //     [SubmissionStatus.PENDING, SubmissionStatus.RUNNING].includes(
-  //       submissionsStatus?.status,
-  //     )
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // }, [isSubmitting, exerciseSubmissionStatus, exercise?.uuid]);
-
-  // const responseRows
+  // TODO adicionar salvar rascunho
 
   const testCasesResults = useMemo(
     () => submissionsResult?.testCasesResults,

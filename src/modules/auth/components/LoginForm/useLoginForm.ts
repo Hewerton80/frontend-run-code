@@ -13,7 +13,7 @@ export const useLoginForm = () => {
     loginFormSetError,
     loginFormRegister,
   } = useLoginFormSchema();
-
+  console.log("Erros", loginFormState.errors);
   const navigate = useNavigate();
   const [storedAccessToken, setAccessToken] = useSessionStorage("access_token");
   const { isLogging, login } = useLogin();
@@ -26,6 +26,7 @@ export const useLoginForm = () => {
 
   const handleLogin = useCallback(
     (loginCredentials: LoginCredentials) => {
+      console.log("handleLogin", loginCredentials);
       const onSuccess = ({ accessToken }: LoginResponse) => {
         setAccessToken(accessToken);
       };

@@ -38,7 +38,7 @@ const ClassroomFormDrawer = () => {
       <Drawer.Content>
         <Drawer.Header>
           <Drawer.Title>
-            🏫 {isEditClassroom ? "Editar" : "Criar"} turma
+            ✨ {isEditClassroom ? "Editar" : "Criar"} turma
           </Drawer.Title>
         </Drawer.Header>
 
@@ -69,7 +69,7 @@ const ClassroomFormDrawer = () => {
                   {...registerClassroomForm("name")}
                   id={registerClassroomForm("name").name}
                   label="Nome"
-                  placeholder="EX: Turma de lógica 2025.2"
+                  placeholder="EX: Turma de algoritmos 2026.2"
                   required
                   error={classroomFormState.errors.name?.message}
                   disabled={!canEditClassroom}
@@ -90,6 +90,7 @@ const ClassroomFormDrawer = () => {
                       label="Linguagens"
                       placeholder="Selecione as linguagens"
                       items={LIST_OF_LANGUAGES}
+                      required
                       displayItem={(item) => (
                         <LanguageOptionDisplay languageName={item.value} />
                       )}
@@ -116,6 +117,7 @@ const ClassroomFormDrawer = () => {
                       checked={value}
                       onCheckedChange={onChange}
                       label="Visível para os alunos"
+                      subTitle="Alunos verão a turma na tela inicial quando ativado."
                       disabled={!canEditClassroom}
                     />
                   )}

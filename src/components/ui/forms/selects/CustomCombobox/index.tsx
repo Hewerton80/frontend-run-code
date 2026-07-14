@@ -108,9 +108,10 @@ function CustomComboboxComponent<TItem>({
         <Combobox.InputGroup
           className={cn(
             "group relative flex flex-wrap items-center gap-1",
-            "min-h-9 h-auto pl-2.5 pr-8 py-1 duration-200",
-            "border border-input rounded-lg bg-transparent",
-            "focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary",
+            "w-full rounded-xl border border-border bg-surface/60 px-4 py-2 text-sm",
+            "text-foreground placeholder:text-muted-foreground/70 outline-none transition",
+            "focus:border-primary focus:ring-2 focus:ring-primary/40",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             disabled && "border-foreground-subtle opacity-80",
             !!error &&
               "border-destructive focus-within:ring-destructive/30 focus-within:border-destructive",

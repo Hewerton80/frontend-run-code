@@ -14,7 +14,7 @@ import { Spinner } from "@/components/ui/feedback/Spinner";
 
 // ── Auth ──────────────────────────────────────────────────────────────────
 const AuthLoginPage = lazy(() => import("@/pages/AuthLoginPage"));
-const BgTestPage = lazy(() => import("@/pages/BgTestPage"));
+const AuthLayout = lazy(() => import("@/pages/AuthLayout"));
 
 // ── Geral ─────────────────────────────────────────────────────────────────
 const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -60,7 +60,7 @@ function SuspenseWrapper({ element }: { element: React.ReactNode }) {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center m-auto">
+        <div className="h-screen w-full flex items-center justify-center">
           <Spinner size={64} />
         </div>
       }
@@ -79,13 +79,15 @@ const router = createBrowserRouter([
         index: true,
         element: <Navigate to={ROUTE_PATTERNS.LOGIN} replace />,
       },
+
       {
-        path: ROUTE_PATTERNS.BG_TESTE,
-        element: <SuspenseWrapper element={<BgTestPage />} />,
-      },
-      {
-        path: ROUTE_PATTERNS.LOGIN,
-        element: <SuspenseWrapper element={<AuthLoginPage />} />,
+        element: <SuspenseWrapper element={<AuthLayout />} />,
+        children: [
+          {
+            path: ROUTE_PATTERNS.LOGIN,
+            element: <SuspenseWrapper element={<AuthLoginPage />} />,
+          },
+        ],
       },
       {
         element: <InLayoutPage />,

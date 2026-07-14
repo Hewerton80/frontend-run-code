@@ -12,12 +12,14 @@ export const classroomFormSchema = z.object({
   name: z.string().min(1, REQUIRED_FIELD),
   isVisible: z.boolean(),
   isAddTeachers: z.boolean(),
-  languages: z.array(
-    z.object({
-      label: z.string().min(1, REQUIRED_FIELD),
-      value: z.string().min(1, REQUIRED_FIELD),
-    })
-  ),
+  languages: z
+    .array(
+      z.object({
+        label: z.string().min(1, REQUIRED_FIELD),
+        value: z.string().min(1, REQUIRED_FIELD),
+      }),
+    )
+    .min(1, REQUIRED_FIELD),
 });
 
 export type ClassroomFormSchema = z.infer<typeof classroomFormSchema>;
@@ -31,7 +33,7 @@ export const useClassroomFormSchema = () => {
       isAddTeachers: false,
       teachers: [],
     }),
-    []
+    [],
   );
 
   const {

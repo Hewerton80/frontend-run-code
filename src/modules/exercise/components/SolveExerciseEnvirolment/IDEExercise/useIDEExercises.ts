@@ -30,6 +30,7 @@ export const useIDEExercise = (exercise: IExercise) => {
 
   const { cachedSubmissionJobs, addCachedSubmissionJob } =
     useCachedSubmissionJobs();
+  console.log("cachedSubmissionJobs", cachedSubmissionJobs);
 
   // const sourceCodeRef = useRef(sourceCode);
 

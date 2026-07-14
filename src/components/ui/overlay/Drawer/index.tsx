@@ -55,16 +55,17 @@ const DrawerContent = (
       }}
       ref={ref}
       className={cn(
-        "group/drawer-content fixed z-50 flex h-auto flex-col bg-background",
+        "group/drawer-content fixed z-50 flex h-auto flex-col ",
         "inset-y-0 right-0 w-full max-w-full sm:max-w-2xl border-l",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
         className,
       )}
+      style={{
+        background: `linear-gradient(180deg, color-mix(in oklab, var(--card) 96%, var(--primary) 4%) 0%, var(--card) 40%, var(--background) 100%)`,
+      }}
       {...props}
     >
-      {/* <div className="mx-auto mt-4 hidden h-1 w-25 shrink-0 rounded-full bg-muted group-data-[vaul-drawer-direction=bottom]/drawer-content:block" /> */}
-
       {children}
       <DrawerPrimitive.Close
         className={cn(
@@ -89,8 +90,8 @@ const DrawerHeader = ({
   <div
     data-slot="drawer-header"
     className={cn(
-      "flex items-center gap-0.5 p-4 md:gap-0.5 md:text-left border-b bg-background",
-
+      "flex items-center gap-0.5 py-4 px-6 md:gap-0.5 md:text-left border-b border-border/60",
+      "shrink-0",
       className,
     )}
     style={{ height: HEADER_HEIGHT }}
@@ -110,7 +111,7 @@ const DrawerTitle = (
   <DrawerPrimitive.Title
     ref={ref}
     data-slot="drawer-title"
-    className={cn("text-base font-medium text-foreground", className)}
+    className={cn("text-lg font-extrabold tracking-tight", className)}
     {...props}
   >
     {children}
@@ -125,7 +126,7 @@ const DrawerFooter = ({
   <div
     data-slot="drawer-footer"
     className={cn(
-      "mt-auto flex gap-2 p-4 border-t bg-background z-40 justify-end",
+      "mt-auto flex gap-2 p-4 border-t z-40 justify-end",
       className,
     )}
     style={{ height: FOOTER_HEIGHT }}

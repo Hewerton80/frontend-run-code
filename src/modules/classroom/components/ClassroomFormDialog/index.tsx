@@ -94,6 +94,7 @@ export const ClassroomFormDialog = ({
                         {...restField}
                         name={restField.name}
                         label="Linguagens"
+                        required
                         placeholder="Selecione as linguagens"
                         items={LIST_OF_LANGUAGES}
                         displayItem={(item) => (
