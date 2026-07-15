@@ -17,6 +17,16 @@ import { Card } from "@/components/ui/cards/Card";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
+import { Avatar } from "@/components/ui/dataDisplay/Avatar";
+import { emojis } from "@/utils/emojis";
+import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
+import { ClassroomHeader } from "@/modules/classroom/components/ClassroomHeader";
+import {
+  EmptyPrimaryButton,
+  EmptyState,
+  ScrollIllustration,
+} from "@/components/ui/feedback/EmptyState";
+import { Plus } from "lucide-react";
 
 export const ClassroomListsTable = () => {
   const {
@@ -29,92 +39,78 @@ export const ClassroomListsTable = () => {
     refetchListsOfClassroom,
   } = useClassroomListsTable();
 
-  const handledDataTable = useMemo(() => {
-    if (listsOfClassroomError) {
-      return <FeedBackError onTryAgain={refetchListsOfClassroom} />;
-    }
-    if (isFetchingListsOfClassroom) {
-      return (
-        <>
-          {getRange(0, 8).map((index) => (
-            <DivTable.Row key={`skeleton-row-${index}-list`}>
-              {getRange(0, 3).map((index) => (
-                <DivTable.Data key={`skeleton-data-${index}-list`}>
-                  <Skeleton className="h-4 max-w-36.5 w-full" />
-                </DivTable.Data>
-              ))}
-            </DivTable.Row>
-          ))}
-        </>
-      );
-    }
-    return listIdsOfClassroom?.map((id) => (
-      <ClassroomListsTableRow key={`${id}-list-exercise`} listId={id} />
-    ));
-  }, [
-    listIdsOfClassroom,
-    isFetchingListsOfClassroom,
-    listsOfClassroomError,
-    refetchListsOfClassroom,
-  ]);
-
   return (
     <>
       <BackLink to={ROUTES.HOME}>Voltar para Home</BackLink>
-      <div className="flex justify-between items-end gap-4">
-        <Card.Title>🏫 {classroom?.name}</Card.Title>
-        <div className="flex justify-end gap-2">
-          {loggedUser?.role === RoleUser.TEACHER && (
-            <>
-              <Tooltip
-                align="start"
-                textContent="Você não tem permissão para criar listas nessa turma"
-                disableHoverableContent={canCreateList}
+      <div className="flex flex-col gap-4">
+        <ClassroomHeader classroomUuid={classroom?.uuid} />
+
+        {loggedUser?.role === RoleUser.TEACHER && (
+          <div className="flex justify-end gap-2">
+            <Tooltip
+              align="start"
+              textContent="Você não tem permissão para criar listas nessa turma"
+              disableHoverableContent={canCreateList}
+            >
+              <span
+                className={!canCreateList ? "cursor-not-allowed" : undefined}
               >
-                <span
-                  className={!canCreateList ? "cursor-not-allowed" : undefined}
+                <Highlight
+                  active={listIdsOfClassroom?.length === 0 && canCreateList}
                 >
-                  <Highlight
-                    active={listIdsOfClassroom?.length === 0 && canCreateList}
-                  >
-                    <ClassroomListForm.TriggerButton>
-                      <Button disabled={!canCreateList}>Criar Lista</Button>
-                    </ClassroomListForm.TriggerButton>
-                  </Highlight>
-                </span>
-              </Tooltip>
-              <ClasrromActionsTriggerButton
-                variantStyle="info"
-                classroomId={classroom?.uuid}
-              />
-            </>
-          )}
-        </div>
+                  <ClassroomListForm.TriggerButton>
+                    <Button disabled={!canCreateList}>Criar Lista</Button>
+                  </ClassroomListForm.TriggerButton>
+                </Highlight>
+              </span>
+            </Tooltip>
+            <ClasrromActionsTriggerButton
+              variantStyle="info"
+              classroomId={classroom?.uuid}
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex overflow-auto">
-        {listIdsOfClassroom?.length === 0 ? (
-          <Alert.Root variant="info">
-            <Alert.Title>Ainda não há listas</Alert.Title>
-            <Alert.Description>
-              Crie uma lista para começar a adicionar exercícios.
-            </Alert.Description>
-          </Alert.Root>
-        ) : (
-          <DivTable.Container>
-            <DivTable.Row header>
-              <DivTable.Data>Nome</DivTable.Data>
-              {loggedUser?.role === RoleUser.STUDENT && (
-                <DivTable.Data>Progresso</DivTable.Data>
-              )}
-              {loggedUser?.role === RoleUser.TEACHER && (
-                <DivTable.Data>N° de exercícios</DivTable.Data>
-              )}
-              <DivTable.Data></DivTable.Data>
-            </DivTable.Row>
-            {handledDataTable}
-          </DivTable.Container>
-        )}
+        <CustomDataTable
+          columns={[
+            "Nome",
+            ...(loggedUser?.role === RoleUser.STUDENT ? ["Progresso"] : []),
+            ...(loggedUser?.role === RoleUser.TEACHER
+              ? ["N° de exercícios"]
+              : []),
+            "",
+          ]}
+          errorMessage={
+            listsOfClassroomError?.message
+              ? listsOfClassroomError?.message ||
+                "Ocorreu um erro ao buscar as listas da turma"
+              : undefined
+          }
+          onRetry={refetchListsOfClassroom}
+          isLoading={isFetchingListsOfClassroom}
+          data={listIdsOfClassroom}
+          idExtractor={(listId) => listId.toString()}
+          renderEmptyState={() => (
+            <EmptyState
+              size="sm"
+              illustration={<ScrollIllustration size={200} />}
+              title="Nenhuma lista criada"
+              message={
+                RoleUser.TEACHER
+                  ? "Crie uma lista para começar a adicionar exercícios."
+                  : "Quando o professor publicar uma lista, ela aparecerá aqui."
+              }
+            />
+          )}
+          renderItem={({ item }) => (
+            <ClassroomListsTableRow
+              key={`${item}-list-exercise`}
+              listId={item}
+            />
+          )}
+        />
       </div>
       <ClassroomListForm.Drawer />
       <EditExercisesOfList.Drawer />

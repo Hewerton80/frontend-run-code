@@ -41,10 +41,14 @@ export const ExerciseCard = memo(
       <Card.Root
         asChild
         className={twMerge(
-          "p-4 shadow-md border-none group",
-          "bg-linear-to-r from-blue-500 to-blue-700",
-          "hover:from-blue-500/80 hover:to-blue-700/80",
-          "duration-300 ease-in-out transition",
+          // "p-4 shadow-md border-none group",
+          // "bg-linear-to-r from-blue-500 to-blue-700",
+          // "hover:from-blue-500/80 hover:to-blue-700/80",
+          // "duration-300 ease-in-out transition",
+          "group relative flex flex-col justify-between overflow-hidden rounded-2xl",
+          "bg-gradient-quest p-4 text-white shadow-card transition",
+          "hover:-translate-y-0.5 hover:shadow-glow",
+          "ease-in-out transition",
         )}
       >
         <Link

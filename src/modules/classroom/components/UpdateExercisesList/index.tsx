@@ -126,7 +126,6 @@ export const UpdateExercisesList = () => {
                     "Erro ao carregar exercícios da lista"
                   : undefined
               }
-              emptyMessage="Nenhum exercício adicionado"
               onRetry={refetchCurrentExercises}
               renderItem={({ item }) => (
                 <UpdateExercisesListSelectedRow

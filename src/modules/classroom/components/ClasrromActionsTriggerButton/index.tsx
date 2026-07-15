@@ -14,7 +14,6 @@ interface ClassroomActionTriggerButtonProps {
 
 export const ClasrromActionsTriggerButton = ({
   classroomId,
-  variantStyle = "dark-ghost",
 }: ClassroomActionTriggerButtonProps) => {
   const { loggedUser } = useLoggedUser();
 
@@ -26,7 +25,7 @@ export const ClasrromActionsTriggerButton = ({
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
         <IconButton
-          variantStyle={variantStyle}
+          variantStyle="dark-ghost"
           icon={<BsThreeDots className="text-muted-foreground" />}
         />
       </Dropdown.Trigger>

@@ -1,6 +1,6 @@
-import { twMerge } from "tailwind-merge";
 import { ComponentPropsWithRef, forwardRef } from "react";
 import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@/utils/cn";
 
 export interface CardProps extends ComponentPropsWithRef<"div"> {
   asChild?: boolean;
@@ -22,8 +22,8 @@ export const Root = forwardRef(
     return (
       <Comp
         ref={ref}
-        className={twMerge(
-          "flex flex-col w-full rounded-2xl overflow-hidden",
+        className={cn(
+          "flex flex-col w-full rounded-3xl overflow-hidden",
           "bg-card text-card-foreground",
           "border",
           "shadow-md md:shadow-xl",
@@ -42,7 +42,7 @@ const Header = forwardRef(
     return (
       <div
         ref={ref}
-        className={twMerge(
+        className={cn(
           "flex items-center justify-between px-5 sm:px-[1.875rem] pt-5 sm:pt-6",
           className,
         )}
@@ -59,7 +59,7 @@ const Actions = forwardRef(
     return (
       <div
         ref={ref}
-        className={twMerge("flex items-center", className)}
+        className={cn("flex items-center", className)}
         {...restProps}
       >
         {children}
@@ -73,11 +73,7 @@ export const Title = forwardRef(
     const Comp = asChild ? Slot : "div";
 
     return (
-      <Comp
-        ref={ref}
-        className={twMerge("flex items-center", className)}
-        {...rest}
-      >
+      <Comp ref={ref} className={cn("flex items-center", className)} {...rest}>
         <h4 className="text-base sm:text-xl font-medium">{children}</h4>
       </Comp>
     );
@@ -91,7 +87,7 @@ const Body = forwardRef(
     return (
       <Comp
         ref={ref}
-        className={twMerge("flex flex-col p-5 sm:p-[1.875rem]", className)}
+        className={cn("flex flex-col p-5 sm:p-7.5", className)}
         {...rest}
       >
         {children}
@@ -108,7 +104,7 @@ const Footer = forwardRef(
     return (
       <div
         ref={ref}
-        className={twMerge(
+        className={cn(
           "flex items-center mt-auto px-5 sm:px-[1.875rem] pb-5",
           orientation === "start" && "justify-start",
           orientation === "center" && "justify-center",

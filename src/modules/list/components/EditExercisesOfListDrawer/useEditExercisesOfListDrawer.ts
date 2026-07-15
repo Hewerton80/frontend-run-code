@@ -142,6 +142,8 @@ export const useEditExercisesOfListDrawer = () => {
 
     const onSuccess = () => {
       toast.success("Exercícios atualizados com sucesso!");
+      // TODO seja o proefessor e ele marque que nao é visivel para os alunos, deve se manter visivel para ele
+
       updateCachedListOfClassroom(listId!, (prevData) => {
         if (!prevData) return prevData;
         return { ...prevData, totalExercises: handledData.length };

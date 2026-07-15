@@ -8,6 +8,7 @@ import {
 import { Slot } from "@radix-ui/react-slot";
 import { Button } from "../../buttons/Button";
 import { Alert } from "../../feedback/Alert";
+import { cn } from "@/utils/cn";
 
 export interface IRenderItemInfo<TItem> {
   item: TItem;
@@ -22,6 +23,7 @@ export interface IDataTableProps<TItem> {
   numberOfSkeletonRows?: number;
   emptyMessage?: string;
   errorMessage?: string;
+  renderEmptyState?: () => ReactNode;
   onRetry?: () => void;
   renderItem: (info: IRenderItemInfo<TItem>) => ReactNode;
   idExtractor: (item: TItem) => string;
@@ -37,6 +39,8 @@ function DataTableComponent<TItem>({
   errorMessage,
   onRetry,
   renderItem,
+  idExtractor,
+  renderEmptyState,
 }: IDataTableProps<TItem>) {
   const reactId = useId();
 
@@ -85,19 +89,26 @@ function DataTableComponent<TItem>({
       return (
         <Table.Row>
           <Table.Data colSpan={columns.length}>
-            <div className="flex justify-center items-center p-8">
-              <h5 className="text-2xl text-foreground-subtle">
-                {emptyMessage}
-              </h5>
-            </div>
+            {renderEmptyState ? (
+              renderEmptyState()
+            ) : (
+              <div className="flex justify-center items-center p-8">
+                <h5 className="text-2xl text-foreground-subtle">
+                  {emptyMessage}
+                </h5>
+              </div>
+            )}
           </Table.Data>
         </Table.Row>
       );
     }
     return data?.map((item, index) => (
       <Slot
-        key={`row-${reactId}-${index}`}
-        className={isLoading ? "hidden" : undefined}
+        key={`row-${reactId}-${idExtractor?.(item) || index}`}
+        className={cn(
+          isLoading ? "hidden" : undefined,
+          `row-${reactId}-${idExtractor?.(item) || index}`,
+        )}
       >
         {renderItem({ item, index })}
       </Slot>
@@ -108,14 +119,16 @@ function DataTableComponent<TItem>({
     isLoading,
     errorMessage,
     numberOfSkeletonRows,
+    idExtractor,
     onRetry,
     isEmpty,
+    emptyMessage,
     renderItem,
     reactId,
   ]);
 
   return (
-    <div>
+    <div className="flex flex-col w-full">
       <Table.Container>
         <Table>
           <Table.Head>
