@@ -18,7 +18,7 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
       ref={ref}
       className={twMerge(
         "flex flex-col w-full space-y-1 p-2",
-        showOnlyIcons && "items-center"
+        showOnlyIcons && "items-center",
       )}
     >
       {sidebarMenuItems.map(({ title, icon, link, isActive }, i) => (
@@ -42,9 +42,9 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
                 isActive &&
                   twMerge(
                     "text-dark-foreground hover:text-dark-foreground bg-dark hover:bg-dark/90",
-                    "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+                    "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white",
                   ),
-                showOnlyIcons && "max-w-fit"
+                showOnlyIcons && "max-w-fit",
               )}
             >
               <span className={twMerge(showOnlyIcons ? "text-xl" : "text-lg")}>
@@ -74,8 +74,8 @@ export function Sidebar() {
     return (
       <aside
         className={twMerge(
-          "flex flex-col bg-sidebar-background shadow-xs py-2",
-          "duration-100 ease-linear overflow-hidden"
+          "flex flex-col bg-sidebar-background shadow-xs py-2 border-r",
+          "duration-100 ease-linear overflow-hidden",
           // "border-r dark:border-muted"
         )}
         style={{ width: sideBarWidth }}
@@ -126,7 +126,9 @@ export function Sidebar() {
         <div
           className={twMerge(
             "flex px-2",
-            showOnlyIcons ? "justify-center rotate-180" : "justify-end rotate-0"
+            showOnlyIcons
+              ? "justify-center rotate-180"
+              : "justify-end rotate-0",
           )}
         >
           <Tooltip

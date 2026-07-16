@@ -134,6 +134,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
                                   label: "Entrada (input):",
                                   content: testCaseResult?.input || "",
                                 },
+                                //  TODO dependendo do status, nao exibor a resposta de erro
                                 {
                                   label: "Saída do seu código:",
                                   content: testCaseResult?.output || "",

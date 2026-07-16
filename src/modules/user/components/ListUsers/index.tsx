@@ -15,7 +15,7 @@ export const ListUsers = () => {
     useFetchUsers(usersParams);
 
   return (
-    <div className="flex flex-col w-full gap-4 p-8">
+    <div className="flex flex-col w-full gap-4">
       <Breadcrumbs items={[{ label: "Usuários", href: "/users" }]} />
       <CustomDataTable
         columns={["Nome", "Função", "Criado em"]}

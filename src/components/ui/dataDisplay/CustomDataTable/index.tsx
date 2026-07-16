@@ -9,6 +9,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { Button } from "../../buttons/Button";
 import { Alert } from "../../feedback/Alert";
 import { cn } from "@/utils/cn";
+import { ApiErrorState } from "../../feedback/EmptyState";
 
 export interface IRenderItemInfo<TItem> {
   item: TItem;
@@ -71,16 +72,7 @@ function DataTableComponent<TItem>({
       return (
         <Table.Row>
           <Table.Data colSpan={columns.length}>
-            <Alert.Root variant="destructive">
-              <Alert.Title>{errorMessage}</Alert.Title>
-              <Alert.Description>
-                <div className="flex flex-col pt-2">
-                  <Button variantStyle="outline" onClick={onRetry}>
-                    Tentar novamente
-                  </Button>
-                </div>
-              </Alert.Description>
-            </Alert.Root>
+            <ApiErrorState size="sm" message={errorMessage} onRetry={onRetry} />
           </Table.Data>
         </Table.Row>
       );

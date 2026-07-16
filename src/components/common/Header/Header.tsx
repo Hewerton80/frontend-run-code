@@ -5,12 +5,18 @@ import { ProfilePopover } from "@/components/ui/overlay/ProfilePopover";
 import { useGetHeaderMenuItems } from "@/modules/auth/hooks/useGetHeaderMenuItems";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
+import { cn } from "@/utils/cn";
 
 export function Header() {
   const { headerMenuItems } = useGetHeaderMenuItems();
 
   return (
-    <header className="bg-card h-15 shadow-xs border-b relative">
+    <header
+      className={cn(
+        "sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl",
+        "py-1 h-15",
+      )}
+    >
       <div className="flex items-center w-full h-full px-8 sm:px-16 justify-between">
         <Link className="flex items-center gap-2" to={ROUTES.HOME}>
           <FaRegPlayCircle />

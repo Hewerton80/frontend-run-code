@@ -48,7 +48,7 @@ export const ExerciseForm = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full gap-4 p-8">
+      <div className="flex flex-col w-full gap-4">
         <Breadcrumbs
           items={[
             { label: "🧩 Exercícios", href: ROUTES.EXERCISES },

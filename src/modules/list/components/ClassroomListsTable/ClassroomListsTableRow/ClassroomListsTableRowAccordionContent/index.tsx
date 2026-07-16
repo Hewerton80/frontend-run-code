@@ -1,18 +1,14 @@
-import { Alert } from "@/components/ui/feedback/Alert";
 import {
+  ApiErrorState,
   ChestIllustration,
-  EmptyPrimaryButton,
   EmptyState,
-  ScrollIllustration,
 } from "@/components/ui/feedback/EmptyState";
-import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { useFetchListOfExercises } from "@/modules/list/hooks/useFetchListOfExercises";
 import { IFetchListsByClassromUuidResponse } from "@/modules/list/hooks/useFetchListsByClassromUuid";
 import { RoleUser } from "@/modules/user/userTypets";
 import { getRange } from "@/utils/getRange";
-import { Plus } from "lucide-react";
 import { memo } from "react";
 
 interface ClassroomListsTableRowAccordionContentProps {
@@ -72,20 +68,19 @@ export const ClassroomListsTableRowAccordionContent = memo(
                     ? "Assim que exercícios forem adicionados, eles aparecerão aqui."
                     : "Você pode adicionar exercícios clicando no botão de adicionar e remover exercícios"
                 }
-                // action={
-                //   onAddExercises && (
-                //     <EmptyPrimaryButton onClick={onAddExercises}>
-                //       <ListPlus className="h-4 w-4" /> Adicionar exercícios
-                //     </EmptyPrimaryButton>
-                //   )
-                // }
               />
             </div>
           </>
         ) : (
           <>
             {errorExercises && (
-              <FeedBackError onTryAgain={refetchListOfExercises} />
+              <ApiErrorState
+                message={
+                  errorExercises?.message ||
+                  "Ocorreu um erro ao buscar os exercícios desta lista"
+                }
+                onRetry={refetchListOfExercises}
+              />
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full border-none">
               {isFetchingExercises &&

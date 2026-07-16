@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Button } from "../../buttons/Button";
 
 /* ------------------------------------------------------------------ */
 /* Isometric illustrations                                             */
@@ -489,7 +490,7 @@ export function ApiErrorState({
   onRetry,
   title = "Ops, algo saiu da rota",
   message = "Não conseguimos carregar essa parte agora. Tente novamente em instantes.",
-  size = "md",
+  size = "sm",
 }: {
   onRetry?: () => void;
   title?: string;
@@ -504,13 +505,7 @@ export function ApiErrorState({
       }
       title={title}
       message={message}
-      action={
-        onRetry && (
-          <EmptyPrimaryButton onClick={onRetry}>
-            Tentar novamente
-          </EmptyPrimaryButton>
-        )
-      }
+      action={onRetry && <Button onClick={onRetry}>Tentar novamente</Button>}
     />
   );
 }

@@ -65,33 +65,37 @@ export const ClassroomListsTableRow = memo(
           />
         </div>,
         loggedUser?.role === RoleUser.STUDENT ? (
-          <Table.Data>
+          <>
             <div className="flex flex-1 items-center gap-2">
               <ProgressBar value={progress} />
               <span className="text-xs text-muted-foreground">
                 {solved}/{totalExercises}
               </span>
             </div>
-          </Table.Data>
+          </>
         ) : null,
         loggedUser?.role === RoleUser.TEACHER && <>{totalExercises}</>,
         // TODO criar um componente Actions
         <div className="flex flex-1 items-center gap-2 justify-end pr-2">
-          <IconButton
-            variantStyle="dark-ghost"
-            className={cn(openAccordion && "[&_.arrow]:rotate-180")}
-            onClick={() => {
-              setOpenAccordion((prev) => {
-                console.log("!prev", !prev);
-                return !prev;
-              });
-            }}
-            icon={
-              <BsChevronDown
-                className={cn("arrow size-4 transition-transform duration-200")}
-              />
-            }
-          />
+          {!closed && (
+            <IconButton
+              variantStyle="dark-ghost"
+              className={cn(openAccordion && "[&_.arrow]:rotate-180")}
+              onClick={() => {
+                setOpenAccordion((prev) => {
+                  console.log("!prev", !prev);
+                  return !prev;
+                });
+              }}
+              icon={
+                <BsChevronDown
+                  className={cn(
+                    "arrow size-4 transition-transform duration-200",
+                  )}
+                />
+              }
+            />
+          )}
           {loggedUser?.role === RoleUser.TEACHER && (
             <Dropdown.Root>
               <PingWrapper active={totalExercises === 0}>
@@ -129,6 +133,7 @@ export const ClassroomListsTableRow = memo(
       ];
       return data.filter(Boolean) as React.ReactNode[];
     }, [
+      closed,
       openAccordion,
       cachedListOfClassroom,
       loggedUser?.role,
@@ -176,3 +181,44 @@ export const ClassroomListsTableRow = memo(
 );
 
 ClassroomListsTableRow.displayName = "ClassroomListsTableRow";
+// accordionContent={
+//   <div className=" p-2">
+//     {totalExercises === 0 ? (
+//       <Alert.Root>
+//         <Alert.Title>
+//           Não há exercícios cadastrados nesta lista
+//         </Alert.Title>
+//         {loggedUser?.role === RoleUser.TEACHER && (
+//           <Alert.Description className="text-sm text-muted-foreground">
+//             Você pode adicionar exercícios clicando no botão de
+//             adicionar e remover exercícios.
+//           </Alert.Description>
+//         )}
+//       </Alert.Root>
+//     ) : (
+//       <>
+//         {errorExercises && (
+//           <FeedBackError onTryAgain={refetchListOfExercises} />
+//         )}
+//         <div className="grid grid-cols-3 gap-2 w-full border-none">
+//           {isFetchingExercises &&
+//             getRange(0, 5).map((index) => (
+//               <Skeleton
+//                 key={`exercise-skeleton-${index}`}
+//                 className="w-full h-26 rounded-lg"
+//               />
+//             ))}
+
+//           {exerciseIdsOfList?.map((exerciseUuid) => (
+//             <ExerciseCard
+//               key={`${exerciseUuid}-${cachedListOfClassroom?.id}-${cachedListOfClassroom?.classroom?.uuid}`}
+//               exerciseId={exerciseUuid}
+//               listId={cachedListOfClassroom?.id!}
+//               classroomId={cachedListOfClassroom?.classroom?.uuid!}
+//             />
+//           ))}
+//         </div>
+//       </>
+//     )}
+//   </div>
+// }

@@ -1,32 +1,21 @@
-import { useMemo } from "react";
-import { getRange } from "@/utils/getRange";
-import { Skeleton } from "@/components/ui/feedback/Skeleton";
-import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
-import { DivTable } from "@/components/ui/dataDisplay/DivTable";
 import { ClassroomListsTableRow } from "./ClassroomListsTableRow";
 import { useClassroomListsTable } from "./useClassroomListsTable";
 import { ClassroomListForm } from "../ClassroomListFormDrawer";
 import { Button } from "@/components/ui/buttons/Button";
 import { Highlight } from "@/components/ui/feedback/Highlight";
-import { Alert } from "@/components/ui/feedback/Alert";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { ClasrromActionsTriggerButton } from "@/modules/classroom/components/ClasrromActionsTriggerButton";
 import { EditExercisesOfList } from "@/modules/list/components/EditExercisesOfListDrawer";
 import { ClassroomForm } from "@/modules/classroom/components/ClassroomFormDrawer";
-import { Card } from "@/components/ui/cards/Card";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
-import { Avatar } from "@/components/ui/dataDisplay/Avatar";
-import { emojis } from "@/utils/emojis";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { ClassroomHeader } from "@/modules/classroom/components/ClassroomHeader";
 import {
-  EmptyPrimaryButton,
   EmptyState,
   ScrollIllustration,
 } from "@/components/ui/feedback/EmptyState";
-import { Plus } from "lucide-react";
 
 export const ClassroomListsTable = () => {
   const {

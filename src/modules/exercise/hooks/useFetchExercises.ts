@@ -8,14 +8,19 @@ import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryK
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
 export type IFetchExercisesParams = IPaginationParams;
-
+interface UseFetchExercisesConfig {
+  enabled?: boolean;
+}
 /**
  * Busca a lista paginada de exercícios.
  * Semeia o cache individual de cada exercício via `setItemInCache` para
  * permitir navegação cache-first ao detalhe.
  * Suporta cancelamento automático via AbortSignal.
  */
-export const useFetchExercises = (params?: IFetchExercisesParams) => {
+export const useFetchExercises = (
+  params?: IFetchExercisesParams,
+  config?: UseFetchExercisesConfig,
+) => {
   const { apiBase } = useAxios();
 
   /** Normaliza os params removendo chaves vazias — estabiliza a queryKey */
@@ -49,7 +54,7 @@ export const useFetchExercises = (params?: IFetchExercisesParams) => {
       );
     },
     retry: 0,
-    enabled: true,
+    enabled: config?.enabled ?? true,
   });
 
   return {

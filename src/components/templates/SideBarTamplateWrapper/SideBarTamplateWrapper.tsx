@@ -1,6 +1,6 @@
 import { Sidebar } from "@/components/common/Sidebar";
+import { cn } from "@/utils/cn";
 import { ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
 
 interface SideBarTamplateWrapperProps {
   children: ReactNode;
@@ -12,13 +12,13 @@ export function SideBarTamplateWrapper({
   return (
     <div className="flex w-full bg-sidebar-background min-h-[calc(100vh-3.75rem)]">
       <Sidebar />
-      <div
-        className={twMerge(
-          "flex flex-1 bg-background mt-2 mr-2 border rounded-xl overflow-hidden"
+      <main
+        className={cn(
+          "flex flex-1 bg-background overflow-hidden min-w-0 px-4 py-6 md:px-8",
         )}
       >
-        {children}
-      </div>
+        <div className="flex flex-1 mx-auto max-w-6xl">{children}</div>
+      </main>
     </div>
   );
 }

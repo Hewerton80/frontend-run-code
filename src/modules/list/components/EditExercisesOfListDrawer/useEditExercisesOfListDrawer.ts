@@ -51,7 +51,7 @@ export const useEditExercisesOfListDrawer = () => {
     exercisesError,
     exercisesRecords,
     refetchExercises,
-  } = useFetchExercises(exercisesParams);
+  } = useFetchExercises(exercisesParams, { enabled: showDrawer });
 
   const currentExercises = useMemo(() => list?.exercises, [list]);
 
