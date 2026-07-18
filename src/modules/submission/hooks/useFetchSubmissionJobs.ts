@@ -18,6 +18,12 @@ export interface SubmissionResultSummary {
   score: number;
   testCasesResults: SubmissionTestCaseResult[];
   status: SubmissionStatus;
+  wasAlreadyAccepted: boolean;
+  newUserStats?: {
+    completedExercises: number;
+    totalXp: number;
+    progress: number;
+  };
 }
 
 export interface SubmissionJobResponse {

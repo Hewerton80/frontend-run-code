@@ -11,7 +11,7 @@ import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { RoleUser } from "@/modules/user/userTypets";
 import { ROUTES } from "@/routes/routes";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
-import { ClassroomHeader } from "@/modules/classroom/components/ClassroomHeader";
+import { ClassroomHero } from "@/modules/classroom/components/ClassroomHero";
 import {
   EmptyState,
   ScrollIllustration,
@@ -32,7 +32,7 @@ export const ClassroomListsTable = () => {
     <>
       <BackLink to={ROUTES.HOME}>Voltar para Home</BackLink>
       <div className="flex flex-col gap-4">
-        <ClassroomHeader classroomUuid={classroom?.uuid} />
+        <ClassroomHero classroomUuid={classroom?.uuid} />
 
         {loggedUser?.role === RoleUser.TEACHER && (
           <div className="flex justify-end gap-2">

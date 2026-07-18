@@ -19,7 +19,7 @@ export const Avatar = memo(
     src,
     alt,
     name,
-    bgColor = "var(--color-primary)",
+    bgColor = "oklch(0.62 0.22 275)",
     className,
     size = 40,
     emoji,

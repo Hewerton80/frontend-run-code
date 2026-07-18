@@ -181,21 +181,14 @@
     background: var(--accent);
   }
 }
-/* 
-@layer utilities {
-  @media (min-width: --theme(--breakpoint-md)) {
-    ::-webkit-scrollbar {
-      height: 10px;
-      width: 6px;
-      background: var(--color-gray-400);
-    }
-    ::-webkit-scrollbar-thumb {
-      -webkit-border-radius: 5px;
-      border-radius: 5px;
-      background: var(--color-gray-600);
-    }
-  }
-} */
+@utility bg-gradient-classroom-hero {
+  background-image: linear-gradient(
+    135deg,
+    oklch(0.32 0.1 275) 0%,
+    oklch(0.24 0.06 280) 50%,
+    oklch(0.18 0.02 275) 100%
+  );
+}
 
 @utility bg-gradient-hero {
   background-image: linear-gradient(

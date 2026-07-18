@@ -1,16 +1,20 @@
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 import { hasQueryCache } from "@/utils/tanstackQueryHelpers/hasQueryCache";
 import { classroomQueryKeyFactory } from "./classroomQueryKeyFactory";
-import { IClassroom } from "@/modules/classroom/classroomType";
+import { FetchClassroomByIdResponse } from "../hooks/useFetchClassroomById";
 
 export const updateCachedClassroom = (
-  classroomId: string,
-  updater: Parameters<typeof setItemInCache<Partial<IClassroom>>>[1],
+  classroomUuid: string,
+  updater: Parameters<
+    typeof setItemInCache<Partial<FetchClassroomByIdResponse>>
+  >[1],
 ) => {
-  const hasCache = hasQueryCache(classroomQueryKeyFactory.detail(classroomId));
+  const hasCache = hasQueryCache(
+    classroomQueryKeyFactory.detail(classroomUuid),
+  );
   if (!hasCache) return;
-  setItemInCache<Partial<IClassroom>>(
-    classroomQueryKeyFactory.detail(classroomId),
+  setItemInCache<Partial<FetchClassroomByIdResponse>>(
+    classroomQueryKeyFactory.detail(classroomUuid),
     updater,
   );
 };
