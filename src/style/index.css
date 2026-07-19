@@ -218,3 +218,133 @@
 @utility text-balance {
   text-wrap: balance;
 }
+
+/* ============ TCG Card utilities ============ */
+
+@utility card-frame-blurple {
+  background-image: linear-gradient(
+    180deg,
+    oklch(0.22 0.05 275) 0%,
+    oklch(0.14 0.03 275) 100%
+  );
+  border: 1px solid oklch(0.62 0.22 275 / 0.35);
+  box-shadow:
+    inset 0 0 0 1px oklch(1 0 0 / 0.04),
+    inset 0 1px 0 oklch(1 0 0 / 0.08),
+    0 12px 30px -14px oklch(0 0 0 / 0.75),
+    0 0 24px -6px oklch(0.62 0.22 275 / 0.25);
+}
+
+@utility card-art-easy {
+  background-image:
+    radial-gradient(
+      circle at 30% 20%,
+      oklch(0.7 0.19 150 / 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 90%,
+      oklch(0.55 0.22 275 / 0.5),
+      transparent 60%
+    ),
+    linear-gradient(160deg, oklch(0.22 0.06 160) 0%, oklch(0.14 0.04 275) 100%);
+}
+@utility card-art-medium {
+  background-image:
+    radial-gradient(
+      circle at 30% 20%,
+      oklch(0.78 0.18 60 / 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 90%,
+      oklch(0.55 0.22 300 / 0.5),
+      transparent 60%
+    ),
+    linear-gradient(160deg, oklch(0.24 0.08 55) 0%, oklch(0.14 0.04 300) 100%);
+}
+@utility card-art-hard {
+  background-image:
+    radial-gradient(
+      circle at 30% 20%,
+      oklch(0.65 0.24 20 / 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 90%,
+      oklch(0.55 0.22 320 / 0.55),
+      transparent 60%
+    ),
+    linear-gradient(160deg, oklch(0.22 0.09 20) 0%, oklch(0.14 0.04 320) 100%);
+}
+
+@utility card-holo {
+  position: relative;
+  overflow: hidden;
+}
+@utility card-holo-layer {
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from 0deg,
+    oklch(0.85 0.2 20 / 0.35),
+    oklch(0.85 0.2 90 / 0.35),
+    oklch(0.85 0.2 160 / 0.35),
+    oklch(0.85 0.2 240 / 0.35),
+    oklch(0.85 0.2 320 / 0.35),
+    oklch(0.85 0.2 20 / 0.35)
+  );
+  filter: blur(14px);
+  mix-blend-mode: color-dodge;
+  animation: holo-spin 8s linear infinite;
+  pointer-events: none;
+}
+
+@utility card-glow-accepted {
+  box-shadow:
+    inset 0 0 0 1px oklch(0.85 0.17 90 / 0.55),
+    0 0 30px -6px oklch(0.85 0.17 90 / 0.45),
+    0 12px 30px -14px oklch(0 0 0 / 0.75);
+  border-color: oklch(0.85 0.17 90 / 0.6);
+}
+
+@utility card-name-banner {
+  background-image: linear-gradient(
+    90deg,
+    oklch(0.14 0.03 275) 0%,
+    oklch(0.28 0.08 275) 50%,
+    oklch(0.14 0.03 275) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.12),
+    inset 0 -1px 0 oklch(0 0 0 / 0.4);
+}
+
+@utility card-sheen {
+  background-image: linear-gradient(
+    115deg,
+    transparent 30%,
+    oklch(1 0 0 / 0.14) 48%,
+    oklch(1 0 0 / 0.28) 50%,
+    oklch(1 0 0 / 0.14) 52%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+  transition: background-position 0.9s ease;
+}
+.group:hover .card-sheen {
+  background-position: -50% 0;
+}
+
+@keyframes holo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-holo-layer {
+    animation: none;
+  }
+}

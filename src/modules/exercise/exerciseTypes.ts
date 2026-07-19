@@ -24,11 +24,11 @@ export interface IExerciseTestCase {
 export interface IExercise {
   id: number;
   uuid: string;
-  title?: string;
+  title: string;
   category?: { id: string; name: string };
   description?: string;
   testCases?: IExerciseTestCase[];
-  difficulty?: string;
+  difficulty?: number;
   classroom?: IClassroom;
   status: ExerciseStatus;
   listExercise?: IList;

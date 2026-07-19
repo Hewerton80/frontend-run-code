@@ -82,7 +82,8 @@ export const ClassroomListsTableRowAccordionContent = memo(
                 onRetry={refetchListOfExercises}
               />
             )}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full border-none">
+            {/* grid gap-4 border-t border-border/60 bg-background/50 p-5 [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] */}
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
               {isFetchingExercises &&
                 getRange(0, 5).map((index) => (
                   <Skeleton
@@ -94,9 +95,9 @@ export const ClassroomListsTableRowAccordionContent = memo(
               {exerciseIdsOfList?.map((exerciseUuid) => (
                 <ExerciseCard
                   key={`exercise-${exerciseUuid}-${list?.id}-${list?.classroom?.uuid}`}
-                  exerciseId={exerciseUuid}
+                  exerciseUuId={exerciseUuid}
                   listId={list?.id!}
-                  classroomId={list?.classroom?.uuid!}
+                  classroomUuId={list?.classroom?.uuid!}
                 />
               ))}
             </div>
