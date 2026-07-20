@@ -27,7 +27,6 @@ export const ROUTE_PATTERNS = {
   CLASSROOM_LISTS: "lists",
   CLASSROOM_USERS: "users",
   CLASSROOM_LIST_EXERCISE: "lists/:listId/exercise/:exerciseId",
-  CLASSROOM_LIST_UPDATE: "lists/:listId/update-exercises",
 } as const;
 
 /**
@@ -67,6 +66,4 @@ export const ROUTES = {
     listId: number,
     exerciseId: string,
   ) => `/classroom/${classroomId}/lists/${listId}/exercise/${exerciseId}`,
-  CLASSROOM_LIST_UPDATE: (classroomId: string, listId: number) =>
-    `/classroom/${classroomId}/lists/${listId}/update-exercises`,
 };

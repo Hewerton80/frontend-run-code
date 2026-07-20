@@ -1,29 +1,32 @@
 import { useTypeWriterText } from "@/hooks/useTypeWriterText";
-import { CodeEditor } from "../../forms/inputs/CodeEditor";
-import { memo } from "react";
+import { cn } from "@/utils/cn";
+import { isString } from "@tiptap/core";
+import { memo, ReactNode } from "react";
 
 interface TerminalCodeProps {
-  content?: string;
+  content?: ReactNode;
   animation?: boolean;
+  className?: string;
 }
 
 export const TerminalCode = memo(
-  ({ content = "", animation = true }: TerminalCodeProps) => {
-    const { typeWriterText } = useTypeWriterText({ text: content, animation });
+  ({ content = "", animation = true, className }: TerminalCodeProps) => {
+    const { typeWriterText } = useTypeWriterText({
+      text: isString(content) ? content : "",
+      animation,
+    });
+    const handledContent = isString(content) ? typeWriterText : content;
 
     return (
-      <CodeEditor
-        className="rounded-lg"
-        value={typeWriterText}
-        readOnly
-        theme="terminal"
-        fontSize="0.875rem"
-        style={{ minHeight: "auto" }}
-        minLines={1}
-        maxLines={Infinity}
-        setOptions={{ displayIndentGuides: false }}
-        scrollMargin={[8, 8]}
-      />
+      <pre
+        className={cn(
+          "whitespace-pre-wrap border border-white/10 border-l-4 border-l-white/10",
+          "p-3 bg-muted rounded-xl",
+          className,
+        )}
+      >
+        <code className="text-sm font-code">{handledContent}</code>
+      </pre>
     );
   },
 );

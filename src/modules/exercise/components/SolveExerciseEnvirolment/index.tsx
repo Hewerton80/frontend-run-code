@@ -1,10 +1,9 @@
 import { ExerciseDescription } from "./ExerciseDescription";
 import { IDEExercise } from "./IDEExercise";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { useFetchExercise } from "../../hooks/useFetchExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
@@ -12,6 +11,18 @@ import { BackLink } from "@/components/ui/navigation/BackLink";
 import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
 import { ExerciseForm } from "../ExerciseFormDrawer";
 import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
+import { cn } from "@/utils/cn";
+import { rgba } from "@/utils/colorHelpers";
+import { ExerciseXPGem } from "../ExerciseXPGem";
+import { DIFF_META } from "../../exerciseTypes";
+import {
+  SubmissionStatus,
+  XP_BY_DIFFICULTY,
+} from "@/modules/submission/submissionType";
+import { Diff, Trophy, TrophyIcon, LucideTrophy, Zap } from "lucide-react";
+import { ExerciseDifficultyStars } from "../ExerciseDifficultyStars";
+import { Separator } from "@/components/ui/separator";
+import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 
 export const SolveExerciseEnvirolment = () => {
   const params = useParams<{
@@ -31,6 +42,10 @@ export const SolveExerciseEnvirolment = () => {
       classroomId: params?.classroomId,
       listId: params?.listId,
     });
+  const done = useMemo(
+    () => exercise?.submissionStats?.status === SubmissionStatus.ACCEPTED,
+    [exercise?.submissionStats?.status],
+  );
 
   useEffect(() => {
     refetchExercise();
@@ -63,12 +78,17 @@ export const SolveExerciseEnvirolment = () => {
   };
 
   if (exerciseError) {
-    return <FeedBackError onTryAgain={refetchExercise} />;
+    return (
+      <ApiErrorState
+        message={exerciseError?.message || "Erro ao carregar exercício"}
+        onRetry={refetchExercise}
+      />
+    );
   }
 
   return (
     <>
-      <div className="flex flex-col size-full gap-4 px-4 pt-6 pb-4 ">
+      <div className="flex flex-col size-full gap-4">
         <Breadcrumbs
           isLoading={isFetchingExercise}
           items={getBreadcrumbsItems()}
@@ -88,42 +108,73 @@ export const SolveExerciseEnvirolment = () => {
             <SolveExerciseEnvirolmentActions exercise={exercise} />
           </div>
         </div>
-        <Resizable.Group
-          className={twMerge(
-            "flex size-full min-h-117 rounded-lg overflow-hidden border",
-            "border-l-3 border-l-info rounded-l-none",
+
+        <div
+          className={cn(
+            "relative flex flex-col overflow-hidden rounded-4xl p-6",
+            "size-full min-h-117 border border-white/10 gap-4 card-frame-gray",
           )}
         >
-          <Resizable.Panel
-            defaultSize={20}
-            minSize={15}
-            className="h-full w-full flex-1/4"
-          >
-            {isFetchingExercise ? (
-              skeleton
-            ) : (
-              <Suspense fallback={skeleton}>
-                <div className="p-4">
+          <div className="flex items-center justify-between">
+            <h1
+              className={cn(
+                "line-clamp-1 text-xl font-black tracking-tight",
+                "text-foreground",
+              )}
+            >
+              {exercise?.title}
+            </h1>
+            <div className="flex items-center gap-4">
+              {done && (
+                <span className="inline-flex items-center gap-1 font-bold text-warning/90">
+                  <Trophy className="size-4" />
+                  Conquistado
+                </span>
+              )}
+              <ExerciseDifficultyStars count={exercise?.difficulty || 1} />
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 font-bold text-primary leading-0",
+                  done && "line-through",
+                )}
+              >
+                <Zap className="size-4" /> +
+                {XP_BY_DIFFICULTY[exercise?.difficulty || 1]} XP
+              </span>
+            </div>
+          </div>
+          <Separator orientation="horizontal" className="h-1" />
+
+          <Resizable.Group>
+            <Resizable.Panel
+              defaultSize={20}
+              minSize={15}
+              className="h-full w-full flex-1/2"
+            >
+              {isFetchingExercise ? (
+                skeleton
+              ) : (
+                <Suspense fallback={skeleton}>
                   <ExerciseDescription exercise={exercise!} />
-                </div>
-              </Suspense>
-            )}
-          </Resizable.Panel>
-          <Resizable.Handle withHandle />
-          <Resizable.Panel
-            defaultSize={30}
-            minSize={15}
-            className="flex flex-3/4 w-full flex-col col-span-8 h-full gap-4"
-          >
-            {isFetchingExercise ? (
-              skeleton
-            ) : (
-              <Suspense fallback={skeleton}>
-                <IDEExercise exercise={exercise!} />
-              </Suspense>
-            )}
-          </Resizable.Panel>
-        </Resizable.Group>
+                </Suspense>
+              )}
+            </Resizable.Panel>
+            <Resizable.Handle className="mx-4" withHandle />
+            <Resizable.Panel
+              defaultSize={20}
+              minSize={15}
+              className="flex flex-1/2 w-full flex-col h-full gap-4"
+            >
+              {isFetchingExercise ? (
+                skeleton
+              ) : (
+                <Suspense fallback={skeleton}>
+                  <IDEExercise exercise={exercise!} />
+                </Suspense>
+              )}
+            </Resizable.Panel>
+          </Resizable.Group>
+        </div>
       </div>
       <ExerciseForm.Drawer />
     </>

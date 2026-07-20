@@ -51,9 +51,6 @@ const ClassroomExercisePage = lazy(
   () => import("@/pages/ClassRoomExercisePage"),
 );
 const ClassroomUsersPage = lazy(() => import("@/pages/ClassroomUsersPage"));
-const UpdateExercisesListPage = lazy(
-  () => import("@/pages/UpdateExercisesListPage"),
-);
 
 // ── SuspenseWrapper ───────────────────────────────────────────────────────
 function SuspenseWrapper({ element }: { element: React.ReactNode }) {
@@ -155,12 +152,7 @@ const router = createBrowserRouter([
                   <SuspenseWrapper element={<ClassroomExercisePage />} />
                 ),
               },
-              {
-                path: ROUTE_PATTERNS.CLASSROOM_LIST_UPDATE,
-                element: (
-                  <SuspenseWrapper element={<UpdateExercisesListPage />} />
-                ),
-              },
+
               {
                 path: ROUTE_PATTERNS.CLASSROOM_USERS,
                 element: <SuspenseWrapper element={<ClassroomUsersPage />} />,

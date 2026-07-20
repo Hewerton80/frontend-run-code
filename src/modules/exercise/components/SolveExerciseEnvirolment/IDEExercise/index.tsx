@@ -5,14 +5,15 @@ import { useIDEExercise } from "./useIDEExercises";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 import {
+  SUBMISSION_META,
   SubmissionStatus,
-  SubmissionStatusLabels,
 } from "@/modules/submission/submissionType";
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { Tabs } from "@/components/ui/navigation/Tabs";
 import { useMemo } from "react";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -33,14 +34,9 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
 
   // TODO adicionar salvar rascunho
 
-  const testCasesResults = useMemo(
-    () => submissionsResult?.testCasesResults,
-    [submissionsResult],
-  );
-
   return (
     <>
-      <div className="flex flex-col w-full col-span-8 h-full p-4 gap-4">
+      <div className="flex flex-col w-full col-span-8 h-full gap-4">
         <IDE
           value={sourceCode}
           avaliableLanguages={avaliableLanguages}
@@ -59,119 +55,15 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         </div>
         {/* <Button variantStyle="success">Submit</Button> */}
         {/* </ButtonGroup> */}
-        {isSubmitting && <ThreeDotsLoading />}
+        {isSubmitting && (
+          <div className="pl-0.5 pb-0.5">
+            <ThreeDotsLoading />
+          </div>
+        )}
         {submitError && (
           <TerminalCode content={submitError?.description || ""} />
         )}
-        {submissionsResult?.score === 1 && (
-          <Alert.Root variant="success" hideIcon>
-            <Alert.Title>Parabéns! 🎉</Alert.Title>
-            <Alert.Description>
-              Você resolveu o exercício com sucesso!
-              {/* TODO adicionar botao de ir para o próximo exercício, para isso deve verificar se tenho o ids do exercícios no cache da lista */}
-            </Alert.Description>
-          </Alert.Root>
-        )}
-        {testCasesResults && (
-          <div>
-            {submissionsResult?.status ===
-            SubmissionStatus.COMPILATION_ERROR ? (
-              <TerminalCode content={testCasesResults?.[0]?.output || ""} />
-            ) : (
-              <>
-                <Tabs.Root defaultValue="1">
-                  <Tabs.List>
-                    {testCasesResults?.map((testCaseResult, index) => {
-                      const emoji =
-                        SubmissionStatusLabels?.[testCaseResult?.status!]
-                          ?.emoji;
-                      const label =
-                        SubmissionStatusLabels?.[testCaseResult?.status!]
-                          ?.label;
-                      return (
-                        <Tabs.Trigger
-                          key={`trigger-${index}`}
-                          value={(index + 1).toString()}
-                        >
-                          <span>
-                            <Tooltip
-                              align="center"
-                              className="gap-2"
-                              textContent={`${label} ${emoji}`}
-                            >
-                              <span>
-                                Teste {index + 1}: {emoji}
-                              </span>
-                            </Tooltip>
-                          </span>
-                        </Tabs.Trigger>
-                      );
-                    })}
-                  </Tabs.List>
-                  {/* TODO analizar a possibilidade de adicionar memória e runtime aqui */}
-                  {testCasesResults?.map((testCaseResult, index) => (
-                    <Tabs.Content
-                      key={`response-${index}`}
-                      value={(index + 1).toString()}
-                    >
-                      <div className="flex flex-col gap-0.5">
-                        {[
-                          {
-                            label: "Resultado:",
-                            content:
-                              [
-                                SubmissionStatusLabels?.[
-                                  testCaseResult?.status!
-                                ]?.label || "",
-                                SubmissionStatusLabels?.[
-                                  testCaseResult?.status!
-                                ]?.emoji || "",
-                              ].join(" ") || "",
-                          },
-                          ...(testCaseResult?.isPublic
-                            ? [
-                                {
-                                  label: "Entrada (input):",
-                                  content: testCaseResult?.input || "",
-                                },
-                                //  TODO dependendo do status, nao exibor a resposta de erro
-                                {
-                                  label: "Saída do seu código:",
-                                  content: testCaseResult?.output || "",
-                                },
-                                {
-                                  label: "Saída Esperada:",
-                                  content: testCaseResult?.expectedOutput || "",
-                                },
-                              ]
-                            : []),
-                        ].map((item, idx) => (
-                          <div
-                            key={`item-${index}-${idx}`}
-                            className="flex flex-col gap-0.5"
-                          >
-                            <p className="text-sm text-muted-foreground">
-                              {item.label}
-                            </p>
-                            <TerminalCode
-                              animation={false}
-                              content={item.content}
-                            />
-                          </div>
-                        ))}
-                        {!testCaseResult?.isPublic && (
-                          <Badge variant="dark" className="mt-2">
-                            Informações de caso de teste privado 🔒
-                          </Badge>
-                        )}
-                      </div>
-                    </Tabs.Content>
-                  ))}
-                </Tabs.Root>
-              </>
-            )}
-          </div>
-        )}
+        <TestCasesResultsDisplay submissionsResult={submissionsResult} />
       </div>
     </>
   );

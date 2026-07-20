@@ -17,7 +17,7 @@ export function SideBarTamplateWrapper({
           "flex flex-1 bg-background overflow-hidden min-w-0 px-4 py-6 md:px-8",
         )}
       >
-        <div className="flex flex-1 mx-auto max-w-6xl">{children}</div>
+        <div className="flex flex-1 mx-auto max-w-7xl">{children}</div>
       </main>
     </div>
   );

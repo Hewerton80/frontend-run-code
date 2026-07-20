@@ -1,5 +1,4 @@
 import { IExercise } from "@/modules/exercise/exerciseTypes";
-import { FaCode } from "react-icons/fa";
 import { Code } from "@/components/ui/dataDisplay/Code";
 import { cn } from "@/utils/cn";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
@@ -18,7 +17,7 @@ export const ExerciseDescription = ({
   return (
     <div
       className={cn(
-        "grid h-full gap-2",
+        "grid gap-4 h-fit",
         orientation === "vertical" ? "grid-cols-1" : "grid-cols-12",
       )}
     >
@@ -28,8 +27,6 @@ export const ExerciseDescription = ({
           orientation === "horizontal" && "col-span-8",
         )}
       >
-        <h3 className="text-lg leading-5">{exercise?.title}</h3>
-
         <div
           className="text-sm tiptap"
           dangerouslySetInnerHTML={{
