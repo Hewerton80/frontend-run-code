@@ -40,10 +40,10 @@ export const ExerciseCard = memo(
         done={done}
       >
         {/* Top bar: XP gem + stars + language */}
-        <ExerciseCardTopBar title={ex.title} />
+        {/* <ExerciseCardTopBar ex={ex} /> */}
 
         {/* Art window */}
-        <ExerciseCardArtWindow done={done} />
+        <ExerciseCardArtWindow ex={ex} />
 
         {/* Type + status */}
         <ExerciseCardTypeStatus ex={ex} />

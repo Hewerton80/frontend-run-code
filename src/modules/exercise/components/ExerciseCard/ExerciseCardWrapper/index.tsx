@@ -51,7 +51,7 @@ export const ExerciseCardWrapper = memo(
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         className={cn(
-          "group relative flex aspect-[3/4.2] flex-col overflow-hidden rounded-2xl p-3",
+          "group relative flex aspect-3/4 flex-col overflow-hidden rounded-2xl p-3",
           "text-white transition-[transform,box-shadow]",
           "duration-200 will-change-transform hover:z-10",
           done ? "card-glow-accepted" : "card-frame-blurple",

@@ -10,7 +10,7 @@ interface ExerciseCardFooterRewardProps {
 export const ExerciseCardFooterReward = memo(
   ({ done, xp }: ExerciseCardFooterRewardProps) => {
     return (
-      <div className="relative z-10 mt-2 flex items-center justify-between border-t border-white/10 pt-2 text-[11px]">
+      <div className="relative z-10 mt-auto flex items-center justify-between border-t border-white/10 pt-2 text-[11px]">
         <span
           className={cn(
             "inline-flex items-center gap-1 font-bold text-primary",

@@ -3,6 +3,7 @@ import { memo } from "react";
 import { ExerciseDifficultyStars } from "../../ExerciseDifficultyStars";
 import { DIFF_META, IExercise } from "@/modules/exercise/exerciseTypes";
 import { SubmissionStatusBadge } from "@/modules/submission/components/SubmissionStatusBadge";
+import { Tooltip } from "@/components/ui/overlay/Tooltip/Tooltip";
 
 interface ExerciseCardTypeStatusProps {
   ex: IExercise;
@@ -13,16 +14,24 @@ export const ExerciseCardTypeStatus = memo(
     const diff = DIFF_META[ex.difficulty || 1];
 
     return (
-      <>
+      <div className="relative flex flex-col pb-2">
+        <span className="absolute top-0 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+          <ExerciseDifficultyStars count={ex.difficulty} />
+        </span>
         {/* Name banner */}
         <div
           className={cn(
-            "relative z-10 mt-2 rounded-lg card-name-banner",
+            "relative z-10 mt-5 rounded-lg card-name-banner h-full",
             "px-2.5 py-1.5 text-center ring-1 ring-white/10",
           )}
         >
-          <div className="flex items-center gap-2">
-            <ExerciseDifficultyStars count={diff.stars} />
+          <div className="flex items-center justify-center gap-2">
+            {/* <ExerciseDifficultyStars count={diff.stars} /> */}
+            <Tooltip textContent={ex.title} align="center">
+              <span className="line-clamp-1 text-[13px] font-semibold tracking-tight text-white text-center">
+                {ex.title}
+              </span>
+            </Tooltip>
           </div>
         </div>
 
@@ -33,7 +42,7 @@ export const ExerciseCardTypeStatus = memo(
           </div>
           <SubmissionStatusBadge status={ex?.submissionStatus} />
         </div>
-      </>
+      </div>
     );
   },
 );

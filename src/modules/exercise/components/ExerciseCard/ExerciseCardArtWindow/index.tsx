@@ -1,16 +1,24 @@
+import { IExercise } from "@/modules/exercise/exerciseTypes";
+import { SubmissionStatus } from "@/modules/submission/submissionType";
 import { cn } from "@/utils/cn";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 interface ExerciseCardArtWindowProps {
-  done: boolean;
+  ex: IExercise;
 }
 
 export const ExerciseCardArtWindow = memo(
-  ({ done }: ExerciseCardArtWindowProps) => {
+  ({ ex }: ExerciseCardArtWindowProps) => {
+    const submissionStatus = useMemo(
+      () => ex?.submissionStatus!,
+      [ex?.submissionStatus],
+    );
+
+    const done = submissionStatus === SubmissionStatus.ACCEPTED;
     return (
       <div
         className={cn(
-          "relative mt-2 flex-1 overflow-hidden rounded-xl ring-1 ring-white/10",
+          "aspect-94/53 relative overflow-hidden rounded-xl ring-1 ring-white/10",
           done ? "card-holo card-art-medium" : "",
         )}
       >

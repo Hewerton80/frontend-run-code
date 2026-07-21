@@ -8,7 +8,7 @@ import { Resizable } from "@/components/ui/dataDisplay/Resizable";
 import { useFetchExercise } from "../../hooks/useFetchExercise";
 import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { BackLink } from "@/components/ui/navigation/BackLink";
-import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCachedClassromById";
 import { ExerciseForm } from "../ExerciseFormDrawer";
 import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
 import { cn } from "@/utils/cn";
@@ -31,7 +31,7 @@ export const SolveExerciseEnvirolment = () => {
     exerciseId: string;
   }>();
 
-  const { cachedClassroom: classroom } = useGetCachedClassrom(
+  const { cachedClassroom: classroom } = useGetCachedClassromById(
     params?.classroomId!,
   );
   // TODO adicionar um todo para saber de qual url ele veio

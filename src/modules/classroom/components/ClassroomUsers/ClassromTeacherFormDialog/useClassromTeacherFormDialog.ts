@@ -14,7 +14,7 @@ import {
   type IUpdateTeacherInClassroomBody as UpdateTeacherInClassroomBody,
   useUpdateTeacherInClassroom,
 } from "../../../hooks/useUpdateTeacherInClassroom";
-import { useGetCachedClassrom } from "../../../hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "../../../hooks/useGetCachedClassromById";
 import { useTriggerClassroomTeacherFormDialog } from "./useTriggerClassroomTeacherFormDialog";
 import { forceRefetchMyClassroomUsers } from "@/modules/classroom/utils/forceRefetchMyClassroomUsers";
 import { updateCachedClassroomUserDetail } from "@/modules/classroom/utils/updateCachedClassroomUserDatail";
@@ -34,7 +34,7 @@ export const useClassromTeacherFormDialog = () => {
 
   const { loggedUser } = useLoggedUser();
 
-  const { cachedClassroom: classroom } = useGetCachedClassrom(
+  const { cachedClassroom: classroom } = useGetCachedClassromById(
     params?.classroomId!,
   );
 

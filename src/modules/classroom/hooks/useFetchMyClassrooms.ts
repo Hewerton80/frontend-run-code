@@ -4,11 +4,24 @@ import { IClassroom } from "@/modules/classroom/classroomType";
 import { classroomQueryKeyFactory } from "@/modules/classroom/utils/classroomQueryKeyFactory";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
-/**
- * Busca as turmas do usuário logado (/classroom/me).
- * Semeia o cache individual de cada turma para navegação cache-first.
- * Suporta cancelamento automático via AbortSignal.
- */
+export interface FetchMyClassroomsResponse {
+  author: {
+    name: string;
+    email: string;
+  };
+  uuid: string;
+  status: number;
+  createdAt: string;
+  name: string;
+  languages: string;
+  description: string | null;
+  color: string;
+  emoji: string;
+  totalExercisesCount: number;
+  contentVersion: number;
+  createdBy: number;
+}
+
 export const useFetchMyClassrooms = () => {
   const { apiBase } = useAxios();
 
@@ -20,7 +33,7 @@ export const useFetchMyClassrooms = () => {
   } = useQuery({
     queryKey: classroomQueryKeyFactory.myClassrooms(),
     queryFn: async ({ signal }) => {
-      const { data: response } = await apiBase.get<IClassroom[]>(
+      const { data: response } = await apiBase.get<FetchMyClassroomsResponse[]>(
         "/classroom/me",
         { signal },
       );
@@ -28,8 +41,8 @@ export const useFetchMyClassrooms = () => {
       // Semeia o cache individual de cada turma para navegação cache-first
       response?.forEach((classroom) => {
         if (classroom.uuid) {
-          setItemInCache<IClassroom>(
-            classroomQueryKeyFactory.card(classroom.uuid),
+          setItemInCache<FetchMyClassroomsResponse>(
+            classroomQueryKeyFactory.menuItem(classroom.uuid),
             classroom,
           );
         }

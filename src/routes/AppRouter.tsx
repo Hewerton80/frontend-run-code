@@ -9,12 +9,13 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTE_PATTERNS } from "./routes";
 
 // ── Layouts ───────────────────────────────────────────────────────────────
-import InLayoutPage from "@/pages/InLayoutPage";
+import InLayoutPage from "@/components/layouts/InLayout";
+const AuthLayout = lazy(() => import("@/components/layouts/AuthLayout"));
 import { Spinner } from "@/components/ui/feedback/Spinner";
+import AuthenticatedLayout from "@/components/layouts/AuthenticatedLayout";
 
 // ── Auth ──────────────────────────────────────────────────────────────────
 const AuthLoginPage = lazy(() => import("@/pages/AuthLoginPage"));
-const AuthLayout = lazy(() => import("@/pages/AuthLayout"));
 
 // ── Geral ─────────────────────────────────────────────────────────────────
 const HomePage = lazy(() => import("@/pages/HomePage"));
@@ -90,72 +91,83 @@ const router = createBrowserRouter([
         element: <InLayoutPage />,
         children: [
           {
-            path: ROUTE_PATTERNS.HOME,
-            element: <SuspenseWrapper element={<HomePage />} />,
-          },
-          {
-            path: ROUTE_PATTERNS.EXERCISES,
-            element: <SuspenseWrapper element={<ExercisesPage />} />,
-          },
-          {
-            path: ROUTE_PATTERNS.EXERCISE_DETAIL,
-            element: <SuspenseWrapper element={<ExercisePage />} />,
-          },
-          {
-            path: ROUTE_PATTERNS.PLAYGROUND,
-            element: <SuspenseWrapper element={<PlayGroundPage />} />,
-          },
-          // ── Rotas protegidas: SUPER_ADMIN ──────────────────────────────
-          {
-            element: <ProtectedRoute roles={["SUPER_ADMIN"]} />,
+            element: <AuthenticatedLayout />,
             children: [
               {
-                path: ROUTE_PATTERNS.USERS,
-                element: <SuspenseWrapper element={<UsersPage />} />,
+                path: ROUTE_PATTERNS.HOME,
+                element: <SuspenseWrapper element={<HomePage />} />,
               },
               {
-                path: ROUTE_PATTERNS.CLASSROOMS,
-                element: <SuspenseWrapper element={<ClassroomsPage />} />,
+                path: ROUTE_PATTERNS.EXERCISES,
+                element: <SuspenseWrapper element={<ExercisesPage />} />,
               },
               {
-                path: ROUTE_PATTERNS.LISTS,
-                element: <SuspenseWrapper element={<ListPage />} />,
-              },
-            ],
-          },
-          // ── Rotas protegidas: SUPER_ADMIN + TEACHER ────────────────────
-          {
-            element: <ProtectedRoute roles={["SUPER_ADMIN", "TEACHER"]} />,
-            children: [
-              {
-                path: ROUTE_PATTERNS.EXERCISES_CREATE,
-                element: <SuspenseWrapper element={<CreateExercisePage />} />,
+                path: ROUTE_PATTERNS.EXERCISE_DETAIL,
+                element: <SuspenseWrapper element={<ExercisePage />} />,
               },
               {
-                path: ROUTE_PATTERNS.EXERCISES_EDIT,
-                element: <SuspenseWrapper element={<EditExercisePage />} />,
+                path: ROUTE_PATTERNS.PLAYGROUND,
+                element: <SuspenseWrapper element={<PlayGroundPage />} />,
               },
-            ],
-          },
-          // ── Classroom (layout aninhado) ────────────────────────────────
-          {
-            path: ROUTE_PATTERNS.CLASSROOM,
-            element: <SuspenseWrapper element={<ClassroomLayoutPage />} />,
-            children: [
+              // ── Rotas protegidas: SUPER_ADMIN ──────────────────────────────
               {
-                path: ROUTE_PATTERNS.CLASSROOM_LISTS,
-                element: <SuspenseWrapper element={<ClassroomListsPage />} />,
+                element: <ProtectedRoute roles={["SUPER_ADMIN"]} />,
+                children: [
+                  {
+                    path: ROUTE_PATTERNS.USERS,
+                    element: <SuspenseWrapper element={<UsersPage />} />,
+                  },
+                  {
+                    path: ROUTE_PATTERNS.CLASSROOMS,
+                    element: <SuspenseWrapper element={<ClassroomsPage />} />,
+                  },
+                  {
+                    path: ROUTE_PATTERNS.LISTS,
+                    element: <SuspenseWrapper element={<ListPage />} />,
+                  },
+                ],
               },
+              // ── Rotas protegidas: SUPER_ADMIN + TEACHER ────────────────────
               {
-                path: ROUTE_PATTERNS.CLASSROOM_LIST_EXERCISE,
-                element: (
-                  <SuspenseWrapper element={<ClassroomExercisePage />} />
-                ),
+                element: <ProtectedRoute roles={["SUPER_ADMIN", "TEACHER"]} />,
+                children: [
+                  {
+                    path: ROUTE_PATTERNS.EXERCISES_CREATE,
+                    element: (
+                      <SuspenseWrapper element={<CreateExercisePage />} />
+                    ),
+                  },
+                  {
+                    path: ROUTE_PATTERNS.EXERCISES_EDIT,
+                    element: <SuspenseWrapper element={<EditExercisePage />} />,
+                  },
+                ],
               },
+              // ── Classroom (layout aninhado) ────────────────────────────────
+              {
+                path: ROUTE_PATTERNS.CLASSROOM,
+                element: <SuspenseWrapper element={<ClassroomLayoutPage />} />,
+                children: [
+                  {
+                    path: ROUTE_PATTERNS.CLASSROOM_LISTS,
+                    element: (
+                      <SuspenseWrapper element={<ClassroomListsPage />} />
+                    ),
+                  },
+                  {
+                    path: ROUTE_PATTERNS.CLASSROOM_LIST_EXERCISE,
+                    element: (
+                      <SuspenseWrapper element={<ClassroomExercisePage />} />
+                    ),
+                  },
 
-              {
-                path: ROUTE_PATTERNS.CLASSROOM_USERS,
-                element: <SuspenseWrapper element={<ClassroomUsersPage />} />,
+                  {
+                    path: ROUTE_PATTERNS.CLASSROOM_USERS,
+                    element: (
+                      <SuspenseWrapper element={<ClassroomUsersPage />} />
+                    ),
+                  },
+                ],
               },
             ],
           },

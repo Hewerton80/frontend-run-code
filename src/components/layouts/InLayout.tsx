@@ -10,6 +10,7 @@ import { RoleUser } from "@/modules/user/userTypets";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useFetchPoolingSubmissionsResult } from "@/modules/submission/hooks/useFetchPoolingSubmissionsResult";
+import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 
 export default function InLayoutPage() {
   const { logout } = useLogout();
@@ -30,14 +31,17 @@ export default function InLayoutPage() {
     fetchMe();
   }, [fetchMe, loggedUser, access_token, logout]);
 
-  useEffect(() => {
-    if (errorUser) logout();
-  }, [errorUser, logout]);
+  // useEffect(() => {
+  //   if (errorUser) logout();
+  // }, [errorUser, logout]);
 
   if (isErrorUser) {
     return (
       <div className="flex items-center justify-center flex-col min-h-screen">
-        <FeedBackError onTryAgain={fetchMe} />
+        <ApiErrorState
+          message={errorUser?.message || "Ops... Aconteceu um erro inesperado"}
+          onRetry={fetchMe}
+        />
       </div>
     );
   }

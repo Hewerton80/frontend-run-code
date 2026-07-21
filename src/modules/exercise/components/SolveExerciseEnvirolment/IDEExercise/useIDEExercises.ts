@@ -4,7 +4,7 @@ import { useCreateSubmission } from "@/modules/submission/hooks/useCreateSubmiss
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
-import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCachedClassromById";
 import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
 
 export const useIDEExercise = (exercise: IExercise) => {
@@ -13,7 +13,7 @@ export const useIDEExercise = (exercise: IExercise) => {
     classroomId?: string;
   }>();
 
-  const { cachedClassroom: classroom } = useGetCachedClassrom(
+  const { cachedClassroom: classroom } = useGetCachedClassromById(
     params?.classroomId!,
   );
 

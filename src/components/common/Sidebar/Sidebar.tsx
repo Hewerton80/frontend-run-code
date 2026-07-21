@@ -5,8 +5,16 @@ import { GoSidebarExpand } from "react-icons/go";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { useSideBar } from "@/hooks/useSideBar";
 import { useGetSidebarMenuItems } from "@/modules/auth/hooks/useGetSidebarMenuItems";
-import { forwardRef, useMemo } from "react";
+import { forwardRef, memo, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/routes/routes";
+import { cn } from "@/utils/cn";
+import { Home } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { useGetCachedMyClassrooms } from "@/modules/classroom/hooks/useGetCachedMyClassroms";
+import { useGetCachedMyClassroomMenuItem } from "@/modules/classroom/hooks/useGetCachedMyClassroomMenuItem";
+import { Avatar } from "@/components/ui/dataDisplay/Avatar";
+import { emojis } from "@/utils/emojis";
 
 export const SideBarItems = forwardRef((_, ref?: any) => {
   const { sidebarMenuItems } = useGetSidebarMenuItems();
@@ -59,6 +67,29 @@ export const SideBarItems = forwardRef((_, ref?: any) => {
   );
 });
 
+interface SideBarItemProps {
+  classroomUuid: string;
+}
+
+const SideBarItem = memo(({ classroomUuid }: SideBarItemProps) => {
+  const { cachedMenuItemClassroom } =
+    useGetCachedMyClassroomMenuItem(classroomUuid);
+
+  return (
+    <Link to={ROUTES.CLASSROOM_LISTS(classroomUuid)}>
+      <Avatar
+        name={cachedMenuItemClassroom?.name}
+        bgColor={cachedMenuItemClassroom?.color}
+        emoji={emojis[parseInt(cachedMenuItemClassroom?.emoji)]}
+        withHoverAnimation
+        hideRing
+        size={44}
+      />
+    </Link>
+  );
+});
+SideBarItem.displayName = "SideBarItem";
+
 export function Sidebar() {
   // const {
   //   sideBarWidth,
@@ -66,108 +97,33 @@ export function Sidebar() {
   //   setResizingSideBar,
   //   setSideBarWidth,
   // } = useSideBar();
-  const { showOnlyIcons, toggleOnlyIcons } = useSideBar();
-
-  const sideBarWidth = showOnlyIcons ? 56 : 208;
-
-  const sideBarElement = useMemo(() => {
-    return (
-      <aside
-        className={twMerge(
-          "flex flex-col bg-sidebar-background shadow-xs py-2 border-r",
-          "duration-100 ease-linear overflow-hidden",
-          // "border-r dark:border-muted"
-        )}
-        style={{ width: sideBarWidth }}
-      >
-        {/* <Resizable
-          className={twMerge(
-            "flex flex-col duration-100 ease-linear overflow-hidden",
-            "border-card dark:border-card/70"
-          )}
-          enable={{ right: !showOnlyIcons }}
-          size={{
-            width: showOnlyIcons ? 56 : sideBarWidth,
-            height: "100vh",
-          }}
-          onResizeStart={() => setResizingSideBar(true)}
-          onResizeStop={(e, direction, ref, d) => {
-            setResizingSideBar(false);
-            setSideBarWidth(sideBarWidth + d.width);
-          }}
-          handleWrapperClass={twMerge(
-            "[&>div]:duration-100 [&>div]:ease-linear",
-            "[&>div]:border-r-8 [&>div]:border-r-card dark:[&>div]:border-r-card/70",
-            "hover:[&>div]:border-r-primary",
-            resizingSideBar && "[&>div]:border-r-primary"
-          )}
-        > */}
-        {/* <div className="flex items-center px-6 gap-3 h-20 w-full">
-           <Image
-              src="/images/logo-1.png"
-              alt="logo"
-              width={52}
-              height={52}
-              priority
-            />
-            <Image
-              className={twMerge(
-                "dark:brightness-[35.5]",
-                "h-6",
-                showOnlyIcons ? "hidden" : "block"
-              )}
-              src="/images/logo-2.png"
-              alt="logo2"
-              width={108}
-              height={24}
-              priority
-            /> 
-        </div>*/}
-        <div
-          className={twMerge(
-            "flex px-2",
-            showOnlyIcons
-              ? "justify-center rotate-180"
-              : "justify-end rotate-0",
-          )}
-        >
-          <Tooltip
-            textContent={showOnlyIcons ? "Expandir menu" : "Recolher menu"}
-            // align={showOnlyIcons?'':"center"}
-            side={showOnlyIcons ? "right" : "bottom"}
-          >
-            <IconButton
-              onClick={toggleOnlyIcons}
-              variantStyle="dark-ghost"
-              icon={<GoSidebarExpand className="text-4xl" />}
-            />
-          </Tooltip>
-        </div>
-        <nav className="flex w-full h-full">
-          <SideBarItems />
-        </nav>
-        {/* </Resizable> */}
-      </aside>
-    );
-  }, [sideBarWidth, showOnlyIcons, toggleOnlyIcons]);
+  const { cachedClassrooms } = useGetCachedMyClassrooms();
 
   return (
-    <>
-      {/* {showSideBar && (
-        <div
-          className="block md:hidden fixed inset-0 bg-black/50 z-9998"
-          onClick={() => setShowSideBar(false)}
-        />
-      )} */}
-      <Slot className="hidden md:flex">{sideBarElement}</Slot>
-      {/* <Slot
-        className={twMerge(
-          "flex md:hidden fixed top-0 left-0 -translate-x-full z-9999",
-          showSideBar && "translate-x-0"
-        )}
-      >
-        {sideBarElement}
-      </Slot> */}
-    </>
+    <aside
+      className={twMerge(
+        "hidden md:flex sticky top-14 h-[calc(100vh-3.75rem)] w-18 shrink-0",
+        "gap-2 border-r border-border/70 bg-background/60 pb-4",
+      )}
+    >
+      <nav className="flex flex-col items-center w-full gap-2">
+        <Link
+          to={ROUTES.HOME}
+          className={cn(
+            "group mt-4 relative grid h-11 w-11 place-items-center rounded-full transition shrink-0",
+            "bg-primary text-primary-foreground hover:rounded-xl",
+          )}
+        >
+          <Home className="h-5 w-5" />
+        </Link>
+        <Separator className="h-1 max-w-11" />
+        {cachedClassrooms.map((classroom) => (
+          <SideBarItem
+            key={`classroom-${classroom.uuid}`}
+            classroomUuid={classroom.uuid}
+          />
+        ))}
+      </nav>
+    </aside>
   );
 }

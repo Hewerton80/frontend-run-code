@@ -5,7 +5,7 @@ import {
 } from "../../hooks/useFetchClassroomUsers";
 import { useMemo } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
-import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "../../hooks/useGetCachedClassromById";
 import { usePagination } from "@/hooks/usePagination";
 
 export const useClassroomUsers = () => {
@@ -22,7 +22,7 @@ export const useClassroomUsers = () => {
     classroomUsersError,
   } = useFetchClassroomUsers(params?.classroomId!, paginationParams);
 
-  const { cachedClassroom } = useGetCachedClassrom(params?.classroomId!);
+  const { cachedClassroom } = useGetCachedClassromById(params?.classroomId!);
 
   const canAddTeacher = useMemo(() => {
     return cachedClassroom?.myClassroomPermissions?.canManageTeachers;

@@ -1,19 +1,11 @@
-import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { memo } from "react";
 
 interface ExerciseCardTopBarProps {
-  title: string;
+  ex: IExercise;
 }
 
-export const ExerciseCardTopBar = memo(({ title }: ExerciseCardTopBarProps) => {
-  return (
-    <div className="relative z-10 flex items-center justify-between gap-2">
-      <Tooltip textContent={title} align="center">
-        <span className="line-clamp-1 text-[13px] font-semibold tracking-tight text-white">
-          {title}
-        </span>
-      </Tooltip>
-    </div>
-  );
+export const ExerciseCardTopBar = memo(({ ex }: ExerciseCardTopBarProps) => {
+  return <div className="z-10 flex items-center justify-end mb-2"></div>;
 });
 ExerciseCardTopBar.displayName = "ExerciseCardTopBar";

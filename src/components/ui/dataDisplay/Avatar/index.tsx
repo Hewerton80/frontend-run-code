@@ -12,6 +12,8 @@ export interface AvatarProps {
   name: string;
   className?: string;
   emoji?: string;
+  hideRing?: boolean;
+  withHoverAnimation?: boolean;
 }
 
 export const Avatar = memo(
@@ -23,6 +25,8 @@ export const Avatar = memo(
     className,
     size = 40,
     emoji,
+    hideRing,
+    withHoverAnimation,
   }: AvatarProps) => {
     const initials = useMemo(() => {
       const names = name.split(" ");
@@ -46,13 +50,14 @@ export const Avatar = memo(
         className={cn(
           "inline-flex items-center justify-center shrink-0",
           "rounded-full select-none align-middle",
+          withHoverAnimation && "hover:rounded-xl",
           className,
         )}
         style={{
           width: size,
           height: size,
           background: `linear-gradient(135deg, ${bg}, oklch(0.45 0.2 ${hue + 30}))`,
-          boxShadow: `0 0 0 2px ${ring}`,
+          boxShadow: hideRing ? undefined : `0 0 0 2px ${ring}`,
         }}
       >
         {src && (

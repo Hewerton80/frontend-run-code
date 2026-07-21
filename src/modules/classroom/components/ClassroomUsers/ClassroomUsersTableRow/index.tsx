@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { Table } from "@/components/ui/dataDisplay/Table";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
-import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCachedClassromById";
 import { useGetCachedClassroomUser } from "@/modules/classroom/hooks/useGetCachedClassroomUser";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
 import { RoleUser, RoleUserEnum } from "@/modules/user/userTypets";
@@ -17,7 +17,7 @@ export const ClassroomUsersTableRow = memo(
   ({ userUuid }: IClassroomUsersTableRowProps) => {
     const { cachedClassroomUser: user } = useGetCachedClassroomUser(userUuid);
     const params = useParams<{ classroomId: string }>();
-    const { cachedClassroom: classroom } = useGetCachedClassrom(
+    const { cachedClassroom: classroom } = useGetCachedClassromById(
       params?.classroomId!,
     );
     const { loggedUser } = useLoggedUser();

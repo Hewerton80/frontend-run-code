@@ -1,12 +1,12 @@
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { ClassroomListsTable } from "@/modules/list/components/ClassroomListsTable";
 import { useParams } from "react-router-dom";
-import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "../../hooks/useGetCachedClassromById";
 
 export function ClassroomLists() {
   const params = useParams<{ classroomId: string }>();
 
-  const { cachedClassroom } = useGetCachedClassrom(params?.classroomId!);
+  const { cachedClassroom } = useGetCachedClassromById(params?.classroomId!);
 
   return (
     <>

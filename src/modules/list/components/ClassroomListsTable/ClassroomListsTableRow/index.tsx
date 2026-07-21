@@ -66,6 +66,7 @@ export const ClassroomListsTableRow = memo(
         </div>,
         loggedUser?.role === RoleUser.STUDENT ? (
           <>
+            {/* TODO substituir por troves */}
             <div className="flex flex-1 items-center gap-2">
               <ProgressBar value={progress} />
               <span className="text-xs text-muted-foreground">

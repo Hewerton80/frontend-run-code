@@ -29,8 +29,8 @@ export const classroomQueryKeyFactory = {
     [ClassroomQueryKeys.Classroom, classroomId] as const,
   row: (classroomId?: string | null) =>
     [ClassroomQueryKeys.ClassroomRow, classroomId] as const,
-  card: (classroomId?: string) =>
-    [ClassroomQueryKeys.ClassroomCard, classroomId] as const,
+  menuItem: (classroomId?: string) =>
+    [ClassroomQueryKeys.ClassroomMenuItem, classroomId] as const,
 
   /** Lista de usuários de uma turma */
   users: (classroomId: string, params?: IFetchClassroomUsersParams) =>

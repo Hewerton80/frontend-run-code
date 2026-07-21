@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useGetCachedClassrom } from "../../hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "../../hooks/useGetCachedClassromById";
 import { Card } from "@/components/ui/cards/Card";
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
 import { emojis } from "@/utils/emojis";
@@ -11,7 +11,8 @@ import { ClassroomHeroStat } from "./ClassroomHeroStat";
 
 export const ClassroomHero = memo(
   ({ classroomUuid }: { classroomUuid: string }) => {
-    const { cachedClassroom: classroom } = useGetCachedClassrom(classroomUuid);
+    const { cachedClassroom: classroom } =
+      useGetCachedClassromById(classroomUuid);
     const { loggedUser } = useLoggedUser();
 
     const completedExercises = classroom?.userStats?.completedExercises;

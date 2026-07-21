@@ -1,7 +1,7 @@
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useGetCachedClassrom } from "@/modules/classroom/hooks/useGetCachedClassrom";
+import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCachedClassromById";
 import { useFetchListsByClassromUuid } from "../../hooks/useFetchListsByClassromUuid";
 
 export const useClassroomListsTable = () => {
@@ -9,7 +9,7 @@ export const useClassroomListsTable = () => {
 
   const params = useParams<{ classroomId: string }>();
 
-  const { cachedClassroom: classroom } = useGetCachedClassrom(
+  const { cachedClassroom: classroom } = useGetCachedClassromById(
     params?.classroomId!,
   );
   const {
