@@ -8,6 +8,9 @@ export interface FetchMyClassroomsResponse {
   author: {
     name: string;
     email: string;
+    surname: string;
+    avatarBgColor: string;
+    avatarUrl?: string;
   };
   uuid: string;
   status: number;

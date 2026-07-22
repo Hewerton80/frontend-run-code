@@ -14,7 +14,7 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl",
-        "py-1 h-15",
+        "h-15",
       )}
     >
       <div className="flex items-center w-full h-full px-8 sm:px-16 justify-between">

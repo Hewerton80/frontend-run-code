@@ -61,46 +61,41 @@ export const ClassroomListsTable = () => {
         )}
       </div>
 
-      <div className="flex overflow-auto">
-        <CustomDataTable
-          columns={[
-            "Nome",
-            ...(loggedUser?.role === RoleUser.STUDENT ? ["Progresso"] : []),
-            ...(loggedUser?.role === RoleUser.TEACHER
-              ? ["N° de exercícios"]
-              : []),
-            "",
-          ]}
-          errorMessage={
-            listsOfClassroomError?.message
-              ? listsOfClassroomError?.message ||
-                "Ocorreu um erro ao buscar as listas da turma"
-              : undefined
-          }
-          onRetry={refetchListsOfClassroom}
-          isLoading={isFetchingListsOfClassroom}
-          data={listIdsOfClassroom}
-          idExtractor={(listId) => listId.toString()}
-          renderEmptyState={() => (
-            <EmptyState
-              size="sm"
-              illustration={<ScrollIllustration size={200} />}
-              title="Nenhuma lista criada"
-              message={
-                RoleUser.TEACHER
-                  ? "Crie uma lista para começar a adicionar exercícios."
-                  : "Quando o professor publicar uma lista, ela aparecerá aqui."
-              }
-            />
-          )}
-          renderItem={({ item }) => (
-            <ClassroomListsTableRow
-              key={`${item}-list-exercise`}
-              listId={item}
-            />
-          )}
-        />
-      </div>
+      <CustomDataTable
+        columns={[
+          "Nome",
+          ...(loggedUser?.role === RoleUser.STUDENT ? ["Progresso"] : []),
+          ...(loggedUser?.role === RoleUser.TEACHER
+            ? ["N° de exercícios"]
+            : []),
+          "",
+        ]}
+        errorMessage={
+          listsOfClassroomError?.message
+            ? listsOfClassroomError?.message ||
+              "Ocorreu um erro ao buscar as listas da turma"
+            : undefined
+        }
+        onRetry={refetchListsOfClassroom}
+        isLoading={isFetchingListsOfClassroom}
+        data={listIdsOfClassroom}
+        idExtractor={(listId) => listId.toString()}
+        renderEmptyState={() => (
+          <EmptyState
+            size="sm"
+            illustration={<ScrollIllustration size={200} />}
+            title="Nenhuma lista criada"
+            message={
+              RoleUser.TEACHER
+                ? "Crie uma lista para começar a adicionar exercícios."
+                : "Quando o professor publicar uma lista, ela aparecerá aqui."
+            }
+          />
+        )}
+        renderItem={({ item }) => (
+          <ClassroomListsTableRow key={`${item}-list-exercise`} listId={item} />
+        )}
+      />
       <ClassroomListForm.Drawer />
       <EditExercisesOfList.Drawer />
       <ClassroomForm.Drawer />

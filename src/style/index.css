@@ -29,6 +29,7 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
+  --color-tooltip: var(--tooltip);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -70,6 +71,7 @@
   --card: oklch(0.18 0.02 275);
   --card-foreground: oklch(0.985 0.005 275);
   --popover: oklch(0.18 0.02 275);
+  --tooltip: oklch(26.2% 0.009 285.7);
   --popover-foreground: oklch(0.985 0.005 275);
   --primary: oklch(0.62 0.22 275); /* blurple */
   --primary-foreground: oklch(0.99 0 0);

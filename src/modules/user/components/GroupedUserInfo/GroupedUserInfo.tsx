@@ -3,7 +3,13 @@ import { IUser } from "../../userTypets";
 import { cn } from "@/utils/cn";
 
 interface IGroupedUserInfoProps {
-  user: IUser;
+  user: {
+    name: string;
+    surname: string;
+    email: string;
+    avatarUrl?: string;
+    avatarBgColor?: string;
+  };
   className?: string;
 }
 

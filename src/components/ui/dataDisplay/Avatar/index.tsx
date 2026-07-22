@@ -13,7 +13,6 @@ export interface AvatarProps {
   className?: string;
   emoji?: string;
   hideRing?: boolean;
-  withHoverAnimation?: boolean;
 }
 
 export const Avatar = memo(
@@ -26,7 +25,6 @@ export const Avatar = memo(
     size = 40,
     emoji,
     hideRing,
-    withHoverAnimation,
   }: AvatarProps) => {
     const initials = useMemo(() => {
       const names = name.split(" ");
@@ -47,10 +45,10 @@ export const Avatar = memo(
 
     return (
       <RadixAvatar.Root
+        role="avatar"
         className={cn(
           "inline-flex items-center justify-center shrink-0",
           "rounded-full select-none align-middle",
-          withHoverAnimation && "hover:rounded-xl",
           className,
         )}
         style={{

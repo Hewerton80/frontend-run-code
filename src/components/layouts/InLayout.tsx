@@ -49,7 +49,7 @@ export default function InLayoutPage() {
   if (!loggedUser) return <SplashScreen />;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
       {loggedUser?.role === RoleUser.SUPER_ADMIN ? (
         <SideBarTamplateWrapper>
