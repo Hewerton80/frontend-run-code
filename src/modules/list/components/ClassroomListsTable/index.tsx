@@ -39,13 +39,13 @@ export const ClassroomListsTable = () => {
             <Tooltip
               align="start"
               textContent="Você não tem permissão para criar listas nessa turma"
-              disableHoverableContent={canCreateList}
+              disableHoverableContent={!!canCreateList}
             >
               <span
                 className={!canCreateList ? "cursor-not-allowed" : undefined}
               >
                 <Highlight
-                  active={listIdsOfClassroom?.length === 0 && canCreateList}
+                  active={!!(listIdsOfClassroom?.length === 0 && canCreateList)}
                 >
                   <ClassroomListForm.TriggerButton>
                     <Button disabled={!canCreateList}>Criar Lista</Button>

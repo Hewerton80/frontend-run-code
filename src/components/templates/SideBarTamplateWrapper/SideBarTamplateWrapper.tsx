@@ -11,16 +11,16 @@ export function SideBarTamplateWrapper({
   children,
 }: SideBarTamplateWrapperProps) {
   return (
-    <div className="flex w-full flex-1">
+    <>
       <Sidebar />
       <main
         className={cn(
-          "h-[calc(100vh-3.75rem)] overflow-auto flex flex-1 bg-background min-w-0 px-4 py-6 md:px-8",
+          "h-[calc(100vh-3.75rem)] overflow-auto bg-background min-w-0 px-4 py-6 md:px-8",
         )}
       >
-        <div className="flex flex-1">{children}</div>
+        {children}
       </main>
       <SideBarMembers />
-    </div>
+    </>
   );
 }

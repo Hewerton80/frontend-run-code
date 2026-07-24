@@ -12,18 +12,39 @@ import {
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { memo, useMemo } from "react";
 import { Alert } from "@/components/ui/feedback/Alert";
+import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 
 interface TestCasesResultsDisplayProps {
-  submissionsResult?: SubmissionResultSummary | null;
+  exerciseUuId: string;
 }
 
 export const TestCasesResultsDisplay = memo(
-  ({ submissionsResult }: TestCasesResultsDisplayProps) => {
+  ({ exerciseUuId }: TestCasesResultsDisplayProps) => {
+    const { cachedSubmissionJobs, addCachedSubmissionJob } =
+      useCachedSubmissionJobs();
+
+    const submissionsResponse = useMemo(() => {
+      const foundSubmissionResult = cachedSubmissionJobs.find(
+        (job) => job.exerciseUuId === exerciseUuId,
+      );
+      return foundSubmissionResult;
+    }, [cachedSubmissionJobs, exerciseUuId]);
+    console.log("testCasesResults", submissionsResponse?.isProcessing);
+
+    const isProcessing = useMemo(
+      () => submissionsResponse?.isProcessing,
+      [submissionsResponse],
+    );
+
+    const submissionsResult = useMemo(
+      () => submissionsResponse?.result,
+      [submissionsResponse],
+    );
+
     const testCasesResults = useMemo(
       () => submissionsResult?.testCasesResults,
       [submissionsResult],
     );
-
     if (!submissionsResult) return null;
 
     if (submissionsResult?.status === SubmissionStatus.COMPILATION_ERROR) {

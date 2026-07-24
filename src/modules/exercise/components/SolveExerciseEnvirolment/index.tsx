@@ -23,6 +23,7 @@ import { Diff, Trophy, TrophyIcon, LucideTrophy, Zap } from "lucide-react";
 import { ExerciseDifficultyStars } from "../ExerciseDifficultyStars";
 import { Separator } from "@/components/ui/separator";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
+import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
 
 export const SolveExerciseEnvirolment = () => {
   const params = useParams<{
@@ -88,7 +89,7 @@ export const SolveExerciseEnvirolment = () => {
 
   return (
     <>
-      <div className="flex flex-col size-full gap-4">
+      <div className="flex flex-col w-full gap-4">
         <Breadcrumbs
           isLoading={isFetchingExercise}
           items={getBreadcrumbsItems()}
@@ -108,6 +109,7 @@ export const SolveExerciseEnvirolment = () => {
             <SolveExerciseEnvirolmentActions exercise={exercise} />
           </div>
         </div>
+        {/* <div className="bg-red-500  w-full h-400"></div> */}
 
         <div
           className={cn(
@@ -144,36 +146,38 @@ export const SolveExerciseEnvirolment = () => {
             </div>
           </div>
           <Separator orientation="horizontal" className="h-1" />
-
-          <Resizable.Group>
-            <Resizable.Panel
-              defaultSize={20}
-              minSize={15}
-              className="h-full w-full flex-1/2"
-            >
-              {isFetchingExercise ? (
-                skeleton
-              ) : (
-                <Suspense fallback={skeleton}>
-                  <ExerciseDescription exercise={exercise!} />
-                </Suspense>
-              )}
-            </Resizable.Panel>
-            <Resizable.Handle className="mx-4" withHandle />
-            <Resizable.Panel
-              defaultSize={20}
-              minSize={15}
-              className="flex flex-1/2 w-full flex-col h-full gap-4"
-            >
-              {isFetchingExercise ? (
-                skeleton
-              ) : (
-                <Suspense fallback={skeleton}>
-                  <IDEExercise exercise={exercise!} />
-                </Suspense>
-              )}
-            </Resizable.Panel>
-          </Resizable.Group>
+          <div className="flex flex-col gap-4">
+            <Resizable.Group>
+              <Resizable.Panel
+                defaultSize={20}
+                minSize={15}
+                className="h-full w-full flex-1/2"
+              >
+                {isFetchingExercise ? (
+                  skeleton
+                ) : (
+                  <Suspense fallback={skeleton}>
+                    <ExerciseDescription exercise={exercise!} />
+                  </Suspense>
+                )}
+              </Resizable.Panel>
+              <Resizable.Handle className="mx-4" withHandle />
+              <Resizable.Panel
+                defaultSize={20}
+                minSize={15}
+                className="flex flex-1/2 w-full flex-col h-full gap-4"
+              >
+                {isFetchingExercise ? (
+                  skeleton
+                ) : (
+                  <Suspense fallback={skeleton}>
+                    <IDEExercise exercise={exercise!} />
+                  </Suspense>
+                )}
+              </Resizable.Panel>
+            </Resizable.Group>
+            <TestCasesResultsDisplay exerciseUuId={params?.exerciseId!} />
+          </div>
         </div>
       </div>
       <ExerciseForm.Drawer />

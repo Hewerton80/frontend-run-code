@@ -13,7 +13,7 @@ import { Tabs } from "@/components/ui/navigation/Tabs";
 import { useMemo } from "react";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
+import { TestCasesResultsDisplay } from "../TestCasesResultsDisplay";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -43,7 +43,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
           onChange={changeSourceCode}
         />
         <div className="flex justify-end ">
-          {/* <ButtonGroup> */}
           <Button
             variantStyle="info"
             isLoading={isSubmitting}
@@ -53,8 +52,7 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
             Executar 🚀
           </Button>
         </div>
-        {/* <Button variantStyle="success">Submit</Button> */}
-        {/* </ButtonGroup> */}
+
         {isSubmitting && (
           <div className="pl-0.5 pb-0.5">
             <ThreeDotsLoading />
@@ -63,7 +61,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
         {submitError && (
           <TerminalCode content={submitError?.description || ""} />
         )}
-        <TestCasesResultsDisplay submissionsResult={submissionsResult} />
       </div>
     </>
   );
