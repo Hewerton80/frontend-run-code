@@ -24,8 +24,12 @@ import { ExerciseDifficultyStars } from "../ExerciseDifficultyStars";
 import { Separator } from "@/components/ui/separator";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
+import { useSidebarMembers } from "@/modules/classroom/components/SidebarMembers/useSidebarMembers";
+import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
 
 export const SolveExerciseEnvirolment = () => {
+  const { setShowSidebarMembers } = useSidebarMembers();
+
   const params = useParams<{
     classroomId?: string;
     listId?: string;
@@ -51,6 +55,10 @@ export const SolveExerciseEnvirolment = () => {
   useEffect(() => {
     refetchExercise();
   }, [refetchExercise]);
+
+  useEffect(() => {
+    setShowSidebarMembers(false);
+  }, [setShowSidebarMembers]);
 
   const skeleton = (
     <div className="p-4">

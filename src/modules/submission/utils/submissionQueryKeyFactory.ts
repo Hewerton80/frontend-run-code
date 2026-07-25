@@ -8,4 +8,6 @@ import { SubmissionQueryKeys } from "@/modules/submission/submissionType";
 export const submissionQueryKeyFactory = {
   /** Jobs de submissão do usuário logado */
   jobs: () => [SubmissionQueryKeys.Jobs] as const,
+  createSubmission: (exerciseUuId: string) =>
+    [SubmissionQueryKeys.CreateSubmission, exerciseUuId] as const,
 };

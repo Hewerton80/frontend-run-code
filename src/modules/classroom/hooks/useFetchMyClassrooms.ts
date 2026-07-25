@@ -25,7 +25,13 @@ export interface FetchMyClassroomsResponse {
   createdBy: number;
 }
 
-export const useFetchMyClassrooms = () => {
+interface UseFetchMyClassroomsProps {
+  enabled?: boolean;
+}
+
+export const useFetchMyClassrooms = ({
+  enabled,
+}: UseFetchMyClassroomsProps) => {
   const { apiBase } = useAxios();
 
   const {
@@ -53,7 +59,7 @@ export const useFetchMyClassrooms = () => {
 
       return response ?? [];
     },
-    enabled: true,
+    enabled: !!enabled,
     retry: 0,
   });
 

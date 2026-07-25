@@ -1,14 +1,9 @@
 import { useAxios } from "@/hooks/useAxios";
-import { IUser } from "@/modules/user/userTypets";
 import { useQuery } from "@tanstack/react-query";
-import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
+import { LoggedUser, useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useEffect } from "react";
 import { authQueryKeyFactory } from "@/modules/auth/utils/authQueryKeyFactory";
 
-/**
- * Busca o usuário autenticado (/auth/me) e sincroniza com o store Zustand.
- * Executado manualmente via `fetchMe()` — não dispara automaticamente.
- */
 export const useAuth = () => {
   const { apiBase } = useAxios();
   const { setLoggedUser } = useLoggedUser();
@@ -23,15 +18,8 @@ export const useAuth = () => {
     queryKey: authQueryKeyFactory.me(),
     enabled: false,
     retry: 0,
-    queryFn: ({ signal }): Promise<IUser | null> =>
-      apiBase.get<IUser | null>("/auth/me", { signal }).then((res) =>
-        res.data
-          ? {
-              ...res.data,
-              username: `${res.data.name} ${res.data.surname}`,
-            }
-          : null,
-      ),
+    queryFn: ({ signal }) =>
+      apiBase.get<LoggedUser>("/auth/me", { signal }).then((res) => res.data),
   });
 
   useEffect(() => {

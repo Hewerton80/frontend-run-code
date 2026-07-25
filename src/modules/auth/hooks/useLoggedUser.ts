@@ -1,19 +1,31 @@
-import { IUser } from "@/modules/user/userTypets";
+import { RoleUser } from "@/modules/user/userTypets";
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
+export interface LoggedUser {
+  uuid: string;
+  name: string;
+  surname: string;
+  email: string;
+  avatarUrl: string;
+  avatarBgColor: string;
+  role: RoleUser;
+  createdAt: string;
+  username: string;
+}
+
 type State = {
-  loggedUser?: IUser | null;
+  loggedUser?: LoggedUser | null;
 };
 
 type Actions = {
-  setLoggedUser: (User: IUser | null) => void;
+  setLoggedUser: (User: LoggedUser | null) => void;
 };
 
 export const useLoggedUserStore = create<State & Actions>((set) => ({
   loggedUser: undefined,
 
-  setLoggedUser: (loggedUser: IUser | null) => set(() => ({ loggedUser })),
+  setLoggedUser: (loggedUser: LoggedUser | null) => set(() => ({ loggedUser })),
 }));
 
 export const useLoggedUser = () => {

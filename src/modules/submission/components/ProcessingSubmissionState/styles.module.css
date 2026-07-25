@@ -1,0 +1,23 @@
+@keyframes star-drift {
+  0% {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-40px);
+    opacity: 0.5;
+  }
+}
+
+.animate-star-drift {
+  animation: star-drift 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-star-drift {
+    animation: none;
+  }
+}

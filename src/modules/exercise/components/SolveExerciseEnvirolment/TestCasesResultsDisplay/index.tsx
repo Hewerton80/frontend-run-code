@@ -10,9 +10,12 @@ import {
   SubmissionStatus,
 } from "@/modules/submission/submissionType";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
+import { useMutationState } from "@tanstack/react-query";
+import { useGetCreateSubmissionState } from "@/modules/submission/hooks/useGetCreateSubmissionState";
+import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
 
 interface TestCasesResultsDisplayProps {
   exerciseUuId: string;
@@ -20,8 +23,10 @@ interface TestCasesResultsDisplayProps {
 
 export const TestCasesResultsDisplay = memo(
   ({ exerciseUuId }: TestCasesResultsDisplayProps) => {
-    const { cachedSubmissionJobs, addCachedSubmissionJob } =
-      useCachedSubmissionJobs();
+    const createSubmissionMutationState =
+      useGetCreateSubmissionState(exerciseUuId);
+
+    const { cachedSubmissionJobs } = useCachedSubmissionJobs();
 
     const submissionsResponse = useMemo(() => {
       const foundSubmissionResult = cachedSubmissionJobs.find(
@@ -29,31 +34,37 @@ export const TestCasesResultsDisplay = memo(
       );
       return foundSubmissionResult;
     }, [cachedSubmissionJobs, exerciseUuId]);
-    console.log("testCasesResults", submissionsResponse?.isProcessing);
 
     const isProcessing = useMemo(
-      () => submissionsResponse?.isProcessing,
-      [submissionsResponse],
+      () =>
+        submissionsResponse?.isProcessing ||
+        createSubmissionMutationState?.status === "pending",
+      [submissionsResponse, createSubmissionMutationState],
     );
 
-    const submissionsResult = useMemo(
+    const submissionsResultSummary = useMemo(
       () => submissionsResponse?.result,
       [submissionsResponse],
     );
 
     const testCasesResults = useMemo(
-      () => submissionsResult?.testCasesResults,
-      [submissionsResult],
+      () => submissionsResultSummary?.testCasesResults,
+      [submissionsResultSummary],
     );
-    if (!submissionsResult) return null;
 
-    if (submissionsResult?.status === SubmissionStatus.COMPILATION_ERROR) {
+    if (isProcessing) return <ProcessingSubmissionState />;
+
+    if (!submissionsResultSummary) return null;
+
+    if (
+      submissionsResultSummary?.status === SubmissionStatus.COMPILATION_ERROR
+    ) {
       return <TerminalCode content={testCasesResults?.[0]?.output || ""} />;
     }
 
     return (
       <>
-        {submissionsResult?.score === 1 && (
+        {submissionsResultSummary?.score === 1 && (
           <Alert.Root variant="success" hideIcon>
             <Alert.Title>Parabéns! 🎉</Alert.Title>
             <Alert.Description>

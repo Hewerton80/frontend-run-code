@@ -1,6 +1,4 @@
 import { Header } from "@/components/common/Header";
-import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
-import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { SplashScreen } from "@/components/ui/feedback/SplashScreen";
 import { useSessionStorage } from "@/hooks/useSessionStorage";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
@@ -11,11 +9,23 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useFetchPoolingSubmissionsResult } from "@/modules/submission/hooks/useFetchPoolingSubmissionsResult";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
+import { useFetchMyClassrooms } from "@/modules/classroom/hooks/useFetchMyClassrooms";
 
 export default function InLayoutPage() {
   const { logout } = useLogout();
   const [access_token] = useSessionStorage("access_token");
   const { loggedUser } = useLoggedUser();
+
+  const {
+    myClassroomsRecords: classrooms,
+    myClassroomsError: errorClassrooms,
+    isFetchingMyClassrooms: isLoadingClassrooms,
+    refetchMyClassrooms: refetchClassrooms,
+  } = useFetchMyClassrooms({
+    enabled:
+      loggedUser?.role === RoleUser.STUDENT ||
+      loggedUser?.role === RoleUser.TEACHER,
+  });
 
   const { fetchMe, errorUser, isErrorUser } = useAuth();
 
@@ -31,9 +41,9 @@ export default function InLayoutPage() {
     fetchMe();
   }, [fetchMe, loggedUser, access_token, logout]);
 
-  // useEffect(() => {
-  //   if (errorUser) logout();
-  // }, [errorUser, logout]);
+  if (!loggedUser || !classrooms || isLoadingClassrooms) {
+    return <SplashScreen />;
+  }
 
   if (isErrorUser) {
     return (
@@ -46,20 +56,27 @@ export default function InLayoutPage() {
     );
   }
 
-  if (!loggedUser) return <SplashScreen />;
+  if (errorClassrooms) {
+    return (
+      <div className="flex items-center justify-center flex-col min-h-screen">
+        <ApiErrorState
+          title="Erro ao carregar suas turmas"
+          onRetry={refetchClassrooms}
+          message={
+            errorClassrooms.message || "Ops... Aconteceu um erro inesperado"
+          }
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      {loggedUser?.role === RoleUser.SUPER_ADMIN ? (
-        <SideBarTamplateWrapper>
-          <Outlet />
-        </SideBarTamplateWrapper>
-      ) : (
-        <div className="flex flex-1 h-full w-full">
-          <Outlet />
-        </div>
-      )}
+
+      <div className="flex h-full w-full">
+        <Outlet />
+      </div>
     </div>
   );
 }

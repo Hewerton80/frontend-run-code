@@ -27,7 +27,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
     isSubmitting,
     submitError,
     avaliableLanguages,
-    submissionsResult,
     createSubmission,
     changeSourceCode,
   } = useIDEExercise(exercise);
@@ -53,11 +52,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
           </Button>
         </div>
 
-        {isSubmitting && (
-          <div className="pl-0.5 pb-0.5">
-            <ThreeDotsLoading />
-          </div>
-        )}
         {submitError && (
           <TerminalCode content={submitError?.description || ""} />
         )}

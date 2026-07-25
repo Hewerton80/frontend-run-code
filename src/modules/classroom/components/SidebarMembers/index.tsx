@@ -9,8 +9,11 @@ import {
 import { IUser, RoleUser } from "@/modules/user/userTypets";
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
+import { useSidebarMembers } from "./useSidebarMembers";
 
 export const SideBarMembers = memo(() => {
+  const { showSidebarMembers } = useSidebarMembers();
+
   const params = useParams<{ classroomId: string }>();
   const { goToPage, paginationParams } = usePagination({
     initialParams: { perPage: CLASSROOM_USER_PER_PAGE },
@@ -38,10 +41,12 @@ export const SideBarMembers = memo(() => {
 
   return (
     <aside
+      data-
       className={cn(
-        "hidden md:flex sticky top-14 h-[calc(100vh-3.75rem)] w-64 shrink-0",
-        "border-l border-border/70 bg-background/40",
+        "hidden md:flex sticky top-14 h-full w-64 shrink-0",
+        "border-l border-border/70 bg-background/40 duration-500 ease-in-out",
         "gap-2 overflow-auto",
+        !showSidebarMembers && "w-0 overflow-hidden ",
       )}
     >
       <div className={cn("flex-1 overflow-y-auto px-2 py-4")}>

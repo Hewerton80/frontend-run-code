@@ -51,20 +51,6 @@ export const useIDEExercise = (exercise: IExercise) => {
     }
   }, [exercise, changeLanguageMode]);
 
-  // useEffect(() => {
-  //   const isInterval = setInterval(() => {
-  //     const drafts = getDraftsCodeFromLocalStorage() || {};
-  //     if (exercise?.id) {
-  //       drafts[exercise.id] = sourceCodeRef.current;
-  //     }
-  //     setCookie(CONSTANTS.LOCAL_STORAGE_KEYS.CODE_DRAFTS, JSON.stringify(drafts));
-  //   }, 5000);
-
-  //   return () => {
-  //     clearInterval(isInterval);
-  //   };
-  // }, [exercise?.id]);
-
   const submissionsResult = useMemo(() => {
     const foundSubmissionResult = cachedSubmissionJobs.find(
       (job) => job.exerciseUuId === exercise?.uuid,
@@ -85,10 +71,7 @@ export const useIDEExercise = (exercise: IExercise) => {
         listId: params?.listId ? parseInt(params?.listId) : undefined,
       },
       {
-        onSuccess: (data) => {
-          console.log("submit code response", data);
-          addCachedSubmissionJob(exercise?.uuid!, data);
-        },
+        onSuccess: (data) => addCachedSubmissionJob(exercise?.uuid!, data),
       },
     );
   }, [
@@ -108,7 +91,6 @@ export const useIDEExercise = (exercise: IExercise) => {
     submitResponse,
     avaliableLanguages,
     changeSourceCode,
-    submissionsResult: submissionsResult?.result,
     createSubmission: handlecreateSubmission,
   };
 };

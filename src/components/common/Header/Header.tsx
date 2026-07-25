@@ -14,7 +14,7 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl",
-        "h-15",
+        "h-top-header shrink-0",
       )}
     >
       <div className="flex items-center w-full h-full px-8 sm:px-16 justify-between">
@@ -42,7 +42,6 @@ export function Header() {
           <ProfilePopover />
         </span>
       </div>
-      <ProgressHeaderBar />
     </header>
   );
 }

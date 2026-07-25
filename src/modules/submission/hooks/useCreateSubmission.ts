@@ -2,6 +2,7 @@ import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 import { SubmissionStatus } from "../submissionType";
 import { SubmissionJobResponse } from "./useFetchSubmissionJobs";
+import { submissionQueryKeyFactory } from "../utils/submissionQueryKeyFactory";
 
 interface SubmissionCodeBody {
   sourceCode: string;
@@ -21,7 +22,7 @@ interface SubmissionCodeBodyErrorResponse {
   description?: string;
 }
 
-export const useCreateSubmission = (exerciseId: string) => {
+export const useCreateSubmission = (exerciseUuId: string) => {
   const { apiBase } = useAxios();
 
   const {
@@ -30,9 +31,10 @@ export const useCreateSubmission = (exerciseId: string) => {
     data: submitResponse,
     error: submitError,
   } = useMutation({
+    mutationKey: submissionQueryKeyFactory.createSubmission(exerciseUuId),
     mutationFn: async (submitBody: SubmissionCodeBody) => {
       const { classroomId, listId, ...data } = submitBody;
-      let url = `/submission/${exerciseId}`;
+      let url = `/submission/${exerciseUuId}`;
       if (classroomId && listId) {
         url += `/classroom/${classroomId}/list/${listId}`;
       }

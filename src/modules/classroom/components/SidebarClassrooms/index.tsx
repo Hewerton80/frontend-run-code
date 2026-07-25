@@ -96,7 +96,7 @@ const SideBarItem = memo(({ classroomUuid }: SideBarItemProps) => {
 });
 SideBarItem.displayName = "SideBarItem";
 
-export function Sidebar() {
+export function SidebarClassrooms() {
   // const {
   //   sideBarWidth,
   //   resizingSideBar,
@@ -108,7 +108,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "hidden md:flex sticky top-14 h-[calc(100vh-3.75rem)] w-18 shrink-0",
+        "hidden md:flex sticky top-14 h-full w-18 shrink-0",
         "gap-2 border-r border-border/70 bg-background/60 overflow-auto",
       )}
     >

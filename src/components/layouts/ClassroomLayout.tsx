@@ -1,10 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { SideBarTamplateWrapper } from "@/components/templates/SideBarTamplateWrapper";
-import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
 import { Spinner } from "@/components/ui/feedback/Spinner";
 import { useFetchClassroomById } from "@/modules/classroom/hooks/useFetchClassroomById";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { ApiErrorState } from "../ui/feedback/EmptyState";
+import { SideBarMembers } from "@/modules/classroom/components/SidebarMembers";
+import { cn } from "@/utils/cn";
+import { SidebarClassrooms } from "@/modules/classroom/components/SidebarClassrooms";
 
 export default function ClassroomLayoutPage() {
   const params = useParams<{ classroomId: string }>();
@@ -14,7 +16,12 @@ export default function ClassroomLayoutPage() {
 
   const handledChildren = useMemo(() => {
     if (classroomError) {
-      return <FeedBackError onTryAgain={refetchClassroom} />;
+      return (
+        <ApiErrorState
+          message={classroomError?.message || "An error occurred"}
+          onRetry={refetchClassroom}
+        />
+      );
     }
     if (isFetchingClassroom) {
       return (
@@ -26,5 +33,22 @@ export default function ClassroomLayoutPage() {
     return <Outlet />;
   }, [classroomError, refetchClassroom, isFetchingClassroom]);
 
-  return <SideBarTamplateWrapper>{handledChildren}</SideBarTamplateWrapper>;
+  return (
+    <div
+      className={cn(
+        "h-[calc(100vh-var(--spacing-top-header))] w-full overflow-hidden",
+        "grid grid-cols-[auto_1fr_auto]",
+      )}
+    >
+      <SidebarClassrooms />
+      <main
+        className={cn(
+          "h-full overflow-auto bg-background min-w-0 px-4 py-6 md:px-8",
+        )}
+      >
+        {handledChildren}
+      </main>
+      <SideBarMembers />
+    </div>
+  );
 }
