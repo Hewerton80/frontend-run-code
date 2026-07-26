@@ -18,7 +18,6 @@ import { FormHelperText } from "@/components/ui/forms/FormHelperText";
 import { RichText } from "@/components/ui/forms/RichText";
 import { ROUTES } from "@/routes/routes";
 import { ExerciseStatus } from "../../exerciseTypes";
-import { Spinner } from "@/components/ui/feedback/Spinner";
 
 export const ExerciseForm = () => {
   const {
@@ -134,17 +133,6 @@ export const ExerciseForm = () => {
                 </Button>
               </div>
             </div>
-
-            {/*  <div className="flex flex-col h-full gap-4">
-                <p>Output:</p>
-             {isRunningCode && <ThreeDotsLoading />}
-                {runCodeResponse && (
-                  <TerminalCode content={runCodeResponse?.output || ""} />
-                )}
-                {runCodeError && (
-                  <TerminalCode content={runCodeError?.description || ""} />
-                )}
-              </div> */}
           </form>
           <div className="flex flex-col">
             <p className="mb-2 text-sm">Casos de teste:</p>

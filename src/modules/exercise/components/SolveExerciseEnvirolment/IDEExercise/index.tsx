@@ -3,17 +3,6 @@ import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IDE } from "@/modules/submission/components/IDE";
 import { useIDEExercise } from "./useIDEExercises";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
-import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
-import {
-  SUBMISSION_META,
-  SubmissionStatus,
-} from "@/modules/submission/submissionType";
-import { Badge } from "@/components/ui/dataDisplay/Badge";
-import { Tabs } from "@/components/ui/navigation/Tabs";
-import { useMemo } from "react";
-import { Alert } from "@/components/ui/feedback/Alert";
-import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { TestCasesResultsDisplay } from "../TestCasesResultsDisplay";
 
 interface IDEExerciseProps {
   exercise: IExercise;
@@ -25,7 +14,6 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
   const {
     sourceCode,
     isSubmitting,
-    submitError,
     avaliableLanguages,
     createSubmission,
     changeSourceCode,
@@ -48,13 +36,9 @@ export const IDEExercise = ({ exercise }: IDEExerciseProps) => {
             onClick={createSubmission}
             disabled={!sourceCode?.trim()}
           >
-            Executar 🚀
+            Submeter 🚀
           </Button>
         </div>
-
-        {submitError && (
-          <TerminalCode content={submitError?.description || ""} />
-        )}
       </div>
     </>
   );

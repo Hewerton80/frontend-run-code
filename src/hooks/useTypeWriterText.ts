@@ -26,7 +26,7 @@ export const useTypeWriterText = ({
       }
       setTypeWriterText((prevText) => prevText + nextChar);
       currentIndex++;
-    }, 15); // Ajuste o intervalo conforme necessário para a velocidade desejada
+    }, 5); // Ajuste o intervalo conforme necessário para a velocidade desejada
 
     return () => clearInterval(intervalId);
   }, [text, animation]);

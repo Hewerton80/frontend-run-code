@@ -38,12 +38,12 @@ export const ProcessingSubmissionState = memo(() => {
         <div className="min-w-0 flex-1">
           <div className="inline-flex items-center gap-2">
             {/* TODO adicionar efeito de onda pelo texto, igual no chat gpt */}
-            <p className="text-lg font-black uppercase tracking-[0.14em] text-white">
+            <p className="text-shimmer text-lg font-black uppercase tracking-[0.14em]">
               Processando submissão
             </p>{" "}
             <ThreeDotsLoading />
           </div>
-          <p className="text-sm text-white/80">
+          <p className="text-shimmer text-sm">
             Enviando seu código para o servidor e rodando os testes...
           </p>
         </div>

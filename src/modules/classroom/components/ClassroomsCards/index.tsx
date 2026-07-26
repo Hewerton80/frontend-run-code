@@ -93,7 +93,7 @@ export const ClassRoomsCards = () => {
     myClassroomsError: errorClassrooms,
     isFetchingMyClassrooms: isLoadingClassrooms,
     refetchMyClassrooms: refetchClassrooms,
-  } = useFetchMyClassrooms();
+  } = useFetchMyClassrooms({ enabled: true });
 
   const { loggedUser } = useLoggedUser();
 

@@ -17,7 +17,7 @@ export const useIDEExercise = (exercise: IExercise) => {
     params?.classroomId!,
   );
 
-  const { createSubmission, isSubmitting, submitError, submitResponse } =
+  const { createSubmission, isSubmitting, submitResponse } =
     useCreateSubmission(exercise?.uuid || "");
 
   const { languageMode, changeLanguageMode } = useLanguage();
@@ -87,7 +87,6 @@ export const useIDEExercise = (exercise: IExercise) => {
   return {
     sourceCode,
     isSubmitting: isSubmitting || submissionsResult?.isProcessing,
-    submitError,
     submitResponse,
     avaliableLanguages,
     changeSourceCode,

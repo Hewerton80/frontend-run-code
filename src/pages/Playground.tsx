@@ -1,13 +1,10 @@
 import { Button } from "@/components/ui/buttons/Button";
 import { Card } from "@/components/ui/cards/Card";
 import { IDE } from "@/modules/submission/components/IDE";
-import { EnterMultSelect } from "@/components/ui/forms/selects/EnterMultSelect";
 import { useRunCode } from "@/modules/submission/hooks/useRunCode";
-import { useLanguage } from "@/modules/language/hooks/useLanguage";
 import { useState } from "react";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
-import { RunCodeBody } from "@/modules/submission/schemas/runCodeBodySchema";
 
 export default function PlayGroundPage() {
   const [editorValue, setEditorValue] = useState("");
@@ -54,9 +51,9 @@ export default function PlayGroundPage() {
               {runCodeResponse && (
                 <TerminalCode content={runCodeResponse?.output || ""} />
               )}
-              {runCodeError && (
+              {/* {runCodeError && (
                 <TerminalCode content={runCodeError?.description || ""} />
-              )}
+              )} */}
             </div>
           </form>
         </Card.Root>

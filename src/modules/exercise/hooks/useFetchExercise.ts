@@ -30,6 +30,7 @@ export const useFetchExercise = ({
     error: exerciseError,
     refetch: refetchExercise,
   } = useQuery({
+    //TODO colocar uma condição para saber se é do exercicio ou exerciio avulso
     queryKey: exerciseQueryKeyFactory.detail(exerciseId, classroomId, listId),
     queryFn: async ({ signal }) => {
       let url = `/exercise/${exerciseId}`;

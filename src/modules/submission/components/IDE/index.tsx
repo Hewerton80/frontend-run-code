@@ -1,1 +1,107 @@
-export * from './IDE';
+import { useMemo, useState } from "react";
+import {
+  LanguagesConfigMap,
+  LANGUAGES_CONFIG_MAP,
+  LIST_OF_LANGUAGES,
+} from "@/modules/language/utils/languagesConfig";
+import { LanguageNames } from "@/modules/language/types/languagesName";
+import { FaRegCircleQuestion } from "react-icons/fa6";
+import { IconButton } from "@/components/ui/buttons/IconButton";
+import { Tooltip } from "@/components/ui/overlay/Tooltip";
+import { useLanguage } from "@/modules/language/hooks/useLanguage";
+import { CodeEditor } from "@/components/ui/forms/inputs/CodeEditor";
+import { CustomSelect } from "@/components/ui/forms/selects/CustomSelect";
+import { LanguageOptionDisplay } from "@/modules/language/components/LanguangeOptionDisplay";
+import { Dialog } from "@/components/ui/overlay/Dialog";
+
+interface IdeProps {
+  value?: string;
+  onChange?: (value: string) => void;
+  avaliableLanguages?: LanguageNames[];
+}
+
+export function IDE({ value, avaliableLanguages, onChange }: IdeProps) {
+  const { languageMode, changeLanguageMode } = useLanguage();
+  // Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0
+  //   ? avaliableLanguages[0]
+  //   : "javascript"
+  const [showScriptCodeExample, setShowScriptCodeExample] = useState(false);
+
+  const avaliablesLanguagesConfig = useMemo<LanguagesConfigMap>(() => {
+    if (Array.isArray(avaliableLanguages) && avaliableLanguages?.length > 0) {
+      return avaliableLanguages.reduce((acc, key) => {
+        if (LANGUAGES_CONFIG_MAP?.[key]) {
+          acc[key] = LANGUAGES_CONFIG_MAP[key];
+        }
+        return acc;
+      }, {} as LanguagesConfigMap);
+    }
+
+    return LANGUAGES_CONFIG_MAP;
+  }, [avaliableLanguages]);
+
+  const currentSelectLanguage = useMemo(
+    () => avaliablesLanguagesConfig[languageMode.value],
+    [avaliablesLanguagesConfig, languageMode],
+  );
+
+  return (
+    <>
+      <div className="flex flex-col w-full gap-4">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex max-w-54.5 w-full">
+            <CustomSelect
+              items={LIST_OF_LANGUAGES}
+              value={languageMode}
+              onChangeValue={(item) => item && changeLanguageMode(item)}
+              placeholder="Select language"
+              // TODO deixar apenas as linguages da turma
+              disabled={LIST_OF_LANGUAGES?.length <= 1}
+              valueExtractor={(item) => item.value}
+              displayItem={(item) => (
+                <LanguageOptionDisplay languageName={item.value} />
+              )}
+              renderItem={(item) => (
+                <LanguageOptionDisplay languageName={item.value} />
+              )}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Tooltip textContent="See script example" side="top">
+              <IconButton
+                onClick={() => setShowScriptCodeExample(true)}
+                variantStyle="dark-ghost"
+                icon={<FaRegCircleQuestion />}
+              />
+            </Tooltip>
+          </div>
+        </div>
+        <CodeEditor
+          mode={currentSelectLanguage?.editorName}
+          value={value}
+          onChange={onChange}
+          placeholder="Type your code here..."
+        />
+      </div>
+      <Dialog.Root
+        open={showScriptCodeExample}
+        onOpenChange={(open) => setShowScriptCodeExample(open)}
+        // ="md"
+      >
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Script Example</Dialog.Title>
+          </Dialog.Header>
+          <div className="h-131">
+            <CodeEditor
+              mode={currentSelectLanguage?.editorName}
+              readOnly
+              defaultValue={currentSelectLanguage?.example}
+              focus={false}
+            />
+          </div>
+        </Dialog.Content>
+      </Dialog.Root>
+    </>
+  );
+}

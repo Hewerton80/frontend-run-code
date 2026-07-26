@@ -5,8 +5,6 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { ApiErrorState } from "../ui/feedback/EmptyState";
 import { SideBarMembers } from "@/modules/classroom/components/SidebarMembers";
-import { cn } from "@/utils/cn";
-import { SidebarClassrooms } from "@/modules/classroom/components/SidebarClassrooms";
 
 export default function ClassroomLayoutPage() {
   const params = useParams<{ classroomId: string }>();
@@ -34,20 +32,8 @@ export default function ClassroomLayoutPage() {
   }, [classroomError, refetchClassroom, isFetchingClassroom]);
 
   return (
-    <div
-      className={cn(
-        "h-[calc(100vh-var(--spacing-top-header))] w-full overflow-hidden",
-        "grid grid-cols-[auto_1fr_auto]",
-      )}
-    >
-      <SidebarClassrooms />
-      <main
-        className={cn(
-          "h-full overflow-auto bg-background min-w-0 px-4 py-6 md:px-8",
-        )}
-      >
-        {handledChildren}
-      </main>
+    <div className="grid grid-cols-[1fr_auto] h-main-content">
+      <div className="px-4 py-6 md:px-8 overflow-auto">{handledChildren}</div>
       <SideBarMembers />
     </div>
   );

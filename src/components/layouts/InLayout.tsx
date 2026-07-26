@@ -10,6 +10,8 @@ import { Outlet } from "react-router-dom";
 import { useFetchPoolingSubmissionsResult } from "@/modules/submission/hooks/useFetchPoolingSubmissionsResult";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { useFetchMyClassrooms } from "@/modules/classroom/hooks/useFetchMyClassrooms";
+import { cn } from "@/utils/cn";
+import { SidebarClassrooms } from "@/modules/classroom/components/SidebarClassrooms";
 
 export default function InLayoutPage() {
   const { logout } = useLogout();
@@ -74,8 +76,11 @@ export default function InLayoutPage() {
     <div className="flex flex-col h-screen overflow-hidden">
       <Header />
 
-      <div className="flex h-full w-full">
-        <Outlet />
+      <div className={cn("h-main-content w-full", "grid grid-cols-[auto_1fr]")}>
+        <SidebarClassrooms />
+        <main className={cn("h-full bg-background min-w-0")}>
+          <Outlet />
+        </main>
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ export interface SubmissionResultSummary {
     completedExercises: number;
     totalXp: number;
     progress: number;
+    xpEarned: number;
   };
 }
 

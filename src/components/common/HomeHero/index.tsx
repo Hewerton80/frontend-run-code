@@ -3,7 +3,7 @@ import { TypeWriterText } from "@/components/ui/typography/TypeWriterText";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { twMerge } from "tailwind-merge";
 
-export const HomeHeader = () => {
+export const HomeHero = () => {
   const { loggedUser } = useLoggedUser();
   return (
     <>

@@ -10,12 +10,15 @@ import {
   SubmissionStatus,
 } from "@/modules/submission/submissionType";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { Alert } from "@/components/ui/feedback/Alert";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 import { useMutationState } from "@tanstack/react-query";
 import { useGetCreateSubmissionState } from "@/modules/submission/hooks/useGetCreateSubmissionState";
 import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
+import { ProcessedSubmissionSuccessState } from "@/modules/submission/components/ProcessedSubmissionSuccessState";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/utils/cn";
 
 interface TestCasesResultsDisplayProps {
   exerciseUuId: string;
@@ -23,8 +26,16 @@ interface TestCasesResultsDisplayProps {
 
 export const TestCasesResultsDisplay = memo(
   ({ exerciseUuId }: TestCasesResultsDisplayProps) => {
-    const createSubmissionMutationState =
-      useGetCreateSubmissionState(exerciseUuId);
+    const mutationStates = useGetCreateSubmissionState(exerciseUuId);
+
+    const { status: creteSubmissionStatus, error: createSubmissionError } =
+      useMemo(
+        () => ({
+          status: mutationStates?.status,
+          error: mutationStates?.error,
+        }),
+        [mutationStates],
+      );
 
     const { cachedSubmissionJobs } = useCachedSubmissionJobs();
 
@@ -38,8 +49,8 @@ export const TestCasesResultsDisplay = memo(
     const isProcessing = useMemo(
       () =>
         submissionsResponse?.isProcessing ||
-        createSubmissionMutationState?.status === "pending",
-      [submissionsResponse, createSubmissionMutationState],
+        creteSubmissionStatus === "pending",
+      [submissionsResponse, creteSubmissionStatus],
     );
 
     const submissionsResultSummary = useMemo(
@@ -52,124 +63,191 @@ export const TestCasesResultsDisplay = memo(
       [submissionsResultSummary],
     );
 
-    if (isProcessing) return <ProcessingSubmissionState />;
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    if (!submissionsResultSummary) return null;
+    useEffect(() => {
+      if (
+        (!isProcessing &&
+          !submissionsResultSummary &&
+          !createSubmissionError) ||
+        !containerRef.current
+      ) {
+        return;
+      }
+      const raf = requestAnimationFrame(() => {
+        containerRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+      return () => cancelAnimationFrame(raf);
+    }, [isProcessing, createSubmissionError, submissionsResultSummary]);
 
-    if (
-      submissionsResultSummary?.status === SubmissionStatus.COMPILATION_ERROR
-    ) {
-      return <TerminalCode content={testCasesResults?.[0]?.output || ""} />;
-    }
+    const handledContent = useMemo(() => {
+      if (isProcessing) {
+        return <ProcessingSubmissionState />;
+      }
 
-    return (
-      <>
-        {submissionsResultSummary?.score === 1 && (
-          <Alert.Root variant="success" hideIcon>
-            <Alert.Title>Parabéns! 🎉</Alert.Title>
-            <Alert.Description>
-              Você resolveu o exercício com sucesso!
-              {/* TODO adicionar botao de ir para o próximo exercício, para isso deve verificar se tenho o ids do exercícios no cache da lista */}
-            </Alert.Description>
-          </Alert.Root>
-        )}
-        <Tabs.Root defaultValue="1">
-          <Tabs.List>
-            {testCasesResults?.map((testCaseResult, index) => {
-              const Icon = SUBMISSION_META?.[testCaseResult?.status!]?.icon;
-              const label = SUBMISSION_META?.[testCaseResult?.status!]?.label;
-              const tone = SUBMISSION_META?.[testCaseResult?.status!]?.tone;
-              return (
-                <Tabs.Trigger
-                  key={`trigger-${index}`}
-                  value={(index + 1).toString()}
-                >
-                  <span>
+      if (createSubmissionError) {
+        return (
+          <TerminalCode
+            className="mt-4"
+            content={
+              (createSubmissionError as any)?.description || "Erro desconhecido"
+            }
+          />
+        );
+      }
+
+      if (
+        submissionsResultSummary?.status === SubmissionStatus.COMPILATION_ERROR
+      ) {
+        const Icon = SUBMISSION_META?.[submissionsResultSummary.status]?.icon;
+
+        return (
+          <div className="flex flex-col gap-0.5">
+            <span className="inline-flex items-center text-sm text-muted-foreground">
+              Erro de compilação: <Icon className="w-4 h-4 ml-1" />
+            </span>
+            <TerminalCode content={testCasesResults?.[0]?.output || ""} />
+          </div>
+        );
+      }
+
+      if (submissionsResultSummary) {
+        return (
+          <>
+            {submissionsResultSummary?.score === 1 && (
+              <ProcessedSubmissionSuccessState
+                xp={
+                  submissionsResultSummary?.wasAlreadyAccepted &&
+                  submissionsResultSummary?.newUserStats?.xpEarned
+                    ? undefined
+                    : submissionsResultSummary?.newUserStats?.xpEarned
+                }
+              />
+            )}
+            <Tabs.Root defaultValue="1">
+              <Tabs.List>
+                {testCasesResults?.map((testCaseResult, index) => {
+                  const Icon = SUBMISSION_META?.[testCaseResult?.status!]?.icon;
+                  const label =
+                    SUBMISSION_META?.[testCaseResult?.status!]?.label;
+                  const color =
+                    SUBMISSION_META?.[testCaseResult?.status!]?.color;
+                  return (
                     <Tooltip
+                      key={`trigger-${index}`}
                       align="center"
                       className="gap-2"
                       textContent={
-                        <span className="inline-flex gap-2 items-center">
-                          {label} {<Icon />}
-                        </span>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="inline-flex gap-1 items-center">
+                            {label} {<Icon className={cn("w-4 h-4", color)} />}
+                          </span>
+                          {!testCaseResult?.isPublic && (
+                            <span className="text-muted-foreground">
+                              Informações de caso de teste privado 🔒{" "}
+                            </span>
+                          )}
+                        </div>
                       }
                     >
-                      <span className="inline-flex items-center">
-                        Teste {index + 1}:{" "}
-                        {!testCaseResult?.isPublic && <span>🔒</span>}
-                        {<Icon className="w-4 h-4 ml-1" />}
+                      <span>
+                        <Tabs.Trigger
+                          value={(index + 1).toString()}
+                          disabled={!testCaseResult?.isPublic}
+                        >
+                          <span className="inline-flex items-center gap-1">
+                            {!testCaseResult?.isPublic && <span>🔒 </span>}
+                            Teste {index + 1}:{" "}
+                            {<Icon className={cn("w-4 h-4", color)} />}
+                          </span>
+                        </Tabs.Trigger>
                       </span>
                     </Tooltip>
-                  </span>
-                </Tabs.Trigger>
-              );
-            })}
-          </Tabs.List>
-          {/* TODO analizar a possibilidade de adicionar memória e runtime aqui */}
-          {testCasesResults?.map((testCaseResult, index) => (
-            <Tabs.Content
-              key={`response-${index}`}
-              value={(index + 1).toString()}
-            >
-              {/* <div className="flex flex-col gap-0.5">
+                  );
+                })}
+              </Tabs.List>
+              {/* TODO analizar a possibilidade de adicionar memória e runtime aqui */}
+              {testCasesResults?.map((testCaseResult, index) => (
+                <Tabs.Content
+                  key={`response-${index}`}
+                  value={(index + 1).toString()}
+                >
+                  {/* <div className="flex flex-col gap-0.5">
                       <p className="text-sm text-muted-foreground">Resultado</p>
                       <SubmissionStatusBadge
                         className="p-4 text-sm uppercase gap-4"
                         status={testCaseResult?.status}
                       />
                     </div> */}
-              <div className="flex flex-col gap-0.5">
-                {[
-                  // {
-                  //   label: "Resultado:",
-                  //   content: (
-                  //     <span>
-                  //       {
-                  //         SUBMISSION_META?.[testCaseResult?.status!]
-                  //           ?.label
-                  //       }
-                  //       {SUBMISSION_META?.[testCaseResult?.status!]?.icon}
-                  //     </span>
-                  //   ),
-                  // },
-                  ...(testCaseResult?.isPublic
-                    ? [
-                        {
-                          label: "Entrada (input):",
-                          content: testCaseResult?.input || "",
-                        },
-                        //  TODO dependendo do status, nao exibor a resposta de erro
-                        {
-                          label: "Saída do seu código:",
-                          content: testCaseResult?.output || "",
-                        },
-                        {
-                          label: "Saída Esperada:",
-                          content: testCaseResult?.expectedOutput || "",
-                        },
-                      ]
-                    : []),
-                ].map((item, idx) => (
-                  <div
-                    key={`item-${index}-${idx}`}
-                    className="flex flex-col gap-0.5"
-                  >
-                    <p className="text-sm text-muted-foreground">
-                      {item.label}
-                    </p>
-                    <TerminalCode animation={false} content={item.content} />
+                  <div className="flex flex-col gap-2">
+                    {[
+                      {
+                        label: "Resultado:",
+                        content: (
+                          <span>
+                            {SUBMISSION_META?.[testCaseResult?.status!]?.label}
+                            {/* {SUBMISSION_META?.[testCaseResult?.status!]?.icon} */}
+                          </span>
+                        ),
+                      },
+                      ...(testCaseResult?.isPublic
+                        ? [
+                            {
+                              label: "Entrada (input):",
+                              content: testCaseResult?.input || "",
+                            },
+                            //  TODO dependendo do status, nao exibor a resposta de erro
+                            {
+                              label: "Saída do seu código:",
+                              content: testCaseResult?.output || "",
+                            },
+                            {
+                              label: "Saída Esperada:",
+                              content: testCaseResult?.expectedOutput || "",
+                            },
+                          ]
+                        : []),
+                    ].map((item, idx) => (
+                      <div
+                        key={`item-${index}-${idx}`}
+                        className="flex flex-col gap-0.5"
+                      >
+                        <span className="inline-flex items-center text-sm text-muted-foreground">
+                          {item.label}
+                        </span>
+                        <TerminalCode
+                          animation={false}
+                          content={item.content}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-                {!testCaseResult?.isPublic && (
-                  <Badge variant="dark" className="mt-2">
-                    Informações de caso de teste privado 🔒
-                  </Badge>
-                )}
-              </div>
-            </Tabs.Content>
-          ))}
-        </Tabs.Root>
-      </>
+                </Tabs.Content>
+              ))}
+            </Tabs.Root>
+          </>
+        );
+      }
+      return null;
+    }, [
+      isProcessing,
+      createSubmissionError,
+      submissionsResultSummary,
+      testCasesResults,
+    ]);
+
+    return (
+      <div
+        data-testid="test-cases-container"
+        ref={containerRef}
+        className="flex flex-col gap-4 border-t"
+      >
+        <Separator orientation="horizontal" className="h-1" />
+        {handledContent}
+      </div>
     );
   },
 );

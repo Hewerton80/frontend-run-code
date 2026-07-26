@@ -30,6 +30,7 @@ export function ProfilePopover() {
                 }
                 bgColor={loggedUser?.avatarBgColor}
                 name={loggedUser?.name}
+                size={32}
               />
               <div className="flex flex-col">
                 <strong className="text text-sm line-clamp-1">
@@ -45,14 +46,16 @@ export function ProfilePopover() {
         </div>
       </Dropdown.Trigger>
       <Dropdown.Content className="w-56">
-        <GroupedUserInfo user={loggedUser!} />
+        <div className="px-2 py-1.5">
+          <GroupedUserInfo user={loggedUser!} />
+        </div>
         <Dropdown.Separator />
         <Dropdown.Item asChild>
           <Link to={ROUTES.PROFILE}>
             <FiUser className="mr-2" size={20} /> Perfil
           </Link>
         </Dropdown.Item>
-        <Dropdown.Sub>
+        {/* <Dropdown.Sub>
           <Dropdown.SubTrigger>
             <LuPaintbrush className="mr-2" size={20} /> Tema
             <FaChevronRight className="ml-auto" />
@@ -65,7 +68,7 @@ export function ProfilePopover() {
               <FaMoon className="mr-2" /> Escuro
             </Dropdown.Item>
           </Dropdown.SubContent>
-        </Dropdown.Sub>
+        </Dropdown.Sub> */}
         <Dropdown.Separator />
         <Dropdown.Item onClick={logout}>
           <FiLogOut className="mr-2" size={20} /> Sair
