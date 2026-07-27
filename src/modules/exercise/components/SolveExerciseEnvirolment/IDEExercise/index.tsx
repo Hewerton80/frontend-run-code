@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/buttons/Button";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IDE } from "@/modules/submission/components/IDE";
+import { FetchExerciseByUuIdResponse } from "@/modules/exercise/hooks/useFetchExerciseByUuId";
 import { useIDEExercise } from "./useIDEExercises";
-import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 
 interface IDEExerciseProps {
-  exercise: IExercise;
+  exercise: FetchExerciseByUuIdResponse;
 }
 
 export const IDEExercise = ({ exercise }: IDEExerciseProps) => {

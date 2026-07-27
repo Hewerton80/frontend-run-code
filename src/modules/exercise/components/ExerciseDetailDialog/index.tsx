@@ -52,11 +52,11 @@ const ExerciseDetailDialog = () => {
 
 interface ExerciseDetailTriggerButtonProps {
   children?: ReactNode;
-  exerciseId: string;
+  exerciseUuId: string;
 }
 
 const ExerciseDetailTriggerButton = (
-  { children, exerciseId }: ExerciseDetailTriggerButtonProps,
+  { children, exerciseUuId }: ExerciseDetailTriggerButtonProps,
   ref?: any,
 ) => {
   const { openDialog } = useTriggerExerciseDetailDialog();
@@ -66,7 +66,7 @@ const ExerciseDetailTriggerButton = (
   return (
     <Comp
       ref={ref}
-      onClick={() => openDialog(exerciseId)}
+      onClick={() => openDialog(exerciseUuId)}
       aria-label="Ver detalhes do exercício"
     >
       {children}

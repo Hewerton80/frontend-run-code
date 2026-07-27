@@ -4,7 +4,7 @@ import { useCallback } from "react";
 
 interface State {
   showDialog: boolean;
-  exerciseId: string | null;
+  exerciseUuId: string | null;
 }
 
 interface Actions {
@@ -14,16 +14,16 @@ interface Actions {
 
 const useExerciseDetailDialogStore = create<State & Actions>((set) => ({
   showDialog: false,
-  exerciseId: null,
+  exerciseUuId: null,
   setShowDialog: (value) => set(() => ({ showDialog: value })),
-  setExerciseId: (value) => set(() => ({ exerciseId: value })),
+  setExerciseId: (value) => set(() => ({ exerciseUuId: value })),
 }));
 
 export const useTriggerExerciseDetailDialog = () => {
-  const { showDialog, exerciseId } = useExerciseDetailDialogStore(
+  const { showDialog, exerciseUuId } = useExerciseDetailDialogStore(
     useShallow((s) => ({
       showDialog: s.showDialog,
-      exerciseId: s.exerciseId,
+      exerciseUuId: s.exerciseUuId,
     })),
   );
 
@@ -35,8 +35,8 @@ export const useTriggerExerciseDetailDialog = () => {
   );
 
   const openDialog = useCallback(
-    (exerciseId: string) => {
-      setExerciseId(exerciseId);
+    (exerciseUuId: string) => {
+      setExerciseId(exerciseUuId);
       setShowDialog(true);
     },
     [setExerciseId, setShowDialog],
@@ -49,7 +49,7 @@ export const useTriggerExerciseDetailDialog = () => {
 
   return {
     showDialog,
-    exerciseId,
+    exerciseUuId,
     openDialog,
     closeDialog,
   };

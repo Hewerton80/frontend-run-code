@@ -1,12 +1,12 @@
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { Code } from "@/components/ui/dataDisplay/Code";
 import { cn } from "@/utils/cn";
 import { CustomDataTable } from "@/components/ui/dataDisplay/CustomDataTable";
 import { Table } from "@/components/ui/dataDisplay/Table";
 import { renderTiptapHtml } from "@/utils/tiptapHelpers";
+import { FetchExerciseByUuIdResponse } from "@/modules/exercise/hooks/useFetchExerciseByUuId";
 
 interface ExerciseDescriptionProps {
-  exercise: IExercise;
+  exercise: FetchExerciseByUuIdResponse;
   orientation?: "horizontal" | "vertical";
 }
 
@@ -38,7 +38,7 @@ export const ExerciseDescription = ({
         <CustomDataTable
           columns={["Entrada(s)", "Saída esperada"]}
           data={exercise?.testCases || []}
-          idExtractor={(item) => `${item?.input}-${exercise?.id}`}
+          idExtractor={(item) => `${item?.input}-${exercise.uuid}`}
           renderItem={({ item }) => (
             <Table.Row>
               <Table.Data>

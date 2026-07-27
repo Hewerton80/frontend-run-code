@@ -1,13 +1,13 @@
 import { useLanguage } from "@/modules/language/hooks/useLanguage";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { useCreateSubmission } from "@/modules/submission/hooks/useCreateSubmission";
 import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCachedClassromById";
 import { LANGUAGES_CONFIG_MAP } from "@/modules/language/utils/languagesConfig";
+import { FetchExerciseByUuIdResponse } from "@/modules/exercise/hooks/useFetchExerciseByUuId";
 
-export const useIDEExercise = (exercise: IExercise) => {
+export const useIDEExercise = (exercise: FetchExerciseByUuIdResponse) => {
   const params = useParams<{
     listId?: string;
     classroomId?: string;

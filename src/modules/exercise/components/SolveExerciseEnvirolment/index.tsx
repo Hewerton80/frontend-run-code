@@ -5,27 +5,22 @@ import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "react-router-dom";
 import { Resizable } from "@/components/ui/dataDisplay/Resizable";
-import { useFetchExercise } from "../../hooks/useFetchExercise";
-import { FeedBackError } from "@/components/ui/feedback/FeedBackError";
+import { useFetchExerciseByUuId } from "../../hooks/useFetchExerciseByUuId";
 import { BackLink } from "@/components/ui/navigation/BackLink";
 import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCachedClassromById";
 import { ExerciseForm } from "../ExerciseFormDrawer";
 import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
 import { cn } from "@/utils/cn";
-import { rgba } from "@/utils/colorHelpers";
-import { ExerciseXPGem } from "../ExerciseXPGem";
-import { DIFF_META } from "../../exerciseTypes";
-import {
-  SubmissionStatus,
-  XP_BY_DIFFICULTY,
-} from "@/modules/submission/submissionType";
-import { Diff, Trophy, TrophyIcon, LucideTrophy, Zap } from "lucide-react";
+import { Trophy, Zap } from "lucide-react";
 import { ExerciseDifficultyStars } from "../ExerciseDifficultyStars";
 import { Separator } from "@/components/ui/separator";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
 import { useSidebarMembers } from "@/modules/classroom/components/SidebarMembers/useSidebarMembers";
-import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
+import {
+  SubmissionStatus,
+  XP_BY_DIFFICULTY,
+} from "@/modules/submission/submissionType";
 
 export const SolveExerciseEnvirolment = () => {
   const { setShowSidebarMembers } = useSidebarMembers();
@@ -42,19 +37,16 @@ export const SolveExerciseEnvirolment = () => {
   // TODO adicionar um todo para saber de qual url ele veio
 
   const { isFetchingExercise, exercise, exerciseError, refetchExercise } =
-    useFetchExercise({
-      exerciseId: params?.exerciseId || "",
-      classroomId: params?.classroomId,
+    useFetchExerciseByUuId({
+      exerciseUuId: params?.exerciseId || "",
+      classroomUuId: params?.classroomId,
       listId: params?.listId,
     });
+
   const done = useMemo(
     () => exercise?.submissionStats?.status === SubmissionStatus.ACCEPTED,
     [exercise?.submissionStats?.status],
   );
-
-  useEffect(() => {
-    refetchExercise();
-  }, [refetchExercise]);
 
   useEffect(() => {
     setShowSidebarMembers(false);

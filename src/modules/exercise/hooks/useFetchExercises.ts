@@ -17,6 +17,7 @@ interface UseFetchExercisesConfig {
  * permitir navegação cache-first ao detalhe.
  * Suporta cancelamento automático via AbortSignal.
  */
+// TODO adicionar tipagens igual do retorno da api
 export const useFetchExercises = (
   params?: IFetchExercisesParams,
   config?: UseFetchExercisesConfig,

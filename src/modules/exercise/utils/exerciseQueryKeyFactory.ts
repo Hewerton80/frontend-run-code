@@ -20,14 +20,14 @@ export const exerciseQueryKeyFactory = {
     [...exerciseQueryKeyFactory.all(), ...(params ? [params] : [])] as const,
 
   /** Detalhe de um exercício (com contexto opcional de turma/lista) */
-  detail: (exerciseId: string, classroomId?: string, listId?: string) =>
-    [ExerciseQueryKeys.Exercise, exerciseId, classroomId, listId] as const,
-  row: (exerciseId: string) => [ExerciseQueryKeys.Row, exerciseId] as const,
+  detail: (exerciseUuId: string, classroomUUId?: string, listId?: string) =>
+    [ExerciseQueryKeys.Exercise, exerciseUuId, classroomUUId, listId] as const,
+  row: (exerciseUuId: string) => [ExerciseQueryKeys.Row, exerciseUuId] as const,
   /** Exercícios de uma lista dentro de uma turma (semeados por useFetchList) */
-  byClassroom: (listId: string, classroomId: string) =>
-    [ExerciseQueryKeys.ExercisesByClassroom, listId, classroomId] as const,
+  byClassroom: (listId: string, classroomUUId: string) =>
+    [ExerciseQueryKeys.ExercisesByClassroom, listId, classroomUUId] as const,
 
   /** Exercício individual dentro de uma lista (lido por useGetCachedExerciseOfList) */
-  ofList: (exerciseId: string, listId: number) =>
-    [ExerciseQueryKeys.ExerciseOfList, exerciseId, listId] as const,
+  ofList: (exerciseUuId: string, listId: number) =>
+    [ExerciseQueryKeys.ExerciseOfList, exerciseUuId, listId] as const,
 };

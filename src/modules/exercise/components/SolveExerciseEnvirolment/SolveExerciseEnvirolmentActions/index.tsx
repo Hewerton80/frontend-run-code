@@ -1,13 +1,13 @@
 import { IconButton } from "@/components/ui/buttons/IconButton";
 import { Dropdown } from "@/components/ui/overlay/Dropdown/Dropdown";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { memo } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { ExerciseForm } from "../../ExerciseFormDrawer";
 import { FaPen } from "react-icons/fa";
+import { FetchExerciseByUuIdResponse } from "@/modules/exercise/hooks/useFetchExerciseByUuId";
 interface SolveExerciseEnvirolmentActionsProps {
-  exercise?: IExercise;
+  exercise?: FetchExerciseByUuIdResponse;
 }
 
 export const SolveExerciseEnvirolmentActions = memo(

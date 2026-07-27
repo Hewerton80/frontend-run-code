@@ -7,7 +7,10 @@ import {
   handleUpdateExerciseBody,
 } from "../../utils/handleExerciseBody";
 import { ExerciseStatus, IExercise } from "../../exerciseTypes";
-import { useFetchExercise } from "../../hooks/useFetchExercise";
+import {
+  FetchExerciseByUuIdResponse,
+  useFetchExerciseByUuId,
+} from "../../hooks/useFetchExerciseByUuId";
 import { useUpdateExercise } from "../../hooks/useUpdateExercise";
 import { forceRefetchExercises } from "../../utils/forceRefetchExercises";
 import { getOnlyDirtyFields } from "@/utils/hookFormHelpers";
@@ -28,19 +31,23 @@ export const useExerciseFormDrawer = () => {
     trigger: triggerExerciseFormErros,
   } = useMemo(() => exerciseFormSchemaMethods, [exerciseFormSchemaMethods]);
 
-  const { exerciseIdToEdit, closeExerciseFormDrawer, showExerciseFormDrawer } =
-    useTriggerExerciseFormDrawer();
+  const {
+    exerciseUuIdToEdit,
+    closeExerciseFormDrawer,
+    showExerciseFormDrawer,
+  } = useTriggerExerciseFormDrawer();
 
-  const isEditMode = useMemo(() => !!exerciseIdToEdit, [exerciseIdToEdit]);
+  const isEditMode = useMemo(() => !!exerciseUuIdToEdit, [exerciseUuIdToEdit]);
 
-  const { exercise: currentExercise, isFetchingExercise } = useFetchExercise({
-    exerciseId: exerciseIdToEdit || "",
-  });
+  const { exercise: currentExercise, isFetchingExercise } =
+    useFetchExerciseByUuId({
+      exerciseUuId: exerciseUuIdToEdit || "",
+    });
 
   const { createExercise, isCreatingExercise } = useCreateExercise();
 
   const { updateExercise, isUpdatingExercise } = useUpdateExercise(
-    exerciseIdToEdit || "",
+    exerciseUuIdToEdit || "",
   );
 
   const isSubmittingExercise = useMemo(
@@ -130,19 +137,33 @@ export const useExerciseFormDrawer = () => {
           onSuccess: () => {
             toast.success("Exercício atualizado com sucesso!");
             handleCloseExerciseFormDrawer();
-            const updatedExercise: Partial<IExercise> = {
+            const updatedExercise = {
               title: exerciseFormData.title,
               description: exerciseFormData.description,
-              testCases: exerciseFormData.testCases,
               status: status,
             };
-            updateCachedExerciseRow(exerciseIdToEdit || "", (oldExercise) => ({
-              ...(oldExercise || {}),
-              ...updatedExercise,
-            }));
+            const testCases = exerciseFormData.testCases;
+            updateCachedExerciseRow(
+              exerciseUuIdToEdit || "",
+              (oldExercise) => ({
+                ...(oldExercise || {}),
+                ...updatedExercise,
+              }),
+            );
             updateCachedExerciseDetail(
-              exerciseIdToEdit || "",
-              (oldExercise) => ({ ...(oldExercise || {}), ...updatedExercise }),
+              exerciseUuIdToEdit || "",
+              (oldExercise) => ({
+                ...(oldExercise || {}),
+                ...updatedExercise,
+                testCases:
+                  testCases?.map((testCase, index) => ({
+                    id: oldExercise?.testCases?.[index]?.id || 0,
+                    exerciseUuId: oldExercise?.uuid || "",
+                    input: testCase.input,
+                    expectedOutput: testCase.expectedOutput,
+                    isPublic: testCase.isPublic,
+                  })) || [],
+              }),
             );
           },
           onError: (error) => {
@@ -177,7 +198,7 @@ export const useExerciseFormDrawer = () => {
     [
       isEditMode,
       formState.dirtyFields,
-      exerciseIdToEdit,
+      exerciseUuIdToEdit,
       handleCloseExerciseFormDrawer,
       updateExercise,
       createExercise,

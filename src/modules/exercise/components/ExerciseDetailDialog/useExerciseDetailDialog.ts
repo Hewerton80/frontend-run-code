@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { useFetchExercise } from "@/modules/exercise/hooks/useFetchExercise";
+import { useFetchExerciseByUuId } from "@/modules/exercise/hooks/useFetchExerciseByUuId";
 import { useTriggerExerciseDetailDialog } from "./useTriggerExerciseDetailDialog";
 
 export const useExerciseDetailDialog = () => {
-  const { showDialog, exerciseId, closeDialog } =
+  const { showDialog, exerciseUuId, closeDialog } =
     useTriggerExerciseDetailDialog();
 
   const {
@@ -11,8 +11,8 @@ export const useExerciseDetailDialog = () => {
     isFetchingExercise: isLoading,
     exerciseError: error,
     refetchExercise: refetch,
-  } = useFetchExercise({
-    exerciseId: exerciseId ?? "",
+  } = useFetchExerciseByUuId({
+    exerciseUuId: exerciseUuId ?? "",
   });
 
   const handleClose = useCallback(() => {

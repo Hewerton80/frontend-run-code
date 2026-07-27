@@ -4,7 +4,7 @@ import { useCallback } from "react";
 
 interface State {
   showExerciseFormDrawer: boolean;
-  exerciseIdToEdit: string | null;
+  exerciseUuIdToEdit: string | null;
 }
 
 interface Actions {
@@ -14,19 +14,19 @@ interface Actions {
 
 const useExerciseFormDrawerStore = create<State & Actions>((set) => ({
   showExerciseFormDrawer: false,
-  exerciseIdToEdit: null,
+  exerciseUuIdToEdit: null,
   setShowExerciseFormDrawer: (value) =>
     set(() => ({ showExerciseFormDrawer: value ?? false })),
   setExerciseIdToEdit: (value) =>
-    set(() => ({ exerciseIdToEdit: value ?? null })),
+    set(() => ({ exerciseUuIdToEdit: value ?? null })),
 }));
 
 export const useTriggerExerciseFormDrawer = () => {
-  const { showExerciseFormDrawer, exerciseIdToEdit } =
+  const { showExerciseFormDrawer, exerciseUuIdToEdit } =
     useExerciseFormDrawerStore(
       useShallow((s) => ({
         showExerciseFormDrawer: s.showExerciseFormDrawer,
-        exerciseIdToEdit: s.exerciseIdToEdit,
+        exerciseUuIdToEdit: s.exerciseUuIdToEdit,
       })),
     );
 
@@ -52,7 +52,7 @@ export const useTriggerExerciseFormDrawer = () => {
   );
 
   return {
-    exerciseIdToEdit,
+    exerciseUuIdToEdit,
     showExerciseFormDrawer,
     closeExerciseFormDrawer,
     showExerciseFormDrawerWithExerciseId,
