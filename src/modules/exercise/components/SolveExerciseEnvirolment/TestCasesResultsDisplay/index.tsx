@@ -1,25 +1,46 @@
-import { Badge } from "@/components/ui/dataDisplay/Badge";
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { Tabs } from "@/components/ui/navigation/Tabs";
-import {
-  SubmissionResultSummary,
-  SubmissionTestCaseResult,
-} from "@/modules/submission/hooks/useFetchSubmissionJobs";
 import {
   SUBMISSION_META,
   SubmissionStatus,
 } from "@/modules/submission/submissionType";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import { memo, useEffect, useMemo, useRef } from "react";
-import { Alert } from "@/components/ui/feedback/Alert";
+import {
+  createElement,
+  memo,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
-import { useMutationState } from "@tanstack/react-query";
 import { useGetCreateSubmissionState } from "@/modules/submission/hooks/useGetCreateSubmissionState";
 import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
 import { ProcessedSubmissionSuccessState } from "@/modules/submission/components/ProcessedSubmissionSuccessState";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/utils/cn";
 
+interface TestCasesResultsDisplayLabel {
+  children?: ReactNode;
+  className?: string;
+}
+
+const TestCasesResultsDisplayLabel = memo(
+  ({ children, className }: TestCasesResultsDisplayLabel) => {
+    return (
+      <span
+        className={cn(
+          "inline-flex items-center text-sm text-muted-foreground gap-1",
+          className,
+        )}
+      >
+        {children}
+      </span>
+    );
+  },
+);
+
+TestCasesResultsDisplayLabel.displayName = "TestCasesResultsDisplayLabel";
 interface TestCasesResultsDisplayProps {
   exerciseUuId: string;
 }
@@ -90,12 +111,9 @@ export const TestCasesResultsDisplay = memo(
 
       if (createSubmissionError) {
         return (
-          <TerminalCode
-            className="mt-4"
-            content={
-              (createSubmissionError as any)?.description || "Erro desconhecido"
-            }
-          />
+          <TerminalCode>
+            {createSubmissionError?.message || "Erro desconhecido"}
+          </TerminalCode>
         );
       }
 
@@ -106,10 +124,10 @@ export const TestCasesResultsDisplay = memo(
 
         return (
           <div className="flex flex-col gap-0.5">
-            <span className="inline-flex items-center text-sm text-muted-foreground">
+            <TestCasesResultsDisplayLabel>
               Erro de compilação: <Icon className="w-4 h-4 ml-1" />
-            </span>
-            <TerminalCode content={testCasesResults?.[0]?.output || ""} />
+            </TestCasesResultsDisplayLabel>
+            <TerminalCode>{testCasesResults?.[0]?.output || ""}</TerminalCode>
           </div>
         );
       }
@@ -130,11 +148,11 @@ export const TestCasesResultsDisplay = memo(
             <Tabs.Root defaultValue="1">
               <Tabs.List>
                 {testCasesResults?.map((testCaseResult, index) => {
-                  const Icon = SUBMISSION_META?.[testCaseResult?.status!]?.icon;
-                  const label =
-                    SUBMISSION_META?.[testCaseResult?.status!]?.label;
-                  const color =
-                    SUBMISSION_META?.[testCaseResult?.status!]?.color;
+                  const submissionMeta =
+                    SUBMISSION_META?.[testCaseResult?.status!];
+                  const Icon = submissionMeta?.icon;
+                  const label = submissionMeta?.label;
+                  const color = submissionMeta?.color;
                   return (
                     <Tooltip
                       key={`trigger-${index}`}
@@ -142,9 +160,9 @@ export const TestCasesResultsDisplay = memo(
                       className="gap-2"
                       textContent={
                         <div className="flex flex-col gap-0.5">
-                          <span className="inline-flex gap-1 items-center">
+                          <TestCasesResultsDisplayLabel className="text-foreground">
                             {label} {<Icon className={cn("w-4 h-4", color)} />}
-                          </span>
+                          </TestCasesResultsDisplayLabel>
                           {!testCaseResult?.isPublic && (
                             <span className="text-muted-foreground">
                               Informações de caso de teste privado 🔒{" "}
@@ -158,11 +176,11 @@ export const TestCasesResultsDisplay = memo(
                           value={(index + 1).toString()}
                           disabled={!testCaseResult?.isPublic}
                         >
-                          <span className="inline-flex items-center gap-1">
+                          <TestCasesResultsDisplayLabel className="text-foreground">
                             {!testCaseResult?.isPublic && <span>🔒 </span>}
                             Teste {index + 1}:{" "}
                             {<Icon className={cn("w-4 h-4", color)} />}
-                          </span>
+                          </TestCasesResultsDisplayLabel>
                         </Tabs.Trigger>
                       </span>
                     </Tooltip>
@@ -170,63 +188,63 @@ export const TestCasesResultsDisplay = memo(
                 })}
               </Tabs.List>
               {/* TODO analizar a possibilidade de adicionar memória e runtime aqui */}
-              {testCasesResults?.map((testCaseResult, index) => (
-                <Tabs.Content
-                  key={`response-${index}`}
-                  value={(index + 1).toString()}
-                >
-                  {/* <div className="flex flex-col gap-0.5">
-                      <p className="text-sm text-muted-foreground">Resultado</p>
-                      <SubmissionStatusBadge
-                        className="p-4 text-sm uppercase gap-4"
-                        status={testCaseResult?.status}
-                      />
-                    </div> */}
-                  <div className="flex flex-col gap-2">
-                    {[
-                      {
-                        label: "Resultado:",
-                        content: (
-                          <span>
-                            {SUBMISSION_META?.[testCaseResult?.status!]?.label}
-                            {/* {SUBMISSION_META?.[testCaseResult?.status!]?.icon} */}
+              {testCasesResults?.map((testCaseResult, index) => {
+                const submissionMeta =
+                  SUBMISSION_META?.[testCaseResult?.status!];
+                const Icon = submissionMeta?.icon;
+                const label = submissionMeta?.label;
+                const color = submissionMeta?.color;
+                return (
+                  <Tabs.Content
+                    key={`response-${index}`}
+                    value={(index + 1).toString()}
+                  >
+                    <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-1">
+                        <TestCasesResultsDisplayLabel>
+                          Resultado:
+                        </TestCasesResultsDisplayLabel>
+                        <TerminalCode animation={false}>
+                          <span className="inline-flex items-center gap-1 ">
+                            {label}
+                            <Icon className={cn("w-4 h-4", color)} />
                           </span>
-                        ),
-                      },
-                      ...(testCaseResult?.isPublic
-                        ? [
-                            {
-                              label: "Entrada (input):",
-                              content: testCaseResult?.input || "",
-                            },
-                            //  TODO dependendo do status, nao exibor a resposta de erro
-                            {
-                              label: "Saída do seu código:",
-                              content: testCaseResult?.output || "",
-                            },
-                            {
-                              label: "Saída Esperada:",
-                              content: testCaseResult?.expectedOutput || "",
-                            },
-                          ]
-                        : []),
-                    ].map((item, idx) => (
-                      <div
-                        key={`item-${index}-${idx}`}
-                        className="flex flex-col gap-0.5"
-                      >
-                        <span className="inline-flex items-center text-sm text-muted-foreground">
-                          {item.label}
-                        </span>
-                        <TerminalCode
-                          animation={false}
-                          content={item.content}
-                        />
+                        </TerminalCode>
                       </div>
-                    ))}
-                  </div>
-                </Tabs.Content>
-              ))}
+                      {testCaseResult?.isPublic && (
+                        <>
+                          <div className="flex flex-col gap-1">
+                            <TestCasesResultsDisplayLabel>
+                              Entrada (input):
+                            </TestCasesResultsDisplayLabel>
+                            <TerminalCode animation={false}>
+                              {testCaseResult?.input || ""}
+                            </TerminalCode>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col gap-1">
+                              <TestCasesResultsDisplayLabel>
+                                Saída do seu código:
+                              </TestCasesResultsDisplayLabel>
+                              <TerminalCode animation={false}>
+                                {testCaseResult?.output || ""}
+                              </TerminalCode>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <TestCasesResultsDisplayLabel>
+                                Saída Esperada:
+                              </TestCasesResultsDisplayLabel>
+                              <TerminalCode animation={false}>
+                                {testCaseResult?.expectedOutput || ""}
+                              </TerminalCode>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </Tabs.Content>
+                );
+              })}
             </Tabs.Root>
           </>
         );

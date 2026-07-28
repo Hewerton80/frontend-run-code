@@ -7,17 +7,35 @@ import { removeEmptyKeys } from "@/utils/queryParams";
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
+export type FetchExercisesResponseData = {
+  uuid: string;
+  id: number;
+  status: number;
+  title: string;
+  difficulty: number | null;
+  createdAt: Date;
+  category: {
+    uuid: string;
+    name: string;
+    id: number;
+  } | null;
+  author: {
+    uuid: string;
+    name: string;
+    surname: string;
+    email: string;
+    avatarUrl: string | null;
+    avatarBgColor: string;
+  };
+};
+type FetchPaginatedExercisesResponse =
+  IPaginatedDocs<FetchExercisesResponseData>;
+
 export type IFetchExercisesParams = IPaginationParams;
 interface UseFetchExercisesConfig {
   enabled?: boolean;
 }
-/**
- * Busca a lista paginada de exercícios.
- * Semeia o cache individual de cada exercício via `setItemInCache` para
- * permitir navegação cache-first ao detalhe.
- * Suporta cancelamento automático via AbortSignal.
- */
-// TODO adicionar tipagens igual do retorno da api
+
 export const useFetchExercises = (
   params?: IFetchExercisesParams,
   config?: UseFetchExercisesConfig,
@@ -35,15 +53,16 @@ export const useFetchExercises = (
   } = useQuery({
     queryKey: exerciseQueryKeyFactory.pages(normalizedParams),
     queryFn: async ({ signal }) => {
-      const { data: response } = await apiBase.get<IPaginatedDocs<IExercise>>(
-        "/exercise",
-        { params: normalizedParams, signal },
-      );
+      const { data: response } =
+        await apiBase.get<FetchPaginatedExercisesResponse>("/exercise", {
+          params: normalizedParams,
+          signal,
+        });
 
       // Semeia o cache individual de cada exercício para navegação cache-first
       response?.data?.forEach((exercise) => {
         if (exercise.uuid) {
-          setItemInCache<IExercise>(
+          setItemInCache<FetchExercisesResponseData>(
             exerciseQueryKeyFactory.row(exercise.uuid),
             exercise,
           );

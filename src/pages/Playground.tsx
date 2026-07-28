@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/cards/Card";
 import { IDE } from "@/modules/submission/components/IDE";
 import { useRunCode } from "@/modules/submission/hooks/useRunCode";
 import { useState } from "react";
-import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { ThreeDotsLoading } from "@/components/ui/feedback/ThreeDotsLoading";
 
 export default function PlayGroundPage() {
@@ -48,12 +47,6 @@ export default function PlayGroundPage() {
             <div className="flex flex-col h-full gap-4">
               <p>Output:</p>
               {isRunningCode && <ThreeDotsLoading />}
-              {runCodeResponse && (
-                <TerminalCode content={runCodeResponse?.output || ""} />
-              )}
-              {/* {runCodeError && (
-                <TerminalCode content={runCodeError?.description || ""} />
-              )} */}
             </div>
           </form>
         </Card.Root>

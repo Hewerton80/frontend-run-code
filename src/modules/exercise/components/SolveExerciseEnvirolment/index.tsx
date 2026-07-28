@@ -12,7 +12,7 @@ import { ExerciseForm } from "../ExerciseFormDrawer";
 import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
 import { cn } from "@/utils/cn";
 import { Trophy, Zap } from "lucide-react";
-import { ExerciseDifficultyStars } from "../ExerciseDifficultyStars";
+import { ExerciseDifficultyStars, RANK_META } from "../ExerciseDifficultyStars";
 import { Separator } from "@/components/ui/separator";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
@@ -21,6 +21,7 @@ import {
   SubmissionStatus,
   XP_BY_DIFFICULTY,
 } from "@/modules/submission/submissionType";
+import { ExerciseSideStats } from "./ExerciseSideStats";
 
 export const SolveExerciseEnvirolment = () => {
   const { setShowSidebarMembers } = useSidebarMembers();
@@ -42,11 +43,6 @@ export const SolveExerciseEnvirolment = () => {
       classroomUuId: params?.classroomId,
       listId: params?.listId,
     });
-
-  const done = useMemo(
-    () => exercise?.submissionStats?.status === SubmissionStatus.ACCEPTED,
-    [exercise?.submissionStats?.status],
-  );
 
   useEffect(() => {
     setShowSidebarMembers(false);
@@ -110,14 +106,13 @@ export const SolveExerciseEnvirolment = () => {
           </div>
         </div>
         {/* <div className="bg-red-500  w-full h-400"></div> */}
-
-        <div
-          className={cn(
-            "relative flex flex-col overflow-hidden rounded-4xl p-6",
-            "size-full min-h-117 border border-white/10 gap-4 card-frame-gray",
-          )}
-        >
-          <div className="flex items-center justify-between">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]">
+          <div
+            className={cn(
+              "relative flex flex-col overflow-hidden rounded-4xl p-6",
+              "size-full min-h-117 border border-white/10 gap-4 card-frame-gray",
+            )}
+          >
             <h1
               className={cn(
                 "line-clamp-1 text-xl font-black tracking-tight",
@@ -126,58 +121,42 @@ export const SolveExerciseEnvirolment = () => {
             >
               {exercise?.title}
             </h1>
-            <div className="flex items-center gap-4">
-              {done && (
-                <span className="inline-flex items-center gap-1 font-bold text-warning/90">
-                  <Trophy className="size-4" />
-                  Conquistado
-                </span>
-              )}
-              <ExerciseDifficultyStars count={exercise?.difficulty || 1} />
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1 font-bold text-primary leading-0",
-                  done && "line-through",
-                )}
-              >
-                <Zap className="size-4" /> +
-                {XP_BY_DIFFICULTY[exercise?.difficulty || 1]} XP
-              </span>
+
+            <Separator orientation="horizontal" className="h-1" />
+            <div className="flex flex-col gap-4">
+              <Resizable.Group>
+                <Resizable.Panel
+                  defaultSize={20}
+                  minSize={15}
+                  className="h-full w-full flex-1/2"
+                >
+                  {isFetchingExercise ? (
+                    skeleton
+                  ) : (
+                    <Suspense fallback={skeleton}>
+                      <ExerciseDescription exercise={exercise!} />
+                    </Suspense>
+                  )}
+                </Resizable.Panel>
+                <Resizable.Handle className="mx-4" withHandle />
+                <Resizable.Panel
+                  defaultSize={20}
+                  minSize={15}
+                  className="flex flex-1/2 w-full flex-col h-full gap-4"
+                >
+                  {isFetchingExercise ? (
+                    skeleton
+                  ) : (
+                    <Suspense fallback={skeleton}>
+                      <IDEExercise exercise={exercise!} />
+                    </Suspense>
+                  )}
+                </Resizable.Panel>
+              </Resizable.Group>
+              <TestCasesResultsDisplay exerciseUuId={params?.exerciseId!} />
             </div>
           </div>
-          <Separator orientation="horizontal" className="h-1" />
-          <div className="flex flex-col gap-4">
-            <Resizable.Group>
-              <Resizable.Panel
-                defaultSize={20}
-                minSize={15}
-                className="h-full w-full flex-1/2"
-              >
-                {isFetchingExercise ? (
-                  skeleton
-                ) : (
-                  <Suspense fallback={skeleton}>
-                    <ExerciseDescription exercise={exercise!} />
-                  </Suspense>
-                )}
-              </Resizable.Panel>
-              <Resizable.Handle className="mx-4" withHandle />
-              <Resizable.Panel
-                defaultSize={20}
-                minSize={15}
-                className="flex flex-1/2 w-full flex-col h-full gap-4"
-              >
-                {isFetchingExercise ? (
-                  skeleton
-                ) : (
-                  <Suspense fallback={skeleton}>
-                    <IDEExercise exercise={exercise!} />
-                  </Suspense>
-                )}
-              </Resizable.Panel>
-            </Resizable.Group>
-            <TestCasesResultsDisplay exerciseUuId={params?.exerciseId!} />
-          </div>
+          <ExerciseSideStats exercise={exercise} />
         </div>
       </div>
       <ExerciseForm.Drawer />

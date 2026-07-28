@@ -11,55 +11,32 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 // ─── Tipos ───────────────────────────────────────────────────────────────
 
 export interface InfiniteListProps<T> {
-  /** Dados a serem renderizados */
   data: T[];
-  /** Função que renderiza cada item */
   renderItem: (info: { item: T; index: number }) => React.ReactNode;
-  /** Extrai a chave única de cada item */
   keyExtractor: (item: T, index: number) => string | number;
-  /** Altura estimada de cada item (padrão: 50) */
   estimatedItemSize?: number;
-  /** Altura do container do scroll */
   listHeight?: number | string;
-  /** Largura do container */
   listWidth?: number | string;
-  /** Chamado quando o usuário chega próximo ao final da lista */
   onEndReached?: () => void;
-  /** Distância do final para disparar onEndReached (padrão: 200) */
   onEndReachedThreshold?: number;
-  /** Componente exibido no topo da lista (similar a ListHeaderComponent) */
   ListHeaderComponent?: React.ReactNode;
-  /** Componente exibido no final da lista (similar a ListFooterComponent) */
   ListFooterComponent?: React.ReactNode;
-  /** Componente exibido quando a lista está vazia */
   ListEmptyComponent?: React.ReactNode;
-  /** Componente exibido durante o carregamento de mais itens */
   ListLoadingComponent?: React.ReactNode;
-  /** Se está carregando mais dados */
   loading?: boolean;
-  /** Classe CSS adicional para o container */
   className?: string;
-  /** Classe CSS adicional para cada item */
   itemClassName?: string;
-  /** Estilo inline para o container */
   style?: React.CSSProperties;
-  /** Estilo inline para cada item */
   itemStyle?: React.CSSProperties;
-  /** Scroll automático para o topo quando data mudar */
   scrollToTopOnDataChange?: boolean;
-  /** Acesso ao ref do container de scroll */
-  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
 export interface InfiniteListRef {
-  /** Scroll para um índice específico */
   scrollToIndex: (
     index: number,
     options?: { align?: "start" | "center" | "end" },
   ) => void;
-  /** Scroll para o topo */
   scrollToTop: () => void;
-  /** Scroll para o final */
   scrollToBottom: () => void;
 }
 
@@ -88,6 +65,9 @@ function InfiniteListInner<T>(
   }: InfiniteListProps<T>,
   ref: React.ForwardedRef<InfiniteListRef>,
 ) {
+  // ⚠️ Diretiva obrigatória para evitar conflito com React Compiler
+  "use no memo";
+
   const parentRef = useRef<HTMLDivElement>(null);
   const hasTriggeredEndReached = useRef(false);
 
@@ -121,7 +101,6 @@ function InfiniteListInner<T>(
         onEndReached();
       }
 
-      // Reseta o gatilho se o usuário scrollar para cima
       if (distanceToEnd > onEndReachedThreshold * 2) {
         hasTriggeredEndReached.current = false;
       }
@@ -131,15 +110,11 @@ function InfiniteListInner<T>(
     return () => scrollElement.removeEventListener("scroll", handleScroll);
   }, [onEndReached, onEndReachedThreshold, data.length, loading]);
 
-  // ─── Reset do gatilho quando loading termina ──────────────────────────
-
   useEffect(() => {
     if (!loading) {
       hasTriggeredEndReached.current = false;
     }
   }, [loading]);
-
-  // ─── Scroll para o topo quando data mudar ─────────────────────────────
 
   useEffect(() => {
     if (scrollToTopOnDataChange && data.length > 0) {
@@ -147,7 +122,7 @@ function InfiniteListInner<T>(
     }
   }, [data, scrollToTopOnDataChange, virtualizer]);
 
-  // ─── API Exposta via Ref ──────────────────────────────────────────────
+  // ─── API via Ref ─────────────────────────────────────────────────────
 
   useImperativeHandle(ref, () => ({
     scrollToIndex: (index, options) =>
@@ -175,14 +150,12 @@ function InfiniteListInner<T>(
         ...style,
       }}
     >
-      {/* Header */}
       {ListHeaderComponent && (
         <div style={{ position: "sticky", top: 0, zIndex: 1 }}>
           {ListHeaderComponent}
         </div>
       )}
 
-      {/* Container virtualizado */}
       <div
         style={{
           height: `${totalSize}px`,
@@ -213,7 +186,6 @@ function InfiniteListInner<T>(
         })}
       </div>
 
-      {/* Footer / Loading */}
       {loading && ListLoadingComponent && (
         <div style={{ padding: "16px", textAlign: "center" }}>
           {ListLoadingComponent}

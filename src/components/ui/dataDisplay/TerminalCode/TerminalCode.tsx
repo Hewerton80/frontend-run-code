@@ -4,18 +4,18 @@ import { isString } from "@tiptap/core";
 import { memo, ReactNode } from "react";
 
 interface TerminalCodeProps {
-  content?: ReactNode;
+  children?: ReactNode;
   animation?: boolean;
   className?: string;
 }
 
 export const TerminalCode = memo(
-  ({ content = "", animation = true, className }: TerminalCodeProps) => {
+  ({ children, animation = true, className }: TerminalCodeProps) => {
     const { typeWriterText } = useTypeWriterText({
-      text: isString(content) ? content : "",
+      text: isString(children) ? children : "",
       animation,
     });
-    const handledContent = isString(content) ? typeWriterText : content;
+    const handledContent = isString(children) ? typeWriterText : children;
 
     return (
       <pre
