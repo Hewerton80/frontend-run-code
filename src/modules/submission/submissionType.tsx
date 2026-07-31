@@ -8,6 +8,7 @@ import {
   HelpCircle,
   FileX,
 } from "lucide-react";
+import { CSSProperties } from "react";
 
 export enum SubmissionStatus {
   PENDING = 1,
@@ -27,7 +28,7 @@ export const SUBMISSION_META: Record<
   {
     label: string;
     tone: string;
-    icon: React.ComponentType<{ className?: string }>;
+    icon: React.ComponentType<{ className?: string; style?: CSSProperties }>;
     color: string;
   }
 > = {

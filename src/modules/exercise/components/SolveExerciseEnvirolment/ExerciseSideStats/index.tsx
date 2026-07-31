@@ -26,7 +26,7 @@ export const ExerciseSideStats = memo(
     return (
       <aside
         className={cn(
-          "relative flex flex-col rounded-4xl p-6 h-fit",
+          "relative flex flex-col rounded-4xl p-5 h-fit",
           "border border-white/10 gap-3 card-frame-gray",
         )}
       >
@@ -66,7 +66,7 @@ export const ExerciseSideStats = memo(
         <div
           className={cn(
             "flex items-center justify-between rounded-xl border border-primary/30",
-            "bg-primary/10 px-3 py-2",
+            "bg-primary/10 px-3 py-2 gap-4",
           )}
         >
           <span

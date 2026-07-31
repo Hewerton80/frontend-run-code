@@ -1,6 +1,6 @@
 import { ExerciseDescription } from "./ExerciseDescription";
 import { IDEExercise } from "./IDEExercise";
-import { Suspense, useEffect, useMemo } from "react";
+import { Suspense, useEffect } from "react";
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Breadcrumbs } from "@/components/ui/dataDisplay/Breadcrumb";
 import { useParams } from "react-router-dom";
@@ -11,16 +11,10 @@ import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCached
 import { ExerciseForm } from "../ExerciseFormDrawer";
 import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
 import { cn } from "@/utils/cn";
-import { Trophy, Zap } from "lucide-react";
-import { ExerciseDifficultyStars, RANK_META } from "../ExerciseDifficultyStars";
 import { Separator } from "@/components/ui/separator";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
 import { useSidebarMembers } from "@/modules/classroom/components/SidebarMembers/useSidebarMembers";
-import {
-  SubmissionStatus,
-  XP_BY_DIFFICULTY,
-} from "@/modules/submission/submissionType";
 import { ExerciseSideStats } from "./ExerciseSideStats";
 
 export const SolveExerciseEnvirolment = () => {
@@ -106,10 +100,10 @@ export const SolveExerciseEnvirolment = () => {
           </div>
         </div>
         {/* <div className="bg-red-500  w-full h-400"></div> */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto]">
           <div
             className={cn(
-              "relative flex flex-col overflow-hidden rounded-4xl p-6",
+              "relative flex flex-col overflow-hidden rounded-4xl p-5",
               "size-full min-h-117 border border-white/10 gap-4 card-frame-gray",
             )}
           >

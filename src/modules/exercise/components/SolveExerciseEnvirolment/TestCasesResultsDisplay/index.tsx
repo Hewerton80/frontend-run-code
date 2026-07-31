@@ -111,7 +111,7 @@ export const TestCasesResultsDisplay = memo(
 
       if (createSubmissionError) {
         return (
-          <TerminalCode>
+          <TerminalCode animation={false}>
             {createSubmissionError?.message || "Erro desconhecido"}
           </TerminalCode>
         );
@@ -127,7 +127,9 @@ export const TestCasesResultsDisplay = memo(
             <TestCasesResultsDisplayLabel>
               Erro de compilação: <Icon className="w-4 h-4 ml-1" />
             </TestCasesResultsDisplayLabel>
-            <TerminalCode>{testCasesResults?.[0]?.output || ""}</TerminalCode>
+            <TerminalCode animation={false}>
+              {testCasesResults?.[0]?.output || ""}
+            </TerminalCode>
           </div>
         );
       }
@@ -199,13 +201,13 @@ export const TestCasesResultsDisplay = memo(
                     key={`response-${index}`}
                     value={(index + 1).toString()}
                   >
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-y-2">
+                      <div className="flex flex-col gap-1 w-full sm:w-1/3">
                         <TestCasesResultsDisplayLabel>
                           Resultado:
                         </TestCasesResultsDisplayLabel>
                         <TerminalCode animation={false}>
-                          <span className="inline-flex items-center gap-1 ">
+                          <span className="inline-flex items-center gap-1.5 leading-0">
                             {label}
                             <Icon className={cn("w-4 h-4", color)} />
                           </span>
@@ -213,20 +215,23 @@ export const TestCasesResultsDisplay = memo(
                       </div>
                       {testCaseResult?.isPublic && (
                         <>
-                          <div className="flex flex-col gap-1">
-                            <TestCasesResultsDisplayLabel>
-                              Entrada (input):
-                            </TestCasesResultsDisplayLabel>
-                            <TerminalCode animation={false}>
-                              {testCaseResult?.input || ""}
-                            </TerminalCode>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div className="flex flex-col gap-1">
+                              <TestCasesResultsDisplayLabel>
+                                Entrada (input):
+                              </TestCasesResultsDisplayLabel>
+                              <TerminalCode animation={false}>
+                                {testCaseResult?.input || ""}
+                              </TerminalCode>
+                            </div>
                             <div className="flex flex-col gap-1">
                               <TestCasesResultsDisplayLabel>
                                 Saída do seu código:
                               </TestCasesResultsDisplayLabel>
-                              <TerminalCode animation={false}>
+                              <TerminalCode
+                                className="h-full"
+                                animation={false}
+                              >
                                 {testCaseResult?.output || ""}
                               </TerminalCode>
                             </div>
@@ -234,7 +239,10 @@ export const TestCasesResultsDisplay = memo(
                               <TestCasesResultsDisplayLabel>
                                 Saída Esperada:
                               </TestCasesResultsDisplayLabel>
-                              <TerminalCode animation={false}>
+                              <TerminalCode
+                                className="h-full"
+                                animation={false}
+                              >
                                 {testCaseResult?.expectedOutput || ""}
                               </TerminalCode>
                             </div>
