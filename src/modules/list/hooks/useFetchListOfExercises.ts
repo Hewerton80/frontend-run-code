@@ -6,6 +6,10 @@ import { IList } from "@/modules/list/listTypes";
 import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
 
+interface FetchListOfExercisesByListIdResponse {
+  id: number;
+}
+
 export const useFetchListOfExercises = ({
   classroomId,
   listId,

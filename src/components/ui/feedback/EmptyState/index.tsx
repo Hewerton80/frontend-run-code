@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Button } from "../../buttons/Button";
+import { cn } from "@/utils/cn";
 
 /* ------------------------------------------------------------------ */
 /* Isometric illustrations                                             */
@@ -424,9 +425,14 @@ export function EmptyState({
         : "text-lg font-extrabold";
   return (
     <div
-      className={`flex flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-card/40 text-center ${pad} ${className}`}
+      className={cn(
+        "flex flex-col items-center justify-center rounded-3xl border border-dashed",
+        "border-border bg-card/40 text-center",
+        pad,
+        className,
+      )}
     >
-      <div className="mb-4">{illustration}</div>
+      {illustration}
       <h3 className={`tracking-tight text-foreground ${titleCls}`}>{title}</h3>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">{message}</p>
       {(action || secondary) && (

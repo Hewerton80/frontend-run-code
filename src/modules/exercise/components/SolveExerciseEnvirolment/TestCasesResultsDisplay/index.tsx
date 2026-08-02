@@ -19,6 +19,7 @@ import { ProcessingSubmissionState } from "@/modules/submission/components/Proce
 import { ProcessedSubmissionSuccessState } from "@/modules/submission/components/ProcessedSubmissionSuccessState";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/utils/cn";
+import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 
 interface TestCasesResultsDisplayLabel {
   children?: ReactNode;
@@ -117,6 +118,16 @@ export const TestCasesResultsDisplay = memo(
         );
       }
 
+      if (submissionsResultSummary?.status === SubmissionStatus.UNKNOWN_ERROR) {
+        const Icon = SUBMISSION_META?.[submissionsResultSummary.status]?.icon;
+        return (
+          <ApiErrorState
+            title="Erro desconhecido"
+            message="Ocorreu um erro desconhecido ao processar sua submissão. Por favor, tente novamente mais tarde."
+          />
+        );
+      }
+
       if (
         submissionsResultSummary?.status === SubmissionStatus.COMPILATION_ERROR
       ) {
@@ -127,9 +138,11 @@ export const TestCasesResultsDisplay = memo(
             <TestCasesResultsDisplayLabel>
               Erro de compilação: <Icon className="w-4 h-4 ml-1" />
             </TestCasesResultsDisplayLabel>
-            <TerminalCode animation={false}>
-              {testCasesResults?.[0]?.output || ""}
-            </TerminalCode>
+            {testCasesResults?.[0]?.output?.trim() && (
+              <TerminalCode animation={false}>
+                {testCasesResults?.[0]?.output}
+              </TerminalCode>
+            )}
           </div>
         );
       }

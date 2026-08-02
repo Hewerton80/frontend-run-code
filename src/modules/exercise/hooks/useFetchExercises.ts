@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
 import { IPaginatedDocs, IPaginationParams } from "@/types/paginated";
 import { removeEmptyKeys } from "@/utils/queryParams";
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
