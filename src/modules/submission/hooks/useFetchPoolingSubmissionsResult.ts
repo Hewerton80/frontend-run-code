@@ -12,7 +12,10 @@ import { updateCachedClassroom } from "@/modules/classroom/utils/updateCachedCla
 export const useFetchPoolingSubmissionsResult = () => {
   const { cachedSubmissionJobs, setCachedSubmissionJobs } =
     useCachedSubmissionJobs();
+
   const { fetchSubmissionJobs } = useFetchSubmissionJobs();
+
+  // TODO adicionar ao corpo so usuario activeJobs
 
   const isPoolingSubmissionResult = useMemo(
     () => cachedSubmissionJobs.some((job) => job.isProcessing),
