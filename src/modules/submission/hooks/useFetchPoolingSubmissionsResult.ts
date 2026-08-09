@@ -8,19 +8,23 @@ import { updateCachedExerciseOfList } from "@/modules/exercise/utils/updateCache
 import { SubmissionStatus } from "../submissionType";
 import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
 import { updateCachedClassroom } from "@/modules/classroom/utils/updateCachedClassroom";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 
 export const useFetchPoolingSubmissionsResult = () => {
-  const { cachedSubmissionJobs, setCachedSubmissionJobs } =
-    useCachedSubmissionJobs();
+  const { setCachedSubmissionJobs } = useCachedSubmissionJobs();
 
-  const { fetchSubmissionJobs } = useFetchSubmissionJobs();
+  const { loggedUser, setLoggedUser } = useLoggedUser();
 
-  // TODO adicionar ao corpo so usuario activeJobs
+  const activeJobIds = useMemo(
+    () => loggedUser?.activeJobIds || [],
+    [loggedUser],
+  );
 
   const isPoolingSubmissionResult = useMemo(
-    () => cachedSubmissionJobs.some((job) => job.isProcessing),
-    [cachedSubmissionJobs],
+    () => activeJobIds.length > 0,
+    [activeJobIds],
   );
+  const { fetchSubmissionJobs } = useFetchSubmissionJobs(activeJobIds);
 
   const handleUpdateCachedExerciseOfList = useCallback(
     (job: SubmissionJobResponse) => {
@@ -66,15 +70,34 @@ export const useFetchPoolingSubmissionsResult = () => {
     [],
   );
 
+  const handleUpdateCachedLoggedUser = useCallback(
+    (submissionJobs: SubmissionJobResponse[]) => {
+      setLoggedUser((prevLoggedUser) => {
+        if (!prevLoggedUser) return prevLoggedUser;
+
+        return {
+          ...prevLoggedUser,
+          activeJobIds: submissionJobs
+            .filter((job) => job.isProcessing)
+            .map((job) => job.jobId),
+        };
+      });
+    },
+    [setLoggedUser],
+  );
+
   const handleFetchSubmissionJobs = useCallback(async () => {
     const { data: submissionJobs } = await fetchSubmissionJobs();
-    if (!submissionJobs?.length) return;
+    if (!submissionJobs?.length) {
+      setCachedSubmissionJobs([]);
+      handleUpdateCachedLoggedUser([]);
+      return;
+    }
+    handleUpdateCachedLoggedUser(submissionJobs);
     setCachedSubmissionJobs(submissionJobs);
 
     submissionJobs
-      .filter(
-        (job) => !!job?.listId && job?.result?.wasAlreadyAccepted !== true,
-      )
+      .filter((job) => job?.result?.wasAlreadyAccepted !== true)
       .forEach((job) => {
         handleUpdateCachedExerciseOfList(job);
         if (job?.result?.status !== SubmissionStatus.ACCEPTED) return;
@@ -87,6 +110,7 @@ export const useFetchPoolingSubmissionsResult = () => {
     handleUpdateCachedListOfClassroom,
     handleUpdateCachedClassroom,
     setCachedSubmissionJobs,
+    handleUpdateCachedLoggedUser,
   ]);
 
   const timer = useRef<any>(null);

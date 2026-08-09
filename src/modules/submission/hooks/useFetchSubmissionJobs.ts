@@ -26,6 +26,7 @@ export interface SubmissionResultSummary {
     xpEarned: number;
   };
 }
+export type SubmissionJobState = "waiting" | "active" | "completed" | "failed";
 
 export interface SubmissionJobResponse {
   jobId: string;
@@ -33,14 +34,14 @@ export interface SubmissionJobResponse {
   exerciseUuId: string;
   listId: number | null;
   isProcessing: boolean;
-  jobState: string;
+  jobState: SubmissionJobState;
   result: SubmissionResultSummary | null;
   processedOn: number | null;
   finishedOn: number | null;
   failedReason: string | null;
 }
 
-export const useFetchSubmissionJobs = () => {
+export const useFetchSubmissionJobs = (activeJobIds: string[]) => {
   const { apiBase } = useAxios();
   const {
     data: submissionJobs,
@@ -48,10 +49,12 @@ export const useFetchSubmissionJobs = () => {
     isFetching: isFetchingSubmissionJobs,
     refetch: fetchSubmissionJobs,
   } = useQuery({
-    queryKey: submissionQueryKeyFactory.jobs(),
+    queryKey: submissionQueryKeyFactory.jobs(activeJobIds),
     queryFn: ({ signal }) =>
       apiBase
-        .get<SubmissionJobResponse[]>("/submission/me/jobs", { signal })
+        .get<
+          SubmissionJobResponse[]
+        >("/submission/me/jobs", { params: { activeJobIds: activeJobIds.join(",") }, signal })
         .then((res) => res.data),
     enabled: false,
     retry: 0,

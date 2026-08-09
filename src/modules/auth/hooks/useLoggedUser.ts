@@ -12,20 +12,29 @@ export interface LoggedUser {
   role: RoleUser;
   createdAt: string;
   username: string;
+  activeJobIds?: string[];
 }
+type LoggedUserUpdater = Updater<LoggedUser | null | undefined>;
 
 type State = {
   loggedUser?: LoggedUser | null;
 };
 
 type Actions = {
-  setLoggedUser: (User: LoggedUser | null) => void;
+  setLoggedUser: (updater: LoggedUser | null | LoggedUserUpdater) => void;
 };
 
 export const useLoggedUserStore = create<State & Actions>((set) => ({
   loggedUser: undefined,
 
-  setLoggedUser: (loggedUser: LoggedUser | null) => set(() => ({ loggedUser })),
+  setLoggedUser: (updater: LoggedUser | null | LoggedUserUpdater) => {
+    set((state) => ({
+      loggedUser:
+        typeof updater === "function"
+          ? updater(state?.loggedUser || null)
+          : updater,
+    }));
+  },
 }));
 
 export const useLoggedUser = () => {

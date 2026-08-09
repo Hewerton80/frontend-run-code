@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { SubmissionJobResponse } from "./useFetchSubmissionJobs";
+import { useCallback } from "react";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 
 type State = {
   cachedSubmissionJobs: SubmissionJobResponse[];
@@ -42,15 +44,37 @@ export const useCachedSubmissionJobs = () => {
   const cachedSubmissionJobs = useCachedSubmissionJobsStore(
     useShallow((state) => state.cachedSubmissionJobs),
   );
+
   const setCachedSubmissionJobs = useCachedSubmissionJobsStore(
     useShallow((state) => state.setCachedSubmissionJobs),
   );
+
   const addCachedSubmissionJob = useCachedSubmissionJobsStore(
     useShallow((state) => state.addCachedSubmissionJob),
   );
+
+  const { setLoggedUser } = useLoggedUser();
+
+  const handleAddCachedSubmissionJob = useCallback(
+    (exerciseId: string, submissionJob: SubmissionJobResponse) => {
+      addCachedSubmissionJob(exerciseId, submissionJob);
+      setLoggedUser((prevLoggedUser) => {
+        if (!prevLoggedUser) return prevLoggedUser;
+        return {
+          ...prevLoggedUser,
+          activeJobIds: [
+            ...(prevLoggedUser?.activeJobIds || []),
+            submissionJob.jobId,
+          ],
+        };
+      });
+    },
+    [addCachedSubmissionJob, setLoggedUser],
+  );
+
   return {
     cachedSubmissionJobs,
     setCachedSubmissionJobs,
-    addCachedSubmissionJob,
+    addCachedSubmissionJob: handleAddCachedSubmissionJob,
   };
 };
