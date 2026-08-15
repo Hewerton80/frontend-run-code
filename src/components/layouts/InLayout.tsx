@@ -5,13 +5,15 @@ import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLogout } from "@/modules/auth/hooks/useLogout";
 import { RoleUser } from "@/modules/user/userTypets";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Outlet } from "react-router-dom";
 import { useFetchPoolingSubmissionsResult } from "@/modules/submission/hooks/useFetchPoolingSubmissionsResult";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { useFetchMyClassrooms } from "@/modules/classroom/hooks/useFetchMyClassrooms";
 import { cn } from "@/utils/cn";
 import { SidebarClassrooms } from "@/modules/classroom/components/SidebarClassrooms";
+
+type ScreenState = "loading" | "error" | "success";
 
 export default function InLayoutPage() {
   const { logout } = useLogout();
@@ -29,7 +31,13 @@ export default function InLayoutPage() {
       loggedUser?.role === RoleUser.TEACHER,
   });
 
-  const { fetchMe, errorUser, isErrorUser } = useAuth();
+  const screenState = useMemo<ScreenState>(() => {
+    if (!loggedUser || !classrooms || isLoadingClassrooms) return "loading";
+    if (errorClassrooms) return "error";
+    return "success";
+  }, [loggedUser, classrooms, isLoadingClassrooms, errorClassrooms]);
+
+  const { fetchMe, errorUser } = useAuth();
 
   useFetchPoolingSubmissionsResult();
 
@@ -42,21 +50,6 @@ export default function InLayoutPage() {
     }
     fetchMe();
   }, [fetchMe, loggedUser, access_token, logout]);
-
-  if (!loggedUser || !classrooms || isLoadingClassrooms) {
-    return <SplashScreen />;
-  }
-
-  if (isErrorUser) {
-    return (
-      <div className="flex items-center justify-center flex-col min-h-screen">
-        <ApiErrorState
-          message={errorUser?.message || "Ops... Aconteceu um erro inesperado"}
-          onRetry={fetchMe}
-        />
-      </div>
-    );
-  }
 
   if (errorClassrooms) {
     return (
@@ -73,16 +66,33 @@ export default function InLayoutPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      <Header />
+    <>
+      <SplashScreen visible={screenState === "loading"} />
+      {screenState === "error" && (
+        <div className="flex items-center justify-center flex-col min-h-screen">
+          <ApiErrorState
+            message={
+              errorUser?.message || "Ops... Aconteceu um erro inesperado"
+            }
+            onRetry={fetchMe}
+          />
+        </div>
+      )}
+      {screenState === "success" && (
+        <div className="flex flex-col h-screen overflow-hidden">
+          <Header />
 
-      <div className={cn("h-main-content w-full", "grid grid-cols-[auto_1fr]")}>
-        <SidebarClassrooms />
-        <main className={cn("h-full bg-background min-w-0")}>
-          <Outlet />
-        </main>
-      </div>
-    </div>
+          <div
+            className={cn("h-main-content w-full", "grid grid-cols-[auto_1fr]")}
+          >
+            <SidebarClassrooms />
+            <main className={cn("h-full bg-background min-w-0")}>
+              <Outlet />
+            </main>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

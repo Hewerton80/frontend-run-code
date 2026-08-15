@@ -12,6 +12,7 @@ export const CLASSROOM_USER_PER_PAGE = 10;
 
 export type IFetchClassroomUsersParams = IPaginationParams;
 
+// TODO deixar um incfinitScroll
 export const useFetchClassroomUsers = (
   classroomId: string,
   params?: IFetchClassroomUsersParams,

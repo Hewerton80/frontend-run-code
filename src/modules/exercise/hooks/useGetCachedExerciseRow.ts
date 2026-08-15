@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { exerciseQueryKeyFactory } from "../utils/exerciseQueryKeyFactory";
-import { IExercise } from "../exerciseTypes";
+import { FetchExercisesResponseData } from "./useFetchExercises";
 
 export const useGetCachedExerciseRow = (exerciseUuid: string) => {
-  const { data: cachedExercise } = useQuery<IExercise | null>({
+  const { data: cachedExercise } = useQuery<FetchExercisesResponseData | null>({
     queryKey: exerciseQueryKeyFactory.row(exerciseUuid),
     queryFn: () => null,
     staleTime: Infinity,
@@ -11,5 +11,5 @@ export const useGetCachedExerciseRow = (exerciseUuid: string) => {
     enabled: !!exerciseUuid,
   });
 
-  return { cachedExercise: cachedExercise as IExercise };
+  return { cachedExercise: cachedExercise as FetchExercisesResponseData };
 };

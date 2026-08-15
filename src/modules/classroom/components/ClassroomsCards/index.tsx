@@ -14,7 +14,7 @@ import { ROUTES } from "@/routes/routes";
 import { cn } from "@/utils/cn";
 import { LanguageBadge } from "@/modules/language/components/LanguageBadge";
 import { ArrowRight } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/dataDisplay/Separator";
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
 import { emojis } from "@/utils/emojis";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";

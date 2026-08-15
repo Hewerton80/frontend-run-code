@@ -6,14 +6,14 @@ import {
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { ExerciseCard } from "@/modules/exercise/components/ExerciseCard";
 import { useFetchListOfExercises } from "@/modules/list/hooks/useFetchListOfExercises";
-import { IFetchListsByClassromUuidResponse } from "@/modules/list/hooks/useFetchListsByClassromUuid";
+import { IFetchListsOfClassromResponse } from "@/modules/list/hooks/useFetchListsByClassromUuid";
 import { RoleUser } from "@/modules/user/userTypets";
 import { getRange } from "@/utils/getRange";
 import { memo } from "react";
 
 interface ClassroomListsTableRowAccordionContentProps {
   totalExercises: number;
-  list: IFetchListsByClassromUuidResponse;
+  list: IFetchListsOfClassromResponse;
   role: RoleUser;
 }
 
@@ -37,27 +37,6 @@ export const ClassroomListsTableRowAccordionContent = memo(
       <div className="p-5 border-t bg-background/50">
         {totalExercises === 0 ? (
           <>
-            {/* <Alert.Root>
-            <Alert.Title>Não há exercícios cadastrados nesta lista</Alert.Title>
-            {role === RoleUser.TEACHER && (
-              <Alert.Description className="text-sm text-muted-foreground">
-                Você pode adicionar exercícios clicando no botão de adicionar e
-                remover exercícios.
-              </Alert.Description>
-            )}
-          </Alert.Root> */}
-            {/* <div>
-              <EmptyState
-                illustration={<ScrollIllustration size={200} />}
-                title="Nenhuma lista criada"
-                message="Quando o professor publicar uma lista, ela aparecerá aqui."
-                action={
-                  <EmptyPrimaryButton>
-                    <Plus className="h-4 w-4" /> Criar Lista
-                  </EmptyPrimaryButton>
-                }
-              />
-            </div> */}
             <div>
               <EmptyState
                 size="sm"

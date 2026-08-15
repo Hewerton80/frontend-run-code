@@ -1,12 +1,12 @@
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
 import { useQuery } from "@tanstack/react-query";
-import { IExercise } from "@/modules/exercise/exerciseTypes";
+import { ExerciseOfListDto } from "@/modules/list/hooks/useFetchListOfExercises";
 
 export const useGetCachedExerciseOfList = (
   exerciseUuId: string,
   listId: number,
 ) => {
-  const { data: exerciseOfList } = useQuery<IExercise | null>({
+  const { data: exerciseOfList } = useQuery<ExerciseOfListDto | null>({
     queryKey: exerciseQueryKeyFactory.ofList(exerciseUuId, listId),
     queryFn: () => null,
     staleTime: Infinity,
@@ -14,5 +14,5 @@ export const useGetCachedExerciseOfList = (
     enabled: !!exerciseUuId && !!listId,
   });
 
-  return { exerciseOfList: exerciseOfList as IExercise };
+  return { exerciseOfList: exerciseOfList as ExerciseOfListDto };
 };

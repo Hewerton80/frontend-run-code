@@ -12,7 +12,6 @@ export const useAuth = () => {
     data: me,
     isLoading: isLoadingUser,
     error: errorUser,
-    isError: isErrorUser,
     refetch: fetchMe,
   } = useQuery({
     queryKey: authQueryKeyFactory.me(),
@@ -30,7 +29,6 @@ export const useAuth = () => {
   return {
     isLoadingUser,
     errorUser,
-    isErrorUser,
     fetchMe,
   };
 };

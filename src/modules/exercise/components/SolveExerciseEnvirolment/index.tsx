@@ -11,11 +11,12 @@ import { useGetCachedClassromById } from "@/modules/classroom/hooks/useGetCached
 import { ExerciseForm } from "../ExerciseFormDrawer";
 import { SolveExerciseEnvirolmentActions } from "./SolveExerciseEnvirolmentActions";
 import { cn } from "@/utils/cn";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/dataDisplay/Separator";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 import { TestCasesResultsDisplay } from "./TestCasesResultsDisplay";
 import { useSidebarMembers } from "@/modules/classroom/components/SidebarMembers/useSidebarMembers";
 import { ExerciseSideStats } from "./ExerciseSideStats";
+import { isNumberable } from "@/utils/isType";
 
 export const SolveExerciseEnvirolment = () => {
   const { setShowSidebarMembers } = useSidebarMembers();
@@ -35,7 +36,7 @@ export const SolveExerciseEnvirolment = () => {
     useFetchExerciseByUuId({
       exerciseUuId: params?.exerciseId || "",
       classroomUuId: params?.classroomId,
-      listId: params?.listId,
+      listId: isNumberable(params?.listId) ? Number(params?.listId) : undefined,
     });
 
   useEffect(() => {

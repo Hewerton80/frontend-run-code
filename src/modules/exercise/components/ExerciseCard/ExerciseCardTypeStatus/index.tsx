@@ -1,12 +1,13 @@
 import { cn } from "@/utils/cn";
 import { memo } from "react";
 import { ExerciseDifficultyStars } from "../../ExerciseDifficultyStars";
-import { DIFF_META, IExercise } from "@/modules/exercise/exerciseTypes";
+import { DIFF_META } from "@/modules/exercise/exerciseTypes";
 import { SubmissionStatusBadge } from "@/modules/submission/components/SubmissionStatusBadge";
 import { Tooltip } from "@/components/ui/overlay/Tooltip/Tooltip";
+import { ExerciseOfListDto } from "@/modules/list/hooks/useFetchListOfExercises";
 
 interface ExerciseCardTypeStatusProps {
-  ex: IExercise;
+  ex: ExerciseOfListDto;
 }
 
 export const ExerciseCardTypeStatus = memo(
@@ -16,7 +17,7 @@ export const ExerciseCardTypeStatus = memo(
     return (
       <div className="relative flex flex-col pb-2">
         <span className="absolute top-0 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-          <ExerciseDifficultyStars count={ex.difficulty} />
+          <ExerciseDifficultyStars count={ex?.difficulty || 1} />
         </span>
         {/* Name banner */}
         <div

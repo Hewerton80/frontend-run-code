@@ -1,10 +1,8 @@
 import { IClassroom } from "../classroom/classroomType";
-import { IExercise } from "../exercise/exerciseTypes";
 import { IUser } from "../user/userTypets";
 
 export interface IList {
   id: number;
-  exercises: IExercise[];
   title: string;
   startDate?: string | null;
   endDate?: string | null;

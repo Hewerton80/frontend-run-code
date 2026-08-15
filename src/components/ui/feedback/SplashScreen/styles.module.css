@@ -1,0 +1,66 @@
+@keyframes star-drift {
+  0% {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-40px);
+    opacity: 0.5;
+  }
+}
+.animate-star-drift {
+  animation: star-drift 3s linear infinite;
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-orbit-spin {
+  animation: orbit-spin 9s linear infinite;
+}
+.animate-orbit-spin-reverse {
+  animation: orbit-spin 9s linear infinite reverse;
+}
+
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+.animate-float-bob {
+  animation: float-bob 3.2s ease-in-out infinite;
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+.animate-progress-indeterminate {
+  animation: progress-indeterminate 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-star-drift,
+  .animate-orbit-spin,
+  .animate-orbit-spin-reverse,
+  .animate-float-bob,
+  .animate-progress-indeterminate {
+    animation: none;
+  }
+}

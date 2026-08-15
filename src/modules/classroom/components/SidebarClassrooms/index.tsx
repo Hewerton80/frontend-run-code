@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "@/routes/routes";
 import { cn } from "@/utils/cn";
 import { Home } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/dataDisplay/Separator";
 import { useGetCachedMyClassrooms } from "@/modules/classroom/hooks/useGetCachedMyClassroms";
 import { useGetCachedMyClassroomMenuItem } from "@/modules/classroom/hooks/useGetCachedMyClassroomMenuItem";
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";

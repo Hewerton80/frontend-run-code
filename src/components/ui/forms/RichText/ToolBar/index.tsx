@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/core";
 import { memo } from "react";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/dataDisplay/Separator";
 import { ToolbarProvider } from "./ToolBarProvider";
 import { UndoToolBar } from "./UndoToolBar";
 import { RedoToolBar } from "./RedoToolBar";

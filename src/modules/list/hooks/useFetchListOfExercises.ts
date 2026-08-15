@@ -2,12 +2,38 @@ import { useMemo } from "react";
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
-import { IList } from "@/modules/list/listTypes";
 import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
+import { SubmissionStatus } from "@/modules/submission/submissionType";
 
-interface FetchListOfExercisesByListIdResponse {
+export interface ExerciseOfListDto {
+  submissionStatus: SubmissionStatus | null;
+  uuid: string;
   id: number;
+  title: string;
+  status: number;
+  createdAt: string;
+  author: {
+    uuid: string;
+    name: string;
+    surname: string;
+    email: string;
+    avatarUrl: string | null;
+    avatarBgColor: string;
+  };
+  difficulty: number | null;
+  category: {
+    uuid: string;
+    name: string;
+  } | null;
+}
+export interface FetchListOfExercisesByListIdResponse {
+  id: number;
+  title: string;
+  startDate: string | null;
+  endDate: string | null;
+  status: number;
+  exercises: ExerciseOfListDto[];
 }
 
 export const useFetchListOfExercises = ({
@@ -27,7 +53,7 @@ export const useFetchListOfExercises = ({
   } = useQuery({
     queryKey: listOfExercisesQueryKeyFactory.withExercises(listId),
     queryFn: async ({ signal }) => {
-      const { data } = await apiBase.get<IList>(
+      const { data } = await apiBase.get<FetchListOfExercisesByListIdResponse>(
         `/list/${listId}/classroom/${classroomId}`,
         { signal },
       );

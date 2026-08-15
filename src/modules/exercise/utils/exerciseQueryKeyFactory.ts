@@ -20,8 +20,13 @@ export const exerciseQueryKeyFactory = {
     [...exerciseQueryKeyFactory.all(), ...(params ? [params] : [])] as const,
 
   /** Detalhe de um exercício (com contexto opcional de turma/lista) */
-  detail: (exerciseUuId: string, classroomUUId?: string, listId?: string) =>
-    [ExerciseQueryKeys.Exercise, exerciseUuId, classroomUUId, listId] as const,
+  detail: (exerciseUuId: string, classroomUUId?: string, listId?: number) =>
+    [
+      ExerciseQueryKeys.Exercise,
+      exerciseUuId,
+      ...(classroomUUId ? [classroomUUId] : []),
+      ...(listId ? [listId] : []),
+    ] as const,
   row: (exerciseUuId: string) => [ExerciseQueryKeys.Row, exerciseUuId] as const,
   /** Exercícios de uma lista dentro de uma turma (semeados por useFetchList) */
   byClassroom: (listId: string, classroomUUId: string) =>

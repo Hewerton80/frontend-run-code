@@ -48,7 +48,7 @@ export interface FetchExerciseByUuIdResponse {
 interface IFetchExerciseParams {
   exerciseUuId: string;
   classroomUuId?: string;
-  listId?: string;
+  listId?: number;
 }
 
 export const useFetchExerciseByUuId = ({

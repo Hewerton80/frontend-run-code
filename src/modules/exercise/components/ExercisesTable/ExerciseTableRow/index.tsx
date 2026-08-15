@@ -45,7 +45,15 @@ export const ExerciseTableRow = memo(
           </Table.Data>
         )}
         <Table.Data>
-          <GroupedUserInfo user={exercise?.author!} />
+          <GroupedUserInfo
+            user={{
+              email: exercise?.author?.email || "",
+              name: exercise?.author?.name || "",
+              surname: exercise?.author?.surname || "",
+              avatarBgColor: exercise?.author?.avatarBgColor || "",
+              avatarUrl: exercise?.author?.avatarUrl || "",
+            }}
+          />
         </Table.Data>
         <Table.Data>
           <div className="flex justify-end">

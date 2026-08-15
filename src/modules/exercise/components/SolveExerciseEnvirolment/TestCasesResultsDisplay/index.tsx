@@ -17,7 +17,7 @@ import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSub
 import { useGetCreateSubmissionState } from "@/modules/submission/hooks/useGetCreateSubmissionState";
 import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
 import { ProcessedSubmissionSuccessState } from "@/modules/submission/components/ProcessedSubmissionSuccessState";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/dataDisplay/Separator";
 import { cn } from "@/utils/cn";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
 
@@ -26,6 +26,7 @@ interface TestCasesResultsDisplayLabel {
   className?: string;
 }
 
+// TODO tratar melhor os erros internos
 const TestCasesResultsDisplayLabel = memo(
   ({ children, className }: TestCasesResultsDisplayLabel) => {
     return (
@@ -119,7 +120,6 @@ export const TestCasesResultsDisplay = memo(
       }
 
       if (submissionsResultSummary?.status === SubmissionStatus.UNKNOWN_ERROR) {
-        const Icon = SUBMISSION_META?.[submissionsResultSummary.status]?.icon;
         return (
           <ApiErrorState
             title="Erro desconhecido"

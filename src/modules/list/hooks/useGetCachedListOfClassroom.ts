@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { listOfExercisesQueryKeyFactory } from "../utils/listOfExercisesQueryKeyFactory";
-import { IFetchListsByClassromUuidResponse } from "./useFetchListsByClassromUuid";
+import { IFetchListsOfClassromResponse } from "./useFetchListsByClassromUuid";
 
 export const useGetCachedListOfClassroom = (listId: number) => {
   const { data: listOfClassroom } =
-    useQuery<IFetchListsByClassromUuidResponse | null>({
+    useQuery<IFetchListsOfClassromResponse | null>({
       queryKey: listOfExercisesQueryKeyFactory.oneOfClassroom(listId),
       queryFn: () => null,
       staleTime: Infinity,
@@ -13,6 +13,6 @@ export const useGetCachedListOfClassroom = (listId: number) => {
     });
 
   return {
-    cachedListOfClassroom: listOfClassroom as IFetchListsByClassromUuidResponse,
+    cachedListOfClassroom: listOfClassroom as IFetchListsOfClassromResponse,
   };
 };

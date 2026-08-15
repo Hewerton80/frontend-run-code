@@ -1,10 +1,10 @@
-import { IExercise } from "@/modules/exercise/exerciseTypes";
+import { ExerciseOfListDto } from "@/modules/list/hooks/useFetchListOfExercises";
 import { SubmissionStatus } from "@/modules/submission/submissionType";
 import { cn } from "@/utils/cn";
 import { memo, useMemo } from "react";
 
 interface ExerciseCardArtWindowProps {
-  ex: IExercise;
+  ex: ExerciseOfListDto;
 }
 
 export const ExerciseCardArtWindow = memo(

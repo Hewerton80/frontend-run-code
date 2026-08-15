@@ -4,16 +4,16 @@ import { ROUTES } from "@/routes/routes";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaPen } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { IExercise } from "../../exerciseTypes";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { FaCode } from "react-icons/fa";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
 import { JSX, useMemo } from "react";
 import { ExerciseForm } from "../ExerciseFormDrawer";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/dataDisplay/Separator";
+import { FetchExercisesResponseData } from "../../hooks/useFetchExercises";
 
 interface ExerciseTableActionsProps {
-  exercise: IExercise;
+  exercise: FetchExercisesResponseData;
 }
 
 export const ExerciseTableActions = ({

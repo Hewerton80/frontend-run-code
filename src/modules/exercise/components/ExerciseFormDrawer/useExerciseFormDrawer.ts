@@ -6,16 +6,13 @@ import {
   handleCreateExeciseBody,
   handleUpdateExerciseBody,
 } from "../../utils/handleExerciseBody";
-import { ExerciseStatus, IExercise } from "../../exerciseTypes";
-import {
-  FetchExerciseByUuIdResponse,
-  useFetchExerciseByUuId,
-} from "../../hooks/useFetchExerciseByUuId";
+import { ExerciseStatus } from "../../exerciseTypes";
+import { useFetchExerciseByUuId } from "../../hooks/useFetchExerciseByUuId";
 import { useUpdateExercise } from "../../hooks/useUpdateExercise";
 import { forceRefetchExercises } from "../../utils/forceRefetchExercises";
 import { getOnlyDirtyFields } from "@/utils/hookFormHelpers";
 import { updateCachedExerciseRow } from "../../utils/updateCachedExerciseRow";
-import { updateCachedExerciseDetail } from "../../utils/updateCachedExerciseDetail";
+import { updateCachedStandaloneExercise } from "../../utils/updateCachedStandaloneExercise";
 import { useTriggerExerciseFormDrawer } from "./useTriggerExerciseFormDrawer";
 
 export const useExerciseFormDrawer = () => {
@@ -150,8 +147,8 @@ export const useExerciseFormDrawer = () => {
                 ...updatedExercise,
               }),
             );
-            updateCachedExerciseDetail(
-              exerciseUuIdToEdit || "",
+            updateCachedStandaloneExercise(
+              { exerciseUuId: exerciseUuIdToEdit || "" },
               (oldExercise) => ({
                 ...(oldExercise || {}),
                 ...updatedExercise,

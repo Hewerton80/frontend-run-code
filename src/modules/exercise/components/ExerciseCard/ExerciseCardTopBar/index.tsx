@@ -1,8 +1,8 @@
-import { IExercise } from "@/modules/exercise/exerciseTypes";
+import { ExerciseOfListDto } from "@/modules/list/hooks/useFetchListOfExercises";
 import { memo } from "react";
 
 interface ExerciseCardTopBarProps {
-  ex: IExercise;
+  ex: ExerciseOfListDto;
 }
 
 export const ExerciseCardTopBar = memo(({ ex }: ExerciseCardTopBarProps) => {

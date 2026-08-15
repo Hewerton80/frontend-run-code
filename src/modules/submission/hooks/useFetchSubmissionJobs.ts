@@ -32,6 +32,7 @@ export interface SubmissionJobResponse {
   jobId: string;
   submissionUuid: string;
   exerciseUuId: string;
+  classroomUuId: string | null;
   listId: number | null;
   isProcessing: boolean;
   jobState: SubmissionJobState;

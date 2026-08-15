@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 
-export interface IFetchListsByClassromUuidResponse {
+export interface IFetchListsOfClassromResponse {
   id: number;
   totalExercises: number;
   classroom: { uuid: string };
@@ -34,7 +34,7 @@ export const useFetchListsByClassromUuid = (classroomUuid: string) => {
   } = useQuery({
     queryKey: listOfExercisesQueryKeyFactory.allOfClassroom(classroomUuid),
     queryFn: async ({ signal }) => {
-      const { data } = await apiBase.get<IFetchListsByClassromUuidResponse[]>(
+      const { data } = await apiBase.get<IFetchListsOfClassromResponse[]>(
         `/list/classroom/${classroomUuid}`,
         { signal },
       );

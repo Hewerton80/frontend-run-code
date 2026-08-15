@@ -1,12 +1,12 @@
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
-import { IFetchListsByClassromUuidResponse } from "../hooks/useFetchListsByClassromUuid";
+import { IFetchListsOfClassromResponse } from "../hooks/useFetchListsByClassromUuid";
 import { listOfExercisesQueryKeyFactory } from "./listOfExercisesQueryKeyFactory";
 
 export const addListOfExercicesInCachedList = (
   classroomUuid: string,
-  data: IFetchListsByClassromUuidResponse,
+  data: IFetchListsOfClassromResponse,
 ) => {
-  setItemInCache<IFetchListsByClassromUuidResponse[]>(
+  setItemInCache<IFetchListsOfClassromResponse[]>(
     listOfExercisesQueryKeyFactory.allOfClassroom(classroomUuid),
     (oldData) => {
       if (!oldData) return oldData;

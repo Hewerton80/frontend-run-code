@@ -1,5 +1,4 @@
 import { Avatar } from "@/components/ui/dataDisplay/Avatar";
-import { IUser } from "../../userTypets";
 import { cn } from "@/utils/cn";
 
 interface IGroupedUserInfoProps {
