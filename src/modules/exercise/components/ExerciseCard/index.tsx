@@ -1,6 +1,5 @@
 import { memo, useMemo } from "react";
 import { useGetCachedExerciseOfList } from "../../hooks/useGetCachedExerciseOfList";
-
 import { ExerciseCardWrapper } from "./ExerciseCardWrapper";
 import { ExerciseCardArtWindow } from "./ExerciseCardArtWindow";
 import { ExerciseCardTypeStatus } from "./ExerciseCardTypeStatus";

@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { cn } from "@/utils/cn";
 import { SubmissionStatus } from "../../types/SubmissionStatusEnum";
 import { SUBMISSION_META } from "../../types/SubmissionMetaRecord";
