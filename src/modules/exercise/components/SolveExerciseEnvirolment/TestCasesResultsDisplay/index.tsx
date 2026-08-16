@@ -1,18 +1,8 @@
 import { TerminalCode } from "@/components/ui/dataDisplay/TerminalCode";
 import { Tabs } from "@/components/ui/navigation/Tabs";
-import {
-  SUBMISSION_META,
-  SubmissionStatus,
-} from "@/modules/submission/submissionType";
+import { SubmissionStatus } from "@/modules/submission/types/SubmissionStatusEnum";
 import { Tooltip } from "@/components/ui/overlay/Tooltip";
-import {
-  createElement,
-  memo,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { memo, ReactNode, useEffect, useMemo, useRef } from "react";
 import { useCachedSubmissionJobs } from "@/modules/submission/hooks/useCachedSubmissionJobs";
 import { useGetCreateSubmissionState } from "@/modules/submission/hooks/useGetCreateSubmissionState";
 import { ProcessingSubmissionState } from "@/modules/submission/components/ProcessingSubmissionState";
@@ -20,6 +10,7 @@ import { ProcessedSubmissionSuccessState } from "@/modules/submission/components
 import { Separator } from "@/components/ui/dataDisplay/Separator";
 import { cn } from "@/utils/cn";
 import { ApiErrorState } from "@/components/ui/feedback/EmptyState";
+import { SUBMISSION_META } from "@/modules/submission/types/SubmissionMetaRecord";
 
 interface TestCasesResultsDisplayLabel {
   children?: ReactNode;
@@ -60,14 +51,14 @@ export const TestCasesResultsDisplay = memo(
         [mutationStates],
       );
 
-    const { cachedSubmissionJobs } = useCachedSubmissionJobs();
+    const { submissionJobs } = useCachedSubmissionJobs();
 
     const submissionsResponse = useMemo(() => {
-      const foundSubmissionResult = cachedSubmissionJobs.find(
+      const foundSubmissionResult = submissionJobs.find(
         (job) => job.exerciseUuId === exerciseUuId,
       );
       return foundSubmissionResult;
-    }, [cachedSubmissionJobs, exerciseUuId]);
+    }, [submissionJobs, exerciseUuId]);
 
     const isProcessing = useMemo(
       () =>
@@ -78,6 +69,11 @@ export const TestCasesResultsDisplay = memo(
 
     const submissionsResultSummary = useMemo(
       () => submissionsResponse?.result,
+      [submissionsResponse],
+    );
+
+    const jobState = useMemo(
+      () => submissionsResponse?.jobState,
       [submissionsResponse],
     );
 
@@ -108,7 +104,12 @@ export const TestCasesResultsDisplay = memo(
 
     const handledContent = useMemo(() => {
       if (isProcessing) {
-        return <ProcessingSubmissionState />;
+        console.log("isProcessing: ", jobState);
+        return (
+          <ProcessingSubmissionState
+            state={jobState === "active" ? "active" : "waiting"}
+          />
+        );
       }
 
       if (createSubmissionError) {
@@ -272,6 +273,7 @@ export const TestCasesResultsDisplay = memo(
       }
       return null;
     }, [
+      jobState,
       isProcessing,
       createSubmissionError,
       submissionsResultSummary,
@@ -285,6 +287,7 @@ export const TestCasesResultsDisplay = memo(
         className="flex flex-col gap-4 border-t"
       >
         <Separator orientation="horizontal" className="h-1" />
+        {/* <ProcessingSubmissionState state={"waiting"} /> */}
         {handledContent}
       </div>
     );

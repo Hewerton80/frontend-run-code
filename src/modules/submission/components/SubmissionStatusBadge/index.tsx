@@ -1,5 +1,8 @@
 import { memo } from "react";
-import { SUBMISSION_META, SubmissionStatus } from "../../submissionType";
+import {
+  SUBMISSION_META,
+  SubmissionStatus,
+} from "../../types/XpByDifficultyRecord";
 import { cn } from "@/utils/cn";
 
 interface SubmissionStatusBadgeProps {

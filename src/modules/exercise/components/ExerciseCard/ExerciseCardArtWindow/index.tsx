@@ -1,5 +1,5 @@
 import { ExerciseOfListDto } from "@/modules/list/hooks/useFetchListOfExercises";
-import { SubmissionStatus } from "@/modules/submission/submissionType";
+import { SubmissionStatus } from "@/modules/submission/types/SubmissionStatusEnum";
 import { cn } from "@/utils/cn";
 import { memo, useMemo } from "react";
 

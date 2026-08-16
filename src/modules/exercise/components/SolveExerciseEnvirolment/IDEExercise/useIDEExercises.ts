@@ -28,8 +28,7 @@ export const useIDEExercise = (exercise: FetchExerciseByUuIdResponse) => {
     return classroom?.languages?.split(",");
   }, [classroom]);
 
-  const { cachedSubmissionJobs, addCachedSubmissionJob } =
-    useCachedSubmissionJobs();
+  const { submissionJobs, addSubmissionJob } = useCachedSubmissionJobs();
 
   // const sourceCodeRef = useRef(sourceCode);
 
@@ -52,11 +51,11 @@ export const useIDEExercise = (exercise: FetchExerciseByUuIdResponse) => {
   }, [exercise, changeLanguageMode]);
 
   const submissionsResult = useMemo(() => {
-    const foundSubmissionResult = cachedSubmissionJobs.find(
+    const foundSubmissionResult = submissionJobs.find(
       (job) => job.exerciseUuId === exercise?.uuid,
     );
     return foundSubmissionResult;
-  }, [cachedSubmissionJobs, exercise?.uuid]);
+  }, [submissionJobs, exercise?.uuid]);
 
   const changeSourceCode = (value: string) => {
     setSourceCode(value);
@@ -71,7 +70,7 @@ export const useIDEExercise = (exercise: FetchExerciseByUuIdResponse) => {
         listId: params?.listId ? parseInt(params?.listId) : undefined,
       },
       {
-        onSuccess: (data) => addCachedSubmissionJob(exercise?.uuid!, data),
+        onSuccess: (data) => addSubmissionJob(exercise?.uuid!, data),
       },
     );
   }, [
@@ -80,7 +79,7 @@ export const useIDEExercise = (exercise: FetchExerciseByUuIdResponse) => {
     languageMode,
     params?.classroomId,
     params?.listId,
-    addCachedSubmissionJob,
+    addSubmissionJob,
     exercise?.uuid,
   ]);
 

@@ -1,8 +1,9 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
-import { LoggedUser, useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
+import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { useEffect } from "react";
 import { authQueryKeyFactory } from "@/modules/auth/utils/authQueryKeyFactory";
+import { LoggedUser } from "../types/LoggedUser";
 
 export const useAuth = () => {
   const { apiBase } = useAxios();

@@ -1,34 +1,28 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import { SubmissionStatus } from "../types/SubmissionStatusEnum";
 import { useCachedSubmissionJobs } from "./useCachedSubmissionJobs";
-import {
-  SubmissionJobResponse,
-  useFetchSubmissionJobs,
-} from "./useFetchSubmissionJobs";
+import { useFetchSubmissionJobs } from "./useFetchSubmissionJobs";
 import { updateCachedExerciseOfList } from "@/modules/exercise/utils/updateCachedExerciseOfList";
-import { SubmissionStatus } from "../submissionType";
+
 import { updateCachedListOfClassroom } from "@/modules/list/utils/updateCachedListOfClassroom";
 import { updateCachedClassroom } from "@/modules/classroom/utils/updateCachedClassroom";
-import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
 import { updateCachedStandaloneExercise } from "@/modules/exercise/utils/updateCachedStandaloneExercise";
+import { SubmissionJobDto } from "../types/SubmissionJobDto";
 
 export const useFetchPoolingSubmissionsResult = () => {
-  const { setCachedSubmissionJobs } = useCachedSubmissionJobs();
-
-  const { loggedUser, setLoggedUser } = useLoggedUser();
+  const { submissionJobs, hasActiveJobs, setSubmimissionJobs } =
+    useCachedSubmissionJobs();
 
   const activeJobIds = useMemo(
-    () => loggedUser?.activeJobIds || [],
-    [loggedUser],
+    () =>
+      submissionJobs?.filter((job) => job.isProcessing).map((job) => job.jobId),
+    [submissionJobs],
   );
 
-  const isPoolingSubmissionResult = useMemo(
-    () => activeJobIds.length > 0,
-    [activeJobIds],
-  );
   const { fetchSubmissionJobs } = useFetchSubmissionJobs(activeJobIds);
 
   const handleUpdateCachedStandaloneExercise = useCallback(
-    (job: SubmissionJobResponse) => {
+    (job: SubmissionJobDto) => {
       const jobHasFinished =
         job.jobState === "completed" || job.jobState === "failed";
       if (!jobHasFinished) return;
@@ -88,7 +82,7 @@ export const useFetchPoolingSubmissionsResult = () => {
   );
 
   const handleUpdateCachedExerciseOfList = useCallback(
-    (job: SubmissionJobResponse) => {
+    (job: SubmissionJobDto) => {
       updateCachedExerciseOfList(
         job.exerciseUuId!,
         job.listId!,
@@ -115,7 +109,7 @@ export const useFetchPoolingSubmissionsResult = () => {
   );
 
   const handleUpdateCachedListOfClassroom = useCallback(
-    (job: SubmissionJobResponse) => {
+    (job: SubmissionJobDto) => {
       const jobHasFinished =
         job.jobState === "completed" || job.jobState === "failed";
       if (!jobHasFinished) return;
@@ -136,46 +130,25 @@ export const useFetchPoolingSubmissionsResult = () => {
     [],
   );
 
-  const handleUpdateCachedClassroom = useCallback(
-    (job: SubmissionJobResponse) => {
-      const jobHasFinished =
-        job.jobState === "completed" || job.jobState === "failed";
-      if (!jobHasFinished) return;
-      const newUserStats = job.result?.newUserStats;
-      if (!newUserStats) return;
-      updateCachedClassroom(job.exerciseUuId!, (prevClassroomData) => {
-        if (!prevClassroomData) return prevClassroomData;
-        return { ...prevClassroomData, userStats: newUserStats };
-      });
-    },
-    [],
-  );
-
-  const handleUpdateCachedLoggedUser = useCallback(
-    (submissionJobs: SubmissionJobResponse[]) => {
-      setLoggedUser((prevLoggedUser) => {
-        if (!prevLoggedUser) return prevLoggedUser;
-
-        return {
-          ...prevLoggedUser,
-          activeJobIds: submissionJobs
-            .filter((job) => job.isProcessing)
-            .map((job) => job.jobId),
-        };
-      });
-    },
-    [setLoggedUser],
-  );
+  const handleUpdateCachedClassroom = useCallback((job: SubmissionJobDto) => {
+    const jobHasFinished =
+      job.jobState === "completed" || job.jobState === "failed";
+    if (!jobHasFinished) return;
+    const newUserStats = job.result?.newUserStats;
+    if (!newUserStats) return;
+    updateCachedClassroom(job.exerciseUuId!, (prevClassroomData) => {
+      if (!prevClassroomData) return prevClassroomData;
+      return { ...prevClassroomData, userStats: newUserStats };
+    });
+  }, []);
 
   const handleFetchSubmissionJobs = useCallback(async () => {
     const { data: submissionJobs } = await fetchSubmissionJobs();
     if (!submissionJobs?.length) {
-      setCachedSubmissionJobs([]);
-      handleUpdateCachedLoggedUser([]);
+      setSubmimissionJobs([]);
       return;
     }
-    handleUpdateCachedLoggedUser(submissionJobs);
-    setCachedSubmissionJobs(submissionJobs);
+    setSubmimissionJobs(submissionJobs);
 
     submissionJobs.forEach((job) => {
       handleUpdateCachedStandaloneExercise(job);
@@ -188,8 +161,7 @@ export const useFetchPoolingSubmissionsResult = () => {
     handleUpdateCachedExerciseOfList,
     handleUpdateCachedListOfClassroom,
     handleUpdateCachedClassroom,
-    setCachedSubmissionJobs,
-    handleUpdateCachedLoggedUser,
+    setSubmimissionJobs,
     handleUpdateCachedStandaloneExercise,
   ]);
 
@@ -203,16 +175,16 @@ export const useFetchPoolingSubmissionsResult = () => {
   }, []);
 
   useEffect(() => {
-    if (!isPoolingSubmissionResult) {
+    if (!hasActiveJobs) {
       clearTimer();
       return;
     }
 
     timer.current = setInterval(() => {
-      if (isPoolingSubmissionResult) {
+      if (hasActiveJobs) {
         handleFetchSubmissionJobs();
       }
     }, 1500);
     return () => clearTimer();
-  }, [isPoolingSubmissionResult, clearTimer, handleFetchSubmissionJobs]);
+  }, [hasActiveJobs, clearTimer, handleFetchSubmissionJobs]);
 };

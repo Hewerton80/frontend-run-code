@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { setItemInCache } from "@/utils/tanstackQueryHelpers/setItemInCache";
 import { listOfExercisesQueryKeyFactory } from "@/modules/list/utils/listOfExercisesQueryKeyFactory";
 import { exerciseQueryKeyFactory } from "@/modules/exercise/utils/exerciseQueryKeyFactory";
-import { SubmissionStatus } from "@/modules/submission/submissionType";
+import { SubmissionStatus } from "@/modules/submission/types/SubmissionStatusEnum";
 
 export interface ExerciseOfListDto {
   submissionStatus: SubmissionStatus | null;

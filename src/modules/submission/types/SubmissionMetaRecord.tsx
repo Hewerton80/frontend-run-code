@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+import { SubmissionStatus } from "./SubmissionStatusEnum";
 import {
   CheckCircle2,
   Clock,
@@ -8,23 +10,9 @@ import {
   HelpCircle,
   FileX,
 } from "lucide-react";
-import { CSSProperties } from "react";
-
-export enum SubmissionStatus {
-  PENDING = 1,
-  RUNNING = 2,
-  ACCEPTED = 3,
-  WRONG_ANSWER = 4,
-  TIME_LIMIT_EXCEEDED = 5,
-  MEMORY_LIMIT_EXCEEDED = 6,
-  RUNTIME_ERROR = 7,
-  COMPILATION_ERROR = 8,
-  UNKNOWN_ERROR = 9,
-  NO_OUTPUT = 11,
-}
 
 export const SUBMISSION_META: Record<
-  SubmissionStatus,
+  SubmissionStatus | number,
   {
     label: string;
     tone: string;
@@ -93,32 +81,3 @@ export const SUBMISSION_META: Record<
     color: "text-white/80",
   },
 };
-
-export const XP_BY_DIFFICULTY: Record<number, number> = {
-  1: 50,
-  2: 100,
-  3: 150,
-  4: 250,
-  5: 400,
-};
-
-export type SubmissionStatusType = keyof typeof SubmissionStatus;
-
-export interface ISubmission {
-  uuid?: string;
-  language?: string;
-  sourceCode?: string;
-  score?: number;
-  error?: string | null;
-  updatedAt?: string;
-  createdAt?: string;
-  status: SubmissionStatus;
-}
-
-export enum SubmissionQueryKeys {
-  List = "submission-list",
-  CreateSubmission = "create-submission",
-  Details = "submission-details",
-  Status = "submission-status",
-  Jobs = "submission-jobs",
-}

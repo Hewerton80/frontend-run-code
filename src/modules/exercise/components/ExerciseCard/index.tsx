@@ -3,7 +3,7 @@ import { useGetCachedExerciseOfList } from "../../hooks/useGetCachedExerciseOfLi
 import {
   SubmissionStatus,
   XP_BY_DIFFICULTY,
-} from "@/modules/submission/submissionType";
+} from "@/modules/submission/types/SubmissionStatusEnum";
 import { ExerciseCardWrapper } from "./ExerciseCardWrapper";
 import { ExerciseCardArtWindow } from "./ExerciseCardArtWindow";
 import { ExerciseCardTypeStatus } from "./ExerciseCardTypeStatus";
