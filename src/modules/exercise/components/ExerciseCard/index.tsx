@@ -1,13 +1,12 @@
 import { memo, useMemo } from "react";
 import { useGetCachedExerciseOfList } from "../../hooks/useGetCachedExerciseOfList";
-import {
-  SubmissionStatus,
-  XP_BY_DIFFICULTY,
-} from "@/modules/submission/submissionType";
+
 import { ExerciseCardWrapper } from "./ExerciseCardWrapper";
 import { ExerciseCardArtWindow } from "./ExerciseCardArtWindow";
 import { ExerciseCardTypeStatus } from "./ExerciseCardTypeStatus";
 import { ExerciseCardFooterReward } from "./ExerciseCardFooterReward";
+import { SubmissionStatus } from "@/modules/submission/types/SubmissionStatusEnum";
+import { XP_BY_DIFFICULTY } from "@/modules/submission/types/XpByDifficultyRecord";
 
 interface ExerciseCardProps {
   exerciseUuId: string;

@@ -1,8 +1,9 @@
 import { useAxios } from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
-import { SubmissionStatus } from "../submissionType";
-import { SubmissionJobResponse } from "./useFetchSubmissionJobs";
+
 import { submissionQueryKeyFactory } from "../utils/submissionQueryKeyFactory";
+import { SubmissionStatus } from "../types/SubmissionStatusEnum";
+import { SubmissionJobDto } from "../types/SubmissionJobDto";
 
 interface SubmissionCodeBody {
   sourceCode: string;
@@ -38,9 +39,7 @@ export const useCreateSubmission = (exerciseUuId: string) => {
       if (classroomId && listId) {
         url += `/classroom/${classroomId}/list/${listId}`;
       }
-      return apiBase
-        .post<SubmissionJobResponse>(url, data)
-        .then((res) => res.data);
+      return apiBase.post<SubmissionJobDto>(url, data).then((res) => res.data);
     },
     retry: 0,
   });

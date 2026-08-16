@@ -5,12 +5,11 @@ import {
   ExerciseDifficultyStars,
   RANK_META,
 } from "../../ExerciseDifficultyStars";
-import {
-  SubmissionStatus,
-  XP_BY_DIFFICULTY,
-} from "@/modules/submission/submissionType";
+
 import { Rocket, Target, Trophy, Users, Zap } from "lucide-react";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
+import { SubmissionStatus } from "@/modules/submission/types/SubmissionStatusEnum";
+import { XP_BY_DIFFICULTY } from "@/modules/submission/types/XpByDifficultyRecord";
 
 interface ExerciseSideStatsProps {
   exercise?: FetchExerciseByUuIdResponse;

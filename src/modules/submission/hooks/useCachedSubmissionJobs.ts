@@ -1,80 +1,76 @@
-import { create } from "zustand";
-import { useShallow } from "zustand/react/shallow";
-import { SubmissionJobResponse } from "./useFetchSubmissionJobs";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useLoggedUser } from "@/modules/auth/hooks/useLoggedUser";
-
-type State = {
-  cachedSubmissionJobs: SubmissionJobResponse[];
-};
-
-type Action = {
-  setCachedSubmissionJobs: (submissionJobs: SubmissionJobResponse[]) => void;
-  addCachedSubmissionJob: (
-    exerciseId: string,
-    submissionJob: SubmissionJobResponse,
-  ) => void;
-};
-
-const useCachedSubmissionJobsStore = create<State & Action>((set) => ({
-  cachedSubmissionJobs: [],
-  setCachedSubmissionJobs: (submissionJobs) =>
-    set(() => ({ cachedSubmissionJobs: submissionJobs })),
-  addCachedSubmissionJob: (exerciseId, submissionJob) =>
-    set((state) => {
-      const foundIndex = state.cachedSubmissionJobs.findIndex(
-        (job) => job.exerciseUuId === exerciseId,
-      );
-      if (foundIndex !== -1) {
-        const newCachedSubmissionJobs = [...state.cachedSubmissionJobs];
-        newCachedSubmissionJobs[foundIndex] = submissionJob;
-        return { cachedSubmissionJobs: newCachedSubmissionJobs };
-      } else {
-        return {
-          cachedSubmissionJobs: [
-            ...state.cachedSubmissionJobs,
-            { ...submissionJob, exerciseId },
-          ],
-        };
-      }
-    }),
-}));
+import { SubmissionJobDto } from "../types/SubmissionJobDto";
 
 export const useCachedSubmissionJobs = () => {
-  const cachedSubmissionJobs = useCachedSubmissionJobsStore(
-    useShallow((state) => state.cachedSubmissionJobs),
+  const { setLoggedUser, loggedUser } = useLoggedUser();
+
+  const submissionJobs = useMemo(
+    () => loggedUser?.submissionJobs || [],
+    [loggedUser],
   );
 
-  const setCachedSubmissionJobs = useCachedSubmissionJobsStore(
-    useShallow((state) => state.setCachedSubmissionJobs),
+  const hasActiveJobs = useMemo(
+    () => submissionJobs.some((job) => job.isProcessing),
+    [submissionJobs],
   );
 
-  const addCachedSubmissionJob = useCachedSubmissionJobsStore(
-    useShallow((state) => state.addCachedSubmissionJob),
-  );
-
-  const { setLoggedUser } = useLoggedUser();
-
-  const handleAddCachedSubmissionJob = useCallback(
-    (exerciseId: string, submissionJob: SubmissionJobResponse) => {
-      addCachedSubmissionJob(exerciseId, submissionJob);
+  const setSubmimissionJobs = useCallback(
+    (submissionJobs: SubmissionJobDto[]) => {
       setLoggedUser((prevLoggedUser) => {
         if (!prevLoggedUser) return prevLoggedUser;
-        return {
-          ...prevLoggedUser,
-          activeJobIds: [
-            ...(prevLoggedUser?.activeJobIds || []),
-            submissionJob.jobId,
-          ],
-        };
+        return { ...prevLoggedUser, submissionJobs };
       });
     },
-    [addCachedSubmissionJob, setLoggedUser],
+    [setLoggedUser],
+  );
+
+  const addSubmissionJob = useCallback(
+    (exerciseUuid: string, submissionJob: SubmissionJobDto) => {
+      setLoggedUser((prevLoggedUser) => {
+        if (!prevLoggedUser) return prevLoggedUser;
+        const prevSubmissionJobs = prevLoggedUser.submissionJobs || [];
+        const foundIndex =
+          prevSubmissionJobs?.findIndex(
+            (job) => job.exerciseUuId === exerciseUuid,
+          ) ?? -1;
+        if (foundIndex !== -1) {
+          const newCachedSubmissionJobs = [...prevSubmissionJobs];
+          newCachedSubmissionJobs[foundIndex] = submissionJob;
+          return { ...prevLoggedUser, submissionJobs: newCachedSubmissionJobs };
+        } else {
+          return {
+            ...prevLoggedUser,
+            submissionJobs: [
+              ...prevSubmissionJobs,
+              { ...submissionJob, exerciseUuid },
+            ],
+          };
+        }
+      });
+    },
+    [setLoggedUser],
+  );
+
+  const removeSubmissionJob = useCallback(
+    (jobId: string) => {
+      setLoggedUser((prevLoggedUser) => {
+        if (!prevLoggedUser) return prevLoggedUser;
+        const prevSubmissionJobs = prevLoggedUser.submissionJobs || [];
+        const newSubmissionJobs = prevSubmissionJobs.filter(
+          (job) => job.jobId !== jobId,
+        );
+        return { ...prevLoggedUser, submissionJobs: newSubmissionJobs };
+      });
+    },
+    [setLoggedUser],
   );
 
   return {
-    cachedSubmissionJobs,
-    setCachedSubmissionJobs,
-    addCachedSubmissionJob: handleAddCachedSubmissionJob,
+    submissionJobs,
+    hasActiveJobs,
+    setSubmimissionJobs,
+    addSubmissionJob,
+    removeSubmissionJob,
   };
 };

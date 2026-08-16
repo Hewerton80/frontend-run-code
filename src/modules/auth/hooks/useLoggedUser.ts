@@ -1,19 +1,7 @@
-import { RoleUser } from "@/modules/user/userTypets";
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { LoggedUser } from "../types/LoggedUser";
 
-export interface LoggedUser {
-  uuid: string;
-  name: string;
-  surname: string;
-  email: string;
-  avatarUrl: string;
-  avatarBgColor: string;
-  role: RoleUser;
-  createdAt: string;
-  username: string;
-  activeJobIds?: string[];
-}
 type LoggedUserUpdater = Updater<LoggedUser | null | undefined>;
 
 type State = {
