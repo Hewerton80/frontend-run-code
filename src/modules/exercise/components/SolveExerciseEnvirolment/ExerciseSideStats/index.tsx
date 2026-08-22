@@ -8,7 +8,6 @@ import {
 
 import { Rocket, Target, Trophy, Users, Zap } from "lucide-react";
 import { GroupedUserInfo } from "@/modules/user/components/GroupedUserInfo";
-import { SubmissionStatus } from "@/modules/submission/types/SubmissionStatusEnum";
 import { XP_BY_DIFFICULTY } from "@/modules/submission/types/XpByDifficultyRecord";
 
 interface ExerciseSideStatsProps {
@@ -17,11 +16,13 @@ interface ExerciseSideStatsProps {
 
 export const ExerciseSideStats = memo(
   ({ exercise }: ExerciseSideStatsProps) => {
-    const done = useMemo(
-      () => exercise?.submissionStats?.status === SubmissionStatus.ACCEPTED,
-      [exercise?.submissionStats?.status],
+    const wasAlreadyAccepted = useMemo(
+      () => exercise?.submissionStats?.wasAlreadyAccepted,
+      [exercise?.submissionStats?.wasAlreadyAccepted],
     );
+
     if (!exercise) return null;
+
     return (
       <aside
         className={cn(
@@ -43,7 +44,7 @@ export const ExerciseSideStats = memo(
             </span>
           </div>
         </div>
-        {done && (
+        {wasAlreadyAccepted && (
           <div
             className={cn(
               "flex items-center justify-between rounded-xl border border-warning/30",
@@ -52,7 +53,7 @@ export const ExerciseSideStats = memo(
           >
             <span
               className={cn(
-                "inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider ",
+                "inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider",
                 "text-warning",
               )}
             >
@@ -80,7 +81,7 @@ export const ExerciseSideStats = memo(
           <span
             className={cn(
               "text-sm font-black text-primary",
-              done && "line-through",
+              wasAlreadyAccepted && "line-through",
             )}
           >
             +{XP_BY_DIFFICULTY[exercise?.difficulty || 1]} XP
@@ -96,6 +97,7 @@ export const ExerciseSideStats = memo(
             {exercise?.submissionsCount || 0}
           </dd>
         </div>
+
         <div className="flex items-center justify-between gap-3 text-sm">
           <span className="inline-flex min-w-0 items-center gap-2 text-muted-foreground">
             <Users className="size-4 text-primary" />
@@ -105,6 +107,7 @@ export const ExerciseSideStats = memo(
             {exercise?.solvedSubmissionsCount || 0}
           </dd>
         </div>
+
         {exercise?.submissionsCount > 0 && (
           <div className="flex items-center justify-between gap-3 text-sm">
             <span className="inline-flex min-w-0 items-center gap-2 text-muted-foreground">
@@ -124,6 +127,7 @@ export const ExerciseSideStats = memo(
             </dd>
           </div>
         )}
+
         <div className="flex flex-col gap-1.5 pt-6">
           <span className="text-sm font-bold text-muted-foreground">
             Autor(a)

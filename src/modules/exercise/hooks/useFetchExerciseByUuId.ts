@@ -6,8 +6,7 @@ export interface FetchExerciseByUuIdResponse {
   submissionStats: {
     error: string | null;
     status: number;
-    correctSubmissionsCount: number;
-    incorrectSubmissionsCount: number;
+    wasAlreadyAccepted: boolean;
     score: number;
     language: string;
     listId: number | null;

@@ -44,13 +44,16 @@ export const useFetchPoolingSubmissionsResult = () => {
 
           const currrentAllSubmissionsCount =
             prevExerciseData?.submissionsCount || 0;
+
           const currentAllSolvedSubmissionsCount =
             prevExerciseData?.solvedSubmissionsCount || 0;
+          const currentAllWrongUntilSolvedSubmissionsCount =
+            prevExerciseData?.wrongUntilSolvedSubmissionsCount || 0;
+
           const currentMySubmissionStatus = prevExerciseData?.submissionStats;
-          const currnetMyCorrectSubmissionsCount =
-            currentMySubmissionStatus?.correctSubmissionsCount || 0;
-          const currentMyIncorrectSubmissionsCount =
-            currentMySubmissionStatus?.incorrectSubmissionsCount || 0;
+
+          const currentMyWasAlreadyAccepted =
+            currentMySubmissionStatus?.wasAlreadyAccepted || false;
 
           return {
             ...prevExerciseData,
@@ -60,18 +63,16 @@ export const useFetchPoolingSubmissionsResult = () => {
               : currentAllSolvedSubmissionsCount,
             wrongUntilSolvedSubmissionsCount:
               !justGotAccepted && !wasAlreadyAccepted
-                ? currentMyIncorrectSubmissionsCount + 1
-                : currentMyIncorrectSubmissionsCount,
+                ? currentAllWrongUntilSolvedSubmissionsCount + 1
+                : currentAllWrongUntilSolvedSubmissionsCount,
             submissionStats: currentMySubmissionStatus
               ? {
                   ...currentMySubmissionStatus,
 
-                  correctSubmissionsCount: justGotAccepted
-                    ? currnetMyCorrectSubmissionsCount + 1
-                    : currnetMyCorrectSubmissionsCount,
-                  incorrectSubmissionsCount: !justGotAccepted
-                    ? currentMyIncorrectSubmissionsCount + 1
-                    : currentMyIncorrectSubmissionsCount,
+                  wasAlreadyAccepted:
+                    justGotAccepted ||
+                    wasAlreadyAccepted ||
+                    currentMyWasAlreadyAccepted,
                 }
               : undefined,
           };
